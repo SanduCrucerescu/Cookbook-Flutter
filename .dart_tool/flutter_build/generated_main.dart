@@ -5,10 +5,10 @@
 
 // @dart = 2.16
 
-// When `package:cookbook/pages/loading/loadgin_page.dart` defines `main`, that definition is shadowed by the definition below.
-export 'package:cookbook/pages/loading/loadgin_page.dart';
+// When `file:///var/folders/qj/w8yw7wkx6q506v129b2l33_40000gn/T/flutter_tools.8S6WE7/flutter_test_listener.OkS7JF/listener.dart` defines `main`, that definition is shadowed by the definition below.
+export 'file:///var/folders/qj/w8yw7wkx6q506v129b2l33_40000gn/T/flutter_tools.8S6WE7/flutter_test_listener.OkS7JF/listener.dart';
 
-import 'package:cookbook/pages/loading/loadgin_page.dart' as entrypoint;
+import 'file:///var/folders/qj/w8yw7wkx6q506v129b2l33_40000gn/T/flutter_tools.8S6WE7/flutter_test_listener.OkS7JF/listener.dart' as entrypoint;
 import 'dart:io'; // flutter_ignore: dart_io_import.
 import 'package:path_provider_android/path_provider_android.dart';
 import 'package:path_provider_ios/path_provider_ios.dart';
