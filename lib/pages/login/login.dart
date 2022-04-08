@@ -10,6 +10,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class LoginPage extends ConsumerWidget {
   static const String id = "/login";
+
   const LoginPage({Key? key}) : super(key: key);
 
   @override
