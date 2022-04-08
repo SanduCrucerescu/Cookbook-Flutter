@@ -18,3 +18,14 @@ const Color kcLightBeige = Color(0xFFFBF1DA);
 const Color kcMedOrange = Color(0xFFE78D1E);
 const Color kcMedRed = Color(0xFFA63B35);
 const Color kcLightGrey = Color.fromARGB(255, 214, 211, 211);
+
+// BoxShadow
+
+List<BoxShadow> ksStandardBoxShadow = [
+  BoxShadow(
+    color: Colors.grey.shade800,
+    blurRadius: 0,
+    spreadRadius: .5,
+    offset: const Offset(25, 25),
+  ),
+];
