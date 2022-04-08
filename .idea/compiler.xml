@@ -9,10 +9,13 @@
         <module name="cookbook" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="cookbook" target="18" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="cookbook" options="--add-modules java.base" />
+      <module name="cookbook" options="" />
     </option>
   </component>
 </project>
