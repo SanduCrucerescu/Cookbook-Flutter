@@ -19,7 +19,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'C O O K B O O K',
+      title: 'cookbook',
       theme: ThemeData(
         fontFamily: 'Montserrat',
         primaryColor: kcPrimaryGreen,

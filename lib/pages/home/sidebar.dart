@@ -22,7 +22,7 @@ class SideBar extends ConsumerWidget {
       height: size.height,
       width: state.width,
       decoration: BoxDecoration(
-        color: kcVeryLightGreen,
+        color: kcLightBlue,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
@@ -65,10 +65,10 @@ class SideBar extends ConsumerWidget {
             child: TextButton(
               onPressed: () {
                 state.collapsed = !state.collapsed;
-                if (state.width == 100) {
+                if (state.width == 50) {
                   state.width = 200;
                 } else {
-                  state.width = 100;
+                  state.width = 50;
                 }
               },
               child: const Text("Collapse"),
@@ -114,7 +114,7 @@ class SideBarItem extends ConsumerWidget {
     this.height = 30,
     this.width = 200,
     this.color,
-    this.textColor = kcDarkGreen,
+    this.textColor = kcLightBlue,
     this.duration = const Duration(milliseconds: 0),
     this.accentColor,
     this.shadow = true,
@@ -168,7 +168,7 @@ class SideBarItem extends ConsumerWidget {
 class SideBarItemChangeNotifier extends ChangeNotifier {
   bool _hovering = false;
   bool _expanded = false;
-  Color _backgroundColor = kcVeryLightGreen;
+  Color _backgroundColor = kcLightBlue;
   Color _textColor = kcDarkGreen.withOpacity(.9);
 
   bool get hovering => _hovering;
@@ -198,8 +198,8 @@ class SideBarItemChangeNotifier extends ChangeNotifier {
 
   void onHover(bool val) {
     hovering = val;
-    backgroundColor = val ? kcLightGreen.withOpacity(.3) : kcVeryLightGreen;
-    textColor = val ? kcDarkGreen : kcDarkGreen.withOpacity(1);
+    backgroundColor = val ? kcMedBlue.withOpacity(.3) : kcLightBlue;
+    textColor = val ? kcDarkBlue : kcDarkBlue.withOpacity(1);
     notifyListeners();
   }
 }

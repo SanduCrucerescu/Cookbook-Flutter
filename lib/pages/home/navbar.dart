@@ -12,7 +12,7 @@ class NavBar extends HookConsumerWidget {
       width: size.width - 230,
       height: 100,
       decoration: BoxDecoration(
-        color: kcMedGreen,
+        color: kcMedBlue,
         borderRadius: BorderRadius.circular(10),
       ),
     );

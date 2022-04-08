@@ -1,8 +1,10 @@
 import 'dart:developer';
 
+import 'package:cookbook/components/custom_button.dart';
 import 'package:cookbook/components/ui_components.dart';
 import 'package:cookbook/controllers/verification.dart';
 import 'package:cookbook/pages/home/home_page.dart';
+import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -59,14 +61,7 @@ class LoginForm extends HookConsumerWidget {
           border: Border.all(
               color: Colors.black, width: .5, style: BorderStyle.solid),
           color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade800,
-              blurRadius: 0,
-              spreadRadius: .5,
-              offset: const Offset(25, 25),
-            ),
-          ],
+          boxShadow: ksStandardBoxShadow,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -102,31 +97,59 @@ class LoginForm extends HookConsumerWidget {
             ),
             Expanded(
               flex: 2,
-              child: Center(
-                child: SizedBox(
-                  height: 50,
-                  width: 200,
-                  child: TextButton(
-                    onPressed: () {
-                      bool isValid = Validator.validate(
-                        userInfo: {
-                          "username": tec1.text,
-                          "password": tec2.text
-                        },
-                      );
-
-                      if (isValid) {
-                        Navigator.of(context).pushNamed(HomePage.id);
-                      } else {
-                        log("Invalid");
-                      }
-                    },
-                    child: const Text("login"),
-                  ),
-                ),
+              child: LoginButton(
+                tec1: tec1,
+                tec2: tec2,
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class LoginButton extends StatelessWidget {
+  const LoginButton({
+    Key? key,
+    required this.tec1,
+    required this.tec2,
+  }) : super(key: key);
+
+  final TextEditingController tec1;
+  final TextEditingController tec2;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: SizedBox(
+        height: 50,
+        width: 200,
+        child: CustomButton(
+          duration: const Duration(milliseconds: 200),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade800,
+              blurRadius: 0,
+              spreadRadius: .5,
+              offset: const Offset(3, 3),
+            ),
+          ],
+          onTap: () {
+            bool isValid = Validator.validate(
+              userInfo: {"username": tec1.text, "password": tec2.text},
+            );
+
+            if (isValid) {
+              Navigator.of(context).pushNamed(HomePage.id);
+            } else {
+              log("Invalid");
+            }
+          },
+          child: const Text(
+            "L O G I N",
+            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
+          ),
         ),
       ),
     );
