@@ -5,10 +5,10 @@
 
 // @dart = 2.16
 
-// When `package:cookbook/main.dart` defines `main`, that definition is shadowed by the definition below.
-export 'package:cookbook/main.dart';
+// When `package:cookbook/pages/loading/loadgin_page.dart` defines `main`, that definition is shadowed by the definition below.
+export 'package:cookbook/pages/loading/loadgin_page.dart';
 
-import 'package:cookbook/main.dart' as entrypoint;
+import 'package:cookbook/pages/loading/loadgin_page.dart' as entrypoint;
 import 'dart:io'; // flutter_ignore: dart_io_import.
 import 'package:path_provider_android/path_provider_android.dart';
 import 'package:path_provider_ios/path_provider_ios.dart';
