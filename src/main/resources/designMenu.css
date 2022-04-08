@@ -1,0 +1,82 @@
+.firstBorderPane{
+    -fx-background-color: #989898;
+}
+
+.topPart {
+    -fx-background-radius: 15;
+    -fx-background-color: white;
+    -fx-padding: 35;
+    -fx-spacing: 45;
+}
+
+.scrollPane{
+    -fx-background-radius: 15;
+    -fx-background-color: white;
+    -fx-padding: 35;
+    -fx-spacing: 45;
+}
+
+.gridPane{
+    -fx-background-radius: 15;
+    -fx-background-color: white;
+    -fx-padding: 35;
+    -fx-spacing: 45;
+}
+
+.vbox{
+    -fx-background-radius: 0 15 15 0;
+    -fx-background-color: #1EB575;
+    /*-fx-padding: 30;*/
+    -fx-spacing: 45;
+}
+
+.button{
+    -fx-max-width: 65px;
+    -fx-max-height: 65px;
+    -fx-min-width: 65px;
+    -fx-min-height: 65px;
+    -fx-scale-x: 0.6;
+    -fx-scale-y: 0.6;
+    -fx-background-repeat: no-repeat;
+    -fx-background-color: transparent;
+}
+
+
+.cart{
+    -fx-background-image: url("cart.png");
+}
+
+.logo{
+    -fx-max-width: 80px;
+    -fx-min-width: 80px ;
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+    -fx-background-image: url("logo.png");
+    -fx-background-position: 50%;
+
+}
+
+.favorites{
+    -fx-background-image: url("favorites.png");
+}
+
+.add{
+    -fx-background-image: url("add.png");
+}
+
+.search{
+    -fx-padding: 20;
+    -fx-max-height: 20;
+    -fx-prompt-text-fill: #989898;
+    -fx-font-family: Bebas Kai;
+    -fx-font-size: 30px;
+}
+
+.photo{
+    -fx-background-image: url("profile.png");
+}
+
+.name{
+    --fx-font: Bebas Kai;
+    -fx-font-size: 20;
+}

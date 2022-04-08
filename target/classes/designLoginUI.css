@@ -1,0 +1,26 @@
+.vbox{
+    -fx-effect: dropshadow(three-pass-box, rgba(128, 128, 128 , 100), 50, 0, 0, 0);
+    -fx-spacing: 25;
+    -fx-background-radius: 15;
+    -fx-max-width: 310;
+    -fx-max-height: 425;
+    -fx-alignment: center;
+    -fx-min-width: 100px;
+    -fx-background-color: white
+}
+
+.buttons{
+    -fx-background-radius: 8;
+    -fx-min-height: 35;
+    -fx-min-width: 130;
+    -fx-background-color: #f79421
+}
+
+.text{
+    -fx-min-height: 35;
+    -fx-min-width: 250;
+}
+
+.warning{
+    -fx-text-fill: red;
+}
