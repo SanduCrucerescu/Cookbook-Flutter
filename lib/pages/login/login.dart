@@ -1,6 +1,4 @@
 import 'dart:developer';
-
-import 'package:cookbook/components/custom_button.dart';
 import 'package:cookbook/components/ui_components.dart';
 import 'package:cookbook/controllers/verification.dart';
 import 'package:cookbook/pages/home/home_page.dart';
@@ -81,6 +79,7 @@ class LoginForm extends HookConsumerWidget {
               child: SizedBox(
                 width: 350,
                 child: CustomTextField(
+                  margin: const EdgeInsets.only(bottom: 10),
                   controller: tec1,
                 ),
               ),
@@ -90,6 +89,7 @@ class LoginForm extends HookConsumerWidget {
               child: SizedBox(
                 width: 350,
                 child: CustomTextField(
+                  margin: const EdgeInsets.only(top: 10),
                   controller: tec2,
                   obscureText: true,
                 ),

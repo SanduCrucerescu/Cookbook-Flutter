@@ -18,39 +18,52 @@ class SideBar extends ConsumerWidget {
 
     return Container(
       padding: const EdgeInsets.all(10),
-      margin: const EdgeInsets.all(10),
-      height: size.height,
+      margin: const EdgeInsets.only(top: 100),
+      height: size.height - 100,
       width: state.width,
-      decoration: BoxDecoration(
-        color: kcLightBlue,
-        borderRadius: BorderRadius.circular(10),
+      decoration: const BoxDecoration(
+        border: Border(
+          right:
+              BorderSide(width: .5, color: kcMedGrey, style: BorderStyle.solid),
+        ),
+        color: kcMedBeige,
       ),
       child: Column(
         children: <Widget>[
-          Expanded(
-            flex: 3,
-            child: Container(
-              margin: const EdgeInsets.only(bottom: 10),
-              color: Colors.white,
-            ),
-          ),
           Expanded(
             flex: 10,
             child: Column(
               children: [
                 SideBarItem(
                   collapsed: state.collapsed,
-                  text: "H O M E",
+                  prefixImage: Image.asset(
+                    "assets/images/home.png",
+                    fit: BoxFit.fill,
+                    height: 20,
+                  ),
+                  prefixIcon: const Icon(Icons.home),
+                  text: "H o m e",
                   onTap: () {},
                 ),
                 SideBarItem(
                   collapsed: state.collapsed,
-                  text: "W E E K L Y",
+                  prefixImage: Image.asset(
+                    "assets/images/weekly.png",
+                    fit: BoxFit.fill,
+                    height: 20,
+                  ),
+                  prefixIcon: const Icon(Icons.view_week),
+                  text: "W e e k l y",
                   onTap: () {},
                 ),
                 SideBarItem(
                   collapsed: state.collapsed,
-                  text: "F A V O R I T E S",
+                  prefixImage: Image.asset(
+                    "assets/images/starWhite.png",
+                    fit: BoxFit.fill,
+                    height: 20,
+                  ),
+                  text: "F a v o r i t e s",
                   onTap: () {},
                 ),
               ],
@@ -62,8 +75,15 @@ class SideBar extends ConsumerWidget {
           ),
           Expanded(
             flex: 1,
-            child: TextButton(
-              onPressed: () {
+            child: SideBarItem(
+              collapsed: state.collapsed,
+              prefixImage: state.collapsed
+                  ? Image.asset("assets/images/expand.png",
+                      fit: BoxFit.fill, height: 20)
+                  : Image.asset("assets/images/collapse.png",
+                      fit: BoxFit.fill, height: 20),
+              text: "C o l l a p s e",
+              onTap: () {
                 state.collapsed = !state.collapsed;
                 if (state.width == 50) {
                   state.width = 200;
@@ -71,16 +91,18 @@ class SideBar extends ConsumerWidget {
                   state.width = 50;
                 }
               },
-              child: const Text("Collapse"),
             ),
           ),
           Expanded(
             flex: 1,
-            child: TextButton(
-              onPressed: () {
+            child: SideBarItem(
+              prefixImage: Image.asset("assets/images/lock_open.png",
+                  fit: BoxFit.fill, height: 20),
+              collapsed: state.collapsed,
+              text: "L o g o u t",
+              onTap: () {
                 Navigator.of(context).pushNamed(LoginPage.id);
               },
-              child: const Text("Collapse"),
             ),
           ),
         ],
@@ -103,18 +125,20 @@ class SideBarItem extends ConsumerWidget {
   final bool shadow;
   final double margin;
   final EdgeInsets padding;
-  final IconData? prefixIcon, suffixIcon;
+  final Icon? prefixIcon;
+  final Image? prefixImage;
   final BorderRadius? borderRadius;
+
   SideBarItem({
     required this.text,
     required this.onTap,
     required this.collapsed,
-    this.fontSize = 14,
-    this.fontWeight = FontWeight.w500,
+    this.fontSize = 15,
+    this.fontWeight = FontWeight.bold,
     this.height = 30,
     this.width = 200,
     this.color,
-    this.textColor = kcLightBlue,
+    this.textColor = kcLightBeige,
     this.duration = const Duration(milliseconds: 0),
     this.accentColor,
     this.shadow = true,
@@ -122,7 +146,7 @@ class SideBarItem extends ConsumerWidget {
     this.padding = const EdgeInsets.symmetric(vertical: 2, horizontal: 2),
     this.borderRadius,
     this.prefixIcon,
-    this.suffixIcon,
+    this.prefixImage,
     Key? key,
   }) : super(key: key);
 
@@ -132,34 +156,43 @@ class SideBarItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final hovering = ref.watch(_hoveringNotifier);
+    final state = ref.watch(_hoveringNotifier);
 
     return AnimatedContainer(
       duration: duration,
-      margin: const EdgeInsets.only(bottom: 10),
+      margin: EdgeInsets.only(bottom: margin),
       height: height,
       width: width,
       padding: padding,
       decoration: BoxDecoration(
-          color: hovering.backgroundColor,
+          color: state.backgroundColor,
           borderRadius: BorderRadius.circular(3) // borderRadius,
           ),
       child: InkWell(
         onTap: onTap,
-        onHover: (val) => hovering.onHover(val),
-        child: Center(
-          child: collapsed
-              ? const Icon(Icons.add)
-              : Text(
-                  text,
-                  // textAlign: TextAlign.center,
-                  style: GoogleFonts.montserrat(
-                    fontSize: fontSize,
-                    fontWeight: fontWeight,
-                    color: hovering.textColor,
+        onHover: (val) => state.onHover(val),
+        child: Stack(children: [
+          Positioned(
+            left: 7,
+            top: 2,
+            child: collapsed
+                ? const SizedBox()
+                : prefixImage ?? prefixIcon ?? const SizedBox(),
+          ),
+          Center(
+            child: collapsed
+                ? prefixImage ?? prefixIcon
+                : Text(
+                    text,
+                    // textAlign: TextAlign.center,
+                    style: GoogleFonts.montserrat(
+                      fontSize: fontSize,
+                      fontWeight: fontWeight,
+                      color: state.textColor,
+                    ),
                   ),
-                ),
-        ),
+          ),
+        ]),
       ),
     );
   }
@@ -168,7 +201,7 @@ class SideBarItem extends ConsumerWidget {
 class SideBarItemChangeNotifier extends ChangeNotifier {
   bool _hovering = false;
   bool _expanded = false;
-  Color _backgroundColor = kcLightBlue;
+  Color _backgroundColor = kcLightBeige;
   Color _textColor = kcDarkGreen.withOpacity(.9);
 
   bool get hovering => _hovering;
@@ -198,8 +231,7 @@ class SideBarItemChangeNotifier extends ChangeNotifier {
 
   void onHover(bool val) {
     hovering = val;
-    backgroundColor = val ? kcMedBlue.withOpacity(.3) : kcLightBlue;
-    textColor = val ? kcDarkBlue : kcDarkBlue.withOpacity(1);
+    backgroundColor = val ? Colors.white : kcLightBeige;
     notifyListeners();
   }
 }

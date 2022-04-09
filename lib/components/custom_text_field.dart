@@ -10,6 +10,7 @@ class CustomTextField extends ConsumerWidget {
   final Color? accentColor;
   final String? hintText;
   final Icon? prefixIcon, suffixIcon;
+  final AssetImage? prefixImage, suffixImage;
   final TextInputType inputType;
   final EdgeInsets? margin, padding;
   final Duration duration;
@@ -35,7 +36,7 @@ class CustomTextField extends ConsumerWidget {
     this.width = 500,
     this.height = 70,
     this.inputType = TextInputType.text,
-    this.accentColor = kcPrimaryGreen,
+    this.accentColor = Colors.black,
     this.backgroundColor = Colors.white,
     this.textColor = Colors.black,
     this.wordSpacing = 3.0,
@@ -58,9 +59,9 @@ class CustomTextField extends ConsumerWidget {
     this.hintText,
     this.prefixIcon,
     this.suffixIcon,
-    this.margin = const EdgeInsets.only(
-      bottom: 15,
-    ),
+    this.prefixImage,
+    this.suffixImage,
+    this.margin,
     this.onClickSuffix,
     this.textBaseline,
     this.fontWeight,
@@ -77,16 +78,6 @@ class CustomTextField extends ConsumerWidget {
     (ref) => TextFieldNotifier(),
   );
 
-  Future<void> toggleFocus(TextFieldNotifier status) async {
-    status.shadowColor = kcVeryLightBlue;
-    status.isFocus = true;
-    await Future.delayed(
-      const Duration(milliseconds: 2500),
-    );
-    status.isFocus = false;
-    status.shadowColor = kcLightGrey;
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final status = ref.watch(statusProvider);
@@ -98,33 +89,21 @@ class CustomTextField extends ConsumerWidget {
       margin: margin,
       padding: padding,
       decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: borderRadius,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade300,
-              blurRadius: 10,
-              spreadRadius: .5,
-            )
-          ]
-          // boxShadow: isShadow
-          //     ? [
-          //         BoxShadow(
-          //             color: status.shadowColor,
-          //             blurRadius: status.blurRadius,
-          //             spreadRadius: status.shadowSpread)
-          //       ]
-          //     : [const BoxShadow(spreadRadius: 0, blurRadius: 0)],
-          ),
+        color: Colors.white,
+        borderRadius: borderRadius,
+        boxShadow: isShadow
+            ? [
+                BoxShadow(
+                  color: Colors.grey.shade300,
+                  blurRadius: 10,
+                  spreadRadius: .5,
+                )
+              ]
+            : null,
+        border: border,
+      ),
       child: Stack(
         children: <Widget>[
-          BackgroundColorWidget(
-            duration: duration,
-            status: status,
-            borderRadius: borderRadius,
-            accentColor: accentColor,
-            backgroundColor: backgroundColor,
-          ),
           InkWell(
             // onHover: (val) => status.onTextFieldHover(val),
             onTap: () async {
@@ -135,84 +114,82 @@ class CustomTextField extends ConsumerWidget {
               } else {
                 status.obscured = true;
               }
-              await toggleFocus(status);
               status.obscured = false;
             },
             child: SuffixIconWidget(
               suffixIcon: suffixIcon,
+              suffixImage: suffixImage,
               obscureText: obscureText,
               textColor: textColor,
             ),
           ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 10),
+              child: prefixIcon != null
+                  ? PrefixIconWidget(
+                      prefixIcon: prefixIcon,
+                      prefixImage: prefixImage,
+                      status: status,
+                      backgroundColor: backgroundColor,
+                      accentColor: accentColor,
+                    )
+                  : const SizedBox(width: 20),
+            ),
+          ),
           Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                prefixIcon != null
-                    ? PrefixIconWidget(
-                        prefixIcon: prefixIcon,
-                        status: status,
-                        backgroundColor: backgroundColor,
-                        accentColor: accentColor,
-                      )
-                    : const SizedBox(width: 20),
-                Expanded(
-                  flex: 5,
-                  child: Container(
-                    margin: const EdgeInsets.only(right: 50),
-                    child: TextFormField(
-                      textAlign: textAlign,
-                      controller: controller,
-                      cursorWidth: 1.5,
-                      cursorColor: textColor,
-                      obscureText: obscureText ? !status.obscured : false,
-                      keyboardType: inputType,
-                      style: textStyle ??
-                          GoogleFonts.montserrat(
-                            fontStyle: fontStyle,
-                            fontWeight: fontWeight,
-                            wordSpacing: wordSpacing,
-                            letterSpacing: letterSpacing,
-                            textBaseline: textBaseline,
-                            fontSize: fontSize,
-                            color: textColor,
-                          ),
-                      autofocus: autofocus,
-                      focusNode: focusNode,
-                      enabled: enabled,
-                      maxLines: maxLines,
-                      minLines: minLines,
-                      onChanged: onChanged,
-                      onTap: () {
-                        toggleFocus(status);
-                        if (onTap != null) {
-                          onTap!();
-                        }
-                      },
-                      validator: (val) => inputType ==
-                              TextInputType.emailAddress
-                          ? val != null
-                              ? null
-                              : "Please enter a valid email"
-                          //  I know... very high level validation, its ok though for this
-                          : (val != null && val.length > 8) || !obscureText
-                              ? null
-                              : "Password should be 8 character long",
-                      textInputAction: TextInputAction.next,
-                      autofillHints: [autofillHints ?? ""],
-                      decoration: inputDecoration ??
-                          InputDecoration(
-                            hintStyle: TextStyle(
-                              color: textColor.withOpacity(.3),
-                            ),
-                            hintText: hintText,
-                            border: InputBorder.none,
-                          ),
-                      // cursorColor: isFocus ? accentColor : backgroundColor,
+            child: Container(
+              margin: prefixIcon != null
+                  ? const EdgeInsets.only(right: 50, left: 50)
+                  : const EdgeInsets.only(right: 50, left: 20),
+              child: TextFormField(
+                textAlign: textAlign,
+                controller: controller,
+                cursorWidth: 1.5,
+                cursorColor: textColor,
+                obscureText: obscureText ? !status.obscured : false,
+                keyboardType: inputType,
+                style: textStyle ??
+                    GoogleFonts.montserrat(
+                      fontStyle: fontStyle,
+                      fontWeight: fontWeight,
+                      wordSpacing: wordSpacing,
+                      letterSpacing: letterSpacing,
+                      textBaseline: textBaseline,
+                      fontSize: fontSize,
+                      color: textColor,
                     ),
-                  ),
-                ),
-              ],
+                autofocus: autofocus,
+                focusNode: focusNode,
+                enabled: enabled,
+                maxLines: maxLines,
+                minLines: minLines,
+                onChanged: onChanged,
+                onTap: () {
+                  if (onTap != null) {
+                    onTap!();
+                  }
+                },
+                validator: (val) => inputType == TextInputType.emailAddress
+                    ? val != null
+                        ? null
+                        : "Please enter a valid email"
+                    : (val != null && val.length > 8) || !obscureText
+                        ? null
+                        : "Password should be 8 character long",
+                textInputAction: TextInputAction.next,
+                autofillHints: [autofillHints ?? ""],
+                decoration: inputDecoration ??
+                    InputDecoration(
+                      hintStyle: TextStyle(
+                        color: textColor.withOpacity(.3),
+                      ),
+                      hintText: hintText,
+                      border: InputBorder.none,
+                    ),
+                // cursorColor: isFocus ? accentColor : backgroundColor,
+              ),
             ),
           ),
         ],
@@ -224,25 +201,32 @@ class CustomTextField extends ConsumerWidget {
 class PrefixIconWidget extends StatelessWidget {
   const PrefixIconWidget({
     Key? key,
-    required this.prefixIcon,
     required this.status,
     required this.backgroundColor,
     required this.accentColor,
+    this.onPrefixTap,
+    this.prefixIcon,
+    this.prefixImage,
   }) : super(key: key);
 
   final Icon? prefixIcon;
+  final AssetImage? prefixImage;
   final TextFieldNotifier status;
   final Color backgroundColor;
   final Color? accentColor;
+  final Function? onPrefixTap;
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      flex: 1,
-      child: Icon(
-        prefixIcon?.icon,
-        color: status.isFocus ? backgroundColor : accentColor,
-      ),
+    return InkWell(
+      onTap: () => onPrefixTap,
+      child: prefixImage == null
+          ? Icon(
+              prefixIcon?.icon,
+              color: accentColor,
+              size: prefixIcon?.size,
+            )
+          : ImageIcon(prefixImage),
     );
   }
 }
@@ -253,9 +237,11 @@ class SuffixIconWidget extends StatelessWidget {
     required this.suffixIcon,
     required this.obscureText,
     required this.textColor,
+    this.suffixImage,
   }) : super(key: key);
 
   final Icon? suffixIcon;
+  final AssetImage? suffixImage;
   final bool obscureText;
   final Color textColor;
 
@@ -264,46 +250,14 @@ class SuffixIconWidget extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(right: 15),
       alignment: Alignment.centerRight,
-      child: Icon(
-        (suffixIcon == null && obscureText == false)
-            ? Icons.close
-            : Icons.visibility,
-        color: textColor,
-      ),
-    );
-  }
-}
-
-class BackgroundColorWidget extends StatelessWidget {
-  const BackgroundColorWidget({
-    Key? key,
-    required this.duration,
-    required this.status,
-    required this.borderRadius,
-    required this.accentColor,
-    required this.backgroundColor,
-  }) : super(key: key);
-
-  final Duration duration;
-  final TextFieldNotifier status;
-  final BorderRadius? borderRadius;
-  final Color? accentColor;
-  final Color backgroundColor;
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.center,
-      child: AnimatedContainer(
-        duration: duration,
-        decoration: BoxDecoration(
-          borderRadius: status.isFocus
-              ? borderRadius
-              : const BorderRadius.all(Radius.circular(60)),
-          color: backgroundColor,
-          // status.isFocus ? accentColor?.withOpacity(.7) : backgroundColor,
-        ),
-      ),
+      child: suffixImage == null
+          ? Icon(
+              (suffixIcon == null && obscureText == false)
+                  ? Icons.close
+                  : Icons.visibility,
+              color: textColor,
+            )
+          : ImageIcon(suffixImage),
     );
   }
 }

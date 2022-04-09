@@ -16,7 +16,6 @@ class TextFieldNotifier extends ChangeNotifier {
 
   set isFocus(bool newIsFocus) {
     _isFocus = newIsFocus;
-    shadowColor = newIsFocus ? kcLightGreen : kcLightGrey;
     shadowSpread = newIsFocus ? 10.0 : 1.0;
     blurRadius = newIsFocus ? 20.0 : 5.0;
     notifyListeners();

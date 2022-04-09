@@ -1,6 +1,4 @@
-import 'package:cookbook/theme/colors.dart';
-import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+part of ui_components;
 
 class CustomButton extends HookConsumerWidget {
   final Duration duration;

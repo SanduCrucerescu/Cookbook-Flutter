@@ -9,3 +9,18 @@ class CenterScrollField extends HookConsumerWidget {
     return Container();
   }
 }
+
+class RecipePost extends HookConsumerWidget {
+  final Duration duration;
+
+  const RecipePost({
+    required this.duration,
+    Key? key,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return AnimatedContainer(
+      duration: duration,
+    );
+  }
+}
