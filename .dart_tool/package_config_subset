@@ -2,6 +2,10 @@ cookbook
 2.16
 file:///Users/nikitagrisin/Desktop/cookbook/
 file:///Users/nikitagrisin/Desktop/cookbook/lib/
+animated_text_kit
+2.12
+file:///opt/homebrew/Caskroom/flutter/2.10.4/flutter/.pub-cache/hosted/pub.dartlang.org/animated_text_kit-4.2.1/
+file:///opt/homebrew/Caskroom/flutter/2.10.4/flutter/.pub-cache/hosted/pub.dartlang.org/animated_text_kit-4.2.1/lib/
 async
 2.12
 file:///opt/homebrew/Caskroom/flutter/2.10.4/flutter/.pub-cache/hosted/pub.dartlang.org/async-2.8.2/
