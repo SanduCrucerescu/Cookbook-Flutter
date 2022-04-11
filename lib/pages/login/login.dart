@@ -135,11 +135,16 @@ class LoginButton extends StatelessWidget {
               offset: const Offset(3, 3),
             ),
           ],
-          onTap: () {
-            Future<bool> isValid = Validator.validate(
-              userInfo: {"email": tec1.text, "password": tec2.text},
-            );
+          onTap: () async {
+            Future<bool> fetch() async {
+              return Validator.validate(
+                userInfo: {"email": tec1.text, "password": tec2.text},
+              );
+            }
 
+            bool isValid = await fetch();
+
+            //print(isValid);
             if (isValid == true) {
               Navigator.of(context).pushNamed(HomePage.id);
             } else {

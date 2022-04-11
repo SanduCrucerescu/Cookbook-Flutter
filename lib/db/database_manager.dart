@@ -71,10 +71,10 @@ class DatabaseManager extends AbstractDatabaseManager {
   @override
   Future<MySqlConnection?> connect() async {
     try {
-      cnx =  await MySqlConnection.connect(settings);
+      cnx = await MySqlConnection.connect(settings);
     } on SocketException catch (e) {
       log("SocketException: " + e.message);
-      } on TimeoutException catch (e) {
+    } on TimeoutException catch (e) {
       log("TimeoutException: " + e.toString());
     }
   }
