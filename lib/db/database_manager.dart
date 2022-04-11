@@ -1,28 +1,29 @@
+// import 'dart:async';
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
-
+import 'package:flutter/material.dart';
 import 'package:mysql1/mysql1.dart';
 
 abstract class AbstractDatabaseManager {
-  final String host;
-  final String user;
-  final String password;
-  final String db;
+  final String? host;
+  final String? user;
+  final String? password;
+  final String? db;
   final int? port;
   final ConnectionSettings settings;
 
   AbstractDatabaseManager({
-    required this.host,
-    required this.user,
-    required this.password,
-    required this.db,
+    this.host,
+    this.user,
+    this.password,
+    this.db,
     this.port,
   }) : settings = ConnectionSettings(
-            host: host,
-            user: user,
-            password: password,
-            db: db,
+            host: host ?? 'beryllium.mysql.database.azure.com',
+            user: user ?? 'beryllium',
+            password: password ?? '1dv508project!',
+            db: db ?? 'cookbook',
             port: port ?? 3306);
 
   void insert({
@@ -58,14 +59,14 @@ abstract class AbstractDatabaseManager {
 }
 
 class DatabaseManager extends AbstractDatabaseManager {
-  MySqlConnection? cnx;
+  late MySqlConnection cnx;
   late Results result;
 
   DatabaseManager({
-    required String host,
-    required String user,
-    required String password,
-    required String db,
+    String? host,
+    String? user,
+    String? password,
+    String? db,
   }) : super(host: host, user: user, password: password, db: db);
 
   @override
@@ -74,41 +75,45 @@ class DatabaseManager extends AbstractDatabaseManager {
       cnx = await MySqlConnection.connect(settings);
     } on SocketException catch (e) {
       log("SocketException: " + e.message);
-    } on TimeoutException catch (e) {
+      } on TimeoutException catch (e) {
       log("TimeoutException: " + e.toString());
     }
   }
 
   @override
   Future<void> close() async {
-    await cnx?.close();
+    await cnx.close();
   }
 
   @override
   Future<void> query({required String query}) async {
-    result = (await cnx?.query(query))!;
+    result = await cnx.query(query);
   }
 
   @override
-  Future<void> select(
+  Future<Results?> select(
       {required String table,
       required List<String> fields,
       Map<String, dynamic>? where,
       String? group,
       String? having,
       List<int>? limit}) async {
+
+    await connect();
+
+
     String query =
         '''SELECT ${fields.length > 1 ? fields.join(", ") : fields[0]} FROM $table ''';
 
     if (where != null) {
       query += 'WHERE ';
       for (MapEntry entry in where.entries) {
-        query += entry.key + " = " + entry.value + " ";
+        query += entry.key + " = " + entry.value + " AND ";
       }
     }
     query += ";";
 
-    // result = await cnx?.query(query);
+    return await cnx.query(query);
   }
 
   @override
@@ -130,3 +135,4 @@ class DatabaseManager extends AbstractDatabaseManager {
     // TODO: implement update
   }
 }
+
