@@ -5,26 +5,34 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'dart:developer';
+
+import 'package:cookbook/db/database_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:cookbook/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const App());
+  test('testing connection to database', () async {
+    final DatabaseManager dbManager = DatabaseManager();
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // dbManager.connect();
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    await dbManager.select(
+      table: 'recipes',
+      fields: ['*'],
+    );
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    if (dbManager.result == null) {
+      print("no rs");
+      log("No result");
+    } else {
+      for (var rs in dbManager.result) {
+        print(rs.toString());
+      }
+      print("rs");
+      log(dbManager.result.join(", "));
+    }
   });
 }
