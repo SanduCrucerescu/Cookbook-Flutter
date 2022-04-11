@@ -71,10 +71,10 @@ class DatabaseManager extends AbstractDatabaseManager {
   @override
   Future<MySqlConnection?> connect() async {
     try {
-      cnx =  await MySqlConnection.connect(settings);
+      cnx = await MySqlConnection.connect(settings);
     } on SocketException catch (e) {
       log("SocketException: " + e.message);
-      } on TimeoutException catch (e) {
+    } on TimeoutException catch (e) {
       log("TimeoutException: " + e.toString());
     }
   }
@@ -103,6 +103,8 @@ class DatabaseManager extends AbstractDatabaseManager {
       String? group,
       String? having,
       List<int>? limit}) async {
+    connect();
+
     String query =
         '''SELECT ${fields.length > 1 ? fields.join(", ") : fields[0]} FROM $table ''';
 
@@ -113,6 +115,7 @@ class DatabaseManager extends AbstractDatabaseManager {
       }
     }
     query += ";";
+    log(query);
 
     result = await cnx.query(query);
 
