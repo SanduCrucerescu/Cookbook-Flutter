@@ -110,12 +110,16 @@ class DatabaseManager extends AbstractDatabaseManager {
 
     if (where != null) {
       query += 'WHERE ';
+      int i = 0;
       for (MapEntry entry in where.entries) {
-        query += entry.key + " = " + entry.value + " AND ";
+        i++;
+        query += entry.key + " = '" + entry.value + "'";
+        query += i < where.length ? " AND " : "";
       }
     }
     query += ";";
     log(query);
+    print(query);
 
     result = await cnx.query(query);
 
