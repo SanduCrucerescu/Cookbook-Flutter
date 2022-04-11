@@ -70,14 +70,20 @@ class DatabaseManager extends AbstractDatabaseManager {
   }) : super(host: host, user: user, password: password, db: db);
 
   @override
-  Future<void> connect() async {
+  Future<MySqlConnection?> connect() async {
     try {
-      cnx = await MySqlConnection.connect(settings);
+      cnx =  await MySqlConnection.connect(settings);
     } on SocketException catch (e) {
       log("SocketException: " + e.message);
       } on TimeoutException catch (e) {
       log("TimeoutException: " + e.toString());
     }
+  }
+
+  static Future<DatabaseManager> init() async {
+    DatabaseManager dbManager = DatabaseManager();
+    await dbManager.connect();
+    return dbManager;
   }
 
   @override
@@ -99,9 +105,6 @@ class DatabaseManager extends AbstractDatabaseManager {
       String? having,
       List<int>? limit}) async {
 
-    await connect();
-
-
     String query =
         '''SELECT ${fields.length > 1 ? fields.join(", ") : fields[0]} FROM $table ''';
 
@@ -113,7 +116,9 @@ class DatabaseManager extends AbstractDatabaseManager {
     }
     query += ";";
 
-    return await cnx.query(query);
+    result = await cnx.query(query);
+
+    return result;
   }
 
   @override
