@@ -2,7 +2,6 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:mysql1/mysql1.dart';
 
 abstract class AbstractDatabaseManager {
@@ -104,7 +103,6 @@ class DatabaseManager extends AbstractDatabaseManager {
       String? group,
       String? having,
       List<int>? limit}) async {
-
     String query =
         '''SELECT ${fields.length > 1 ? fields.join(", ") : fields[0]} FROM $table ''';
 
@@ -140,4 +138,3 @@ class DatabaseManager extends AbstractDatabaseManager {
     // TODO: implement update
   }
 }
-

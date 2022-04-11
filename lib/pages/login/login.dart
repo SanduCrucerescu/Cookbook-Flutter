@@ -136,14 +136,14 @@ class LoginButton extends StatelessWidget {
             ),
           ],
           onTap: () {
-            bool isValid = Validator.validate(
-              userInfo: {"username": tec1.text, "password": tec2.text},
+            Future<bool> isValid = Validator.validate(
+              userInfo: {"email": tec1.text, "password": tec2.text},
             );
 
-            if (isValid) {
+            if (isValid == true) {
               Navigator.of(context).pushNamed(HomePage.id);
             } else {
-              log("Invalid");
+              log("Login unsuccessfull");
             }
           },
           child: const Text(
