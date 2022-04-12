@@ -1,9 +1,10 @@
-import 'package:cookbook/pages/adminPage/adminpage.dart';
 import 'package:cookbook/pages/home/home_page.dart';
-import 'package:cookbook/pages/loading/loading_page.dart';
 import 'package:cookbook/pages/login/login.dart';
 import 'package:cookbook/main.dart';
+import 'package:cookbook/pages/register/register.dart';
 import 'package:flutter/material.dart';
+
+import '../pages/loading/loading_page.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -16,16 +17,17 @@ class RouteGenerator {
           builder: (_) => const HomePage(),
         );
       case '/login':
+        // Validation of correct data type
         return MaterialPageRoute(
           builder: (_) => const LoginPage(),
-        );
-      case '/admin':
-        return MaterialPageRoute(
-          builder: (_) => const Admin(),
         );
       case '/loading':
         return MaterialPageRoute(
           builder: (_) => LoadingScreen(),
+        );
+      case '/register':
+        return MaterialPageRoute(
+          builder: (_) => const RegisterPage(),
         );
       default:
         // If there is no such named route in the switch statement, e.g. /third

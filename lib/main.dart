@@ -1,10 +1,10 @@
 import 'package:cookbook/controllers/routes.dart';
-import 'package:cookbook/pages/adminPage/adminpage.dart';
-import 'package:cookbook/pages/loading/loading_page.dart';
 import 'package:cookbook/pages/login/login.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import 'pages/loading/loading_page.dart';
 
 void main() {
   runApp(
@@ -85,17 +85,15 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InheritedLoginProviderWrapper(
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'cookbook',
-        theme: ThemeData(
-          fontFamily: 'Montserrat',
-          primaryColor: kcPrimaryGreen,
-        ),
-        initialRoute: LoadingScreen.id,
-        onGenerateRoute: RouteGenerator.generateRoute,
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'cookbook',
+      theme: ThemeData(
+        fontFamily: 'Montserrat',
+        primaryColor: kcPrimaryGreen,
       ),
+      initialRoute: LoadingScreen.id,
+      onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
 }
