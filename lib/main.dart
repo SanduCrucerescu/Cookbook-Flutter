@@ -82,15 +82,17 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'cookbook',
-      theme: ThemeData(
-        fontFamily: 'Montserrat',
-        primaryColor: kcPrimaryGreen,
+    return InheritedLoginProviderWrapper(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'cookbook',
+        theme: ThemeData(
+          fontFamily: 'Montserrat',
+          primaryColor: kcPrimaryGreen,
+        ),
+        initialRoute: LoginPage.id,
+        onGenerateRoute: RouteGenerator.generateRoute,
       ),
-      initialRoute: LoginPage.id,
-      onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
 }
