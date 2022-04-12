@@ -1,5 +1,5 @@
 import 'dart:developer';
-import 'package:cookbook/components/ui_components.dart';
+import 'package:cookbook/components/components.dart';
 import 'package:cookbook/controllers/verification.dart';
 import 'package:cookbook/pages/home/home_page.dart';
 import 'package:cookbook/theme/colors.dart';

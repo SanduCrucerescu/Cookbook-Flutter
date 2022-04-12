@@ -30,6 +30,7 @@ class _InheritedLoginProviderWrapperState
     extends State<InheritedLoginProviderWrapper> {
   Map<String?, dynamic>? userData;
   bool isLoggedIn = false;
+  String currPageID = LoadingScreen.id;
 
   void update() {
     setState(() {

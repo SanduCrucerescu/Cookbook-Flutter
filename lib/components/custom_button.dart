@@ -1,4 +1,4 @@
-part of ui_components;
+part of components;
 
 class CustomButton extends HookConsumerWidget {
   final Duration duration;

@@ -1,11 +1,12 @@
-import 'package:cookbook/pages/login/login.dart';
-import 'package:cookbook/theme/colors.dart';
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+part of components;
 
 class SideBar extends ConsumerWidget {
-  SideBar({Key? key}) : super(key: key);
+  final List<Map<String, dynamic>> items;
+
+  SideBar({
+    required this.items,
+    Key? key,
+  }) : super(key: key);
 
   final sideBarCangeNotifier = ChangeNotifierProvider<SideBarChangeNotifier>(
     (ref) => SideBarChangeNotifier(),
@@ -33,40 +34,41 @@ class SideBar extends ConsumerWidget {
           Expanded(
             flex: 10,
             child: Column(
-              children: [
-                SideBarItem(
-                  collapsed: state.collapsed,
-                  prefixImage: Image.asset(
-                    "assets/images/home.png",
-                    fit: BoxFit.fill,
-                    height: 20,
-                  ),
-                  prefixIcon: const Icon(Icons.home),
-                  text: "H o m e",
-                  onTap: () {},
-                ),
-                SideBarItem(
-                  collapsed: state.collapsed,
-                  prefixImage: Image.asset(
-                    "assets/images/weekly.png",
-                    fit: BoxFit.fill,
-                    height: 20,
-                  ),
-                  prefixIcon: const Icon(Icons.view_week),
-                  text: "W e e k l y",
-                  onTap: () {},
-                ),
-                SideBarItem(
-                  collapsed: state.collapsed,
-                  prefixImage: Image.asset(
-                    "assets/images/starWhite.png",
-                    fit: BoxFit.fill,
-                    height: 20,
-                  ),
-                  text: "F a v o r i t e s",
-                  onTap: () {},
-                ),
-              ],
+              children: List.generate(
+                items.length,
+                (idx) {
+                  Widget mainTopic = SideBarItem(
+                    collapsed: state.collapsed,
+                    prefixImage: Image.asset(
+                      items[idx]["image"],
+                      height: 20,
+                      fit: BoxFit.fill,
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pushNamed(items[idx]["onTap"]);
+                    },
+                    text: items[idx]["text"],
+                  );
+
+                  if (items[idx]["children"].length == 0) {
+                    return mainTopic;
+                  }
+
+                  List<Map<String, dynamic>> subtopics = items[idx]["children"];
+
+                  return Column(
+                    children: List.generate(
+                      subtopics.length,
+                      (idx2) => SideBarItem(
+                          text: subtopics[idx2]["text"],
+                          onTap: () => Navigator.of(context).pushNamed(
+                                subtopics[idx2]["onTap"],
+                              ),
+                          collapsed: state.collapsed),
+                    ),
+                  );
+                },
+              ),
             ),
           ),
           const Expanded(
@@ -79,9 +81,9 @@ class SideBar extends ConsumerWidget {
               collapsed: state.collapsed,
               prefixImage: state.collapsed
                   ? Image.asset("assets/images/expand.png",
-                      fit: BoxFit.fill, height: 20)
+                      fit: BoxFit.fill, height: 15)
                   : Image.asset("assets/images/collapse.png",
-                      fit: BoxFit.fill, height: 20),
+                      fit: BoxFit.fill, height: 15),
               text: "C o l l a p s e",
               onTap: () {
                 state.collapsed = !state.collapsed;
@@ -97,7 +99,7 @@ class SideBar extends ConsumerWidget {
             flex: 1,
             child: SideBarItem(
               prefixImage: Image.asset("assets/images/lock_open.png",
-                  fit: BoxFit.fill, height: 20),
+                  fit: BoxFit.fill, height: 15),
               collapsed: state.collapsed,
               text: "L o g o u t",
               onTap: () {
@@ -133,7 +135,7 @@ class SideBarItem extends ConsumerWidget {
     required this.text,
     required this.onTap,
     required this.collapsed,
-    this.fontSize = 15,
+    this.fontSize = 14,
     this.fontWeight = FontWeight.bold,
     this.height = 30,
     this.width = 200,
@@ -181,7 +183,16 @@ class SideBarItem extends ConsumerWidget {
           ),
           Center(
             child: collapsed
-                ? prefixImage ?? prefixIcon
+                ? prefixImage ??
+                    prefixIcon ??
+                    Text(
+                      text[0],
+                      style: GoogleFonts.montserrat(
+                        fontSize: fontSize,
+                        fontWeight: fontWeight,
+                        color: state.textColor,
+                      ),
+                    )
                 : Text(
                     text,
                     // textAlign: TextAlign.center,

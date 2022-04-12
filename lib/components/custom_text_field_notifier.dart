@@ -1,5 +1,4 @@
-import 'package:cookbook/theme/colors.dart';
-import 'package:flutter/material.dart';
+part of components;
 
 class TextFieldNotifier extends ChangeNotifier {
   bool _isFocus = false;
