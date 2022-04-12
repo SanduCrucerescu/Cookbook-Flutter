@@ -1,7 +1,7 @@
 import 'package:cookbook/pages/home/home_page.dart';
 import 'package:cookbook/pages/login/login.dart';
 import 'package:cookbook/main.dart';
-import 'package:cookbook/register/register.dart';
+import 'package:cookbook/pages/register/register.dart';
 import 'package:flutter/material.dart';
 
 import '../pages/loading/loading_page.dart';
