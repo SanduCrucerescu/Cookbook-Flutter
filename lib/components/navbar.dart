@@ -1,9 +1,6 @@
-import 'package:cookbook/components/ui_components.dart';
-import 'package:cookbook/theme/colors.dart';
-import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+part of components;
 
-class NavBar extends HookConsumerWidget {
+class NavBar1 extends HookConsumerWidget {
   final Color backgroundColor;
   final Color widgetColor;
   final String? logoUrl;
@@ -11,7 +8,7 @@ class NavBar extends HookConsumerWidget {
   final List<Widget>? actions;
   final Border? border;
 
-  const NavBar({
+  const NavBar1({
     this.backgroundColor = kcLightBeige,
     this.widgetColor = kcMedBeige,
     this.logoUrl,
