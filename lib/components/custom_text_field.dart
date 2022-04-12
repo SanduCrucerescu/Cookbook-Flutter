@@ -1,4 +1,4 @@
-part of ui_components;
+part of components;
 
 class CustomTextField extends ConsumerWidget {
   final Border? border;
