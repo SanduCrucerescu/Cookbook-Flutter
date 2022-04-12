@@ -4,6 +4,8 @@ import 'package:cookbook/main.dart';
 import 'package:cookbook/register/register.dart';
 import 'package:flutter/material.dart';
 
+import '../pages/loading/loading_page.dart';
+
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     // Getting arguments passed in while calling Navigator.pushNamed
@@ -18,6 +20,10 @@ class RouteGenerator {
         // Validation of correct data type
         return MaterialPageRoute(
           builder: (_) => const LoginPage(),
+        );
+      case '/loading':
+        return MaterialPageRoute(
+          builder: (_) => LoadingScreen(),
         );
       case '/register':
         return MaterialPageRoute(
