@@ -50,6 +50,11 @@ abstract class AbstractDatabaseManager {
     List<int> limit,
   });
 
+  void exists({
+    required String table,
+    required List<String> fields,
+  });
+
   Future<void> connect();
 
   Future<void> close();
@@ -69,7 +74,7 @@ class DatabaseManager extends AbstractDatabaseManager {
   }) : super(host: host, user: user, password: password, db: db);
 
   @override
-  Future<MySqlConnection?> connect() async {
+  Future<void> connect() async {
     try {
       cnx = await MySqlConnection.connect(settings);
     } on SocketException catch (e) {
@@ -118,8 +123,6 @@ class DatabaseManager extends AbstractDatabaseManager {
       }
     }
     query += ";";
-    log(query);
-    print(query);
 
     result = await cnx.query(query);
 
@@ -143,5 +146,32 @@ class DatabaseManager extends AbstractDatabaseManager {
       required Map<String, dynamic> params,
       required String where}) {
     // TODO: implement update
+  }
+
+  @override
+  Future<Results?> exists({
+    required String table,
+    required List<String> fields,
+    Map<String, dynamic>? where,
+  }) async {
+    connect();
+
+    String query =
+        '''SELECT EXISTS(SELECT ${fields.length > 1 ? fields.join(", ") : fields[0]} FROM $table ''';
+
+    if (where != null) {
+      query += 'WHERE ';
+      int i = 0;
+      for (MapEntry entry in where.entries) {
+        i++;
+        query += entry.key + " = '" + entry.value + "'";
+        query += i < where.length ? " AND " : "";
+      }
+    }
+    query += ");";
+
+    result = await cnx.query(query);
+
+    return result;
   }
 }
