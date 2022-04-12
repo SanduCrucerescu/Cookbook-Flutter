@@ -28,7 +28,6 @@ class NavBar extends HookConsumerWidget {
       width: size.width,
       height: 100,
       decoration: BoxDecoration(
-<<<<<<< HEAD
         color: backgroundColor,
         border: border ??
             const Border(
@@ -114,10 +113,7 @@ class NavBarItemBackground extends StatelessWidget {
           borderRadius: borderRadius ?? BorderRadius.circular(5),
         ),
         child: child,
-=======
         color: kcMedBlue,
-        borderRadius: BorderRadius.circular(10),
->>>>>>> Nikita
       ),
     );
   }

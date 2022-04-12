@@ -1,9 +1,4 @@
 import 'dart:developer';
-<<<<<<< HEAD
-=======
-
-import 'package:cookbook/components/custom_button.dart';
->>>>>>> Nikita
 import 'package:cookbook/components/ui_components.dart';
 import 'package:cookbook/controllers/verification.dart';
 import 'package:cookbook/pages/home/home_page.dart';
@@ -166,7 +161,6 @@ class LoginButton extends StatelessWidget {
               offset: const Offset(3, 3),
             ),
           ],
-<<<<<<< HEAD
           onTap: () async {
             bool isValid = await Validator.validate(
               userInfo: {"email": tec1.text, "password": tec2.text},
@@ -178,17 +172,6 @@ class LoginButton extends StatelessWidget {
               state.loginUnSuccessful = true;
               state.text = "* login unsuccessfull";
               log("Login unsuccessfull");
-=======
-          onTap: () {
-            bool isValid = Validator.validate(
-              userInfo: {"username": tec1.text, "password": tec2.text},
-            );
-
-            if (isValid) {
-              Navigator.of(context).pushNamed(HomePage.id);
-            } else {
-              log("Invalid");
->>>>>>> Nikita
             }
           },
           child: const Text(

@@ -9,7 +9,6 @@ class CenterScrollField extends HookConsumerWidget {
     return Container();
   }
 }
-<<<<<<< HEAD
 
 class RecipePost extends HookConsumerWidget {
   final Duration duration;
@@ -25,5 +24,3 @@ class RecipePost extends HookConsumerWidget {
     );
   }
 }
-=======
->>>>>>> Nikita
