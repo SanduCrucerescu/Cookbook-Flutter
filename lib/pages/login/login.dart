@@ -85,145 +85,69 @@ class LoginForm extends HookConsumerWidget {
                 ),
               ),
             ),
-            Expanded(
-              flex: 1,
-              child: SizedBox(
-                width: 350,
-                child: CustomTextField(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  controller: tec1,
-                ),
+            SizedBox(
+              width: 350,
+              child: CustomTextField(
+                margin: const EdgeInsets.only(bottom: 10),
+                controller: tec1,
               ),
             ),
-            Expanded(
-              flex: 1,
-              child: SizedBox(
-                width: 350,
-                child: CustomTextField(
-                  margin: const EdgeInsets.only(top: 10),
-                  controller: tec2,
-                  obscureText: true,
-                ),
+            SizedBox(
+              width: 350,
+              height: 70,
+              child: CustomTextField(
+                margin: const EdgeInsets.only(top: 10),
+                controller: tec2,
+                obscureText: true,
               ),
             ),
             state.loginUnSuccessful
-                ? Expanded(
-                    flex: 1,
-                    child: Center(
-                      child: SelectableText(
-                        state.text,
-                        style: GoogleFonts.montserrat(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red),
-                      ),
+                ? Center(
+                    child: SelectableText(
+                      state.text,
+                      style: GoogleFonts.montserrat(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red),
                     ),
                   )
                 : const SizedBox(),
             Expanded(
-              flex: 1,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              flex: 2,
+              child: Column(
                 children: <Widget>[
-                  Container(
-                    child: LoginButton(
-                      tec1: tec1,
-                      tec2: tec2,
-                      state: state,
-                    ),
+                  const SizedBox(
+                    height: 30,
                   ),
-                  Container(
-                    child: RegisterButton(),
+                  FormButton(
+                    text: "L o g i n",
+                    onTap: () async {
+                      bool isValid = await Validator.validate(
+                        userInfo: {"email": tec1.text, "password": tec2.text},
+                      );
+
+                      if (isValid == true) {
+                        Navigator.of(context).pushNamed(HomePage.id);
+                      } else {
+                        state.loginUnSuccessful = true;
+                        state.text = "* login unsuccessfull";
+                        log("Login unsuccessfull");
+                      }
+                    },
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  FormButton(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(RegisterPage.id);
+                    },
+                    text: "R e g i s t e r",
                   ),
                 ],
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class LoginButton extends StatelessWidget {
-  const LoginButton({
-    Key? key,
-    required this.tec1,
-    required this.tec2,
-    required this.state,
-  }) : super(key: key);
-
-  final TextEditingController tec1;
-  final TextEditingController tec2;
-  final VerificationChangeNotifier state;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        height: 50,
-        width: 140,
-        child: CustomButton(
-          duration: const Duration(milliseconds: 200),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade800,
-              blurRadius: 0,
-              spreadRadius: .5,
-              offset: const Offset(3, 3),
-            ),
-          ],
-          onTap: () async {
-            bool isValid = await Validator.validate(
-              userInfo: {"email": tec1.text, "password": tec2.text},
-            );
-
-            if (isValid == true) {
-              Navigator.of(context).pushNamed(HomePage.id);
-            } else {
-              state.loginUnSuccessful = true;
-              state.text = "* login unsuccessfull";
-              log("Login unsuccessfull");
-            }
-          },
-          child: const Text(
-            "L O G I N",
-            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class RegisterButton extends StatelessWidget {
-  const RegisterButton({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        height: 50,
-        width: 140,
-        child: CustomButton(
-          duration: const Duration(milliseconds: 200),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade800,
-              blurRadius: 0,
-              spreadRadius: .5,
-              offset: const Offset(3, 3),
-            ),
-          ],
-          onTap: () {
-            Navigator.of(context).pushNamed(RegisterPage.id);
-          },
-          child: const Text(
-            "R E G I S T E R",
-            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
-          ),
         ),
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,7 +19,7 @@ class RegisterPage extends ConsumerWidget {
         body: Stack(
           children: [
             addBackgroundImage(size),
-            RegisterForm(),
+            const RegisterForm(),
           ],
         ),
       ),
@@ -42,10 +43,24 @@ class RegisterForm extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final TextEditingController name = useTextEditingController();
-    final TextEditingController email = useTextEditingController();
-    final TextEditingController password = useTextEditingController();
-    final TextEditingController confirmPassword = useTextEditingController();
+    final List<Map<String, dynamic>> fields = [
+      {
+        "text": "Name",
+        "password": false,
+      },
+      {
+        "text": "Email",
+        "password": false,
+      },
+      {
+        "text": "Password",
+        "password": true,
+      },
+      {
+        "text": "Confirm password",
+        "password": true,
+      },
+    ];
 
     return Center(
       child: Container(
@@ -54,102 +69,48 @@ class RegisterForm extends HookConsumerWidget {
         decoration: BoxDecoration(
             border: Border.all(
                 color: Colors.black, width: .5, style: BorderStyle.solid),
+            boxShadow: ksStandardBoxShadow,
             color: Colors.white),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Expanded(
-              flex: 1,
-              child: SelectableText(
-                "R E G I S T E R",
-                style: GoogleFonts.montserrat(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                ),
+          children: [
+            SelectableText(
+              "R E G I S T E R",
+              style: GoogleFonts.montserrat(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
               ),
             ),
-            Expanded(
-              flex: 1,
-              child: SizedBox(
+            const SizedBox(height: 20),
+            ...List.generate(fields.length, (int idx) {
+              final Map<String, dynamic> field = fields[idx];
+
+              field["controller"] = useTextEditingController();
+
+              return CustomTextField(
                 width: 350,
-                child: CustomTextField(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  hintText: "Name",
-                  controller: name,
-                ),
-              ),
+                height: 60,
+                margin: const EdgeInsets.all(10),
+                hintText: field["text"],
+                controller: field["controller"],
+                obscureText: field["password"],
+              );
+            }),
+            const SizedBox(height: 20),
+            FormButton(
+              onTap: () {
+                Navigator.of(context).pushNamed(RegisterPage.id);
+              },
+              text: "R e g i s t e r",
             ),
-            Expanded(
-              flex: 1,
-              child: SizedBox(
-                width: 350,
-                child: CustomTextField(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  hintText: "Email",
-                  controller: email,
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: SizedBox(
-                width: 350,
-                child: CustomTextField(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  hintText: "Password",
-                  controller: password,
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: SizedBox(
-                width: 350,
-                child: CustomTextField(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  hintText: "Confirm Password",
-                  controller: confirmPassword,
-                ),
-              ),
-            ),
-            const Expanded(
-              child: RegisterButton(),
+            const SizedBox(height: 10),
+            FormButton(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              text: "C a n c e l",
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class RegisterButton extends StatelessWidget {
-  const RegisterButton({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        height: 50,
-        width: 140,
-        child: CustomButton(
-          duration: const Duration(milliseconds: 200),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade800,
-              blurRadius: 0,
-              spreadRadius: .5,
-              offset: const Offset(3, 3),
-            ),
-          ],
-          onTap: () {
-            Navigator.of(context).pushNamed(RegisterPage.id);
-          },
-          child: const Text(
-            "R E G I S T E R",
-            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
-          ),
         ),
       ),
     );
