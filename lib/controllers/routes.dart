@@ -1,6 +1,7 @@
 import 'package:cookbook/pages/home/home_page.dart';
 import 'package:cookbook/pages/login/login.dart';
 import 'package:cookbook/main.dart';
+import 'package:cookbook/register/register.dart';
 import 'package:flutter/material.dart';
 
 class RouteGenerator {
@@ -10,11 +11,17 @@ class RouteGenerator {
 
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute(builder: (_) => const HomePage());
+        return MaterialPageRoute(
+          builder: (_) => const HomePage(),
+        );
       case '/login':
         // Validation of correct data type
         return MaterialPageRoute(
           builder: (_) => const LoginPage(),
+        );
+      case '/register':
+        return MaterialPageRoute(
+          builder: (_) => const RegisterPage(),
         );
       default:
         // If there is no such named route in the switch statement, e.g. /third
