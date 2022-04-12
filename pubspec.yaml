@@ -10,6 +10,7 @@ environment:
 
 dependencies:
   cupertino_icons: ^1.0.2
+  desktop_window: ^0.4.0
   flutter:
     sdk: flutter
   flutter_hooks: ^0.18.2+1
@@ -24,6 +25,9 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+dependency_overrides:
+  analyzer: '1.5.0'
+  
 flutter:
 
   uses-material-design: true
