@@ -2,7 +2,6 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:mysql1/mysql1.dart';
 
 abstract class AbstractDatabaseManager {
@@ -51,6 +50,11 @@ abstract class AbstractDatabaseManager {
     List<int> limit,
   });
 
+  void exists({
+    required String table,
+    required List<String> fields,
+  });
+
   Future<void> connect();
 
   Future<void> close();
@@ -70,12 +74,12 @@ class DatabaseManager extends AbstractDatabaseManager {
   }) : super(host: host, user: user, password: password, db: db);
 
   @override
-  Future<MySqlConnection?> connect() async {
+  Future<void> connect() async {
     try {
-      cnx =  await MySqlConnection.connect(settings);
+      cnx = await MySqlConnection.connect(settings);
     } on SocketException catch (e) {
       log("SocketException: " + e.message);
-      } on TimeoutException catch (e) {
+    } on TimeoutException catch (e) {
       log("TimeoutException: " + e.toString());
     }
   }
@@ -104,14 +108,18 @@ class DatabaseManager extends AbstractDatabaseManager {
       String? group,
       String? having,
       List<int>? limit}) async {
+    connect();
 
     String query =
         '''SELECT ${fields.length > 1 ? fields.join(", ") : fields[0]} FROM $table ''';
 
     if (where != null) {
       query += 'WHERE ';
+      int i = 0;
       for (MapEntry entry in where.entries) {
-        query += entry.key + " = " + entry.value + " AND ";
+        i++;
+        query += entry.key + " = '" + entry.value + "'";
+        query += i < where.length ? " AND " : "";
       }
     }
     query += ";";
@@ -139,5 +147,31 @@ class DatabaseManager extends AbstractDatabaseManager {
       required String where}) {
     // TODO: implement update
   }
-}
 
+  @override
+  Future<Results?> exists({
+    required String table,
+    required List<String> fields,
+    Map<String, dynamic>? where,
+  }) async {
+    connect();
+
+    String query =
+        '''SELECT EXISTS(SELECT ${fields.length > 1 ? fields.join(", ") : fields[0]} FROM $table ''';
+
+    if (where != null) {
+      query += 'WHERE ';
+      int i = 0;
+      for (MapEntry entry in where.entries) {
+        i++;
+        query += entry.key + " = '" + entry.value + "'";
+        query += i < where.length ? " AND " : "";
+      }
+    }
+    query += ");";
+
+    result = await cnx.query(query);
+
+    return result;
+  }
+}

@@ -22,7 +22,7 @@ class LoginPage extends ConsumerWidget {
         body: Stack(
           children: [
             buildBackgroundImage(size),
-            const LoginForm(),
+            LoginForm(),
           ],
         ),
       ),
@@ -42,14 +42,23 @@ class LoginPage extends ConsumerWidget {
 }
 
 class LoginForm extends HookConsumerWidget {
-  const LoginForm({
+  LoginForm({
     Key? key,
   }) : super(key: key);
 
+  final verificationProvider =
+      ChangeNotifierProvider<VerificationChangeNotifier>(
+    (ref) => VerificationChangeNotifier(),
+  );
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(verificationProvider);
+
     final TextEditingController tec1 = useTextEditingController();
+    tec1.text = "abolandr@gnu.org";
     final TextEditingController tec2 = useTextEditingController();
+    tec2.text = "xbsxysKe53";
 
     return Center(
       child: Container(
@@ -65,7 +74,7 @@ class LoginForm extends HookConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Expanded(
-              flex: 3,
+              flex: 2,
               child: Center(
                 child: SelectableText(
                   "C o o k b o o k",
@@ -74,6 +83,20 @@ class LoginForm extends HookConsumerWidget {
                 ),
               ),
             ),
+            state.loginUnSuccessful
+                ? Expanded(
+                    flex: 1,
+                    child: Center(
+                      child: SelectableText(
+                        state.text,
+                        style: GoogleFonts.montserrat(
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red),
+                      ),
+                    ),
+                  )
+                : const SizedBox(),
             Expanded(
               flex: 1,
               child: SizedBox(
@@ -100,6 +123,7 @@ class LoginForm extends HookConsumerWidget {
               child: LoginButton(
                 tec1: tec1,
                 tec2: tec2,
+                state: state,
               ),
             ),
           ],
@@ -114,10 +138,12 @@ class LoginButton extends StatelessWidget {
     Key? key,
     required this.tec1,
     required this.tec2,
+    required this.state,
   }) : super(key: key);
 
   final TextEditingController tec1;
   final TextEditingController tec2;
+  final VerificationChangeNotifier state;
 
   @override
   Widget build(BuildContext context) {
@@ -135,15 +161,17 @@ class LoginButton extends StatelessWidget {
               offset: const Offset(3, 3),
             ),
           ],
-          onTap: () {
-            bool isValid = Validator.validate(
-              userInfo: {"username": tec1.text, "password": tec2.text},
+          onTap: () async {
+            bool isValid = await Validator.validate(
+              userInfo: {"email": tec1.text, "password": tec2.text},
             );
 
-            if (isValid) {
+            if (isValid == true) {
               Navigator.of(context).pushNamed(HomePage.id);
             } else {
-              log("Invalid");
+              state.loginUnSuccessful = true;
+              state.text = "* login unsuccessfull";
+              log("Login unsuccessfull");
             }
           },
           child: const Text(
@@ -153,5 +181,24 @@ class LoginButton extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class VerificationChangeNotifier extends ChangeNotifier {
+  bool _loginUnSuccessful = false;
+  String _text = "";
+
+  bool get loginUnSuccessful => _loginUnSuccessful;
+
+  String get text => _text;
+
+  set loginUnSuccessful(bool val) {
+    _loginUnSuccessful = val;
+    notifyListeners();
+  }
+
+  set text(String val) {
+    _text = val;
+    notifyListeners();
   }
 }
