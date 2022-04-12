@@ -16,10 +16,16 @@ class RouteGenerator {
           builder: (_) => const HomePage(),
         );
       case '/login':
-        return MaterialPageRoute(builder: (_) => const LoginPage());
+        return MaterialPageRoute(
+          builder: (_) => const LoginPage(),
+        );
       case '/admin':
         return MaterialPageRoute(
           builder: (_) => const Admin(),
+        );
+      case '/loading':
+        return MaterialPageRoute(
+          builder: (_) => LoadingScreen(),
         );
       default:
         // If there is no such named route in the switch statement, e.g. /third
