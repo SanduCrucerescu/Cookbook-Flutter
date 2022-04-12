@@ -44,22 +44,10 @@ class RegisterForm extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final List<Map<String, dynamic>> fields = [
-      {
-        "text": "Name",
-        "password": false,
-      },
-      {
-        "text": "Email",
-        "password": false,
-      },
-      {
-        "text": "Password",
-        "password": true,
-      },
-      {
-        "text": "Confirm password",
-        "password": true,
-      },
+      {"text": "Name", "password": false},
+      {"text": "Email", "password": false},
+      {"text": "Password", "password": true},
+      {"text": "Confirm password", "password": true},
     ];
 
     return Center(
