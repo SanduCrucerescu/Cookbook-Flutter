@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:cookbook/controllers/verification.dart';
+import 'package:cookbook/main.dart';
 import 'package:cookbook/pages/home/home_page.dart';
 import 'package:cookbook/register/register.dart';
 import 'package:cookbook/theme/colors.dart';
@@ -18,6 +19,7 @@ class LoginPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Size size = MediaQuery.of(context).size;
+    print(size);
 
     return SafeArea(
       child: Scaffold(
@@ -61,7 +63,6 @@ class LoginForm extends HookConsumerWidget {
     tec1.text = "abolandr@gnu.org";
     final TextEditingController tec2 = useTextEditingController();
     tec2.text = "xbsxysKe53";
-
     return Center(
       child: Container(
         height: 500,
@@ -133,7 +134,7 @@ class LoginForm extends HookConsumerWidget {
                     ),
                   ),
                   Container(
-                    child: registerButton(),
+                    child: RegisterButton(),
                   ),
                 ],
               ),
@@ -196,8 +197,8 @@ class LoginButton extends StatelessWidget {
   }
 }
 
-class registerButton extends StatelessWidget {
-  const registerButton({
+class RegisterButton extends StatelessWidget {
+  const RegisterButton({
     Key? key,
   }) : super(key: key);
 
