@@ -96,7 +96,10 @@ class LoginForm extends HookConsumerWidget {
                       ),
                     ),
                   )
-                : const SizedBox(),
+                : const Expanded(
+                    flex: 1,
+                    child: SizedBox(),
+                  ),
             Expanded(
               flex: 1,
               child: SizedBox(
