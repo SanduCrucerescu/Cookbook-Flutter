@@ -19,7 +19,6 @@ class LoginPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Size size = MediaQuery.of(context).size;
-    print(size);
 
     return SafeArea(
       child: Scaffold(
