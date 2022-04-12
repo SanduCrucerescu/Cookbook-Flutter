@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 part of ui_components;
+=======
+import 'package:cookbook/theme/colors.dart';
+import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+>>>>>>> Nikita
 
 class CustomButton extends HookConsumerWidget {
   final Duration duration;

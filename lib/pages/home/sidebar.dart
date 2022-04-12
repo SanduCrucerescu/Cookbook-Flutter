@@ -21,12 +21,18 @@ class SideBar extends ConsumerWidget {
       margin: const EdgeInsets.only(top: 100),
       height: size.height - 100,
       width: state.width,
+<<<<<<< HEAD
       decoration: const BoxDecoration(
         border: Border(
           right:
               BorderSide(width: .5, color: kcMedGrey, style: BorderStyle.solid),
         ),
         color: kcMedBeige,
+=======
+      decoration: BoxDecoration(
+        color: kcLightBlue,
+        borderRadius: BorderRadius.circular(10),
+>>>>>>> Nikita
       ),
       child: Column(
         children: <Widget>[
@@ -138,7 +144,11 @@ class SideBarItem extends ConsumerWidget {
     this.height = 30,
     this.width = 200,
     this.color,
+<<<<<<< HEAD
     this.textColor = kcLightBeige,
+=======
+    this.textColor = kcLightBlue,
+>>>>>>> Nikita
     this.duration = const Duration(milliseconds: 0),
     this.accentColor,
     this.shadow = true,
@@ -201,7 +211,11 @@ class SideBarItem extends ConsumerWidget {
 class SideBarItemChangeNotifier extends ChangeNotifier {
   bool _hovering = false;
   bool _expanded = false;
+<<<<<<< HEAD
   Color _backgroundColor = kcLightBeige;
+=======
+  Color _backgroundColor = kcLightBlue;
+>>>>>>> Nikita
   Color _textColor = kcDarkGreen.withOpacity(.9);
 
   bool get hovering => _hovering;
@@ -231,7 +245,12 @@ class SideBarItemChangeNotifier extends ChangeNotifier {
 
   void onHover(bool val) {
     hovering = val;
+<<<<<<< HEAD
     backgroundColor = val ? Colors.white : kcLightBeige;
+=======
+    backgroundColor = val ? kcMedBlue.withOpacity(.3) : kcLightBlue;
+    textColor = val ? kcDarkBlue : kcDarkBlue.withOpacity(1);
+>>>>>>> Nikita
     notifyListeners();
   }
 }
