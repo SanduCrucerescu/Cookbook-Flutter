@@ -1,4 +1,4 @@
-part of ui_components;
+part of components;
 
 class CustomButton extends HookConsumerWidget {
   final Duration duration;
@@ -9,6 +9,8 @@ class CustomButton extends HookConsumerWidget {
   final Border? border;
   final List<BoxShadow>? boxShadow;
   final Widget? child;
+  final bool showShadow;
+  final Color? color;
 
   CustomButton({
     required this.duration,
@@ -19,6 +21,8 @@ class CustomButton extends HookConsumerWidget {
     this.borderRadius = 0,
     this.border,
     this.boxShadow,
+    this.showShadow = true,
+    this.color,
     Key? key,
   }) : super(key: key);
 
@@ -36,7 +40,7 @@ class CustomButton extends HookConsumerWidget {
       height: height,
       width: width,
       decoration: BoxDecoration(
-        color: kcPrimaryGreen,
+        color: color ?? kcPrimaryGreen,
         borderRadius: BorderRadius.circular(borderRadius),
         border: state.hovering
             ? Border.all(
@@ -45,7 +49,11 @@ class CustomButton extends HookConsumerWidget {
                 style: BorderStyle.solid,
               )
             : null,
-        boxShadow: state.hovering ? boxShadow : null,
+        boxShadow: showShadow
+            ? state.hovering
+                ? boxShadow
+                : null
+            : null,
       ),
       child: InkWell(
         onHover: (val) {

@@ -20,21 +20,28 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
+    print(size);
+
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
           Image.asset("assets/images/bg1.png", fit: BoxFit.fill),
           Center(
-          child: Padding(
-            padding: EdgeInsets.only(top:200.0),
-            child: AnimatedTextKit(
-              animatedTexts: [
-                TypewriterAnimatedText('Welcome to our shit cookbook app',speed: Duration(milliseconds: 0100),
-                    textStyle: const TextStyle(fontFamily: "Elianto", fontSize: 40)),
-              ],
+            child: Padding(
+              padding: EdgeInsets.only(top: 200.0),
+              child: AnimatedTextKit(
+                animatedTexts: [
+                  TypewriterAnimatedText('Welcome to our shit cookbook app',
+                      speed: Duration(milliseconds: 0100),
+                      textStyle:
+                          const TextStyle(fontFamily: "Elianto", fontSize: 40)),
+                ],
+              ),
             ),
-          ),),
+          ),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[

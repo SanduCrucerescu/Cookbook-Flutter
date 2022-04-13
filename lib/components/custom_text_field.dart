@@ -1,4 +1,4 @@
-part of ui_components;
+part of components;
 
 class CustomTextField extends ConsumerWidget {
   final Border? border;
@@ -112,9 +112,8 @@ class CustomTextField extends ConsumerWidget {
                   obscureText != true) {
                 controller!.clear();
               } else {
-                status.obscured = true;
+                status.obscured = !status.obscured;
               }
-              status.obscured = false;
             },
             child: SuffixIconWidget(
               suffixIcon: suffixIcon,
@@ -148,7 +147,7 @@ class CustomTextField extends ConsumerWidget {
                 controller: controller,
                 cursorWidth: 1.5,
                 cursorColor: textColor,
-                obscureText: obscureText ? !status.obscured : false,
+                obscureText: obscureText ? !status.obscured : obscureText,
                 keyboardType: inputType,
                 style: textStyle ??
                     GoogleFonts.montserrat(

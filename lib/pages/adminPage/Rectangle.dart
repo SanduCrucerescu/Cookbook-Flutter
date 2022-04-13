@@ -35,8 +35,12 @@ class Rectangle extends StatelessWidget {
                       border: Border.all(
                         color: Colors.blueGrey,
                       ),
+<<<<<<< HEAD
                       borderRadius:
                           const BorderRadius.all(Radius.circular(20))),
+=======
+                      borderRadius: BorderRadius.all(Radius.circular(20))),
+>>>>>>> origin/flutter
                   height: 40,
                   width: xSize,
                   alignment: Alignment.topCenter,
@@ -46,6 +50,7 @@ class Rectangle extends StatelessWidget {
                   ),
                 ),
                 Expanded(
+<<<<<<< HEAD
                   child: Scrollbar(
                     isAlwaysShown: true,
                     showTrackOnHover: true,
@@ -80,6 +85,16 @@ class Rectangle extends StatelessWidget {
                                 ),
                               ));
                         }),
+=======
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.green),
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    alignment: Alignment.center,
+                    child: const Text(
+                      "Information box",
+                    ),
+>>>>>>> origin/flutter
                   ),
                 )
               ],

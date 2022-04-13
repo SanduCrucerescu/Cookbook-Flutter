@@ -1,12 +1,15 @@
 import 'dart:developer';
-import 'package:cookbook/components/ui_components.dart';
 import 'package:cookbook/controllers/verification.dart';
+import 'package:cookbook/main.dart';
 import 'package:cookbook/pages/home/home_page.dart';
+import 'package:cookbook/pages/register/register.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import '../../components/components.dart';
 
 class LoginPage extends ConsumerWidget {
   static const String id = "/login";
@@ -59,7 +62,6 @@ class LoginForm extends HookConsumerWidget {
     tec1.text = "abolandr@gnu.org";
     final TextEditingController tec2 = useTextEditingController();
     tec2.text = "xbsxysKe53";
-
     return Center(
       child: Container(
         height: 500,
@@ -79,105 +81,75 @@ class LoginForm extends HookConsumerWidget {
                 child: SelectableText(
                   "C o o k b o o k",
                   style: GoogleFonts.montserrat(
-                      fontSize: 20, fontWeight: FontWeight.bold),
+                      fontSize: 25, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
+            SizedBox(
+              width: 350,
+              child: CustomTextField(
+                margin: const EdgeInsets.only(bottom: 10),
+                controller: tec1,
+              ),
+            ),
+            SizedBox(
+              width: 350,
+              height: 70,
+              child: CustomTextField(
+                margin: const EdgeInsets.only(top: 10),
+                controller: tec2,
+                obscureText: true,
+              ),
+            ),
             state.loginUnSuccessful
-                ? Expanded(
-                    flex: 1,
-                    child: Center(
-                      child: SelectableText(
-                        state.text,
-                        style: GoogleFonts.montserrat(
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red),
-                      ),
+                ? Center(
+                    child: SelectableText(
+                      state.text,
+                      style: GoogleFonts.montserrat(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red),
                     ),
                   )
                 : const SizedBox(),
             Expanded(
-              flex: 1,
-              child: SizedBox(
-                width: 350,
-                child: CustomTextField(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  controller: tec1,
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: SizedBox(
-                width: 350,
-                child: CustomTextField(
-                  margin: const EdgeInsets.only(top: 10),
-                  controller: tec2,
-                  obscureText: true,
-                ),
-              ),
-            ),
-            Expanded(
               flex: 2,
-              child: LoginButton(
-                tec1: tec1,
-                tec2: tec2,
-                state: state,
+              child: Column(
+                children: <Widget>[
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  FormButton(
+                    text: "L o g i n",
+                    onTap: () async {
+                      bool isValid = await Validator.validate(
+                        userInfo: {"email": tec1.text, "password": tec2.text},
+                      );
+
+                      if (isValid == true) {
+                        Navigator.of(context).pushNamed(HomePage.id);
+                      } else {
+                        state.loginUnSuccessful = true;
+                        state.text = "* login unsuccessfull";
+                        log("Login unsuccessfull");
+                      }
+                    },
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  FormButton(
+                    showShadow: false,
+                    color: Colors.white,
+                    onTap: () {
+                      Navigator.of(context).pushNamed(RegisterPage.id);
+                    },
+                    text: "R e g i s t e r",
+                  ),
+                ],
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class LoginButton extends StatelessWidget {
-  const LoginButton({
-    Key? key,
-    required this.tec1,
-    required this.tec2,
-    required this.state,
-  }) : super(key: key);
-
-  final TextEditingController tec1;
-  final TextEditingController tec2;
-  final VerificationChangeNotifier state;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        height: 50,
-        width: 200,
-        child: CustomButton(
-          duration: const Duration(milliseconds: 200),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade800,
-              blurRadius: 0,
-              spreadRadius: .5,
-              offset: const Offset(3, 3),
-            ),
-          ],
-          onTap: () async {
-            bool isValid = await Validator.validate(
-              userInfo: {"email": tec1.text, "password": tec2.text},
-            );
-
-            if (isValid == true) {
-              Navigator.of(context).pushNamed(HomePage.id);
-            } else {
-              state.loginUnSuccessful = true;
-              state.text = "* login unsuccessfull";
-              log("Login unsuccessfull");
-            }
-          },
-          child: const Text(
-            "L O G I N",
-            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
-          ),
         ),
       ),
     );
