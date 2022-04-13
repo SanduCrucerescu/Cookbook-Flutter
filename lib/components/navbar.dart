@@ -1,6 +1,6 @@
 part of components;
 
-class NavBar1 extends HookConsumerWidget {
+class NavBar extends HookConsumerWidget {
   final Color backgroundColor;
   final Color widgetColor;
   final String? logoUrl;
@@ -8,8 +8,9 @@ class NavBar1 extends HookConsumerWidget {
   final List<Widget>? actions;
   final Border? border;
   final bool showSearchBar;
+  final double? height, width;
 
-  const NavBar1({
+  const NavBar({
     this.backgroundColor = kcLightBeige,
     this.widgetColor = kcMedBeige,
     this.logoUrl,
@@ -17,6 +18,8 @@ class NavBar1 extends HookConsumerWidget {
     this.actions,
     this.border,
     this.showSearchBar = true,
+    this.width,
+    this.height,
     Key? key,
   }) : super(key: key);
 
@@ -24,8 +27,8 @@ class NavBar1 extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      width: size.width,
-      height: 100,
+      width: width ?? size.width,
+      height: height ?? 100,
       decoration: BoxDecoration(
         color: backgroundColor,
         border: border ??
@@ -38,43 +41,31 @@ class NavBar1 extends HookConsumerWidget {
             ),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Expanded(
-            flex: 1,
-            child: NavBarItemBackground(
-              child: Image.asset('assets/images/temp_logo.png'),
-            ),
+          NavBarItemBackground(
+            child: Image.asset('assets/images/temp_logo.png'),
           ),
           showSearchBar
-              ? Expanded(
-                  flex: 5,
-                  child: CustomTextField(
-                    isShadow: false,
-                    height: 60,
-                    prefixIcon: const Icon(
-                      Icons.expand_more,
-                      color: Colors.black,
-                      size: 35,
-                    ),
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(
-                        color: kcMedGrey, width: 1, style: BorderStyle.solid),
+              ? CustomTextField(
+                  isShadow: false,
+                  height: 60,
+                  width: 1000,
+                  prefixIcon: const Icon(
+                    Icons.expand_more,
+                    color: Colors.black,
+                    size: 35,
                   ),
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(
+                      color: kcMedGrey, width: 1, style: BorderStyle.solid),
                 )
               : const SizedBox(),
-          const Expanded(
-            flex: 1,
-            child: SizedBox(),
-          ),
-          Expanded(
-            flex: 1,
-            child: NavBarItemBackground(
-              width: 110,
-              paddingVertical: 10,
-              child: CircleAvatar(
-                child: Image.asset('assets/images/ph.png'),
-              ),
+          NavBarItemBackground(
+            width: 110,
+            paddingVertical: 10,
+            child: CircleAvatar(
+              child: Image.asset('assets/images/ph.png'),
             ),
           ),
         ],
@@ -90,6 +81,7 @@ class NavBarItemBackground extends StatelessWidget {
   final double? height;
   final IconData? suffixIcon;
   final double? paddingVertical;
+  final EdgeInsets? padding, margin;
 
   const NavBarItemBackground({
     required this.child,
@@ -99,13 +91,16 @@ class NavBarItemBackground extends StatelessWidget {
     this.height,
     this.paddingVertical,
     this.suffixIcon,
+    this.margin,
+    this.padding,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        padding:
+        margin: margin ?? const EdgeInsets.symmetric(horizontal: 20),
+        padding: padding ??
             EdgeInsets.symmetric(horizontal: 5, vertical: paddingVertical ?? 0),
         height: height ?? 80,
         width: width ?? 160,

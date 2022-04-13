@@ -120,6 +120,7 @@ class LoginForm extends HookConsumerWidget {
                     height: 30,
                   ),
                   FormButton(
+                    color: kcMedBeige,
                     text: "L o g i n",
                     onTap: () async {
                       bool isValid = await Validator.validate(
