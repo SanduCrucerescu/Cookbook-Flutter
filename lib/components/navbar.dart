@@ -7,6 +7,7 @@ class NavBar1 extends HookConsumerWidget {
   final Image? profilePicture;
   final List<Widget>? actions;
   final Border? border;
+  final bool showSearchBar;
 
   const NavBar1({
     this.backgroundColor = kcLightBeige,
@@ -15,6 +16,7 @@ class NavBar1 extends HookConsumerWidget {
     this.profilePicture,
     this.actions,
     this.border,
+    this.showSearchBar = true,
     Key? key,
   }) : super(key: key);
 
@@ -44,21 +46,23 @@ class NavBar1 extends HookConsumerWidget {
               child: Image.asset('assets/images/temp_logo.png'),
             ),
           ),
-          Expanded(
-            flex: 5,
-            child: CustomTextField(
-              isShadow: false,
-              height: 60,
-              prefixIcon: const Icon(
-                Icons.expand_more,
-                color: Colors.black,
-                size: 35,
-              ),
-              borderRadius: BorderRadius.circular(5),
-              border: Border.all(
-                  color: kcMedGrey, width: 1, style: BorderStyle.solid),
-            ),
-          ),
+          showSearchBar
+              ? Expanded(
+                  flex: 5,
+                  child: CustomTextField(
+                    isShadow: false,
+                    height: 60,
+                    prefixIcon: const Icon(
+                      Icons.expand_more,
+                      color: Colors.black,
+                      size: 35,
+                    ),
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(
+                        color: kcMedGrey, width: 1, style: BorderStyle.solid),
+                  ),
+                )
+              : const SizedBox(),
           const Expanded(
             flex: 1,
             child: SizedBox(),
