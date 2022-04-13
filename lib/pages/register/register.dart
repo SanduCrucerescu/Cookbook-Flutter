@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:file_selector/file_selector.dart';
 
 class RegisterPage extends ConsumerWidget {
   static const String id = "/register";
@@ -85,6 +86,12 @@ class RegisterForm extends HookConsumerWidget {
             }),
             const SizedBox(height: 20),
             FormButton(
+                onTap: () {
+                  _openImagePicker();
+                },
+                text: "A d d  P h o t o"),
+            const SizedBox(height: 10),
+            FormButton(
               onTap: () {
                 Navigator.of(context).pushNamed(RegisterPage.id);
               },
@@ -103,5 +110,24 @@ class RegisterForm extends HookConsumerWidget {
         ),
       ),
     );
+  }
+
+  void _openImagePicker() async {
+    // final XFile? pickedImage =
+    //     await _picker.pickImage(source: ImageSource.gallery);
+    // if (pickedImage != null) {
+    //   setState(() {
+    //     _image = File(pickedImage.path);
+    //   });
+    // }
+    final typeGroup = XTypeGroup(
+      label: 'images',
+      extensions: const ['jpg', 'png', 'heic'],
+    );
+
+    final xFile = await openFile(acceptedTypeGroups: [typeGroup]);
+    if (xFile != null) {
+      // TODO: do something with the picked image
+    }
   }
 }
