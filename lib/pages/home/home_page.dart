@@ -18,7 +18,7 @@ class HomePage extends HookConsumerWidget {
           children: <Widget>[
             const Align(
               alignment: Alignment.topRight,
-              child: NavBar1(),
+              child: NavBar(),
             ),
             SideBar(items: sideBarItems),
             const Center(
