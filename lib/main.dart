@@ -92,7 +92,7 @@ class App extends StatelessWidget {
         fontFamily: 'Montserrat',
         primaryColor: kcPrimaryGreen,
       ),
-      initialRoute: LoginPage.id,
+      initialRoute: LoadingScreen.id,
       onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
