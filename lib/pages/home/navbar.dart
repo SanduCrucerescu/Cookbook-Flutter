@@ -109,7 +109,7 @@ class NavBarItemBackground extends StatelessWidget {
         height: height ?? 80,
         width: width ?? 160,
         decoration: BoxDecoration(
-          color: kcMedBeige,
+          //color: kcMedBeige,
           borderRadius: borderRadius ?? BorderRadius.circular(5),
         ),
         child: child,

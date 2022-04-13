@@ -20,11 +20,9 @@ class _AdminState extends State<Admin> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(0,0,40,0),
-            child: Container(alignment: Alignment.topRight,
-              child: CircleAvatar(
-                child: Image.asset('assets/images/ph.png'),
-              ),
+            padding: const EdgeInsets.fromLTRB(0, 0, 40, 0),
+            child: CircleAvatar(
+              child: Image.asset('assets/images/ph.png'),
             ),
           ),
           const Padding(

@@ -18,13 +18,11 @@ class AdminPanelButton extends StatelessWidget {
         // Spacing between buttons
         padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
         child: MaterialButton(
-          child: Text(text),
-          color: Colors.blue, hoverColor: Colors.blue,
-
-          onPressed: onPressed()
-        ),
+            child: Text(text),
+            color: Colors.blue,
+            hoverColor: Colors.blue,
+            onPressed: onPressed()),
       ),
     );
   }
 }
-

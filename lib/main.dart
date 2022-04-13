@@ -1,5 +1,7 @@
 import 'package:cookbook/controllers/routes.dart';
+import 'package:cookbook/pages/adminPage/adminpage.dart';
 import 'package:cookbook/pages/loading/loading_page.dart';
+import 'package:cookbook/pages/login/login.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -89,7 +91,7 @@ class App extends StatelessWidget {
         fontFamily: 'Montserrat',
         primaryColor: kcPrimaryGreen,
       ),
-      initialRoute: LoadingScreen.id,
+      initialRoute: LoginPage.id,
       onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
