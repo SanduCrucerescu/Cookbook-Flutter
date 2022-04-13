@@ -139,6 +139,8 @@ class LoginForm extends HookConsumerWidget {
                     height: 8,
                   ),
                   FormButton(
+                    showShadow: false,
+                    color: Colors.white,
                     onTap: () {
                       Navigator.of(context).pushNamed(RegisterPage.id);
                     },
