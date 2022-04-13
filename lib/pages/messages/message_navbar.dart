@@ -29,7 +29,7 @@ class MessageNavBar extends StatelessWidget {
           Expanded(
             flex: 1,
             child: Container(
-                padding: EdgeInsets.only(left: 650), child: Text("Rick James")),
+                padding: EdgeInsets.only(left: 300), child: Text("Rick James")),
           ),
           Expanded(
             flex: 0,

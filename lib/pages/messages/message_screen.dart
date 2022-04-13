@@ -1,5 +1,4 @@
-import 'package:cookbook/pages/messages/message_navbar.dart';
-import 'package:cookbook/pages/messages/message_sidebar.dart';
+import 'package:cookbook/components/components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -22,15 +21,20 @@ class MessagePage extends HookConsumerWidget {
 
     return Scaffold(
       body: Container(
-        color: Colors.grey,
+        color: Colors.grey[300],
         height: size.height,
         width: size.width,
         child: Column(
           children: [
-            MessageNavBar(),
+            const NavBar(
+              showSearchBar: false,
+            ),
             Row(
               children: [
-                MessageSidebar(),
+                SideBar(
+                  items: sideBarItems,
+                  margin: const EdgeInsets.all(0),
+                ),
                 Column(
                   children: [
                     SizedBox(
@@ -68,6 +72,7 @@ class MessagePage extends HookConsumerWidget {
                   Container(
                     height: size.height - 200,
                     width: (size.width - 200) / 2,
+                    margin: const EdgeInsets.only(bottom: 3),
                     child: ListView.builder(
                       controller: sc2,
                       reverse: true,
@@ -148,6 +153,7 @@ class MessageWidget extends StatelessWidget {
             width: 30,
             child: TextButton(
               onPressed: () {},
+              style: TextButton.styleFrom(primary: Colors.black),
               child: Text("X"),
             ),
           ),
@@ -170,9 +176,10 @@ class ConversationWidget extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
 
     return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5), color: Colors.white),
       height: 100,
       width: size.width / 4,
-      color: Colors.white,
       child: ListTile(
         leading: CircleAvatar(
           child: Image.asset('assets/images/ph.png'),
