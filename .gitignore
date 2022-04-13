@@ -82,3 +82,17 @@ gradle-app.setting
 .classpath
 
 # End of https://www.toptal.com/developers/gitignore/api/java,gradle,visualstudiocode
+.idea/libraries/Dart_SDK.xml
+.idea/modules.xml
+.idea/libraries/Dart_SDK.xml
+android/.DS_Store
+android/app/.DS_Store
+assets/.DS_Store
+ios/.DS_Store
+ios/Runner/.DS_Store
+lib/.DS_Store
+lib/pages/.DS_Store
+macos/.DS_Store
+macos/Runner/.DS_Store
+windows/.DS_Store
+.flutter-plugins-dependencies

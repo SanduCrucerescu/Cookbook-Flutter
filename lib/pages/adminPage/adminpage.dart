@@ -20,16 +20,26 @@ class _AdminState extends State<Admin> {
       body: Column(
         children: [
           Padding(
+<<<<<<< HEAD
+            padding: const EdgeInsets.fromLTRB(0, 0, 40, 0),
+            child: CircleAvatar(
+              child: Image.asset('assets/images/ph.png'),
+=======
             padding: const EdgeInsets.fromLTRB(0,0,40,0),
             child: Container(alignment: Alignment.topRight,
               child: CircleAvatar(
                 child: Image.asset('assets/images/ph.png'),
               ),
+>>>>>>> origin/flutter
             ),
           ),
           const Padding(
             padding: EdgeInsets.fromLTRB(100, 0, 100, 0),
             child: TextField(
+<<<<<<< HEAD
+              onSubmitted: (null), //TODO make it lead to current user
+=======
+>>>>>>> origin/flutter
               showCursor: true,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),

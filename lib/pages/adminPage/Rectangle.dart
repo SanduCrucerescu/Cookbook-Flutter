@@ -35,7 +35,12 @@ class Rectangle extends StatelessWidget {
                       border: Border.all(
                         color: Colors.blueGrey,
                       ),
+<<<<<<< HEAD
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(20))),
+=======
                       borderRadius: BorderRadius.all(Radius.circular(20))),
+>>>>>>> origin/flutter
                   height: 40,
                   width: xSize,
                   alignment: Alignment.topCenter,
@@ -45,6 +50,42 @@ class Rectangle extends StatelessWidget {
                   ),
                 ),
                 Expanded(
+<<<<<<< HEAD
+                  child: Scrollbar(
+                    isAlwaysShown: true,
+                    showTrackOnHover: true,
+                    child: ListView.builder(
+                        itemCount: 100,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Container(
+                              color: index.isEven
+                                  ? Color.fromARGB(240, 204, 165, 165)
+                                  : Color.fromARGB(153, 207, 176, 176),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: GestureDetector(
+                                  behavior: HitTestBehavior.translucent,
+                                  onTap: () {
+                                    print("pressed $index");
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(),
+                                        child: CircleAvatar(
+                                          child: Image.asset(
+                                              'assets/images/ph.png'),
+                                        ),
+                                      ),
+                                      Text(
+                                        "Username",
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ));
+                        }),
+=======
                   child: Container(
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.green),
@@ -53,6 +94,7 @@ class Rectangle extends StatelessWidget {
                     child: const Text(
                       "Information box",
                     ),
+>>>>>>> origin/flutter
                   ),
                 )
               ],
