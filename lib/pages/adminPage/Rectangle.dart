@@ -35,7 +35,8 @@ class Rectangle extends StatelessWidget {
                       border: Border.all(
                         color: Colors.blueGrey,
                       ),
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(20))),
                   height: 40,
                   width: xSize,
                   alignment: Alignment.topCenter,
@@ -47,12 +48,14 @@ class Rectangle extends StatelessWidget {
                 Expanded(
                   child: Scrollbar(
                     isAlwaysShown: true,
+                    showTrackOnHover: true,
                     child: ListView.builder(
                         itemCount: 100,
                         itemBuilder: (BuildContext context, int index) {
                           return Container(
-                              color:
-                                  index.isEven ? Colors.white70 : Colors.grey,
+                              color: index.isEven
+                                  ? Color.fromARGB(240, 204, 165, 165)
+                                  : Color.fromARGB(153, 207, 176, 176),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: GestureDetector(

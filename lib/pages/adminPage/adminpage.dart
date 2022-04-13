@@ -28,6 +28,7 @@ class _AdminState extends State<Admin> {
           const Padding(
             padding: EdgeInsets.fromLTRB(100, 0, 100, 0),
             child: TextField(
+              onSubmitted: (null), //TODO make it lead to current user
               showCursor: true,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
