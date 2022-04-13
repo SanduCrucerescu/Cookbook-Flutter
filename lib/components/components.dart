@@ -16,3 +16,4 @@ part 'navbar.dart';
 part 'sidebar.dart';
 part 'sidebar_items.dart';
 part 'form_button.dart';
+part 'page.dart';

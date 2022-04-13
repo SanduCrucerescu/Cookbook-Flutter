@@ -81,37 +81,31 @@ class SideBar extends ConsumerWidget {
             flex: 10,
             child: SizedBox(),
           ),
-          Expanded(
-            flex: 1,
-            child: SideBarItem(
-              collapsed: state.collapsed,
-              prefixImage: state.collapsed
-                  ? Image.asset("assets/images/expand.png",
-                      fit: BoxFit.fill, height: 15)
-                  : Image.asset("assets/images/collapse.png",
-                      fit: BoxFit.fill, height: 15),
-              text: "C o l l a p s e",
-              onTap: () {
-                state.collapsed = !state.collapsed;
-                if (state.width == 50) {
-                  state.width = 200;
-                } else {
-                  state.width = 50;
-                }
-              },
-            ),
+          SideBarItem(
+            collapsed: state.collapsed,
+            prefixImage: state.collapsed
+                ? Image.asset("assets/images/expand.png",
+                    fit: BoxFit.fill, height: 20)
+                : Image.asset("assets/images/collapse.png",
+                    fit: BoxFit.fill, height: 20),
+            text: "C o l l a p s e",
+            onTap: () {
+              state.collapsed = !state.collapsed;
+              if (state.width == 50) {
+                state.width = 200;
+              } else {
+                state.width = 50;
+              }
+            },
           ),
-          Expanded(
-            flex: 1,
-            child: SideBarItem(
-              prefixImage: Image.asset("assets/images/lock_open.png",
-                  fit: BoxFit.fill, height: 15),
-              collapsed: state.collapsed,
-              text: "L o g o u t",
-              onTap: () {
-                Navigator.of(context).pushNamed(LoginPage.id);
-              },
-            ),
+          SideBarItem(
+            prefixImage: Image.asset("assets/images/lock_open.png",
+                fit: BoxFit.fill, height: 20),
+            collapsed: state.collapsed,
+            text: "L o g o u t",
+            onTap: () {
+              Navigator.of(context).pushNamed(LoginPage.id);
+            },
           ),
         ],
       ),

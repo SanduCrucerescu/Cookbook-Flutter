@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:cookbook/components/components.dart';
 import 'package:cookbook/controllers/verification.dart';
 import 'package:cookbook/main.dart';
 import 'package:cookbook/pages/home/home_page.dart';
@@ -8,8 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-import '../../components/components.dart';
 
 class LoginPage extends ConsumerWidget {
   static const String id = "/login";
@@ -37,7 +36,7 @@ class LoginPage extends ConsumerWidget {
       height: size.height,
       width: size.width,
       child: Image.asset(
-        "assets/images/bg1.png",
+        "assets/images/bg3.png",
         fit: BoxFit.fill,
       ),
     );
