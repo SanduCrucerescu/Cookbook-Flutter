@@ -93,7 +93,11 @@ class App extends StatelessWidget {
         fontFamily: 'Montserrat',
         primaryColor: kcPrimaryGreen,
       ),
+<<<<<<< HEAD
       initialRoute: Admin.id,
+=======
+      initialRoute: LoadingScreen.id,
+>>>>>>> e81cfe8 (Uploaded images)
       onGenerateRoute: RouteGenerator.generateRoute,
     );
   }

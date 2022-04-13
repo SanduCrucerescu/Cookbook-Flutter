@@ -35,7 +35,7 @@ class RegisterPage extends ConsumerWidget {
       height: size.height,
       width: size.width,
       child: Image.asset(
-        "assets/images/bg1.png",
+        "assets/images/bg3.png",
         fit: BoxFit.fill,
       ),
     );
