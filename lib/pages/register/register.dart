@@ -92,6 +92,8 @@ class RegisterForm extends HookConsumerWidget {
             ),
             const SizedBox(height: 10),
             FormButton(
+              showShadow: false,
+              color: Colors.white,
               onTap: () {
                 Navigator.of(context).pop();
               },
