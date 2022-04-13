@@ -109,35 +109,9 @@ class RegisterForm extends HookConsumerWidget {
                   ),
             const SizedBox(height: 10),
             FormButton(
-                color: kcMedBeige,
-                onTap: () {
-                  _openImagePicker(state);
-                },
-                text: "A d d  P h o t o"),
-            const SizedBox(height: 10),
-            FormButton(
               color: kcMedBeige,
-              onTap: () async {
-                //Navigator.of(context).pushNamed(RegisterPage.id);
-
-                TextEditingController email = fields[1]['controller'];
-                TextEditingController pass = fields[2]['controller'];
-                TextEditingController username = fields[0]['controller'];
-
-                String photo = "LOAD_FILE('${state.path}')";
-
-                bool register = await AddUser.adding(userInfo: {
-                  "email": email.text,
-                  "password": pass.text,
-                  "username": username.text,
-                  "profile_picture": photo
-                });
-
-                if (register) {
-                  print("object");
-                } else {
-                  print("no");
-                }
+              onTap: () {
+                Navigator.of(context).pushNamed(RegisterPage.id);
               },
               text: "R e g i s t e r",
             ),
