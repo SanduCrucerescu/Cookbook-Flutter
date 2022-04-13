@@ -113,7 +113,7 @@ class NavBarItemBackground extends StatelessWidget {
           borderRadius: borderRadius ?? BorderRadius.circular(5),
         ),
         child: child,
-        color: kcMedBlue,
+        // color: kcMedBlue,
       ),
     );
   }

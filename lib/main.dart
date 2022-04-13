@@ -91,7 +91,7 @@ class App extends StatelessWidget {
         fontFamily: 'Montserrat',
         primaryColor: kcPrimaryGreen,
       ),
-      initialRoute: LoginPage.id,
+      initialRoute: Admin.id,
       onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
