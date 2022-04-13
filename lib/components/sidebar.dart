@@ -2,9 +2,15 @@ part of components;
 
 class SideBar extends ConsumerWidget {
   final List<Map<String, dynamic>> items;
+  final EdgeInsets? margin, padding;
+  final double? height, width;
 
   SideBar({
     required this.items,
+    this.margin,
+    this.padding,
+    this.height,
+    this.width,
     Key? key,
   }) : super(key: key);
 
@@ -18,10 +24,10 @@ class SideBar extends ConsumerWidget {
     final state = ref.watch(sideBarCangeNotifier);
 
     return Container(
-      padding: const EdgeInsets.all(10),
-      margin: const EdgeInsets.only(top: 100),
-      height: size.height - 100,
-      width: state.width,
+      padding: padding ?? const EdgeInsets.all(10),
+      margin: margin ?? const EdgeInsets.only(top: 100),
+      height: height ?? size.height - 100,
+      width: width ?? state.width,
       decoration: const BoxDecoration(
         border: Border(
           right:
