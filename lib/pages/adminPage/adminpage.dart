@@ -1,3 +1,4 @@
+import 'package:cookbook/components/components.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'Rectangle.dart';
@@ -17,79 +18,21 @@ class _AdminState extends State<Admin> {
     Size size = MediaQuery.of(context).size;
     // TODO: In Login Screen make Username: Admin return this page
     return (Scaffold(
-      body: Column(
+      backgroundColor: Color(0xFFE3DBCA),
+      body: Stack(
         children: [
+          NavBar(),
+          SideBar(items: sideBarItems),
           Padding(
-<<<<<<< HEAD
-            padding: const EdgeInsets.fromLTRB(0, 0, 40, 0),
-            child: CircleAvatar(
-              child: Image.asset('assets/images/ph.png'),
-=======
-            padding: const EdgeInsets.fromLTRB(0,0,40,0),
-            child: Container(alignment: Alignment.topRight,
-              child: CircleAvatar(
-                child: Image.asset('assets/images/ph.png'),
-              ),
->>>>>>> origin/flutter
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(100, 0, 100, 0),
-            child: TextField(
-<<<<<<< HEAD
-              onSubmitted: (null), //TODO make it lead to current user
-=======
->>>>>>> origin/flutter
-              showCursor: true,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Enter username',
-              ),
-            ),
-          ),
-          // Boxes
-          SizedBox(
-            height: size.height - 100,
+            padding: const EdgeInsets.fromLTRB(200, 50, 0, 0),
             child: Row(
               children: [
-                const Expanded(
-                  child: Rectangle(
-                      text: "User List", position: Alignment.topRight),
-                ),
-                const Expanded(
-                  child: Rectangle(
-                      text: "Current User", position: Alignment.topLeft),
-                ),
                 Expanded(
-                  flex: 0,
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.black,
-                          ),
-                          borderRadius: BorderRadius.all(Radius.circular(20))),
-                      height: 600,
-                      child: Column(
-                        children: [
-                          AdminPanelButton(
-                            text: "Add",
-                            onPressed: () {},
-                          ),
-                          AdminPanelButton(
-                            text: "Delete",
-                            onPressed: () {},
-                          ),
-                          AdminPanelButton(
-                            text: "Edit",
-                            onPressed: () {},
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                    child: Rectangle(
+                        text: "User List", position: Alignment.topLeft)),
+                Expanded(
+                    child: UserInfo(
+                        text: "Current User", position: Alignment.topRight))
               ],
             ),
           )
