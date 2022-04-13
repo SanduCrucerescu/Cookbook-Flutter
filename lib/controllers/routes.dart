@@ -33,7 +33,6 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (_) => const Admin(),
         );
-
       case '/messages':
         return MaterialPageRoute(
           builder: (_) => MessagePage(),
