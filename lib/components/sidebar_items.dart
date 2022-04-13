@@ -1,6 +1,6 @@
 part of components;
 
-List<Map<String, dynamic>> sideBarItems = [
+List<Map<String, dynamic>> kSideBarItems = [
   {
     "text": "H o m e",
     "image": "assets/images/home.png",
