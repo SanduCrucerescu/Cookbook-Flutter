@@ -31,31 +31,44 @@ class Rectangle extends StatelessWidget {
             child: Column(
               children: [
                 Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.blueGrey,
-                      ),
-<<<<<<< HEAD
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(20))),
-=======
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
->>>>>>> origin/flutter
-                  height: 40,
-                  width: xSize,
-                  alignment: Alignment.topCenter,
-                  child: Text(
-                    text,
-                    style: const TextStyle(fontSize: 20),
-                  ),
-                ),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.blueGrey,
+                        ),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(20))),
+                    height: 40,
+                    width: xSize,
+                    alignment: Alignment.topCenter,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                          onPressed: () {},
+                          child: Text("Add",
+                              style: TextStyle(color: Colors.white)),
+                          style: ElevatedButton.styleFrom(
+                            fixedSize: Size.square(80),
+                            primary: Colors.black, // NEW
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {},
+                          child: Text("Remove",
+                              style: TextStyle(color: Colors.white)),
+                          style: ElevatedButton.styleFrom(
+                            fixedSize: Size.square(80),
+                            primary: Colors.black, // NEW
+                          ),
+                        )
+                      ],
+                    )),
                 Expanded(
-<<<<<<< HEAD
                   child: Scrollbar(
                     isAlwaysShown: true,
                     showTrackOnHover: true,
                     child: ListView.builder(
-                        itemCount: 100,
+                        itemCount: 50,
                         itemBuilder: (BuildContext context, int index) {
                           return Container(
                               color: index.isEven
@@ -66,7 +79,14 @@ class Rectangle extends StatelessWidget {
                                 child: GestureDetector(
                                   behavior: HitTestBehavior.translucent,
                                   onTap: () {
-                                    print("pressed $index");
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          content: Text("$index"),
+                                        );
+                                      },
+                                    );
                                   },
                                   child: Row(
                                     children: [
@@ -85,16 +105,66 @@ class Rectangle extends StatelessWidget {
                                 ),
                               ));
                         }),
-=======
-                  child: Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.green),
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
-                    alignment: Alignment.center,
-                    child: const Text(
-                      "Information box",
-                    ),
->>>>>>> origin/flutter
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class UserInfo extends StatelessWidget {
+  final String text;
+  final position;
+
+  const UserInfo({
+    required this.text,
+    required this.position,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    double xSize = 400;
+    return Padding(
+      padding: const EdgeInsets.all(80),
+      child: Align(
+        alignment: position,
+        // rectangle itself
+        child: Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.red,
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(20))),
+            height: 1000,
+            width: 400,
+            //Title of the rectangle
+            child: Column(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.blueGrey,
+                      ),
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(20))),
+                  height: 40,
+                  width: xSize,
+                  alignment: Alignment.topCenter,
+                  child: Text(
+                    text,
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.topLeft,
+                  child: Expanded(
+                    child: Text("Username\nRecipies\nOther info"),
                   ),
                 )
               ],

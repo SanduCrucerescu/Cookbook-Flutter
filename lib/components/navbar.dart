@@ -110,10 +110,6 @@ class NavBarItemBackground extends StatelessWidget {
           borderRadius: borderRadius ?? BorderRadius.circular(5),
         ),
         child: child,
-<<<<<<< HEAD:lib/pages/home/navbar.dart
-        // color: kcMedBlue,
-=======
->>>>>>> origin/flutter:lib/components/navbar.dart
       ),
     );
   }

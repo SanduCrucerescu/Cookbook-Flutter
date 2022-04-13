@@ -1,3 +1,4 @@
+import 'package:cookbook/components/components.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'Rectangle.dart';
@@ -17,36 +18,17 @@ class _AdminState extends State<Admin> {
     Size size = MediaQuery.of(context).size;
     // TODO: In Login Screen make Username: Admin return this page
     return (Scaffold(
+      backgroundColor: Color(0xFFE3DBCA),
       body: Column(
         children: [
-          Padding(
-<<<<<<< HEAD
-            padding: const EdgeInsets.fromLTRB(0, 0, 40, 0),
-            child: CircleAvatar(
-              child: Image.asset('assets/images/ph.png'),
-=======
-            padding: const EdgeInsets.fromLTRB(0,0,40,0),
-            child: Container(alignment: Alignment.topRight,
-              child: CircleAvatar(
-                child: Image.asset('assets/images/ph.png'),
-              ),
->>>>>>> origin/flutter
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.fromLTRB(0, 0, 40, 0),
+          //   child: CircleAvatar(
+          //     child: Image.asset('assets/images/ph.png'),
+          //   ),
+          //),
           const Padding(
-            padding: EdgeInsets.fromLTRB(100, 0, 100, 0),
-            child: TextField(
-<<<<<<< HEAD
-              onSubmitted: (null), //TODO make it lead to current user
-=======
->>>>>>> origin/flutter
-              showCursor: true,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Enter username',
-              ),
-            ),
-          ),
+              padding: EdgeInsets.fromLTRB(100, 0, 100, 0), child: NavBar1()),
           // Boxes
           SizedBox(
             height: size.height - 100,
@@ -57,7 +39,7 @@ class _AdminState extends State<Admin> {
                       text: "User List", position: Alignment.topRight),
                 ),
                 const Expanded(
-                  child: Rectangle(
+                  child: UserInfo(
                       text: "Current User", position: Alignment.topLeft),
                 ),
                 Expanded(
@@ -65,27 +47,24 @@ class _AdminState extends State<Admin> {
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.black,
-                          ),
-                          borderRadius: BorderRadius.all(Radius.circular(20))),
                       height: 600,
-                      child: Column(
-                        children: [
-                          AdminPanelButton(
-                            text: "Add",
-                            onPressed: () {},
-                          ),
-                          AdminPanelButton(
-                            text: "Delete",
-                            onPressed: () {},
-                          ),
-                          AdminPanelButton(
-                            text: "Edit",
-                            onPressed: () {},
-                          ),
-                        ],
+                      child: Container(
+                        child: Column(
+                          children: [
+                            AdminPanelButton(
+                              text: "Add",
+                              onPressed: () {},
+                            ),
+                            AdminPanelButton(
+                              text: "Delete",
+                              onPressed: () {},
+                            ),
+                            AdminPanelButton(
+                              text: "Edit",
+                              onPressed: () {},
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

@@ -14,15 +14,6 @@ class RouteGenerator {
 
     switch (settings.name) {
       case '/':
-<<<<<<< HEAD
-        return MaterialPageRoute(builder: (_) => const HomePage());
-      case '/login':
-        return MaterialPageRoute(builder: (_) => const LoginPage());
-      case '/loading':
-        return MaterialPageRoute(builder: (_) => LoadingScreen());
-      case '/admin':
-        return MaterialPageRoute(builder: (_) => Admin());
-=======
         return MaterialPageRoute(
           builder: (_) => const HomePage(),
         );
@@ -39,7 +30,10 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (_) => const RegisterPage(),
         );
->>>>>>> origin/flutter
+      case '/admin':
+        return MaterialPageRoute(
+          builder: (_) => const Admin(),
+        );
       default:
         // If there is no such named route in the switch statement, e.g. /third
         return _errorRoute();
