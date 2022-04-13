@@ -32,7 +32,7 @@ class MessagePage extends HookConsumerWidget {
             Row(
               children: [
                 SideBar(
-                  items: sideBarItems,
+                  items: kSideBarItems,
                   margin: const EdgeInsets.all(0),
                 ),
                 Column(

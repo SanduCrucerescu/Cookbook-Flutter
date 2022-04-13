@@ -25,10 +25,10 @@ abstract class AbstractDatabaseManager {
             db: db ?? 'cookbook',
             port: port ?? 3306);
 
-  void insert({
-    required String table,
-    required List<Map<String, dynamic>> params,
-  });
+  void insert(
+      {required String table,
+      required List<String> fields,
+      required Map<String, dynamic> data});
 
   void update({
     required String table,
@@ -130,9 +130,24 @@ class DatabaseManager extends AbstractDatabaseManager {
   }
 
   @override
-  void insert(
-      {required String table, required List<Map<String, dynamic>> params}) {
-    // TODO: implement insert
+  Future<Results?> insert(
+      {required String table,
+      required List<String> fields,
+      required Map<String, dynamic> data}) async {
+    connect();
+    String query = '''
+            INSERT INTO $table (${fields.length > 1 ? fields.join(", ") : fields[0]}) VALUES (''';
+    int i = 0;
+    for (MapEntry entry in data.entries) {
+      i++;
+      query += i < data.length ? "'" + entry.value + "'" : entry.value;
+      query += i < data.length ? "," : "";
+    }
+    query += ");";
+
+    result = await cnx.query(query);
+
+    return result;
   }
 
   @override

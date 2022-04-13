@@ -22,7 +22,7 @@ class _AdminState extends State<Admin> {
       body: Stack(
         children: [
           NavBar(),
-          SideBar(items: sideBarItems),
+          SideBar(items: kSideBarItems),
           Padding(
             padding: const EdgeInsets.fromLTRB(200, 50, 0, 0),
             child: Row(
