@@ -1,3 +1,4 @@
+import 'package:cookbook/components/components.dart';
 import 'package:flutter/material.dart';
 
 class Rectangle extends StatelessWidget {
@@ -21,47 +22,43 @@ class Rectangle extends StatelessWidget {
         child: Expanded(
           child: Container(
             decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.red,
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(20))),
+                border: Border.all(),
+                borderRadius: BorderRadius.all(Radius.circular(10))),
             height: 1000,
             width: 400,
             //Title of the rectangle
             child: Column(
               children: [
                 Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.blueGrey,
-                        ),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(20))),
+                    decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(5))),
                     height: 40,
                     width: xSize,
-                    alignment: Alignment.topCenter,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        TextButton(
-                          onPressed: () {},
-                          child: Text("Add",
-                              style: TextStyle(color: Colors.white)),
-                          style: ElevatedButton.styleFrom(
-                            fixedSize: Size.square(80),
-                            primary: Colors.black, // NEW
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                              child: CustomTextField(
+                            hintText: "Search user",
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
+                          )),
+                          TextButton(
+                            onPressed: () {},
+                            child: Image.asset('assets/images/add.png'),
                           ),
-                        ),
-                        TextButton(
-                          onPressed: () {},
-                          child: Text("Remove",
-                              style: TextStyle(color: Colors.white)),
-                          style: ElevatedButton.styleFrom(
-                            fixedSize: Size.square(80),
-                            primary: Colors.black, // NEW
-                          ),
-                        )
-                      ],
+                          TextButton(
+                            onPressed: () {},
+                            child: const Text("Remove",
+                                style: TextStyle(color: Colors.white)),
+                            style: ElevatedButton.styleFrom(
+                              fixedSize: Size.square(80),
+                              primary: Colors.black, // NEW
+                            ),
+                          )
+                        ],
+                      ),
                     )),
                 Expanded(
                   child: Scrollbar(
@@ -72,8 +69,8 @@ class Rectangle extends StatelessWidget {
                         itemBuilder: (BuildContext context, int index) {
                           return Container(
                               color: index.isEven
-                                  ? Color.fromARGB(240, 204, 165, 165)
-                                  : Color.fromARGB(153, 207, 176, 176),
+                                  ? Color.fromARGB(255, 245, 245, 220)
+                                  : Color.fromARGB(255, 245, 200, 220),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: GestureDetector(
@@ -137,10 +134,8 @@ class UserInfo extends StatelessWidget {
         child: Expanded(
           child: Container(
             decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.red,
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(20))),
+                border: Border.all(),
+                borderRadius: BorderRadius.all(Radius.circular(5))),
             height: 1000,
             width: 400,
             //Title of the rectangle
@@ -148,11 +143,8 @@ class UserInfo extends StatelessWidget {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.blueGrey,
-                      ),
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(20))),
+                      border: Border.all(),
+                      borderRadius: const BorderRadius.all(Radius.circular(5))),
                   height: 40,
                   width: xSize,
                   alignment: Alignment.topCenter,
