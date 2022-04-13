@@ -19,56 +19,20 @@ class _AdminState extends State<Admin> {
     // TODO: In Login Screen make Username: Admin return this page
     return (Scaffold(
       backgroundColor: Color(0xFFE3DBCA),
-      body: Column(
+      body: Stack(
         children: [
-          // Padding(
-          //   padding: const EdgeInsets.fromLTRB(0, 0, 40, 0),
-          //   child: CircleAvatar(
-          //     child: Image.asset('assets/images/ph.png'),
-          //   ),
-          //),
-          const Padding(
-              padding: EdgeInsets.fromLTRB(100, 0, 100, 0), child: NavBar1()),
-          // Boxes
-          SizedBox(
-            height: size.height - 100,
+          NavBar1(),
+          SideBar(items: sideBarItems),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(200, 50, 0, 0),
             child: Row(
               children: [
-                const Expanded(
-                  child: Rectangle(
-                      text: "User List", position: Alignment.topRight),
-                ),
-                const Expanded(
-                  child: UserInfo(
-                      text: "Current User", position: Alignment.topLeft),
-                ),
                 Expanded(
-                  flex: 0,
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Container(
-                      height: 600,
-                      child: Container(
-                        child: Column(
-                          children: [
-                            AdminPanelButton(
-                              text: "Add",
-                              onPressed: () {},
-                            ),
-                            AdminPanelButton(
-                              text: "Delete",
-                              onPressed: () {},
-                            ),
-                            AdminPanelButton(
-                              text: "Edit",
-                              onPressed: () {},
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                    child: Rectangle(
+                        text: "User List", position: Alignment.topLeft)),
+                Expanded(
+                    child: UserInfo(
+                        text: "Current User", position: Alignment.topRight))
               ],
             ),
           )
