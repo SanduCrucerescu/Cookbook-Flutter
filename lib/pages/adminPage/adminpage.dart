@@ -1,46 +1,63 @@
 import 'package:cookbook/components/components.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'Rectangle.dart';
 
-class Admin extends StatefulWidget {
+class Admin extends ConsumerWidget {
   static const String id = "/admin";
 
-  const Admin({Key? key}) : super(key: key);
-  @override
-  _AdminState createState() => _AdminState();
-}
+  Admin({Key? key}) : super(key: key);
+  final selectUserProvider = ChangeNotifierProvider<SelectedUserChangeNotifier>(
+    (ref) => SelectedUserChangeNotifier(),
+  );
 
-class _AdminState extends State<Admin> {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(selectUserProvider);
+
     Size size = MediaQuery.of(context).size;
     // TODO: In Login Screen make Username: Admin return this page
-    return const CustomPage(
-      // Background color is by default white
-      child: AdminPanel(),
-    );
+    return (Scaffold(
+      backgroundColor: Color(0xFFE3DBCA),
+      body: Stack(
+        children: [
+          NavBar(),
+          SideBar(items: kSideBarItems),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(200, 50, 0, 0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Rectangle(
+                    state: state,
+                    text: "User List",
+                    position: Alignment.topLeft,
+                  ),
+                ),
+                Expanded(
+                  child: UserInfo(
+                    state: state,
+                    text: "Current User",
+                    position: Alignment.topRight,
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    ));
   }
 }
 
-class AdminPanel extends StatelessWidget {
-  const AdminPanel({
-    Key? key,
-  }) : super(key: key);
+class SelectedUserChangeNotifier extends ChangeNotifier {
+  int _idx = -1;
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(200, 50, 0, 0),
-      child: Row(
-        children: const <Widget>[
-          Expanded(
-              child: Rectangle(text: "User List", position: Alignment.topLeft)),
-          Expanded(
-              child:
-                  UserInfo(text: "Current User", position: Alignment.topRight))
-        ],
-      ),
-    );
+  int get idx => _idx;
+
+  set idx(int val) {
+    _idx = val;
+    notifyListeners();
   }
 }
