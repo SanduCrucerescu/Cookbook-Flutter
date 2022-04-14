@@ -1,5 +1,7 @@
 import 'package:mysql1/mysql1.dart';
 
+import '../recipe/recipe.dart';
+
 class Member {
   final String name;
   final String email;
