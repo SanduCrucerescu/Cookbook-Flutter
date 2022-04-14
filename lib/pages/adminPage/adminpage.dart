@@ -8,6 +8,7 @@ class Admin extends ConsumerWidget {
   static const String id = "/admin";
 
   Admin({Key? key}) : super(key: key);
+
   final selectUserProvider = ChangeNotifierProvider<SelectedUserChangeNotifier>(
     (ref) => SelectedUserChangeNotifier(),
   );
@@ -22,7 +23,7 @@ class Admin extends ConsumerWidget {
       backgroundColor: Color(0xFFE3DBCA),
       body: Stack(
         children: [
-          NavBar(),
+          const NavBar(),
           SideBar(items: kSideBarItems),
           Padding(
             padding: const EdgeInsets.fromLTRB(200, 50, 0, 0),
@@ -53,6 +54,9 @@ class Admin extends ConsumerWidget {
 
 class SelectedUserChangeNotifier extends ChangeNotifier {
   int _idx = -1;
+  String userName = "Jeff";
+  String email = "jeff.bezos@amazon.com";
+  String image = "assets/images/ph.png";
 
   int get idx => _idx;
 
