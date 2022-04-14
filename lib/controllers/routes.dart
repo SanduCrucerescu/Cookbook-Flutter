@@ -1,5 +1,6 @@
 import 'package:cookbook/pages/adminPage/adminpage.dart';
 import 'package:cookbook/pages/home/home_page.dart';
+import 'package:cookbook/pages/loadimage/load_image.dart';
 import 'package:cookbook/pages/loading/loading_page.dart';
 import 'package:cookbook/pages/login/login.dart';
 import 'package:cookbook/pages/messages/message_screen.dart';
@@ -36,6 +37,10 @@ class RouteGenerator {
       case '/messages':
         return MaterialPageRoute(
           builder: (_) => MessagePage(),
+        );
+      case '/img':
+        return MaterialPageRoute(
+          builder: (_) => LoadImagePage(),
         );
       default:
         // If there is no such named route in the switch statement, e.g. /third
