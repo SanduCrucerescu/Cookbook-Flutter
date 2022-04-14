@@ -1,12 +1,15 @@
 class Ingredient {
+  final int id;
   final String name;
   final double amount;
   final String unit;
   final double pricePerUnit;
   final double amountFactor;
 
-  Ingredient(
-      this.name, this.amount, this.unit, this.pricePerUnit, this.amountFactor);
+  Ingredient(this.id, this.name, this.amount, this.unit, this.pricePerUnit,
+      this.amountFactor);
+
+  int get getId => id;
 
   String get getName => name;
 
@@ -17,6 +20,10 @@ class Ingredient {
   double get getPricePerUnit => pricePerUnit;
 
   double get getAmountFactor => amountFactor;
+
+  void set id(int id) {
+    this.id = id;
+  }
 
   void set name(String name) {
     this.name = name;
