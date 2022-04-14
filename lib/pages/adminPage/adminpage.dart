@@ -16,31 +16,29 @@ class _AdminState extends State<Admin> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     // TODO: In Login Screen make Username: Admin return this page
-    return const CustomPage(
-      // Background color is by default white
-      child: AdminPanel(),
-    );
-  }
-}
-
-class AdminPanel extends StatelessWidget {
-  const AdminPanel({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(200, 50, 0, 0),
-      child: Row(
-        children: const <Widget>[
-          Expanded(
-              child: Rectangle(text: "User List", position: Alignment.topLeft)),
-          Expanded(
-              child:
-                  UserInfo(text: "Current User", position: Alignment.topRight))
+    return (Scaffold(
+      backgroundColor: Color(0xFFE3DBCA),
+      body: Stack(
+        children: [
+          NavBar(),
+          SideBar(items: kSideBarItems),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(200, 50, 0, 0),
+            child: Row(
+              children: const [
+                Expanded(
+                  child:
+                      Rectangle(text: "User List", position: Alignment.topLeft),
+                ),
+                Expanded(
+                  child: UserInfo(
+                      text: "Current User", position: Alignment.topRight),
+                )
+              ],
+            ),
+          )
         ],
       ),
-    );
+    ));
   }
 }
