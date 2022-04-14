@@ -64,7 +64,7 @@ class Recipe {
     this.longDescription = longDescription;
   }
 
-  void setShortDescription(String shortDescription) {
+  void set setShortDescription(String shortDescription) {
     this.shortDescription = shortDescription;
   }
 
