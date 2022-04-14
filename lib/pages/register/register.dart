@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
@@ -147,39 +148,51 @@ class RegisterForm extends HookConsumerWidget {
                 TextEditingController passConf = fields[3]['controller'];
                 TextEditingController username = fields[0]['controller'];
                 username.text = "photo";
-                _isValid = EmailValidator.validate(email.text);
-                if (_isValid) {
-                  if (pass.text != passConf.text) {
-                    state.wrongData = true;
-                    state.wrongDataText = "Passwords do not mach";
-                    log(state.wrongDataText);
-                  } else {
-                    // if (state.path == null) {
-                    //   photo =
-                    //       '/Users/alex/FlutterProject/cookbook/assets/images/ph.png';
-                    // } else {
-                    //   photo = state.path;
-                    // }
-                    //String path = "LOAD_FILE('${state.path}')";
-                    bool register = await AddUser.adding(
-                      userInfo: {
-                        "email": email.text,
-                        "password": pass.text,
-                        "username": username.text,
-                        "profile_picture": state.photo.toBytes(),
-                      },
-                    );
-                    if (register) {
-                      Navigator.of(context).pushNamed(HomePage.id);
-                    } else {
-                      print("registring unsucessful");
-                    }
-                  }
-                } else {
-                  state.wrongData = true;
-                  state.wrongDataText =
-                      "Passwords dont mach or insert a valid email";
-                }
+
+                final bytes = state.file.readAsBytesSync();
+                String img64 = base64Encode(bytes);
+
+                bool register = await AddUser.adding(
+                  userInfo: {
+                    "email": email.text,
+                    "password": pass.text,
+                    "username": username.text,
+                    "profile_picture": img64,
+                  },
+                );
+                // _isValid = EmailValidator.validate(email.text);
+                // if (_isValid) {
+                //   if (pass.text != passConf.text) {
+                //     state.wrongData = true;
+                //     state.wrongDataText = "Passwords do not mach";
+                //     log(state.wrongDataText);
+                //   } else {
+                //     // if (state.path == null) {
+                //     //   photo =
+                //     //       '/Users/alex/FlutterProject/cookbook/assets/images/ph.png';
+                //     // } else {
+                //     //   photo = state.path;
+                //     // }
+                //     //String path = "LOAD_FILE('${state.path}')";
+                //     bool register = await AddUser.adding(
+                //       userInfo: {
+                //         "email": email.text,
+                //         "password": pass.text,
+                //         "username": username.text,
+                //         "profile_picture": state.photo.toBytes(),
+                //       },
+                //     );
+                //     if (register) {
+                //       Navigator.of(context).pushNamed(HomePage.id);
+                //     } else {
+                //       print("registring unsucessful");
+                //     }
+                //   }
+                // } else {
+                //   state.wrongData = true;
+                //   state.wrongDataText =
+                //       "Passwords dont mach or insert a valid email";
+                // }
               },
               text: "R e g i s t e r",
             ),
@@ -210,7 +223,7 @@ class RegisterForm extends HookConsumerWidget {
       state.text = xFile.name;
 
       File file = File(xFile.path);
-      state.path = file.path;
+      state.path = file;
       Blob blob = Blob.fromBytes(await file.readAsBytes());
       state.photo = blob;
     }

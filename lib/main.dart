@@ -2,11 +2,9 @@ import 'package:cookbook/controllers/routes.dart';
 import 'package:cookbook/pages/adminPage/adminpage.dart';
 import 'package:cookbook/pages/loadimage/load_image.dart';
 import 'package:cookbook/pages/login/login.dart';
-<<<<<<< HEAD
 import 'package:cookbook/pages/messages/message_screen.dart';
-=======
+
 import 'package:cookbook/pages/register/register.dart';
->>>>>>> 346c3fb (Adding the value checkers)
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -99,11 +97,7 @@ class App extends StatelessWidget {
         fontFamily: 'Montserrat',
         primaryColor: kcPrimaryGreen,
       ),
-<<<<<<< HEAD
       initialRoute: LoadImagePage.id,
-=======
-      initialRoute: RegisterPage.id,
->>>>>>> 346c3fb (Adding the value checkers)
       onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
