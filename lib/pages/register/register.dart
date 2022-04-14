@@ -1,7 +1,10 @@
 import 'dart:developer';
+import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/controllers/addUser.dart';
+import 'package:cookbook/pages/messages/message_screen.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -9,6 +12,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:mysql1/mysql1.dart';
+import 'package:email_validator/email_validator.dart';
+
+import '../home/home_page.dart';
 
 class RegisterPage extends ConsumerWidget {
   static const String id = "/register";
@@ -48,6 +54,8 @@ class RegisterForm extends HookConsumerWidget {
   final photoProvider = ChangeNotifierProvider<VerificationChangeNotifier>(
     (ref) => VerificationChangeNotifier(),
   );
+  bool _isValid = false;
+  String? photo = "";
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -61,7 +69,7 @@ class RegisterForm extends HookConsumerWidget {
 
     return Center(
       child: Container(
-        height: 600,
+        height: 650,
         width: 500,
         decoration: BoxDecoration(
             border: Border.all(
@@ -94,6 +102,20 @@ class RegisterForm extends HookConsumerWidget {
               );
             }),
             const SizedBox(height: 20),
+            state.wrongData
+                ? Center(
+                    child: SelectableText(
+                      state.wrongDataText,
+                      style: GoogleFonts.montserrat(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red),
+                    ),
+                  )
+                : const SizedBox(
+                    height: 10,
+                  ),
+            const SizedBox(height: 10),
             state.photoSuccessful
                 ? Center(
                     child: SelectableText(
@@ -119,22 +141,44 @@ class RegisterForm extends HookConsumerWidget {
               color: kcMedBeige,
               onTap: () async {
                 TextEditingController email = fields[1]['controller'];
+                email.text = "photo";
                 TextEditingController pass = fields[2]['controller'];
+                pass.text = "photo";
+                TextEditingController passConf = fields[3]['controller'];
                 TextEditingController username = fields[0]['controller'];
-
-                String photo = "LOAD_FILE('${state.path}')";
-
-                bool register = await AddUser.adding(userInfo: {
-                  "email": email.text,
-                  "password": pass.text,
-                  "username": username.text,
-                  "profile_picture": photo
-                });
-
-                if (register) {
-                  log("object");
+                username.text = "photo";
+                _isValid = EmailValidator.validate(email.text);
+                if (_isValid) {
+                  if (pass.text != passConf.text) {
+                    state.wrongData = true;
+                    state.wrongDataText = "Passwords do not mach";
+                    log(state.wrongDataText);
+                  } else {
+                    // if (state.path == null) {
+                    //   photo =
+                    //       '/Users/alex/FlutterProject/cookbook/assets/images/ph.png';
+                    // } else {
+                    //   photo = state.path;
+                    // }
+                    //String path = "LOAD_FILE('${state.path}')";
+                    bool register = await AddUser.adding(
+                      userInfo: {
+                        "email": email.text,
+                        "password": pass.text,
+                        "username": username.text,
+                        "profile_picture": state.photo.toBytes(),
+                      },
+                    );
+                    if (register) {
+                      Navigator.of(context).pushNamed(HomePage.id);
+                    } else {
+                      print("registring unsucessful");
+                    }
+                  }
                 } else {
-                  log("no");
+                  state.wrongData = true;
+                  state.wrongDataText =
+                      "Passwords dont mach or insert a valid email";
                 }
               },
               text: "R e g i s t e r",
@@ -164,8 +208,10 @@ class RegisterForm extends HookConsumerWidget {
     if (xFile != null) {
       state.photoSuccessful = true;
       state.text = xFile.name;
-      state.path = xFile.path;
-      Blob blob = Blob.fromBytes(await xFile.readAsBytes());
+
+      File file = File(xFile.path);
+      state.path = file.path;
+      Blob blob = Blob.fromBytes(await file.readAsBytes());
       state.photo = blob;
     }
   }
@@ -173,20 +219,36 @@ class RegisterForm extends HookConsumerWidget {
 
 class VerificationChangeNotifier extends ChangeNotifier {
   bool _photoSuccessful = false;
+  bool _wrongData = false;
+  String _wrongDataText = "";
   String _text = "";
   late Blob _photo;
-  late String _xFile;
+  late File _xFile;
 
   bool get photoSuccessful => _photoSuccessful;
 
+  bool get wrongData => _wrongData;
+
+  String get wrongDataText => _wrongDataText;
+
   String get text => _text;
+
+  File get file => _xFile;
 
   Blob get photo => _photo;
 
-  String get path => _xFile;
-
   set photoSuccessful(bool val) {
     _photoSuccessful = val;
+    notifyListeners();
+  }
+
+  set wrongData(bool val) {
+    _wrongData = val;
+    notifyListeners();
+  }
+
+  set wrongDataText(String txt) {
+    _wrongDataText = txt;
     notifyListeners();
   }
 
@@ -200,7 +262,7 @@ class VerificationChangeNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  set path(String path) {
+  set path(File path) {
     _xFile = path;
     notifyListeners();
   }
