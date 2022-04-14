@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:developer';
 
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/controllers/addUser.dart';
@@ -35,7 +35,7 @@ class RegisterPage extends ConsumerWidget {
       height: size.height,
       width: size.width,
       child: Image.asset(
-        "assets/images/bg3.png",
+        "assets/images/bg1.png",
         fit: BoxFit.fill,
       ),
     );
@@ -109,9 +109,33 @@ class RegisterForm extends HookConsumerWidget {
                   ),
             const SizedBox(height: 10),
             FormButton(
+                color: kcMedBeige,
+                onTap: () {
+                  _openImagePicker(state);
+                },
+                text: "A d d  P h o t o"),
+            const SizedBox(height: 10),
+            FormButton(
               color: kcMedBeige,
-              onTap: () {
-                Navigator.of(context).pushNamed(RegisterPage.id);
+              onTap: () async {
+                TextEditingController email = fields[1]['controller'];
+                TextEditingController pass = fields[2]['controller'];
+                TextEditingController username = fields[0]['controller'];
+
+                String photo = "LOAD_FILE('${state.path}')";
+
+                bool register = await AddUser.adding(userInfo: {
+                  "email": email.text,
+                  "password": pass.text,
+                  "username": username.text,
+                  "profile_picture": photo
+                });
+
+                if (register) {
+                  log("object");
+                } else {
+                  log("no");
+                }
               },
               text: "R e g i s t e r",
             ),
@@ -173,9 +197,11 @@ class VerificationChangeNotifier extends ChangeNotifier {
 
   set photo(Blob file) {
     _photo = file;
+    notifyListeners();
   }
 
   set path(String path) {
     _xFile = path;
+    notifyListeners();
   }
 }
