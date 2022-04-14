@@ -57,7 +57,23 @@ class Member {
     recipes.add(recipe);
   }
 
-  void removeFavorite(Recipe recipe) {}
+  void removeFavorite(Recipe favoriteRecipe) {
+    int favoriteID = favoriteRecipe.getId;
+    for (Recipe recipe in favorites) {
+      int recipeId = recipe.getId;
+      if (recipeId == favoriteID) {
+        favorites.remove(recipe);
+      }
+    }
+  }
 
-  void removeRecipe(Recipe recipe) {}
+  void removeRecipe(Recipe removeRecipe) {
+    int removeRecipeID = removeRecipe.getId;
+    for (Recipe recipe in recipes) {
+      int recipeId = recipe.getId;
+      if (recipeId == removeRecipeID) {
+        recipes.remove(recipe);
+      }
+    }
+  }
 }
