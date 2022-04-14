@@ -10,15 +10,20 @@ import 'package:mysql1/mysql1.dart';
 import 'dart:convert';
 import 'dart:typed_data';
 
-class LoadImagePage extends HookConsumerWidget {
+class LoadImagePage extends StatefulWidget {
   static const String id = '/img';
 
   LoadImagePage({Key? key}) : super(key: key);
 
+  @override
+  State<LoadImagePage> createState() => _LoadImagePageState();
+}
+
+class _LoadImagePageState extends State<LoadImagePage> {
   Image? img;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: Container(
@@ -29,8 +34,9 @@ class LoadImagePage extends HookConsumerWidget {
             children: [
               CustomButton(
                 duration: const Duration(milliseconds: 200),
-                onTap: () {
-                  onTap(img);
+                onTap: () async {
+                  img = await onTap();
+                  setState(() {});
                 },
               ),
               img ?? const SizedBox(),
@@ -42,7 +48,7 @@ class LoadImagePage extends HookConsumerWidget {
   }
 }
 
-void onTap(Image? img) async {
+Future<Image> onTap() async {
   final DatabaseManager dbm = await DatabaseManager.init();
 
   Results? res = await dbm.select(
@@ -51,15 +57,9 @@ void onTap(Image? img) async {
     where: {'username': 'photo'},
   );
 
-  var blob = res!.first['profile_picture'];
+  var blob = res!.first['profile_picture'].toString();
 
-  // print(blob.runtimeType);
+  Uint8List image = const Base64Codec().decode(blob);
 
-  // var temp = base64.decode(blob.join(""));
-
-  // print(temp);
-
-  Uint8List image = Base64Codec().decode(blob);
-
-  img = Image.memory(image);
+  return Image.memory(image);
 }
