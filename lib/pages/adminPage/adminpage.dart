@@ -26,7 +26,7 @@ class _AdminState extends State<Admin> {
           Padding(
             padding: const EdgeInsets.fromLTRB(200, 50, 0, 0),
             child: Row(
-              children: [
+              children: const [
                 Expanded(
                     child: Rectangle(
                         text: "User List", position: Alignment.topLeft)),
