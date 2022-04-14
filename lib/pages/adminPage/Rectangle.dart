@@ -202,13 +202,14 @@ class UserInfo extends StatelessWidget {
                 width: xSize,
                 alignment: Alignment.topCenter,
                 child: Text(
-                  text,
+                  "${state.idx}",
                   style: const TextStyle(fontSize: 20),
                 ),
               ),
               Container(
                 alignment: Alignment.topLeft,
-                child: const Text("Username\nRecipies\nOther info"),
+                child: Text(
+                    "Name: ${state.userName}\nEmail: ${state.email}\nImage: ${state.image}"),
               )
             ],
           ),

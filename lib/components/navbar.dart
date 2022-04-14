@@ -50,7 +50,7 @@ class NavBar extends HookConsumerWidget {
               ? CustomTextField(
                   isShadow: false,
                   height: 60,
-                  width: 1000,
+                  width: 700,
                   prefixIcon: const Icon(
                     Icons.expand_more,
                     color: Colors.black,
