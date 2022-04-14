@@ -1,19 +1,21 @@
 import 'package:cookbook/components/components.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'Rectangle.dart';
 
-class Admin extends StatefulWidget {
+class Admin extends ConsumerWidget {
   static const String id = "/admin";
 
-  const Admin({Key? key}) : super(key: key);
-  @override
-  _AdminState createState() => _AdminState();
-}
+  Admin({Key? key}) : super(key: key);
+  final selectUserProvider = ChangeNotifierProvider<SelectedUserChangeNotifier>(
+    (ref) => SelectedUserChangeNotifier(),
+  );
 
-class _AdminState extends State<Admin> {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(selectUserProvider);
+
     Size size = MediaQuery.of(context).size;
     // TODO: In Login Screen make Username: Admin return this page
     return (Scaffold(
@@ -25,14 +27,20 @@ class _AdminState extends State<Admin> {
           Padding(
             padding: const EdgeInsets.fromLTRB(200, 50, 0, 0),
             child: Row(
-              children: const [
+              children: [
                 Expanded(
-                  child:
-                      Rectangle(text: "User List", position: Alignment.topLeft),
+                  child: Rectangle(
+                    state: state,
+                    text: "User List",
+                    position: Alignment.topLeft,
+                  ),
                 ),
                 Expanded(
                   child: UserInfo(
-                      text: "Current User", position: Alignment.topRight),
+                    state: state,
+                    text: "Current User",
+                    position: Alignment.topRight,
+                  ),
                 )
               ],
             ),
@@ -40,5 +48,16 @@ class _AdminState extends State<Admin> {
         ],
       ),
     ));
+  }
+}
+
+class SelectedUserChangeNotifier extends ChangeNotifier {
+  int _idx = -1;
+
+  int get idx => _idx;
+
+  set idx(int val) {
+    _idx = val;
+    notifyListeners();
   }
 }
