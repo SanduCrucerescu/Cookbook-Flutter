@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math' as math;
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/controllers/verification.dart';
 import 'package:cookbook/main.dart';
@@ -31,13 +32,16 @@ class LoginPage extends ConsumerWidget {
     );
   }
 
-  SizedBox buildBackgroundImage(Size size) {
-    return SizedBox(
-      height: size.height,
-      width: size.width,
-      child: Image.asset(
-        "assets/images/bg3.png",
-        fit: BoxFit.fill,
+  Widget buildBackgroundImage(Size size) {
+    return RotatedBox(
+      quarterTurns: 0,
+      child: SizedBox(
+        height: size.height,
+        width: size.width,
+        child: Image.asset(
+          "assets/images/bg1.png",
+          fit: BoxFit.fill,
+        ),
       ),
     );
   }
@@ -67,7 +71,10 @@ class LoginForm extends HookConsumerWidget {
         width: 500,
         decoration: BoxDecoration(
           border: Border.all(
-              color: Colors.black, width: .5, style: BorderStyle.solid),
+            color: Colors.black,
+            width: .5,
+            style: BorderStyle.solid,
+          ),
           color: Colors.white,
           boxShadow: ksStandardBoxShadow,
         ),
