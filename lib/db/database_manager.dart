@@ -135,19 +135,23 @@ class DatabaseManager extends AbstractDatabaseManager {
       required List<String> fields,
       required Map<String, dynamic> data}) async {
     connect();
-    String query = '''
-            INSERT INTO $table (${fields.length > 1 ? fields.join(", ") : fields[0]}) VALUES (''';
-    int i = 0;
-    for (MapEntry entry in data.entries) {
-      i++;
-      query += i < data.length ? "'" + entry.value + "'" : entry.value;
-      query += i < data.length ? "," : "";
-    }
-    query += ");";
+    // String query = '''
+    //         INSERT INTO $table (${fields.length > 1 ? fields.join(", ") : fields[0]}) VALUES (''';
+    // int i = 0;
+    // for (MapEntry entry in data.entries) {
+    //   i++;
+    //   query += "'" + entry.value + "'";
+    //   query += i < data.length ? "," : "";
+    // }
+    // query += ");";
+
+    String query =
+        '''INSERT INTO members (email, password, username, profile_picture) VALUES ("${data["email"]}", "${data["password"]}", "${data["username"]}", "${data["profile_picture"]}");''';
 
     log(query);
 
     result = await cnx.query(query);
+    //print(query);
 
     return result;
   }
