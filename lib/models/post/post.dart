@@ -3,7 +3,6 @@ import 'dart:html';
 import 'package:cookbook/models/member/member.dart';
 
 class Post {
-  final int id;
   final Member creator;
   String content;
   int likes;
@@ -11,14 +10,11 @@ class Post {
   List<Comment> comments;
 
   Post(
-      {required this.id,
-      required this.creator,
+      {required this.creator,
       required this.content,
       required this.likes,
       required this.dislikes,
       required this.comments});
-
-  int get getId => id;
 
   Member get getCreator => creator;
 
@@ -29,10 +25,6 @@ class Post {
   int get getDislikes => dislikes;
 
   List<Comment> get getComments => comments;
-
-  void set id(int id) {
-    this.id = id;
-  }
 
   void set creator(Member creator) {
     this.creator = creator;
