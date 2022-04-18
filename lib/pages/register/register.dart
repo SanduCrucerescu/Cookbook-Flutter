@@ -15,7 +15,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:mysql1/mysql1.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:path_provider/path_provider.dart';
 
 import '../home/home_page.dart';
 
@@ -144,13 +143,9 @@ class RegisterForm extends HookConsumerWidget {
               color: kcMedBeige,
               onTap: () async {
                 TextEditingController email = fields[1]['controller'];
-                email.text = "photo1@photo.com";
                 TextEditingController pass = fields[2]['controller'];
-                pass.text = "photoa";
                 TextEditingController passConf = fields[3]['controller'];
-                passConf.text = "photoa";
                 TextEditingController username = fields[0]['controller'];
-                username.text = "photoaaa";
 
                 _isValid = EmailValidator.validate(email.text);
                 if (_isValid) {
@@ -160,13 +155,12 @@ class RegisterForm extends HookConsumerWidget {
                     log(state.wrongDataText);
                   } else {
                     if (state.file == null) {
-                      //Image img = Image(image: AssetImage("assets/images/ph.png"));
-                      ByteData bytes = await rootBundle.load(
-                          'assets/images/ph.png'); //load sound from assets
-                      Uint8List soundbytes = bytes.buffer.asUint8List(
+                      ByteData bytes =
+                          await rootBundle.load('assets/images/ph.png');
+                      Uint8List photobytes = bytes.buffer.asUint8List(
                           bytes.offsetInBytes, bytes.lengthInBytes);
 
-                      img64 = base64Encode(soundbytes);
+                      img64 = base64Encode(photobytes);
                     } else {
                       final bytes = state.file?.readAsBytesSync();
                       img64 = base64Encode(bytes!);
@@ -206,16 +200,6 @@ class RegisterForm extends HookConsumerWidget {
         ),
       ),
     );
-  }
-
-  Future<File> getImageFileFromAssets(String path) async {
-    final byteData = await rootBundle.load('assets/$path');
-
-    final file = File('${(await getTemporaryDirectory()).path}/$path');
-    await file.writeAsBytes(byteData.buffer
-        .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
-
-    return file;
   }
 
   void _openImagePicker(VerificationChangeNotifier state) async {
