@@ -98,15 +98,7 @@ class App extends StatelessWidget {
         fontFamily: 'Montserrat',
         primaryColor: kcPrimaryGreen,
       ),
-<<<<<<< HEAD
-<<<<<<< HEAD
       initialRoute: LoginPage.id,
-=======
-      initialRoute: Admin.id,
->>>>>>> 401dc0a (fixed pixel overflow on TextFiend and buttons)
-=======
-      initialRoute: MessagePage.id,
->>>>>>> d60a01b (improved)
       onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
