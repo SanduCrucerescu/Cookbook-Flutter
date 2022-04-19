@@ -1,14 +1,23 @@
+import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/controllers/addUser.dart';
+import 'package:cookbook/pages/messages/message_screen.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:mysql1/mysql1.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:path_provider/path_provider.dart';
+
+import '../home/home_page.dart';
 
 class RegisterPage extends ConsumerWidget {
   static const String id = "/register";
@@ -48,6 +57,8 @@ class RegisterForm extends HookConsumerWidget {
   final photoProvider = ChangeNotifierProvider<VerificationChangeNotifier>(
     (ref) => VerificationChangeNotifier(),
   );
+  bool _isValid = false;
+  late String img64;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -61,7 +72,7 @@ class RegisterForm extends HookConsumerWidget {
 
     return Center(
       child: Container(
-        height: 600,
+        height: 650,
         width: 500,
         decoration: BoxDecoration(
             border: Border.all(
@@ -94,6 +105,20 @@ class RegisterForm extends HookConsumerWidget {
               );
             }),
             const SizedBox(height: 20),
+            state.wrongData
+                ? Center(
+                    child: SelectableText(
+                      state.wrongDataText,
+                      style: GoogleFonts.montserrat(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red),
+                    ),
+                  )
+                : const SizedBox(
+                    height: 10,
+                  ),
+            const SizedBox(height: 10),
             state.photoSuccessful
                 ? Center(
                     child: SelectableText(
@@ -119,22 +144,51 @@ class RegisterForm extends HookConsumerWidget {
               color: kcMedBeige,
               onTap: () async {
                 TextEditingController email = fields[1]['controller'];
+                email.text = "photo1@photo.com";
                 TextEditingController pass = fields[2]['controller'];
+                pass.text = "photoa";
+                TextEditingController passConf = fields[3]['controller'];
+                passConf.text = "photoa";
                 TextEditingController username = fields[0]['controller'];
+                username.text = "photoaaa";
 
-                String photo = "LOAD_FILE('${state.path}')";
+                _isValid = EmailValidator.validate(email.text);
+                if (_isValid) {
+                  if (pass.text != passConf.text) {
+                    state.wrongData = true;
+                    state.wrongDataText = "Passwords do not mach";
+                    log(state.wrongDataText);
+                  } else {
+                    if (state.file == null) {
+                      //Image img = Image(image: AssetImage("assets/images/ph.png"));
+                      ByteData bytes = await rootBundle.load(
+                          'assets/images/ph.png'); //load sound from assets
+                      Uint8List soundbytes = bytes.buffer.asUint8List(
+                          bytes.offsetInBytes, bytes.lengthInBytes);
 
-                bool register = await AddUser.adding(userInfo: {
-                  "email": email.text,
-                  "password": pass.text,
-                  "username": username.text,
-                  "profile_picture": state.photo
-                });
-
-                if (register) {
-                  log("object");
+                      img64 = base64Encode(soundbytes);
+                    } else {
+                      final bytes = state.file?.readAsBytesSync();
+                      img64 = base64Encode(bytes!);
+                    }
+                    bool register = await AddUser.adding(
+                      userInfo: {
+                        "email": email.text,
+                        "password": pass.text,
+                        "username": username.text,
+                        "profile_picture": img64,
+                      },
+                    );
+                    if (register) {
+                      Navigator.of(context).pushNamed(HomePage.id);
+                    } else {
+                      print("registring unsucessful");
+                    }
+                  }
                 } else {
-                  log("no");
+                  state.wrongData = true;
+                  state.wrongDataText =
+                      "Passwords dont mach or insert a valid email";
                 }
               },
               text: "R e g i s t e r",
@@ -154,6 +208,16 @@ class RegisterForm extends HookConsumerWidget {
     );
   }
 
+  Future<File> getImageFileFromAssets(String path) async {
+    final byteData = await rootBundle.load('assets/$path');
+
+    final file = File('${(await getTemporaryDirectory()).path}/$path');
+    await file.writeAsBytes(byteData.buffer
+        .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+
+    return file;
+  }
+
   void _openImagePicker(VerificationChangeNotifier state) async {
     final typeGroup = XTypeGroup(
       label: 'images',
@@ -164,8 +228,10 @@ class RegisterForm extends HookConsumerWidget {
     if (xFile != null) {
       state.photoSuccessful = true;
       state.text = xFile.name;
-      state.path = xFile.path;
-      Blob blob = Blob.fromBytes(await xFile.readAsBytes());
+
+      File file = File(xFile.path);
+      state.path = file;
+      Blob blob = Blob.fromBytes(await file.readAsBytes());
       state.photo = blob;
     }
   }
@@ -173,20 +239,36 @@ class RegisterForm extends HookConsumerWidget {
 
 class VerificationChangeNotifier extends ChangeNotifier {
   bool _photoSuccessful = false;
+  bool _wrongData = false;
+  String _wrongDataText = "";
   String _text = "";
   late Blob _photo;
-  late String _xFile;
+  File? _xFile;
 
   bool get photoSuccessful => _photoSuccessful;
 
+  bool get wrongData => _wrongData;
+
+  String get wrongDataText => _wrongDataText;
+
   String get text => _text;
+
+  File? get file => _xFile;
 
   Blob get photo => _photo;
 
-  String get path => _xFile;
-
   set photoSuccessful(bool val) {
     _photoSuccessful = val;
+    notifyListeners();
+  }
+
+  set wrongData(bool val) {
+    _wrongData = val;
+    notifyListeners();
+  }
+
+  set wrongDataText(String txt) {
+    _wrongDataText = txt;
     notifyListeners();
   }
 
@@ -200,7 +282,7 @@ class VerificationChangeNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  set path(String path) {
+  set path(File? path) {
     _xFile = path;
     notifyListeners();
   }
