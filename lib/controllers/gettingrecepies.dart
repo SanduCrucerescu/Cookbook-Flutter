@@ -23,10 +23,9 @@ class GetRecepies {
     _recepieList = [];
     final DatabaseManager databaseManager = await DatabaseManager.init();
 
-    Results? res = await databaseManager
-        .select(table: "recipes", fields: ["*"], where: {'id': '1'});
+    Results? res =
+        await databaseManager.select(table: "recipes", fields: ["*"]);
 
-    print(recepieList);
     for (var rs in res!) {
       recipeClass = Recipe(
           id: rs[0],
