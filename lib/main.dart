@@ -98,6 +98,8 @@ class App extends StatelessWidget {
         fontFamily: 'Montserrat',
         primaryColor: kcPrimaryGreen,
       ),
+      initialRoute: Admin.id,
+      onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
 }
