@@ -1,6 +1,7 @@
 import 'dart:developer';
-
 import 'package:cookbook/components/components.dart';
+import 'package:cookbook/main.dart';
+import 'package:cookbook/models/recipe/recipe.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -30,13 +31,21 @@ class HomePage extends ConsumerWidget {
     Size size = MediaQuery.of(context).size;
     final state = ref.watch(responsivePorvider);
 
-    if (state.recipes == null) {
-      state.genRecipes();
+    if (state.recipes.isEmpty) {
+      log('recipes is empty');
+      // final recipes = InheritedLoginProvider.of(context).getRecipes();
+      state.getRecipesFromInheritedLoginProvider(
+        ctx: context,
+        allRecipes: InheritedLoginProvider.of(context).recipes,
+      );
+      log('got recipes');
     }
 
     // state.checkWidth(size.width);
 
     log('rebuilding');
+    log('${state.recipes}');
+    log('${state.recipes.isEmpty}');
 
     return CustomPage(
       child: Container(
@@ -46,15 +55,17 @@ class HomePage extends ConsumerWidget {
         padding: const EdgeInsets.all(10),
         child: SizedBox(
           width: size.width - 220,
-          child: ListView.builder(
-            physics: const AlwaysScrollableScrollPhysics(),
-            cacheExtent: 50,
-            itemCount: rows,
-            shrinkWrap: true,
-            itemBuilder: (ctx, i) => Container(
-              child: state.recipes![i],
-            ),
-          ),
+          child: state.recipes.isEmpty == false
+              ? ListView.builder(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  cacheExtent: 50,
+                  itemCount: state.recipes.length,
+                  shrinkWrap: true,
+                  itemBuilder: (ctx, i) => Container(
+                    child: state.recipes[i],
+                  ),
+                )
+              : const SizedBox(),
         ),
       ),
     );
@@ -63,18 +74,49 @@ class HomePage extends ConsumerWidget {
 
 class ResponsiveNotifier extends ChangeNotifier {
   int _cols = 3;
-  List<Widget>? _recipes;
-  final int rows = 10;
+  List<Widget> _recipes = [];
+  int rows = 10;
 
   int get cols => _cols;
-  List<Widget>? get recipes {
+
+  void getRecipesFromInheritedLoginProvider({
+    required BuildContext ctx,
+    required List<Recipe> allRecipes,
+  }) async {
+    log('getting recipes from inherited login provider');
+
+    // final allRecipes = await InheritedLoginProvider.of(ctx).getRecipes();
+
+    _recipes = [];
+
+    for (int i = 0; i < allRecipes.length; i += cols) {
+      log(i.toString());
+      _recipes.add(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: List.generate(
+            i + cols > allRecipes.length
+                ? cols - allRecipes.length % cols
+                : cols,
+            (idx) => Center(
+              child: RecipeBox(
+                recipe: allRecipes[i + idx],
+              ),
+            ),
+          ),
+        ),
+      );
+      log('$recipes');
+    }
+  }
+
+  List<Widget> get recipes {
     log('get _recipes');
     return _recipes;
   }
 
   set cols(int val) {
     _cols = val;
-    genRecipes();
     log('$val');
     notifyListeners();
   }
@@ -89,20 +131,20 @@ class ResponsiveNotifier extends ChangeNotifier {
     }
   }
 
-  void genRecipes() {
-    log('generating recipes');
-    _recipes = List.generate(
-      rows,
-      (int idx) => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: List.generate(
-          cols,
-          (int jdx) => const Center(
-            child: RecipeBox(),
-          ),
-        ),
-      ),
-    );
-    // notifyListeners();
-  }
+  // void genRecipes() {
+  //   log('generating recipes');
+  //   _recipes = List.generate(
+  //     rows,
+  //     (int idx) => Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+  //       children: List.generate(
+  //         cols,
+  //         (int jdx) => const Center(
+  //           child: RecipeBox(),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  //   // notifyListeners();
+  // }
 }

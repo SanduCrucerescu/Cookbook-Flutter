@@ -14,12 +14,12 @@ class Validator {
     //abolandr@gnu.org
     //xbsxysKe53
     int result = 0;
-    GetRecepies getrecepies = GetRecepies();
+    // GetRecepies getrecepies = GetRecepies();
     for (var rs in res!) {
       result = rs[0];
     }
     if (result == 1) {
-      await getrecepies.getrecep();
+      // await getrecepies.getrecep();
       //print(getrecepies.recepieList);
       return true;
     } else {

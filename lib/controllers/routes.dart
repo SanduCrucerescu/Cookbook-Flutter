@@ -3,7 +3,7 @@ part of controllers;
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     // Getting arguments passed in while calling Navigator.pushNamed
-    final args = settings.arguments;
+    final Object? args = settings.arguments;
 
     switch (settings.name) {
       case '/':
@@ -13,11 +13,11 @@ class RouteGenerator {
       case '/login':
         // Validation of correct data type
         return MaterialPageRoute(
-          builder: (_) => const LoginPage(),
+          builder: (_) => LoginPage(),
         );
       case '/loading':
         return MaterialPageRoute(
-          builder: (_) => LoadingScreen(),
+          builder: (_) => const LoadingScreen(),
         );
       case '/register':
         return MaterialPageRoute(

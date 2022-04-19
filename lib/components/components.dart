@@ -1,6 +1,7 @@
 library components;
 
 import 'dart:developer';
+import 'package:cookbook/models/recipe/recipe.dart';
 import 'package:cookbook/pages/adminPage/adminpage.dart';
 import 'package:cookbook/pages/home/home_page.dart';
 import 'package:cookbook/pages/login/login.dart';

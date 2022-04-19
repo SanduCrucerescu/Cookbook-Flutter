@@ -1,29 +1,28 @@
 part of components;
 
-class RecipeBox extends StatelessWidget {
-  final String? id, title, shortDescription, longDescription, creatorEmail;
-  final double? quantity;
-  final List<String>? tags;
+class RecipeBox extends ConsumerWidget {
   final Image? profilePicture, image;
+  final Recipe recipe;
 
   static const double horiLineIndent = 10;
   static const double actionRowIndent = 20;
   static const double descriptonRowIndent = 45;
 
-  const RecipeBox({
-    this.id,
-    this.title,
-    this.shortDescription,
-    this.longDescription,
-    this.quantity,
-    this.creatorEmail,
-    this.tags,
-    this.profilePicture,
+  RecipeBox({
+    required this.recipe,
     this.image,
+    this.profilePicture,
     Key? key,
   }) : super(key: key);
+
+  final hoveringProvider = ChangeNotifierProvider<RecipeBoxIconHoverNotifier>(
+    (ref) => RecipeBoxIconHoverNotifier(),
+  );
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(hoveringProvider);
+
     return Container(
       margin: const EdgeInsets.only(top: 20),
       width: 450,
@@ -41,24 +40,45 @@ class RecipeBox extends StatelessWidget {
         Positioned(
           top: 20,
           left: actionRowIndent,
-          child: RecipeBoxTopRow(profilePicture: profilePicture),
+          child: RecipeBoxTopRow(
+            profilePicture: profilePicture,
+            recipe: recipe,
+          ),
         ),
         const Positioned(left: horiLineIndent, top: 70, child: HoriLine()),
         Positioned(
           top: 90,
           left: 15,
           child: Container(
-            decoration: const BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  spreadRadius: .5,
-                  blurRadius: 15,
-                  color: Color(0xFF606060),
-                  offset: Offset(10, 12),
-                )
-              ],
+            decoration: BoxDecoration(
+              boxShadow: !state.hovering
+                  ? [
+                      const BoxShadow(
+                        spreadRadius: .5,
+                        blurRadius: 15,
+                        color: Color(0xFF606060),
+                        offset: Offset(10, 12),
+                      )
+                    ]
+                  : null,
             ),
             child: RecipeBoxIcon(
+              onHover: () {
+                state.hovering = !state.hovering;
+              },
+              child: state.hovering
+                  ? Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 50),
+                      width: 420,
+                      height: 420,
+                      color: kcLightBeige,
+                      child: Center(
+                        child: SelectableText(
+                          recipe.shortDescription,
+                        ),
+                      ),
+                    )
+                  : null,
               image: image,
               imagePath: image != null ? null : "assets/images/food.png",
               width: 420,
@@ -103,12 +123,14 @@ class RecipeBox extends StatelessWidget {
 }
 
 class RecipeBoxTopRow extends StatelessWidget {
+  final Recipe recipe;
+  final Image? profilePicture;
+
   const RecipeBoxTopRow({
     Key? key,
+    required this.recipe,
     required this.profilePicture,
   }) : super(key: key);
-
-  final Image? profilePicture;
 
   @override
   Widget build(BuildContext context) {
@@ -133,9 +155,11 @@ class RecipeBoxTopRow extends StatelessWidget {
           ],
         ),
       ),
-      title: const SelectableText(
-        "Kenobi",
-        style: TextStyle(
+      title: SelectableText(
+        recipe.title.length > 29
+            ? recipe.title.substring(0, 20) + '...'
+            : recipe.title,
+        style: const TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 20,
         ),
@@ -347,9 +371,11 @@ class RecipeBoxIcon extends StatelessWidget {
   final VoidCallback? onTap, onHover;
   final bool isImage;
   final Icon? icon;
+  final Widget? child;
 
   const RecipeBoxIcon({
     Key? key,
+    this.child,
     this.imagePath,
     this.width = 30,
     this.height = 30,
@@ -375,25 +401,27 @@ class RecipeBoxIcon extends StatelessWidget {
         onTap: () {},
         onHover: (val) => onHover == null ? {} : onHover!(),
         child: Row(
-          children: [
-            image != null
-                ? image!
-                : icon != null
-                    ? SizedBox(
-                        height: height,
-                        width: width,
-                        child: icon,
-                      )
-                    : (imagePath != null
-                        ? Image.asset(
-                            imagePath!,
-                            fit: BoxFit.fill,
-                            height: 500,
-                            width: width,
-                            color: isImage ? null : color ?? kcMedGrey,
-                          )
-                        : const SizedBox()),
-          ],
+          children: child != null
+              ? [child!]
+              : [
+                  image != null
+                      ? image!
+                      : icon != null
+                          ? SizedBox(
+                              height: height,
+                              width: width,
+                              child: icon,
+                            )
+                          : (imagePath != null
+                              ? Image.asset(
+                                  imagePath!,
+                                  fit: BoxFit.fill,
+                                  height: 500,
+                                  width: width,
+                                  color: isImage ? null : color ?? kcMedGrey,
+                                )
+                              : const SizedBox()),
+                ],
         ),
       ),
     );
@@ -422,5 +450,16 @@ class HoriLine extends StatelessWidget {
       width: length ?? 410,
       color: kcMedGrey,
     );
+  }
+}
+
+class RecipeBoxIconHoverNotifier extends ChangeNotifier {
+  bool _hovering = false;
+
+  bool get hovering => _hovering;
+
+  set hovering(bool val) {
+    _hovering = val;
+    notifyListeners();
   }
 }
