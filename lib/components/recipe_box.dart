@@ -6,6 +6,10 @@ class RecipeBox extends StatelessWidget {
   final List<String>? tags;
   final Image? profilePicture, image;
 
+  static const double horiLineIndent = 10;
+  static const double actionRowIndent = 20;
+  static const double descriptonRowIndent = 45;
+
   const RecipeBox({
     this.id,
     this.title,
@@ -33,69 +37,67 @@ class RecipeBox extends StatelessWidget {
           style: BorderStyle.solid,
         ),
       ),
-      child: Stack(
-        children: <Widget>[
-          Positioned(
-            top: 20,
-            left: 25,
-            child: RecipeBoxTopRow(profilePicture: profilePicture),
-          ),
-          const Positioned(left: 10, top: 70, child: HoriLine()),
-          Positioned(
-            top: 90,
-            left: 15,
-            child: Container(
-              decoration: const BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    spreadRadius: .5,
-                    blurRadius: 15,
-                    color: Color(0xFF606060),
-                    offset: Offset(10, 12),
-                  )
-                ],
-              ),
-              child: RecipeBoxIcon(
-                image: image,
-                imagePath: image != null ? null : "assets/images/food.png",
-                width: 415,
-                height: 420,
-                isImage: true,
-              ),
-            ),
-          ),
-          const Positioned(left: 15, top: 510, child: HoriLine()),
-          const Positioned(
-            top: 534,
-            left: 20,
-            child: RecipeActionsRow(),
-          ),
-          const Positioned(left: 15, top: 570, child: HoriLine()),
-          const Positioned(
-            left: 45,
-            top: 590,
-            child: RecipeInformationRow(
-              text: 'tags',
-              children: [
-                RecipeTag(text: 'Vegan'),
-                RecipeTag(text: 'Vegeterian'),
-                RecipeTag(text: 'Bio'),
-                RecipeTag(text: 'Natural'),
-                RecipeTag(text: 'Öko'),
-                RecipeTag(text: 'Nachhaltig'),
+      child: Stack(children: <Widget>[
+        Positioned(
+          top: 20,
+          left: actionRowIndent,
+          child: RecipeBoxTopRow(profilePicture: profilePicture),
+        ),
+        const Positioned(left: horiLineIndent, top: 70, child: HoriLine()),
+        Positioned(
+          top: 90,
+          left: 15,
+          child: Container(
+            decoration: const BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  spreadRadius: .5,
+                  blurRadius: 15,
+                  color: Color(0xFF606060),
+                  offset: Offset(10, 12),
+                )
               ],
             ),
-          ),
-          const Positioned(
-            left: 45,
-            top: 615,
-            child: RecipeInformationRow(
-              text: 'stars',
-              children: [Text('34')],
+            child: RecipeBoxIcon(
+              image: image,
+              imagePath: image != null ? null : "assets/images/food.png",
+              width: 420,
+              height: 420,
+              isImage: true,
             ),
           ),
-        ],
-      ),
+        ),
+        const Positioned(left: horiLineIndent, top: 510, child: HoriLine()),
+        const Positioned(
+          top: 534,
+          left: actionRowIndent,
+          child: RecipeActionsRow(),
+        ),
+        const Positioned(left: horiLineIndent, top: 570, child: HoriLine()),
+        const Positioned(
+          left: descriptonRowIndent,
+          top: 590,
+          child: RecipeInformationRow(
+            text: 'tags',
+            children: [
+              RecipeTag(text: 'Vegan'),
+              RecipeTag(text: 'Vegeterian'),
+              RecipeTag(text: 'Bio'),
+              RecipeTag(text: 'Natural'),
+              RecipeTag(text: 'Öko'),
+              RecipeTag(text: 'Nachhaltig'),
+            ],
+          ),
+        ),
+        const Positioned(
+          left: descriptonRowIndent,
+          top: 615,
+          child: RecipeInformationRow(
+            text: 'stars',
+            children: [Text('34')],
+          ),
+        ),
+      ]),
     );
   }
 }
@@ -116,12 +118,18 @@ class RecipeBoxTopRow extends StatelessWidget {
         width: 80,
         child: Row(
           children: [
-            profilePicture ??
-                Image.asset(
-                  "assets/images/hellothere.png",
-                  height: 45,
-                  width: 45,
-                ),
+            CircleAvatar(
+              radius: 20,
+              child: ClipOval(
+                child: profilePicture ??
+                    Image.asset(
+                      "assets/images/hellothere.png",
+                      fit: BoxFit.cover,
+                      height: 55,
+                      width: 55,
+                    ),
+              ),
+            ),
           ],
         ),
       ),
@@ -411,7 +419,7 @@ class HoriLine extends StatelessWidget {
       padding: paddingHorizontal ?? const EdgeInsets.symmetric(horizontal: 0),
       margin: margin ?? const EdgeInsets.all(10),
       height: width ?? .7,
-      width: length ?? 400,
+      width: length ?? 410,
       color: kcMedGrey,
     );
   }
