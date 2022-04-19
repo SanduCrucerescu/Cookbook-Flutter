@@ -23,8 +23,7 @@ class HomePage extends ConsumerWidget {
       state.genRecipes();
     }
 
-    state.checkWidth(size.width);
-
+    // state.checkWidth(size.width);
     log('rebuilding');
 
     return CustomPage(

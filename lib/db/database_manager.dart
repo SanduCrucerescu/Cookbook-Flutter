@@ -98,14 +98,9 @@ class DatabaseManager extends AbstractDatabaseManager {
   }
 
   @override
-<<<<<<< HEAD
-  Future<void> query({required String query}) async {
-    result = await cnx!.query(query);
-=======
   Future<Results?> query({required String query}) async {
-    result = await cnx.query(query);
+    result = await cnx!.query(query);
     return result;
->>>>>>> 66cf52c (Getting data from database)
   }
 
   @override
@@ -116,14 +111,10 @@ class DatabaseManager extends AbstractDatabaseManager {
       String? group,
       String? having,
       List<int>? limit}) async {
-<<<<<<< HEAD
     // connect();
     if (cnx == null) {
       return null;
     }
-
-=======
->>>>>>> 66cf52c (Getting data from database)
     String query =
         '''SELECT ${fields.length > 1 ? fields.join(", ") : fields[0]} FROM $table ''';
 
