@@ -1,90 +1,67 @@
+import 'package:cookbook/components/components.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'Rectangle.dart';
-import 'AdminPanelButton.dart';
 
-class Admin extends StatefulWidget {
+class Admin extends ConsumerWidget {
   static const String id = "/admin";
 
-  const Admin({Key? key}) : super(key: key);
-  @override
-  _AdminState createState() => _AdminState();
-}
+  Admin({Key? key}) : super(key: key);
 
-class _AdminState extends State<Admin> {
+  final selectUserProvider = ChangeNotifierProvider<SelectedUserChangeNotifier>(
+    (ref) => SelectedUserChangeNotifier(),
+  );
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(selectUserProvider);
+
     Size size = MediaQuery.of(context).size;
     // TODO: In Login Screen make Username: Admin return this page
     return (Scaffold(
-      body: Column(
+      backgroundColor: Color(0xFFE3DBCA),
+      body: Stack(
         children: [
+          const NavBar(),
+          SideBar(items: kSideBarItems),
           Padding(
-            padding: const EdgeInsets.fromLTRB(0,0,40,0),
-            child: Container(alignment: Alignment.topRight,
-              child: CircleAvatar(
-                child: Image.asset('assets/images/ph.png'),
-              ),
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(100, 0, 100, 0),
-            child: TextField(
-              showCursor: true,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Enter username',
-              ),
-            ),
-          ),
-          // Boxes
-          SizedBox(
-            height: size.height - 100,
+            padding: const EdgeInsets.fromLTRB(200, 50, 0, 0),
             child: Row(
               children: [
-                const Expanded(
-                  child: Rectangle(
-                      text: "User List", position: Alignment.topRight),
-                ),
-                const Expanded(
-                  child: Rectangle(
-                      text: "Current User", position: Alignment.topLeft),
-                ),
                 Expanded(
-                  flex: 0,
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.black,
-                          ),
-                          borderRadius: BorderRadius.all(Radius.circular(20))),
-                      height: 600,
-                      child: Column(
-                        children: [
-                          AdminPanelButton(
-                            text: "Add",
-                            onPressed: () {},
-                          ),
-                          AdminPanelButton(
-                            text: "Delete",
-                            onPressed: () {},
-                          ),
-                          AdminPanelButton(
-                            text: "Edit",
-                            onPressed: () {},
-                          ),
-                        ],
-                      ),
-                    ),
+                  child: Rectangle(
+                    state: state,
+                    text: "User List",
+                    position: Alignment.topLeft,
                   ),
                 ),
+                Expanded(
+                  child: UserInfo(
+                    state: state,
+                    text: "Current User",
+                    position: Alignment.topRight,
+                  ),
+                )
               ],
             ),
           )
         ],
       ),
     ));
+  }
+}
+
+class SelectedUserChangeNotifier extends ChangeNotifier {
+  int _idx = -1;
+  String userName = "Jeff";
+  String email = "jeff.bezos@amazon.com";
+  String image = "assets/images/ph.png";
+
+  int get idx => _idx;
+
+  set idx(int val) {
+    _idx = val;
+    notifyListeners();
   }
 }

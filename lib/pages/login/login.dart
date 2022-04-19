@@ -1,5 +1,7 @@
 import 'dart:developer';
-import 'package:cookbook/controllers/verification.dart';
+import 'dart:math' as math;
+import 'package:cookbook/components/components.dart';
+import 'package:cookbook/controllers/controllers.dart';
 import 'package:cookbook/main.dart';
 import 'package:cookbook/pages/home/home_page.dart';
 import 'package:cookbook/pages/register/register.dart';
@@ -8,8 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-import '../../components/components.dart';
 
 class LoginPage extends ConsumerWidget {
   static const String id = "/login";
@@ -32,13 +32,16 @@ class LoginPage extends ConsumerWidget {
     );
   }
 
-  SizedBox buildBackgroundImage(Size size) {
-    return SizedBox(
-      height: size.height,
-      width: size.width,
-      child: Image.asset(
-        "assets/images/bg1.png",
-        fit: BoxFit.fill,
+  Widget buildBackgroundImage(Size size) {
+    return RotatedBox(
+      quarterTurns: 0,
+      child: SizedBox(
+        height: size.height,
+        width: size.width,
+        child: Image.asset(
+          "assets/images/bg1.png",
+          fit: BoxFit.fill,
+        ),
       ),
     );
   }
@@ -68,7 +71,10 @@ class LoginForm extends HookConsumerWidget {
         width: 500,
         decoration: BoxDecoration(
           border: Border.all(
-              color: Colors.black, width: .5, style: BorderStyle.solid),
+            color: Colors.black,
+            width: .5,
+            style: BorderStyle.solid,
+          ),
           color: Colors.white,
           boxShadow: ksStandardBoxShadow,
         ),
@@ -120,9 +126,10 @@ class LoginForm extends HookConsumerWidget {
                     height: 30,
                   ),
                   FormButton(
+                    color: kcMedBeige,
                     text: "L o g i n",
                     onTap: () async {
-                      bool isValid = await Validator.validate(
+                      bool isValid = await Validator().validate(
                         userInfo: {"email": tec1.text, "password": tec2.text},
                       );
 
@@ -139,6 +146,8 @@ class LoginForm extends HookConsumerWidget {
                     height: 8,
                   ),
                   FormButton(
+                    showShadow: false,
+                    color: Colors.white,
                     onTap: () {
                       Navigator.of(context).pushNamed(RegisterPage.id);
                     },

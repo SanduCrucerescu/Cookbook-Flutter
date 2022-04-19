@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import '../login/login.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -22,23 +21,31 @@ class _LoadingScreenState extends State<LoadingScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    print(size);
-
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          Image.asset("assets/images/bg1.png", fit: BoxFit.fill),
-          Center(
-            child: Padding(
-              padding: EdgeInsets.only(top: 200.0),
-              child: AnimatedTextKit(
-                animatedTexts: [
-                  TypewriterAnimatedText('Welcome to our shit cookbook app',
-                      speed: Duration(milliseconds: 0100),
-                      textStyle:
-                          const TextStyle(fontFamily: "Elianto", fontSize: 40)),
-                ],
+          Image.asset(
+            "assets/images/bg1.png",
+            fit: BoxFit.fill,
+          ),
+          Positioned(
+            bottom: size.height / 8,
+            child: SizedBox(
+              width: size.width,
+              child: Center(
+                child: AnimatedTextKit(
+                  animatedTexts: [
+                    TypewriterAnimatedText(
+                      'Welcome to our shit cookbook app',
+                      speed: const Duration(milliseconds: 0100),
+                      textStyle: const TextStyle(
+                        fontFamily: "Elianto",
+                        fontSize: 40,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -51,7 +58,12 @@ class _LoadingScreenState extends State<LoadingScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     // Maybe text?
-                    Image.asset("assets/images/LogoLogin.png")
+                    Image.asset(
+                      "assets/images/logo.png",
+                      fit: BoxFit.fill,
+                      height: 45,
+                      color: Colors.black,
+                    )
                   ],
                 ),
               ),

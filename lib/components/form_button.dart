@@ -3,11 +3,15 @@ part of components;
 class FormButton extends StatelessWidget {
   final String text;
   final VoidCallback onTap;
+  final bool showShadow;
+  final Color? color;
 
   const FormButton({
     Key? key,
     required this.onTap,
     required this.text,
+    this.color,
+    this.showShadow = true,
   }) : super(key: key);
 
   @override
@@ -17,6 +21,8 @@ class FormButton extends StatelessWidget {
         height: 40,
         width: 200,
         child: CustomButton(
+          showShadow: showShadow,
+          color: color,
           duration: const Duration(milliseconds: 200),
           boxShadow: [
             BoxShadow(
