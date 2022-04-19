@@ -83,19 +83,42 @@ class Rectangle extends StatelessWidget {
       ),
       height: 40,
       width: xSize,
-      child: Row(
-        children: [
-          Row(
-            children: [
-              CustomTextField(
-                width: 300,
-                borderRadius: const BorderRadius.all(Radius.circular(5)),
+      child: Expanded(
+        child: Row(
+          children: [
+            Expanded(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: CustomTextField(
+                      width: 300,
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(50, 0, 5, 0),
-            child: Container(
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(50, 0, 5, 0),
+              child: Expanded(
+                child: Container(
+                  height: 40,
+                  width: 40,
+                  color: kcMedBeige,
+                  child: InkWell(
+                    onTap: () {},
+                    child: Center(
+                      child: SizedBox(
+                        height: 30,
+                        width: 30,
+                        child: Image.asset('assets/images/add.png'),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Container(
               height: 40,
               width: 40,
               color: kcMedBeige,
@@ -105,28 +128,13 @@ class Rectangle extends StatelessWidget {
                   child: SizedBox(
                     height: 30,
                     width: 30,
-                    child: Image.asset('assets/images/add.png'),
+                    child: Image.asset('assets/images/Remove.png'),
                   ),
                 ),
               ),
             ),
-          ),
-          Container(
-            height: 40,
-            width: 40,
-            color: kcMedBeige,
-            child: InkWell(
-              onTap: () {},
-              child: Center(
-                child: SizedBox(
-                  height: 30,
-                  width: 30,
-                  child: Image.asset('assets/images/Remove.png'),
-                ),
-              ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
