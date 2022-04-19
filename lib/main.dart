@@ -98,7 +98,7 @@ class App extends StatelessWidget {
         fontFamily: 'Montserrat',
         primaryColor: kcPrimaryGreen,
       ),
-      initialRoute: MessagePage.id,
+      initialRoute: LoginPage.id,
       onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
