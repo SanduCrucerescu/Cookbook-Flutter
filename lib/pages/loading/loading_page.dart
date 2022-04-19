@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import '../login/login.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -64,7 +62,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
                       "assets/images/logo.png",
                       fit: BoxFit.fill,
                       height: 45,
-                      color: Colors.white,
+                      color: Colors.black,
                     )
                   ],
                 ),

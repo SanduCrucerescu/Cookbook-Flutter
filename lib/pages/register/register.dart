@@ -128,7 +128,7 @@ class RegisterForm extends HookConsumerWidget {
                   "email": email.text,
                   "password": pass.text,
                   "username": username.text,
-                  "profile_picture": photo
+                  "profile_picture": state.photo
                 });
 
                 if (register) {

@@ -18,8 +18,10 @@ abstract class AbstractDatabaseManager {
     this.password,
     this.db,
     this.port,
+
+    /// cnx = mysql.connector.connect(user="beryllium", password="{your_password}", host="", port=3306, database="{your_database}", ssl_ca="{ca-cert filename}", ssl_disabled=False)
   }) : settings = ConnectionSettings(
-            host: host ?? 'beryllium.mysql.database.azure.com',
+            host: host ?? 'beryllium2nd.mysql.database.azure.com',
             user: user ?? 'beryllium',
             password: password ?? '1dv508project!',
             db: db ?? 'cookbook',
@@ -63,7 +65,7 @@ abstract class AbstractDatabaseManager {
 }
 
 class DatabaseManager extends AbstractDatabaseManager {
-  late MySqlConnection cnx;
+  MySqlConnection? cnx;
   late Results result;
 
   DatabaseManager({
@@ -92,12 +94,12 @@ class DatabaseManager extends AbstractDatabaseManager {
 
   @override
   Future<void> close() async {
-    await cnx.close();
+    await cnx?.close();
   }
 
   @override
   Future<void> query({required String query}) async {
-    result = await cnx.query(query);
+    result = await cnx!.query(query);
   }
 
   @override
@@ -108,7 +110,10 @@ class DatabaseManager extends AbstractDatabaseManager {
       String? group,
       String? having,
       List<int>? limit}) async {
-    connect();
+    // connect();
+    if (cnx == null) {
+      return null;
+    }
 
     String query =
         '''SELECT ${fields.length > 1 ? fields.join(", ") : fields[0]} FROM $table ''';
@@ -124,7 +129,7 @@ class DatabaseManager extends AbstractDatabaseManager {
     }
     query += ";";
 
-    result = await cnx.query(query);
+    result = await cnx!.query(query);
 
     return result;
   }
@@ -134,7 +139,10 @@ class DatabaseManager extends AbstractDatabaseManager {
       {required String table,
       required List<String> fields,
       required Map<String, dynamic> data}) async {
-    connect();
+    if (cnx == null) {
+      return null;
+    }
+
     String query = '''
             INSERT INTO $table (${fields.length > 1 ? fields.join(", ") : fields[0]}) VALUES (''';
     int i = 0;
@@ -147,7 +155,7 @@ class DatabaseManager extends AbstractDatabaseManager {
 
     log(query);
 
-    result = await cnx.query(query);
+    result = await cnx!.query(query);
 
     return result;
   }
@@ -187,7 +195,7 @@ class DatabaseManager extends AbstractDatabaseManager {
     }
     query += ");";
 
-    result = await cnx.query(query);
+    result = await cnx!.query(query);
 
     return result;
   }
