@@ -21,6 +21,8 @@ dependencies:
   animated_text_kit: ^4.2.1
   file_selector: ^0.8.0
   file_selector_macos: ^0.0.4
+  email_validator: ^2.0.1
+  fluttertoast: ^8.0.9
 
 dev_dependencies:
   flutter_lints: ^1.0.0
