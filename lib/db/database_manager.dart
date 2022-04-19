@@ -61,7 +61,7 @@ abstract class AbstractDatabaseManager {
 
   Future<void> close();
 
-  Future<void> query({required String query});
+  void query({required String query});
 }
 
 class DatabaseManager extends AbstractDatabaseManager {
@@ -98,8 +98,9 @@ class DatabaseManager extends AbstractDatabaseManager {
   }
 
   @override
-  Future<void> query({required String query}) async {
+  Future<Results?> query({required String query}) async {
     result = await cnx!.query(query);
+    return result;
   }
 
   @override
@@ -114,7 +115,6 @@ class DatabaseManager extends AbstractDatabaseManager {
     if (cnx == null) {
       return null;
     }
-
     String query =
         '''SELECT ${fields.length > 1 ? fields.join(", ") : fields[0]} FROM $table ''';
 

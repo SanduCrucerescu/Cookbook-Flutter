@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/pages/adminPage/adminpage.dart';
+import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 
 class Rectangle extends StatelessWidget {
@@ -18,28 +19,34 @@ class Rectangle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double xSize = 400;
+    double xSize = 600;
     return Padding(
       padding: const EdgeInsets.all(80),
       child: Align(
         alignment: position,
         // rectangle itself
         child: Container(
-          decoration: BoxDecoration(
-            border: Border.all(),
-            borderRadius: const BorderRadius.all(
-              Radius.circular(10),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(),
+              borderRadius: const BorderRadius.all(
+                Radius.circular(5),
+              ),
             ),
-          ),
-          // Height and width of the boxes
-          height: 1000,
-          width: 400,
-          //Title of the rectangle
-          child: Column(
-            children: [
-              SearchAddRemove(xSize),
-              UsersBox(state: state),
-            ],
+            // Height and width of the boxes
+            height: 850,
+            width: 600,
+            //Title of the rectangle
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                children: [
+                  SearchAddRemove(xSize),
+                  UsersBox(state: state),
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -48,17 +55,20 @@ class Rectangle extends StatelessWidget {
 
   Expanded UsersBox({required SelectedUserChangeNotifier state}) {
     return Expanded(
-      child: Scrollbar(
-        isAlwaysShown: true,
-        showTrackOnHover: true,
-        child: ListView.builder(
-          itemCount: 50,
-          itemBuilder: (BuildContext context, int idx) {
-            return UserTile(
-              state: state,
-              idx: idx,
-            );
-          },
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+        child: Scrollbar(
+          isAlwaysShown: true,
+          showTrackOnHover: true,
+          child: ListView.builder(
+            itemCount: 50,
+            itemBuilder: (BuildContext context, int idx) {
+              return UserTile(
+                state: state,
+                idx: idx,
+              );
+            },
+          ),
         ),
       ),
     );
@@ -73,31 +83,56 @@ class Rectangle extends StatelessWidget {
       ),
       height: 40,
       width: xSize,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
+      child: Expanded(
         child: Row(
           children: [
             Expanded(
-              child: CustomTextField(
-                hintText: "Search user",
-                borderRadius: const BorderRadius.all(Radius.circular(5)),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: CustomTextField(
+                      width: 300,
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                    ),
+                  ),
+                ],
               ),
             ),
-            TextButton(
-              onPressed: () {},
-              child: Image.asset('assets/images/add.png'),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(50, 0, 5, 0),
+              child: Expanded(
+                child: Container(
+                  height: 40,
+                  width: 40,
+                  color: kcMedBeige,
+                  child: InkWell(
+                    onTap: () {},
+                    child: Center(
+                      child: SizedBox(
+                        height: 30,
+                        width: 30,
+                        child: Image.asset('assets/images/add.png'),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ),
-            TextButton(
-              onPressed: () {},
-              child: const Text(
-                "Remove",
-                style: TextStyle(color: Colors.white),
+            Container(
+              height: 40,
+              width: 40,
+              color: kcMedBeige,
+              child: InkWell(
+                onTap: () {},
+                child: Center(
+                  child: SizedBox(
+                    height: 30,
+                    width: 30,
+                    child: Image.asset('assets/images/Remove.png'),
+                  ),
+                ),
               ),
-              style: ElevatedButton.styleFrom(
-                fixedSize: const Size.square(80),
-                primary: Colors.black, // NEW
-              ),
-            )
+            ),
           ],
         ),
       ),
@@ -119,39 +154,43 @@ class UserTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: idx.isEven
-          ? const Color.fromARGB(255, 245, 245, 220)
-          : const Color.fromARGB(255, 245, 200, 220),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: () {
-            log("${state.idx}");
-            state.idx = idx;
-            log("${state.idx}");
-            showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  content: Text('$idx'),
-                );
-              },
-            );
-          },
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(),
-                child: CircleAvatar(
-                  child: Image.asset('assets/images/ph.png'),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+      child: Container(
+        color: idx.isEven
+            ? const Color.fromARGB(255, 245, 245, 220)
+            : const Color.fromARGB(255, 245, 245, 220),
+        child: Padding(
+          // Size of the user boxes (icon and name)
+          padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
+          child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () {
+              log("${state.idx}");
+              state.idx = idx;
+              log("${state.idx}");
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    content: Text('$idx'),
+                  );
+                },
+              );
+            },
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(),
+                  child: CircleAvatar(
+                    child: Image.asset('assets/images/ph.png'),
+                  ),
                 ),
-              ),
-              const Text(
-                "Username",
-              ),
-            ],
+                const Text(
+                  "Username",
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -173,7 +212,7 @@ class UserInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double xSize = 400;
+    double xSize = 600;
     return Padding(
       padding: const EdgeInsets.all(80),
       child: Align(
@@ -181,13 +220,14 @@ class UserInfo extends StatelessWidget {
         // rectangle itself
         child: Container(
           decoration: BoxDecoration(
+            color: Colors.white,
             border: Border.all(),
             borderRadius: const BorderRadius.all(
               Radius.circular(5),
             ),
           ),
-          height: 1000,
-          width: 400,
+          height: 850,
+          width: 600,
           //Title of the rectangle
           child: Column(
             children: [

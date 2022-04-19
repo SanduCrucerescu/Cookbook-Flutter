@@ -1,25 +1,33 @@
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
 class Ingredient {
   final int id;
   final String name;
-  final double amount;
+  final int amount;
   final String unit;
   final double pricePerUnit;
-  final double amountFactor;
+  //final double amountFactor;
 
-  Ingredient(this.id, this.name, this.amount, this.unit, this.pricePerUnit,
-      this.amountFactor);
+  Ingredient(
+    this.id,
+    this.name,
+    this.amount,
+    this.unit,
+    this.pricePerUnit,
+    //this.amountFactor
+  );
 
   int get getId => id;
 
   String get getName => name;
 
-  double get getAmount => amount;
+  int get getAmount => amount;
 
   String get getUnit => unit;
 
   double get getPricePerUnit => pricePerUnit;
 
-  double get getAmountFactor => amountFactor;
+  //double get getAmountFactor => amountFactor;
 
   void set id(int id) {
     this.id = id;
@@ -29,7 +37,7 @@ class Ingredient {
     this.name = name;
   }
 
-  void set amount(double amount) {
+  void set amount(int amount) {
     if (amount >= 0) {
       this.amount = amount;
     } else {
@@ -49,7 +57,7 @@ class Ingredient {
     }
   }
 
-  void set amountFactor(double amountFactor) {
+  void set amountFactor(int amountFactor) {
     if (amountFactor >= 0) {
       this.amountFactor = amountFactor;
     } else {
@@ -57,15 +65,16 @@ class Ingredient {
     }
   }
 
-  String convertToString() {
+  @override
+  String toString() {
     return getName +
         ":" +
         getAmount.toString() +
         ":" +
         getUnit +
         ":" +
-        getPricePerUnit.toString() +
-        ":" +
-        getAmountFactor.toString();
+        getPricePerUnit.toString();
+    // ":" +
+    // getAmountFactor.toString();
   }
 }
