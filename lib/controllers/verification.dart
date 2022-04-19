@@ -1,9 +1,4 @@
-import 'dart:developer';
-
-import 'package:cookbook/db/database_manager.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mysql1/mysql1.dart';
+part of controllers;
 
 class Validator {
   static Future<bool> validate({Map<String, dynamic>? userInfo}) async {

@@ -7,8 +7,19 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class HomePage extends ConsumerWidget {
   static const String id = "/";
+  final int rows;
 
-  HomePage({Key? key}) : super(key: key);
+  HomePage.desktop({Key? key})
+      : rows = 3,
+        super(key: key);
+
+  HomePage.tablet({Key? key})
+      : rows = 2,
+        super(key: key);
+
+  HomePage.mobile({Key? key})
+      : rows = 1,
+        super(key: key);
 
   final responsivePorvider = ChangeNotifierProvider<ResponsiveNotifier>(
     (ref) => ResponsiveNotifier(),
@@ -23,7 +34,7 @@ class HomePage extends ConsumerWidget {
       state.genRecipes();
     }
 
-    state.checkWidth(size.width);
+    // state.checkWidth(size.width);
 
     log('rebuilding');
 
@@ -38,7 +49,7 @@ class HomePage extends ConsumerWidget {
           child: ListView.builder(
             physics: const AlwaysScrollableScrollPhysics(),
             cacheExtent: 50,
-            itemCount: state.rows,
+            itemCount: rows,
             shrinkWrap: true,
             itemBuilder: (ctx, i) => Container(
               child: state.recipes![i],

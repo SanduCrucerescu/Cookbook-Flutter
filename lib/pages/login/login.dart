@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'dart:math' as math;
 import 'package:cookbook/components/components.dart';
-import 'package:cookbook/controllers/verification.dart';
+import 'package:cookbook/controllers/controllers.dart';
 import 'package:cookbook/main.dart';
 import 'package:cookbook/pages/home/home_page.dart';
 import 'package:cookbook/pages/register/register.dart';

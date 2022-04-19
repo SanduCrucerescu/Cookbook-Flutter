@@ -1,4 +1,4 @@
-import 'package:cookbook/controllers/routes.dart';
+import 'package:cookbook/controllers/controllers.dart';
 import 'package:cookbook/pages/adminPage/adminpage.dart';
 import 'package:cookbook/pages/home/home_page.dart';
 import 'package:cookbook/pages/loadimage/load_image.dart';
@@ -96,7 +96,7 @@ class App extends StatelessWidget {
         fontFamily: 'Montserrat',
         primaryColor: kcPrimaryGreen,
       ),
-      initialRoute: MessagePage.id,
+      initialRoute: LoadingScreen.id,
       onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
