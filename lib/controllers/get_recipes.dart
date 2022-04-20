@@ -1,13 +1,8 @@
-import 'dart:developer';
-
 import 'package:cookbook/models/ingredient/ingredient.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
-
 import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/models/tag/tag.dart';
 import 'package:mysql1/mysql1.dart';
-import 'dart:typed_data';
-import 'dart:convert';
 
 class GetRecepies {
   late List<Recipe> _recepieList;
@@ -36,15 +31,12 @@ class GetRecepies {
           longDescription: rs[2].toString(),
           shortDescription: rs[2].toString(),
           instructions: rs[3].toString(),
-          // quantity: rs[6]
-          // picture: rs[7],
+          quantity: rs[6],
+          picture: rs[7],
           ingredients: await getIngredients(rs[0]),
           tags: await getTags(rs[0]));
       setRecipie(recipeClass);
     }
-    // for (Recipe recipe in recepieList) {
-    //   log(recipe.toString());
-    // }
   }
 
   Future<List<Ingredient>> getIngredients(int id) async {
@@ -79,6 +71,6 @@ class GetRecepies {
 
   @override
   String toString() {
-    return " " + recipeClass.getInstructions;
+    return " " + recipeClass.instructions;
   }
 }
