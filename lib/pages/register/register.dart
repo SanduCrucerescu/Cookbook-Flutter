@@ -97,6 +97,7 @@ class RegisterForm extends HookConsumerWidget {
               field["controller"] = useTextEditingController();
 
               return CustomTextField(
+                maxLines: 1,
                 width: 350,
                 height: 60,
                 margin: const EdgeInsets.all(10),
