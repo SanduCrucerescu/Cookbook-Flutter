@@ -70,6 +70,9 @@ class MessagePage extends HookConsumerWidget {
                 ),
                 Column(children: [
                   Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Colors.black)),
                     height: size.height - 200,
                     width: (size.width - 200) / 2,
                     margin: const EdgeInsets.only(bottom: 3),
@@ -132,6 +135,7 @@ class MessageWidget extends StatelessWidget {
       width: size.width / 4,
       margin: const EdgeInsets.all(2),
       decoration: BoxDecoration(
+        border: Border.all(color: Colors.black),
         color: Colors.white,
         borderRadius: BorderRadius.circular(5),
       ),
@@ -176,8 +180,6 @@ class ConversationWidget extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
 
     return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5), color: Colors.white),
       height: 100,
       width: size.width / 4,
       child: ListTile(
