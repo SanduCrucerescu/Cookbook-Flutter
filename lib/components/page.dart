@@ -3,10 +3,12 @@ part of components;
 class CustomPage extends HookConsumerWidget {
   final Widget child;
   final bool? showSearchBar;
+  final TextEditingController? controller;
 
   const CustomPage({
     required this.child,
     this.showSearchBar,
+    this.controller,
     Key? key,
   }) : super(key: key);
 
@@ -19,6 +21,7 @@ class CustomPage extends HookConsumerWidget {
             Align(
               alignment: Alignment.topCenter,
               child: NavBar(
+                controller: controller,
                 showSearchBar: showSearchBar ?? false,
               ),
             ),

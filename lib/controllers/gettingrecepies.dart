@@ -42,9 +42,9 @@ class GetRecepies {
           tags: await getTags(rs[0]));
       setRecipie(recipeClass);
     }
-    for (Recipe recipe in recepieList) {
-      log(recipe.toString());
-    }
+    // for (Recipe recipe in recepieList) {
+    //   log(recipe.toString());
+    // }
   }
 
   Future<List<Ingredient>> getIngredients(int id) async {

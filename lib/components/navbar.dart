@@ -9,6 +9,7 @@ class NavBar extends HookConsumerWidget {
   final Border? border;
   final bool showSearchBar;
   final double? height, width;
+  final TextEditingController? controller;
 
   const NavBar({
     this.backgroundColor = kcLightBeige,
@@ -20,11 +21,14 @@ class NavBar extends HookConsumerWidget {
     this.showSearchBar = true,
     this.width,
     this.height,
+    this.controller,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final teController = controller ?? useTextEditingController();
+
     Size size = MediaQuery.of(context).size;
     return Container(
       width: width ?? size.width,
@@ -47,18 +51,26 @@ class NavBar extends HookConsumerWidget {
             child: Image.asset('assets/images/temp_logo.png'),
           ),
           showSearchBar
-              ? CustomTextField(
-                  isShadow: false,
-                  height: 60,
-                  width: 700,
-                  prefixIcon: const Icon(
-                    Icons.expand_more,
-                    color: Colors.black,
-                    size: 35,
+              ? Form(
+                  onChanged: () {
+                    log('changed');
+                    InheritedLoginProvider.of(context)
+                        .setDisplayedRecipes(teController.text);
+                  },
+                  child: CustomTextField(
+                    controller: teController,
+                    isShadow: false,
+                    height: 60,
+                    width: 700,
+                    prefixIcon: const Icon(
+                      Icons.expand_more,
+                      color: Colors.black,
+                      size: 35,
+                    ),
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(
+                        color: kcMedGrey, width: 1, style: BorderStyle.solid),
                   ),
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(
-                      color: kcMedGrey, width: 1, style: BorderStyle.solid),
                 )
               : const SizedBox(),
           NavBarItemBackground(
