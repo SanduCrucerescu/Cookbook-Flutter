@@ -64,7 +64,7 @@ class searchadd extends HookConsumerWidget {
           Container(
             height: 40,
             width: 40,
-            color: Color(0xFFE4D5B7),
+            color: kcMedBeige,
             child: InkWell(
               onTap: () {
                 areyousure(context);

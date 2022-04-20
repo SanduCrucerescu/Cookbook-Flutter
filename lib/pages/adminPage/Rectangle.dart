@@ -1,4 +1,5 @@
 import 'package:cookbook/db/database_manager.dart';
+import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/pages/adminPage/adminpage.dart';
 import 'package:cookbook/pages/adminPage/searchAdd.dart';
 import 'package:cookbook/pages/adminPage/userTile.dart';
@@ -66,8 +67,8 @@ class UsersColumn extends StatefulWidget {
 
 class _UsersColumnState extends State<UsersColumn> {
   DatabaseManager? dbManager;
-  List<String> userEmails = [];
-  List<String> displayedEmails = [];
+  List<Member> members = [];
+  List<String> displayedmembers = [];
 
   @override
   void initState() {
@@ -76,10 +77,11 @@ class _UsersColumnState extends State<UsersColumn> {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       dbManager = await DatabaseManager.init();
 
-      Results? res =
-          await dbManager?.select(table: 'members', fields: ['email']);
+      Results? res = await dbManager?.select(table: 'members', fields: ['*']);
 
       for (var r in res!) {
+        final curr = Member(
+            r['name'], email, password, favorites, recipes, profilePicture);
         userEmails.add(r['email'].toString());
         // print(r['email']);
       }
@@ -91,7 +93,7 @@ class _UsersColumnState extends State<UsersColumn> {
   @override
   Widget build(BuildContext context) {
     displayedEmails = [];
-    print(widget.state.filteringString);
+    //print(widget.state.filteringString);
 
     for (String email in userEmails) {
       if (email.startsWith(widget.state.filteringString)) {
@@ -115,6 +117,7 @@ class _UsersColumnState extends State<UsersColumn> {
                   state: widget.state,
                   idx: idx,
                   email: displayedEmails[idx],
+                  userName: "TODO Create a query for usernames",
                 );
               },
             ),

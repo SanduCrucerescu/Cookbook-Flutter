@@ -54,14 +54,18 @@ class Admin extends ConsumerWidget {
 
 class SelectedUserChangeNotifier extends ChangeNotifier {
   int _idx = -1;
-  String userName = "Jeff";
-  String email = "jeff.bezos@amazon.com";
+  String _userName = "";
+  String _email = "";
   String image = "assets/images/ph.png";
   String _filteringString = '';
 
   String get filteringString => _filteringString;
 
   int get idx => _idx;
+
+  String get email => _email;
+
+  String get userName => _userName;
 
   set filteringString(String val) {
     _filteringString = val;
@@ -70,6 +74,16 @@ class SelectedUserChangeNotifier extends ChangeNotifier {
 
   set idx(int val) {
     _idx = val;
+    notifyListeners();
+  }
+
+  set email(String val) {
+    _email = val;
+    notifyListeners();
+  }
+
+  set userName(String val) {
+    _userName = val;
     notifyListeners();
   }
 }
