@@ -3,7 +3,7 @@ import 'package:cookbook/db/database_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'adminpage.dart';
+import 'admin_page.dart';
 
 class UserTile extends StatelessWidget {
   // TODO final Member member;

@@ -3,12 +3,12 @@ import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'adminpage.dart';
-import 'alertbox.dart';
+import 'admin_page.dart';
+import 'alert_box.dart';
 
-class searchadd extends HookConsumerWidget {
+class SearchAdd extends HookConsumerWidget {
   final SelectedUserChangeNotifier state;
-  const searchadd({Key? key, required this.state}) : super(key: key);
+  const SearchAdd({Key? key, required this.state}) : super(key: key);
 
   Widget build(BuildContext context, WidgetRef ref) {
     final tec = useTextEditingController();

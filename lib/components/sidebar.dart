@@ -213,7 +213,7 @@ class SideBarItemChangeNotifier extends ChangeNotifier {
   bool _hovering = false;
   bool _expanded = false;
   Color _backgroundColor = kcLightBeige;
-  Color _textColor = kcDarkGreen.withOpacity(.9);
+  Color _textColor = Colors.black;
 
   bool get hovering => _hovering;
   bool get expanded => _expanded;

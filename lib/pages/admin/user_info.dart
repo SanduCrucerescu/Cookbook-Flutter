@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'adminpage.dart';
+import 'admin_page.dart';
 
 class UserInfo extends StatelessWidget {
   final String text;

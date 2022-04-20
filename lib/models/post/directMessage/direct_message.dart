@@ -1,6 +1,5 @@
-import 'dart:html';
-
 import 'package:cookbook/models/member/member.dart';
+import 'package:cookbook/models/post/comment/comment.dart';
 import 'package:cookbook/models/post/post.dart';
 
 class DirectMessage extends Post {
