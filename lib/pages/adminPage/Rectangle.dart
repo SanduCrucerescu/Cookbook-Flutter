@@ -1,7 +1,6 @@
-import 'dart:developer';
-
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/pages/adminPage/adminpage.dart';
+import 'package:cookbook/pages/adminPage/alertbox.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -42,7 +41,7 @@ class Rectangle extends StatelessWidget {
               padding: const EdgeInsets.all(10.0),
               child: Column(
                 children: [
-                  SearchAddRemove(xSize),
+                  searchadd(),
                   UsersBox(state: state),
                 ],
               ),
@@ -69,71 +68,6 @@ class Rectangle extends StatelessWidget {
               );
             },
           ),
-        ),
-      ),
-    );
-  }
-
-  Container SearchAddRemove(double xSize) {
-    return Container(
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(
-          Radius.circular(5),
-        ),
-      ),
-      height: 40,
-      width: xSize,
-      child: Expanded(
-        child: Row(
-          children: [
-            Expanded(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: CustomTextField(
-                      width: 300,
-                      borderRadius: const BorderRadius.all(Radius.circular(5)),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(50, 0, 5, 0),
-              child: Expanded(
-                child: Container(
-                  height: 40,
-                  width: 40,
-                  color: kcMedBeige,
-                  child: InkWell(
-                    onTap: () {},
-                    child: Center(
-                      child: SizedBox(
-                        height: 30,
-                        width: 30,
-                        child: Image.asset('assets/images/add.png'),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              height: 40,
-              width: 40,
-              color: kcMedBeige,
-              child: InkWell(
-                onTap: () {},
-                child: Center(
-                  child: SizedBox(
-                    height: 30,
-                    width: 30,
-                    child: Image.asset('assets/images/Remove.png'),
-                  ),
-                ),
-              ),
-            ),
-          ],
         ),
       ),
     );
@@ -165,19 +99,7 @@ class UserTile extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
           child: GestureDetector(
             behavior: HitTestBehavior.translucent,
-            onTap: () {
-              log("${state.idx}");
-              state.idx = idx;
-              log("${state.idx}");
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    content: Text('$idx'),
-                  );
-                },
-              );
-            },
+            onTap: () {},
             child: Row(
               children: [
                 Padding(
@@ -251,6 +173,78 @@ class UserInfo extends StatelessWidget {
                 child: Text(
                     "Name: ${state.userName}\nEmail: ${state.email}\nImage: ${state.image}"),
               )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class searchadd extends StatelessWidget {
+  const searchadd({Key? key}) : super(key: key);
+
+  Widget build(BuildContext context) {
+    return Container(
+      child: Container(
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(5),
+          ),
+        ),
+        height: 40,
+        width: 400,
+        child: Expanded(
+          child: Row(
+            children: [
+              Expanded(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: CustomTextField(
+                        width: 300,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5)),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(50, 0, 5, 0),
+                child: Expanded(
+                  child: Container(
+                    height: 40,
+                    width: 40,
+                    color: kcMedBeige,
+                    child: InkWell(
+                      onTap: () {},
+                      child: Center(
+                        child: SizedBox(
+                          height: 30,
+                          width: 30,
+                          child: Image.asset('assets/images/add.png'),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                height: 40,
+                width: 40,
+                color: kcMedBeige,
+                child: InkWell(
+                  onTap: () {},
+                  child: Center(
+                    child: SizedBox(
+                      height: 30,
+                      width: 30,
+                      child: Image.asset('assets/images/Remove.png'),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
