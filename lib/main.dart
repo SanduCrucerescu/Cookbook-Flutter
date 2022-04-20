@@ -1,6 +1,16 @@
 import 'dart:developer';
 import 'package:cookbook/controllers/controllers.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
+
+import 'package:cookbook/models/recipe/recipe.dart';
+import 'package:cookbook/pages/adminPage/adminpage.dart';
+import 'package:cookbook/pages/home/home_page.dart';
+import 'package:cookbook/pages/loadimage/load_image.dart';
+import 'package:cookbook/pages/login/login.dart';
+import 'package:cookbook/pages/messages/message_screen.dart';
+import 'package:cookbook/pages/recipeadd/recipe_add.dart';
+
+import 'package:cookbook/pages/register/register.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -125,7 +135,7 @@ class App extends StatelessWidget {
           fontFamily: 'Montserrat',
           primaryColor: kcMedBeige,
         ),
-        initialRoute: Admin.id,
+        initialRoute: LoadingScreen.id,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );
