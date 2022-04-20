@@ -39,7 +39,7 @@ class UserInfo extends StatelessWidget {
                 width: xSize,
                 alignment: Alignment.topCenter,
                 child: Text(
-                  "Current User:${state.idx}",
+                  "${state.email}",
                   style: const TextStyle(fontSize: 20),
                 ),
               ),

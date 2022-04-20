@@ -40,14 +40,6 @@ class UserTile extends StatelessWidget {
             onTap: () {
               state.email = email;
               state.userName = userName;
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    content: Text(email + " " + userName),
-                  );
-                },
-              );
             },
             child: Row(
               children: [

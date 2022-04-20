@@ -33,7 +33,7 @@ class searchadd extends HookConsumerWidget {
                     },
                     onClickSuffix: () {
                       tec.clear();
-                      state.filteringString = '';
+                      state.filteringString = ''; //  Fix (x) Button
                     },
                     controller: tec,
                     width: 300,
@@ -89,15 +89,15 @@ class searchadd extends HookConsumerWidget {
       builder: (context) {
         return AlertDialog(
           title: Center(child: Text("Delete User")),
-          content: Text("Are you sure you want to delete User ${state.idx}?"),
+          content: Text("Are you sure you want to delete User ${state.email}?"),
           actions: <Widget>[
             TextButton(
-              onPressed: () => Navigator.pop(context, 'Cancel'),
+              onPressed: () => Navigator.pop(context, 'Abort'),
               child: const Text('Abort', style: TextStyle(color: Colors.green)),
             ),
             TextButton(
               onPressed: () =>
-                  Navigator.pop(context, 'OK'), // Replace with query
+                  Navigator.pop(context, 'Delete'), // Replace with query
               child: const Text('Delete',
                   style: TextStyle(color: Colors.redAccent)),
             ),

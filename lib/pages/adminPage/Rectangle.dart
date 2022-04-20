@@ -67,9 +67,10 @@ class UsersColumn extends StatefulWidget {
 
 class _UsersColumnState extends State<UsersColumn> {
   DatabaseManager? dbManager;
-  List<Member> members = [];
-  List<String> displayedmembers = [];
-
+  //List<Member> members = [];
+  //List<String> displayedmembers = [];
+  List<String> displayedEmails = [];
+  List<String> userEmails = [];
   @override
   void initState() {
     super.initState();
@@ -77,12 +78,11 @@ class _UsersColumnState extends State<UsersColumn> {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       dbManager = await DatabaseManager.init();
 
-      Results? res = await dbManager?.select(table: 'members', fields: ['*']);
+      Results? res =
+          await dbManager?.select(table: 'members', fields: ['email']);
 
       for (var r in res!) {
-        final curr = Member(
-            r['name'], email, password, favorites, recipes, profilePicture);
-        userEmails.add(r['email'].toString());
+        userEmails.add(r['email']);
         // print(r['email']);
       }
       displayedEmails = userEmails;
@@ -102,7 +102,10 @@ class _UsersColumnState extends State<UsersColumn> {
     }
 
     if (userEmails.isEmpty) {
-      return const CircularProgressIndicator();
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
+        child: Column(children: [const CircularProgressIndicator()]),
+      );
     } else {
       return Expanded(
         child: Padding(
