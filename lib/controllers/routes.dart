@@ -1,16 +1,4 @@
-<<<<<<< HEAD
 part of controllers;
-=======
-import 'package:cookbook/pages/adminPage/adminpage.dart';
-import 'package:cookbook/pages/home/home_page.dart';
-import 'package:cookbook/pages/loadimage/load_image.dart';
-import 'package:cookbook/pages/loading/loading_page.dart';
-import 'package:cookbook/pages/login/login.dart';
-import 'package:cookbook/pages/messages/message_screen.dart';
-import 'package:cookbook/pages/recipeadd/recipe_add.dart';
-import 'package:cookbook/pages/register/register.dart';
-import 'package:flutter/material.dart';
->>>>>>> 02a8a94 (Add recipe UI ~80% done)
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {

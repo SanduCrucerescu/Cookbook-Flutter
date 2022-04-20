@@ -79,7 +79,7 @@ class Ui_Components extends HookConsumerWidget {
               hintText: "Description",
               controller: useTextEditingController(),
               obscureText: false,
-              minLines: 4,
+              maxLines: 4,
             ),
             CustomTextField(
               height: 200,
@@ -87,7 +87,7 @@ class Ui_Components extends HookConsumerWidget {
               hintText: "Instructions",
               controller: useTextEditingController(),
               obscureText: false,
-              minLines: 5,
+              maxLines: 5,
             )
           ],
         ),
