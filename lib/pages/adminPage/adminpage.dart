@@ -1,5 +1,5 @@
 import 'package:cookbook/components/components.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:cookbook/pages/adminPage/userInfo.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'Rectangle.dart';
