@@ -1,11 +1,8 @@
 import 'dart:developer';
 import 'package:cookbook/controllers/controllers.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
-<<<<<<< HEAD
 import 'package:cookbook/pages/adminPage/adminpage.dart';
 import 'package:cookbook/pages/login/login.dart';
-=======
->>>>>>> 5c248ee (Added Filtering for recipes)
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -130,7 +127,7 @@ class App extends StatelessWidget {
           fontFamily: 'Montserrat',
           primaryColor: kcMedBeige,
         ),
-        initialRoute: LoginPage.id,
+        initialRoute: Admin.id,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );

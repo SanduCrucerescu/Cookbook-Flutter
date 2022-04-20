@@ -5,25 +5,24 @@ import '../recipe/recipe.dart';
 class Member {
   final String name;
   final String email;
-  final String password;
-  final List<Recipe> favorites;
-  final List<Recipe> recipes;
-  final Blob profilePicture;
+  // final String password;
+  // final List<Recipe> favorites;
+  // final List<Recipe> recipes;
+  // final Blob profilePicture;
 
-  Member(this.name, this.email, this.password, this.favorites, this.recipes,
-      this.profilePicture);
+  Member(this.name, this.email);
 
   String get getName => name;
 
   String get getEmail => email;
 
-  String get getPassword => password;
+  // String get getPassword => password;
 
-  List<Recipe> get getFavorites => favorites;
+  // List<Recipe> get getFavorites => favorites;
 
-  List<Recipe> get getRecipes => recipes;
+  // List<Recipe> get getRecipes => recipes;
 
-  Blob get getProfilePicture => profilePicture;
+  // Blob get getProfilePicture => profilePicture;
 
   void set name(String name) {
     this.name = name;
@@ -49,31 +48,32 @@ class Member {
     this.profilePicture = profilePicture;
   }
 
-  void addFavorite(Recipe recipe) {
-    favorites.add(recipe);
-  }
+//   void addFavorite(Recipe recipe) {
+//     favorites.add(recipe);
+//   }
 
-  void addRecipe(Recipe recipe) {
-    recipes.add(recipe);
-  }
+//   void addRecipe(Recipe recipe) {
+//     recipes.add(recipe);
+//   }
 
-  void removeFavorite(Recipe favoriteRecipe) {
-    int favoriteID = favoriteRecipe.getId;
-    for (Recipe recipe in favorites) {
-      int recipeId = recipe.getId;
-      if (recipeId == favoriteID) {
-        favorites.remove(recipe);
-      }
-    }
-  }
+//   void removeFavorite(Recipe favoriteRecipe) {
+//     int favoriteID = favoriteRecipe.getId;
+//     for (Recipe recipe in favorites) {
+//       int recipeId = recipe.getId;
+//       if (recipeId == favoriteID) {
+//         favorites.remove(recipe);
+//       }
+//     }
+//   }
 
-  void removeRecipe(Recipe removeRecipe) {
-    int removeRecipeID = removeRecipe.getId;
-    for (Recipe recipe in recipes) {
-      int recipeId = recipe.getId;
-      if (recipeId == removeRecipeID) {
-        recipes.remove(recipe);
-      }
-    }
-  }
+//   void removeRecipe(Recipe removeRecipe) {
+//     int removeRecipeID = removeRecipe.getId;
+//     for (Recipe recipe in recipes) {
+//       int recipeId = recipe.getId;
+//       if (recipeId == removeRecipeID) {
+//         recipes.remove(recipe);
+//       }
+//     }
+//   }
+// }
 }

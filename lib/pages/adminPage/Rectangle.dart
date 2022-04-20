@@ -67,10 +67,9 @@ class UsersColumn extends StatefulWidget {
 
 class _UsersColumnState extends State<UsersColumn> {
   DatabaseManager? dbManager;
-  //List<Member> members = [];
-  //List<String> displayedmembers = [];
-  List<String> displayedEmails = [];
-  List<String> userEmails = [];
+  List<Member> members = [];
+  List<Member> displayedmembers = [];
+
   @override
   void initState() {
     super.initState();
@@ -78,30 +77,30 @@ class _UsersColumnState extends State<UsersColumn> {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       dbManager = await DatabaseManager.init();
 
-      Results? res =
-          await dbManager?.select(table: 'members', fields: ['email']);
+      Results? res = await dbManager?.select(table: 'members', fields: ['*']);
 
       for (var r in res!) {
-        userEmails.add(r['email']);
-        // print(r['email']);
+        final curr = Member(r['username'], r["email"]);
+        members.add(curr); // Something wrong here
       }
-      displayedEmails = userEmails;
+      displayedmembers = members;
+      print(displayedmembers); // Idk why it wont work without
       setState(() {});
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    displayedEmails = [];
+    displayedmembers = [];
     //print(widget.state.filteringString);
 
-    for (String email in userEmails) {
-      if (email.startsWith(widget.state.filteringString)) {
-        displayedEmails.add(email);
+    for (Member member in members) {
+      if (member.email.startsWith(widget.state.filteringString)) {
+        displayedmembers.add(member);
       }
     }
 
-    if (userEmails.isEmpty) {
+    if (members.isEmpty) {
       return Padding(
         padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
         child: Column(children: [const CircularProgressIndicator()]),
@@ -114,13 +113,13 @@ class _UsersColumnState extends State<UsersColumn> {
             isAlwaysShown: true,
             showTrackOnHover: true,
             child: ListView.builder(
-              itemCount: displayedEmails.length,
+              itemCount: displayedmembers.length,
               itemBuilder: (BuildContext context, int idx) {
                 return UserTile(
                   state: widget.state,
                   idx: idx,
-                  email: displayedEmails[idx],
-                  userName: "TODO Create a query for usernames",
+                  email: displayedmembers[idx].email,
+                  userName: displayedmembers[idx].name,
                 );
               },
             ),
