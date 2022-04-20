@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cookbook/models/ingredient/ingredient.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
 
@@ -41,7 +43,7 @@ class GetRecepies {
       setRecipie(recipeClass);
     }
     for (Recipe recipe in recepieList) {
-      print(recipe.toString());
+      log(recipe.toString());
     }
   }
 

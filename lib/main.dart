@@ -1,15 +1,17 @@
-import 'package:cookbook/controllers/routes.dart';
+import 'dart:developer';
+
+import 'package:cookbook/controllers/controllers.dart';
+import 'package:cookbook/controllers/gettingrecepies.dart';
+import 'package:cookbook/models/recipe/recipe.dart';
 import 'package:cookbook/pages/adminPage/adminpage.dart';
 import 'package:cookbook/pages/home/home_page.dart';
 import 'package:cookbook/pages/loadimage/load_image.dart';
 import 'package:cookbook/pages/login/login.dart';
 import 'package:cookbook/pages/messages/message_screen.dart';
-
 import 'package:cookbook/pages/register/register.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
 import 'pages/loading/loading_page.dart';
 
 void main() {
@@ -37,6 +39,18 @@ class _InheritedLoginProviderWrapperState
   Map<String?, dynamic>? userData;
   bool isLoggedIn = false;
   String currPageID = LoadingScreen.id;
+  List<Recipe> _recipes = [];
+
+  List<Recipe> get recipes {
+    log('getting recipes from inherited provider');
+    return _recipes;
+  }
+
+  set recipes(List<Recipe> newRecipes) {
+    setState(() {
+      _recipes = newRecipes;
+    });
+  }
 
   void update() {
     setState(() {
@@ -91,12 +105,16 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'cookbook',
-      theme: ThemeData(
-        fontFamily: 'Montserrat',
-        primaryColor: kcPrimaryGreen,
+    return InheritedLoginProviderWrapper(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'cookbook',
+        theme: ThemeData(
+          fontFamily: 'Montserrat',
+          primaryColor: kcMedBeige,
+        ),
+        initialRoute: LoadingScreen.id,
+        onGenerateRoute: RouteGenerator.generateRoute,
       ),
       initialRoute: Admin.id,
       onGenerateRoute: RouteGenerator.generateRoute,

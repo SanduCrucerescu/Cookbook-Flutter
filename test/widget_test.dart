@@ -9,9 +9,6 @@ import 'dart:typed_data';
 void main() {
   test('testing connection to database', () async {
     final DatabaseManager dbManager = await DatabaseManager.init();
-    // final DatabaseManager dbManager = DatabaseManager();
-
-    // dbManager.connect();
 
     Results? res = await dbManager.select(
       table: 'recipes',
@@ -45,7 +42,7 @@ void main() {
       "email": "Jeff",
       "password": "Amazon",
       "username": "JeffBezos",
-      "profile_picture": 
+      "profile_picture": '',
     });
   });
 }

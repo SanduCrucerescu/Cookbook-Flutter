@@ -1,30 +1,23 @@
-import 'package:cookbook/pages/adminPage/adminpage.dart';
-import 'package:cookbook/pages/home/home_page.dart';
-import 'package:cookbook/pages/loadimage/load_image.dart';
-import 'package:cookbook/pages/loading/loading_page.dart';
-import 'package:cookbook/pages/login/login.dart';
-import 'package:cookbook/pages/messages/message_screen.dart';
-import 'package:cookbook/pages/register/register.dart';
-import 'package:flutter/material.dart';
+part of controllers;
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     // Getting arguments passed in while calling Navigator.pushNamed
-    final args = settings.arguments;
+    final Object? args = settings.arguments;
 
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(
-          builder: (_) => HomePage(),
+          builder: (_) => ResponsiveHomePageBuilder(),
         );
       case '/login':
         // Validation of correct data type
         return MaterialPageRoute(
-          builder: (_) => const LoginPage(),
+          builder: (_) => LoginPage(),
         );
       case '/loading':
         return MaterialPageRoute(
-          builder: (_) => LoadingScreen(),
+          builder: (_) => const LoadingScreen(),
         );
       case '/register':
         return MaterialPageRoute(

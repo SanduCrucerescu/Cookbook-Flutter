@@ -1,10 +1,16 @@
 import 'dart:async';
+import 'dart:developer';
+import 'package:cookbook/controllers/gettingrecepies.dart';
+import 'package:cookbook/main.dart';
+import 'package:cookbook/pages/home/home_page.dart';
+import 'package:cookbook/pages/login/login.dart';
 import 'package:flutter/material.dart';
-import '../login/login.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
 class LoadingScreen extends StatefulWidget {
   static const String id = "/loading";
+
+  const LoadingScreen({Key? key}) : super(key: key);
   @override
   _LoadingScreenState createState() => _LoadingScreenState();
 }
@@ -13,8 +19,22 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 5),
-        () => Navigator.of(context).pushNamed(LoginPage.id));
+
+    Timer(
+      const Duration(seconds: 5),
+      () => Navigator.of(context).pushNamed(HomePage.id),
+    );
+
+    WidgetsBinding.instance?.addPostFrameCallback((_) async {
+      await fetchRecipes();
+      log('${InheritedLoginProvider.of(context).recipes}');
+    });
+  }
+
+  Future<void> fetchRecipes() async {
+    GetRecepies getrecepies = GetRecepies();
+    await getrecepies.getrecep();
+    InheritedLoginProvider.of(context).recipes = getrecepies.recepieList;
   }
 
   @override

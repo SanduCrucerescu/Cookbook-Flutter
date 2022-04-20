@@ -1,10 +1,4 @@
-import 'dart:developer';
-
-import 'package:cookbook/controllers/gettingrecepies.dart';
-import 'package:cookbook/db/database_manager.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mysql1/mysql1.dart';
+part of controllers;
 
 class Validator {
   Future<bool> validate({Map<String, dynamic>? userInfo}) async {
@@ -20,12 +14,12 @@ class Validator {
     //abolandr@gnu.org
     //xbsxysKe53
     int result = 0;
-    GetRecepies getrecepies = GetRecepies();
+    // GetRecepies getrecepies = GetRecepies();
     for (var rs in res!) {
       result = rs[0];
     }
     if (result == 1) {
-      await getrecepies.getrecep();
+      // await getrecepies.getrecep();
       //print(getrecepies.recepieList);
       return true;
     } else {
