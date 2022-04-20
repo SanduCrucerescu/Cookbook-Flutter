@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:cookbook/db/database_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -8,9 +9,11 @@ class UserTile extends StatelessWidget {
   // TODO final Member member;
   final int idx;
   final SelectedUserChangeNotifier state;
+  final String email;
 
   const UserTile({
     // TODO required this.member,
+    required this.email,
     required this.idx,
     required this.state,
     Key? key,
@@ -50,8 +53,8 @@ class UserTile extends StatelessWidget {
                     child: Image.asset('assets/images/ph.png'),
                   ),
                 ),
-                const Text(
-                  "Username",
+                Text(
+                  email,
                 ),
               ],
             ),
