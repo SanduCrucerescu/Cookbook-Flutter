@@ -30,9 +30,6 @@ class InboxWidget extends StatelessWidget {
         onTap: () {
           print("Helo");
         },
-        onHover: (val) {
-          print(val);
-        },
         child: ListTile(
           leading: CircleAvatar(
             child: Image.asset('assets/images/ph.png'),
@@ -43,9 +40,11 @@ class InboxWidget extends StatelessWidget {
             height: 30,
             width: 30,
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                print("hello");
+              },
               style: TextButton.styleFrom(primary: Colors.black),
-              child: Text("X"),
+              child: const Text("X"),
             ),
           ),
         ),
