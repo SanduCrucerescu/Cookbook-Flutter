@@ -4,22 +4,23 @@ import 'package:cookbook/main.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class HomePage extends ConsumerWidget {
+class HomePage extends HookConsumerWidget {
   static const String id = "/";
-  final int rows;
+  final int cols;
 
   HomePage.desktop({Key? key})
-      : rows = 3,
+      : cols = 3,
         super(key: key);
 
   HomePage.tablet({Key? key})
-      : rows = 2,
+      : cols = 2,
         super(key: key);
 
   HomePage.mobile({Key? key})
-      : rows = 1,
+      : cols = 1,
         super(key: key);
 
   final responsivePorvider = ChangeNotifierProvider<ResponsiveNotifier>(
@@ -30,24 +31,17 @@ class HomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     Size size = MediaQuery.of(context).size;
     final state = ref.watch(responsivePorvider);
+    final tec = useTextEditingController();
 
-    if (state.recipes.isEmpty) {
-      log('recipes is empty');
-      // final recipes = InheritedLoginProvider.of(context).getRecipes();
-      state.getRecipesFromInheritedLoginProvider(
-        ctx: context,
-        allRecipes: InheritedLoginProvider.of(context).recipes,
-      );
-      log('got recipes');
-    }
-
-    // state.checkWidth(size.width);
-
-    log('rebuilding');
-    log('${state.recipes}');
-    log('${state.recipes.isEmpty}');
+    state.setRecipeBoxes(
+      ctx: context,
+      displayedRecipes: InheritedLoginProvider.of(context).displayedRecipes,
+      cols: cols,
+    );
 
     return CustomPage(
+      showSearchBar: true,
+      controller: tec,
       child: Container(
         color: kcLightBeige,
         height: size.height - 100,
@@ -73,40 +67,41 @@ class HomePage extends ConsumerWidget {
 }
 
 class ResponsiveNotifier extends ChangeNotifier {
-  int _cols = 3;
+  String _filteringString = '';
   List<Widget> _recipes = [];
   int rows = 10;
 
-  int get cols => _cols;
+  String get filteringString => _filteringString;
 
-  void getRecipesFromInheritedLoginProvider({
+  set filteringString(String val) {
+    _filteringString = val;
+    notifyListeners();
+  }
+
+  void setRecipeBoxes({
     required BuildContext ctx,
-    required List<Recipe> allRecipes,
+    required List<Recipe> displayedRecipes,
+    required int cols,
   }) async {
-    log('getting recipes from inherited login provider');
-
-    // final allRecipes = await InheritedLoginProvider.of(ctx).getRecipes();
-
     _recipes = [];
 
-    for (int i = 0; i < allRecipes.length; i += cols) {
+    for (int i = 0; i < displayedRecipes.length; i += cols) {
       log(i.toString());
       _recipes.add(
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: List.generate(
-            i + cols > allRecipes.length
-                ? cols - allRecipes.length % cols
+            i + cols > displayedRecipes.length
+                ? cols - displayedRecipes.length % cols
                 : cols,
             (idx) => Center(
               child: RecipeBox(
-                recipe: allRecipes[i + idx],
+                recipe: displayedRecipes[i + idx],
               ),
             ),
           ),
         ),
       );
-      log('$recipes');
     }
   }
 
@@ -114,37 +109,4 @@ class ResponsiveNotifier extends ChangeNotifier {
     log('get _recipes');
     return _recipes;
   }
-
-  set cols(int val) {
-    _cols = val;
-    log('$val');
-    notifyListeners();
-  }
-
-  void checkWidth(double width) {
-    if (width < 1200) {
-      cols = 1;
-    } else if (width < 1600) {
-      cols = 2;
-    } else {
-      cols = 3;
-    }
-  }
-
-  // void genRecipes() {
-  //   log('generating recipes');
-  //   _recipes = List.generate(
-  //     rows,
-  //     (int idx) => Row(
-  //       mainAxisAlignment: MainAxisAlignment.spaceAround,
-  //       children: List.generate(
-  //         cols,
-  //         (int jdx) => const Center(
-  //           child: RecipeBox(),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  //   // notifyListeners();
-  // }
 }

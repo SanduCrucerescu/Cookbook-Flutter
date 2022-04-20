@@ -1,9 +1,11 @@
 import 'dart:developer';
-
 import 'package:cookbook/controllers/controllers.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
+<<<<<<< HEAD
 import 'package:cookbook/pages/adminPage/adminpage.dart';
 import 'package:cookbook/pages/login/login.dart';
+=======
+>>>>>>> 5c248ee (Added Filtering for recipes)
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -35,10 +37,25 @@ class _InheritedLoginProviderWrapperState
   bool isLoggedIn = false;
   String currPageID = LoadingScreen.id;
   List<Recipe> _recipes = [];
+  List<Recipe> _displayedRecipes = [];
 
-  List<Recipe> get recipes {
-    log('getting recipes from inherited provider');
-    return _recipes;
+  List<Recipe> get recipes => _recipes;
+
+  List<Recipe> get displayedRecipes {
+    log('getting displayed recipes');
+    return _displayedRecipes;
+  }
+
+  void setDisplayedRecipes(String filterinString) {
+    log('setting displayed recipes with: "$filterinString"');
+    _displayedRecipes = [];
+    for (Recipe r in recipes) {
+      if (r.title.toUpperCase().startsWith(filterinString.toUpperCase())) {
+        log(r.title);
+        _displayedRecipes.add(r);
+      }
+    }
+    setState(() {});
   }
 
   set recipes(List<Recipe> newRecipes) {
@@ -47,10 +64,9 @@ class _InheritedLoginProviderWrapperState
     });
   }
 
-  void update() {
+  set displayedRecipes(List<Recipe> newRecipes) {
     setState(() {
-      isLoggedIn = false;
-      isLoggedIn = true;
+      _displayedRecipes = newRecipes;
     });
   }
 
@@ -67,6 +83,8 @@ class _InheritedLoginProviderWrapperState
       child: widget.child,
       data: this,
       isLoggedIn: isLoggedIn,
+      recipes: recipes,
+      displayedRecipes: displayedRecipes,
     );
   }
 }
@@ -75,8 +93,11 @@ class InheritedLoginProvider extends InheritedWidget {
   final bool isLoggedIn;
   final Widget child;
   final _InheritedLoginProviderWrapperState data;
+  final List<Recipe> recipes, displayedRecipes;
 
   const InheritedLoginProvider({
+    required this.recipes,
+    required this.displayedRecipes,
     required this.data,
     required this.isLoggedIn,
     required this.child,
@@ -91,7 +112,8 @@ class InheritedLoginProvider extends InheritedWidget {
 
   @override
   bool updateShouldNotify(covariant InheritedLoginProvider oldWidget) {
-    return isLoggedIn != oldWidget.isLoggedIn;
+    return isLoggedIn != oldWidget.isLoggedIn ||
+        displayedRecipes != oldWidget.displayedRecipes;
   }
 }
 
