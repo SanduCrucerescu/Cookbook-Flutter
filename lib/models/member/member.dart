@@ -78,7 +78,10 @@ class Member {
   }
 }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 // class Member {
 //   final String name;
 //   final String email;
@@ -142,4 +145,7 @@ class Member {
 //     return getName + getEmail;
 //   }
 // }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
