@@ -47,7 +47,7 @@ class CustomTextField extends ConsumerWidget {
     this.isShadow = true,
     this.duration = const Duration(milliseconds: 300),
     this.minLines = 1,
-    this.maxLines = 1,
+    this.maxLines = 7,
     this.validator,
     this.fontStyle,
     this.autofillHints,
