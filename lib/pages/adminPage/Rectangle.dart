@@ -80,7 +80,7 @@ class _UsersColumnState extends State<UsersColumn> {
       Results? res = await dbManager?.select(table: 'members', fields: ['*']);
 
       for (var r in res!) {
-        final curr = Member(r['username'], r["email"], r["password"]);
+        final curr = Member(r['username'], r['email'], r['password']);
         members.add(curr); // Something wrong here
       }
       displayedmembers = members;
