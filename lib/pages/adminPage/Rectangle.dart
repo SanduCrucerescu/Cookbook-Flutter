@@ -1,6 +1,7 @@
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/pages/adminPage/adminpage.dart';
 import 'package:cookbook/pages/adminPage/alertbox.dart';
+import 'package:cookbook/pages/register/register.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -218,7 +219,7 @@ class searchadd extends StatelessWidget {
                     width: 40,
                     color: kcMedBeige,
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () => addMemberFromAdmin(context),
                       child: Center(
                         child: SizedBox(
                           height: 30,
