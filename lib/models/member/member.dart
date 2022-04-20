@@ -67,11 +67,6 @@ class Member {
 
   factory Member.fromJson(String source) => Member.fromMap(json.decode(source));
 }
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
 // class Member {
 //   final String name;
 //   final String email;
@@ -135,7 +130,3 @@ class Member {
 //     return getName + getEmail;
 //   }
 // }
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
