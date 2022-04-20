@@ -27,12 +27,12 @@ class MessagePage extends HookConsumerWidget {
 
     return Scaffold(
       body: Container(
-        color: Colors.grey[300],
+        color: const Color(0xFFE3DBCA),
         height: size.height,
         width: size.width,
         child: Column(
           children: [
-            NavBar(
+            const NavBar(
               showSearchBar: false,
             ),
             Row(
@@ -75,7 +75,7 @@ class MessagePage extends HookConsumerWidget {
                       },
                     ),
                   ),
-                  MessageTextField(),
+                  const MessageTextField(),
                 ]),
               ],
             ),
