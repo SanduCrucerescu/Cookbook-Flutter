@@ -13,7 +13,7 @@ class ResponsiveHomePageBuilder extends ConsumerWidget {
 
     if (width < 1200) {
       return HomePage.mobile();
-    } else if (width < 1600) {
+    } else if (width < 1680) {
       return HomePage.tablet();
     } else {
       return HomePage.desktop();

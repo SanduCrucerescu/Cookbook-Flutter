@@ -23,6 +23,7 @@ class MessagePage extends HookConsumerWidget {
     ScrollController sc2 = useScrollController();
     final state = ref.watch(messagesProvider);
     Size size = MediaQuery.of(context).size;
+    final tec = useTextEditingController();
 
     return Scaffold(
       body: Container(
@@ -31,7 +32,7 @@ class MessagePage extends HookConsumerWidget {
         width: size.width,
         child: Column(
           children: [
-            const NavBar(
+            NavBar(
               showSearchBar: false,
             ),
             Row(
