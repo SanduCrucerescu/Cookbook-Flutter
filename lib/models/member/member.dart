@@ -5,12 +5,12 @@ import '../recipe/recipe.dart';
 class Member {
   final String name;
   final String email;
-  // final String password;
+  final String password;
   // final List<Recipe> favorites;
   // final List<Recipe> recipes;
   // final Blob profilePicture;
 
-  Member(this.name, this.email);
+  Member(this.name, this.email, this.password);
 
   String get getName => name;
 

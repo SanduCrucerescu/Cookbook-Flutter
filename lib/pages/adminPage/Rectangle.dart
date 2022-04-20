@@ -80,11 +80,11 @@ class _UsersColumnState extends State<UsersColumn> {
       Results? res = await dbManager?.select(table: 'members', fields: ['*']);
 
       for (var r in res!) {
-        final curr = Member(r['username'], r["email"]);
+        final curr = Member(r['username'], r["email"], r["password"]);
         members.add(curr); // Something wrong here
       }
       displayedmembers = members;
-      print(displayedmembers); // Idk why it wont work without
+      print(displayedmembers[0].password); // Idk why it wont work without
       setState(() {});
     });
   }
