@@ -116,6 +116,8 @@ class App extends StatelessWidget {
         initialRoute: LoadingScreen.id,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
+      initialRoute: Admin.id,
+      onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
 }

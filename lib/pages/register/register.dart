@@ -51,7 +51,9 @@ class RegisterPage extends ConsumerWidget {
 }
 
 class RegisterForm extends HookConsumerWidget {
-  RegisterForm({Key? key}) : super(key: key);
+  final bool showShadow;
+
+  RegisterForm({this.showShadow = true, Key? key}) : super(key: key);
 
   final photoProvider = ChangeNotifierProvider<VerificationChangeNotifier>(
     (ref) => VerificationChangeNotifier(),
@@ -76,7 +78,7 @@ class RegisterForm extends HookConsumerWidget {
         decoration: BoxDecoration(
             border: Border.all(
                 color: Colors.black, width: .5, style: BorderStyle.solid),
-            boxShadow: ksStandardBoxShadow,
+            boxShadow: showShadow ? ksStandardBoxShadow : null,
             color: Colors.white),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
