@@ -57,8 +57,16 @@ class SelectedUserChangeNotifier extends ChangeNotifier {
   String userName = "Jeff";
   String email = "jeff.bezos@amazon.com";
   String image = "assets/images/ph.png";
+  String _filteringString = '';
+
+  String get filteringString => _filteringString;
 
   int get idx => _idx;
+
+  set filteringString(String val) {
+    _filteringString = val;
+    notifyListeners();
+  }
 
   set idx(int val) {
     _idx = val;

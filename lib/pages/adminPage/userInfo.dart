@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'adminpage.dart';
 
@@ -36,24 +35,22 @@ class UserInfo extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                decoration: BoxDecoration(
-                  border: Border.all(),
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(5),
-                  ),
-                ),
                 height: 40,
                 width: xSize,
                 alignment: Alignment.topCenter,
                 child: Text(
-                  "${state.idx}",
+                  "Current User:${state.idx}",
                   style: const TextStyle(fontSize: 20),
                 ),
               ),
-              Container(
-                alignment: Alignment.topLeft,
-                child: Text(
-                    "Name: ${state.userName}\nEmail: ${state.email}\nImage: ${state.image}"),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
+                child: Container(
+                  color: Color.fromARGB(255, 245, 245, 220),
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                      "Name: ${state.userName}\nEmail: ${state.email}\nImage: ${state.image}"),
+                ),
               )
             ],
           ),
