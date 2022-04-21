@@ -19,21 +19,25 @@ List<Map<String, dynamic>> kSideBarItems = [
       {
         "text": "W e e k l y",
         "onTap": HomePage.id,
-      }
+      },
+      {
+        "text": "M e s s a g e s",
+        "onTap": MessagePage.id,
+      },
     ],
   },
-  // {
-  //   "text": "W e e k l y",
-  //   "image": "assets/images/weekly.png",
-  //   "onTap": HomePage.id,
-  //   "children": [],
-  // },
-  // {
-  //   "text": "F a v o u r i t e s",
-  //   "image": "assets/images/starWhite.png",
-  //   "onTap": HomePage.id,
-  //   "children": [],
-  // },
+  {
+    "text": "L o a d i n g",
+    "onTap": LoadingScreen.id,
+    "image": "assets/images/starFilled.png",
+    "children": [],
+  },
+  {
+    "text": "A d d  r e c i p e",
+    "onTap": Recipe_Add.id,
+    "image": "assets/images/starFilled.png",
+    "children": [],
+  },
   {
     "text": "A d m i n",
     "image": "assets/images/starFilled.png",
