@@ -23,10 +23,10 @@ class Admin extends HookConsumerWidget {
     Size size = MediaQuery.of(context).size;
     // TODO: In Login Screen make Username: Admin return this page
     return (Scaffold(
-      backgroundColor: Color(0xFFE3DBCA),
+      backgroundColor: const Color(0xFFE3DBCA),
       body: Stack(
         children: [
-          NavBar(),
+          const NavBar(),
           SideBar(items: kSideBarItems),
           Padding(
             padding: const EdgeInsets.fromLTRB(200, 50, 0, 0),

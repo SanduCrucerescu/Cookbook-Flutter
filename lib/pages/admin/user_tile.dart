@@ -1,9 +1,12 @@
+<<<<<<< HEAD
 import 'dart:developer';
 import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/models/member/member.dart';
 import 'package:flutter/cupertino.dart';
+=======
+import 'package:cookbook/theme/colors.dart';
+>>>>>>> 5206413 (smol fixes v.2)
 import 'package:flutter/material.dart';
-
 import 'admin_page.dart';
 
 class UserTile extends StatelessWidget {
@@ -30,12 +33,16 @@ class UserTile extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
       child: Container(
 <<<<<<< HEAD
+<<<<<<< HEAD
         color: idx.isEven
             ? const Color.fromARGB(255, 245, 245, 220)
             : const Color.fromARGB(255, 245, 245, 220),
 =======
         color: idx.isEven ? kcMedBeige : kcLightBeige,
 >>>>>>> ecde988 (changed size of user info)
+=======
+        color: idx.isEven ? kcMedBeige : kcLightBeige, // <---- Colors here
+>>>>>>> 5206413 (smol fixes v.2)
         child: Padding(
           // Size of the user boxes (icon and name)
           padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),

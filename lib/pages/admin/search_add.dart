@@ -88,7 +88,7 @@ class SearchAdd extends HookConsumerWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Center(child: Text("Delete User")),
+          title: const Center(child: Text("Delete User")),
           content: Text("Are you sure you want to delete User ${state.email}?"),
           actions: <Widget>[
             TextButton(
