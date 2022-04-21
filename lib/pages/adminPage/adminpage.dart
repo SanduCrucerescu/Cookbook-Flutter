@@ -1,10 +1,12 @@
 import 'package:cookbook/components/components.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:cookbook/models/member/member.dart';
+import 'package:cookbook/pages/adminPage/userInfo.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'Rectangle.dart';
 
-class Admin extends ConsumerWidget {
+class Admin extends HookConsumerWidget {
   static const String id = "/admin";
 
   Admin({Key? key}) : super(key: key);
@@ -16,6 +18,7 @@ class Admin extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(selectUserProvider);
+    final tec = useTextEditingController();
 
     Size size = MediaQuery.of(context).size;
     // TODO: In Login Screen make Username: Admin return this page
@@ -23,7 +26,7 @@ class Admin extends ConsumerWidget {
       backgroundColor: Color(0xFFE3DBCA),
       body: Stack(
         children: [
-          const NavBar(),
+          NavBar(),
           SideBar(items: kSideBarItems),
           Padding(
             padding: const EdgeInsets.fromLTRB(200, 50, 0, 0),
@@ -54,14 +57,44 @@ class Admin extends ConsumerWidget {
 
 class SelectedUserChangeNotifier extends ChangeNotifier {
   int _idx = -1;
-  String userName = "Jeff";
-  String email = "jeff.bezos@amazon.com";
-  String image = "assets/images/ph.png";
+  Member? _currMember;
+  String _userName = "";
+  String _email = "";
+  Image image = Image.asset("assets/images/ph.png");
+  String _filteringString = '';
+
+  String get filteringString => _filteringString;
 
   int get idx => _idx;
 
+  String get email => _email;
+
+  String get userName => _userName;
+
+  Member? get currMember => _currMember;
+
+  set currMember(Member? member) {
+    _currMember = member;
+    notifyListeners();
+  }
+
+  set filteringString(String val) {
+    _filteringString = val;
+    notifyListeners();
+  }
+
   set idx(int val) {
     _idx = val;
+    notifyListeners();
+  }
+
+  set email(String val) {
+    _email = val;
+    notifyListeners();
+  }
+
+  set userName(String val) {
+    _userName = val;
     notifyListeners();
   }
 }

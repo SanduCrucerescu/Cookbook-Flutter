@@ -22,12 +22,12 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
     Timer(
       const Duration(seconds: 5),
-      () => Navigator.of(context).pushNamed(HomePage.id),
+      () => Navigator.of(context).pushNamed(LoginPage.id),
     );
 
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
       await fetchRecipes();
-      log('${InheritedLoginProvider.of(context).recipes}');
+      InheritedLoginProvider.of(context).setDisplayedRecipes('');
     });
   }
 

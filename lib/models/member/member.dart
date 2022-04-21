@@ -6,12 +6,17 @@ class Member {
   final String name;
   final String email;
   final String password;
-  final List<Recipe> favorites;
-  final List<Recipe> recipes;
-  final Blob profilePicture;
+  final List<Recipe>? favorites;
+  // final List<Recipe> recipes;
+  // final Blob? profilePicture;
 
-  Member(this.name, this.email, this.password, this.favorites, this.recipes,
-      this.profilePicture);
+  Member({
+    required this.name,
+    required this.email,
+    required this.password,
+    this.favorites,
+    // this.profilePicture,
+  });
 
   String get getName => name;
 
@@ -19,11 +24,11 @@ class Member {
 
   String get getPassword => password;
 
-  List<Recipe> get getFavorites => favorites;
+  List<Recipe>? get getFavorites => favorites;
 
-  List<Recipe> get getRecipes => recipes;
+  // List<Recipe> get getRecipes => recipes;
 
-  Blob get getProfilePicture => profilePicture;
+  //Blob get getProfilePicture => profilePicture;
 
   void set name(String name) {
     this.name = name;
@@ -37,7 +42,7 @@ class Member {
     this.password = password;
   }
 
-  void set favorites(List<Recipe> favorites) {
+  void set favorites(List<Recipe>? favorites) {
     this.favorites = favorites;
   }
 
@@ -49,31 +54,32 @@ class Member {
     this.profilePicture = profilePicture;
   }
 
-  void addFavorite(Recipe recipe) {
-    favorites.add(recipe);
-  }
+  // void addFavorite(Recipe recipe) {
+  //   favorites.add(recipe);
+  // }
 
-  void addRecipe(Recipe recipe) {
-    recipes.add(recipe);
-  }
+//   void addRecipe(Recipe recipe) {
+//     recipes.add(recipe);
+//   }
 
-  void removeFavorite(Recipe favoriteRecipe) {
-    int favoriteID = favoriteRecipe.getId;
-    for (Recipe recipe in favorites) {
-      int recipeId = recipe.getId;
-      if (recipeId == favoriteID) {
-        favorites.remove(recipe);
-      }
-    }
-  }
+  // void removeFavorite(Recipe favoriteRecipe) {
+  //   int favoriteID = favoriteRecipe.getId;
+  //   for (Recipe recipe in favorites) {
+  //     int recipeId = recipe.getId;
+  //     if (recipeId == favoriteID) {
+  //       favorites.remove(recipe);
+  //     }
+  //   }
+  // }
 
-  void removeRecipe(Recipe removeRecipe) {
-    int removeRecipeID = removeRecipe.getId;
-    for (Recipe recipe in recipes) {
-      int recipeId = recipe.getId;
-      if (recipeId == removeRecipeID) {
-        recipes.remove(recipe);
-      }
-    }
-  }
+//   void removeRecipe(Recipe removeRecipe) {
+//     int removeRecipeID = removeRecipe.getId;
+//     for (Recipe recipe in recipes) {
+//       int recipeId = recipe.getId;
+//       if (recipeId == removeRecipeID) {
+//         recipes.remove(recipe);
+//       }
+//     }
+//   }
+// }
 }
