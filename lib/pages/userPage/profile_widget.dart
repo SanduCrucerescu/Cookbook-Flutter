@@ -40,8 +40,8 @@ class ProfileWidget extends StatelessWidget {
         child: Ink.image(
           image: image,
           fit: BoxFit.cover,
-          width: 250,
-          height: 250,
+          width: 200,
+          height: 200,
           child: InkWell(
             onTap: onClicked,
           ),
@@ -53,15 +53,15 @@ class ProfileWidget extends StatelessWidget {
 // * This is for the edit icon, edit icon background and the outline.
 
   Widget buildEditIcon(Color color) => buildCircle(
-        color: kcDarkBlue,
-        all: 3,
+        color: kcLightBeige,
+        all: 4,
         child: buildCircle(
-          color: Colors.white,
-          all: 8,
+          color: Color.fromARGB(255, 88, 180, 255),
+          all: 6,
           child: const Icon(
             Icons.edit,
             // color: Colors.white,
-            size: 40,
+            size: 35,
           ),
         ),
       );
