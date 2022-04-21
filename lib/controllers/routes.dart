@@ -35,6 +35,14 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (_) => LoadImagePage(),
         );
+      case '/addrecipe':
+        return MaterialPageRoute(
+          builder: (_) => Recipe_Add(),
+        );
+      case '/faq':
+        return MaterialPageRoute(
+          builder: (_) => const FAQPage(),
+        );
       case '/user':
         return MaterialPageRoute(
           builder: (_) => const UserPage(),
