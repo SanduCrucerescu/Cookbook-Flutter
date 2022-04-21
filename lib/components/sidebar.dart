@@ -38,49 +38,79 @@ class SideBar extends ConsumerWidget {
       child: Column(
         children: <Widget>[
           Expanded(
-            flex: 10,
-            child: Column(
-              children: List.generate(
-                items.length,
-                (idx) {
-                  Widget mainTopic = SideBarItem(
-                    collapsed: state.collapsed,
-                    prefixImage: Image.asset(
-                      items[idx]["image"],
-                      height: 20,
-                      fit: BoxFit.fill,
-                    ),
-                    onTap: () {
-                      Navigator.of(context).pushNamed(items[idx]["onTap"]);
-                    },
-                    text: items[idx]["text"],
-                  );
+            child: ListView.builder(
+              itemCount: items.length,
+              itemBuilder: (ctx, idx) {
+                Widget mainTopic = SideBarItem(
+                  collapsed: state.collapsed,
+                  prefixImage: Image.asset(
+                    items[idx]["image"],
+                    height: 20,
+                    fit: BoxFit.fill,
+                  ),
+                  onTap: () {
+                    Navigator.of(context).pushNamed(items[idx]["onTap"]);
+                  },
+                  text: items[idx]["text"],
+                );
 
-                  if (items[idx]["children"].length == 0) {
-                    return mainTopic;
-                  }
+                if (items[idx]["children"].length == 0) {
+                  return mainTopic;
+                }
 
-                  List<Map<String, dynamic>> subtopics = items[idx]["children"];
+                List<Map<String, dynamic>> subtopics = items[idx]["children"];
 
-                  return Column(
-                    children: List.generate(
-                      subtopics.length,
-                      (idx2) => SideBarItem(
-                          text: subtopics[idx2]["text"],
-                          onTap: () => Navigator.of(context).pushNamed(
-                                subtopics[idx2]["onTap"],
-                              ),
-                          collapsed: state.collapsed),
-                    ),
-                  );
-                },
-              ),
+                return Column(
+                  children: List.generate(
+                    subtopics.length,
+                    (idx2) => SideBarItem(
+                        text: subtopics[idx2]["text"],
+                        onTap: () => Navigator.of(context).pushNamed(
+                              subtopics[idx2]["onTap"],
+                            ),
+                        collapsed: state.collapsed),
+                  ),
+                );
+              },
             ),
           ),
-          const Expanded(
-            flex: 10,
-            child: SizedBox(),
-          ),
+          // Column(
+          //   children: List.generate(
+          //     items.length,
+          //     (idx) {
+          //       Widget mainTopic = SideBarItem(
+          //         collapsed: state.collapsed,
+          //         prefixImage: Image.asset(
+          //           items[idx]["image"],
+          //           height: 20,
+          //           fit: BoxFit.fill,
+          //         ),
+          //         onTap: () {
+          //           Navigator.of(context).pushNamed(items[idx]["onTap"]);
+          //         },
+          //         text: items[idx]["text"],
+          //       );
+
+          //       if (items[idx]["children"].length == 0) {
+          //         return mainTopic;
+          //       }
+
+          //       List<Map<String, dynamic>> subtopics = items[idx]["children"];
+
+          //       return Column(
+          //         children: List.generate(
+          //           subtopics.length,
+          //           (idx2) => SideBarItem(
+          //               text: subtopics[idx2]["text"],
+          //               onTap: () => Navigator.of(context).pushNamed(
+          //                     subtopics[idx2]["onTap"],
+          //                   ),
+          //               collapsed: state.collapsed),
+          //         ),
+          //       );
+          //     },
+          //   ),
+          // ),
           SideBarItem(
             collapsed: state.collapsed,
             prefixImage: state.collapsed
