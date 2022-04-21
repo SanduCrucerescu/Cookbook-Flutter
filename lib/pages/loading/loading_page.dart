@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:cookbook/controllers/get_recipes.dart';
 import 'package:cookbook/main.dart';
-import 'package:cookbook/pages/home/home_page.dart';
 import 'package:cookbook/pages/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
