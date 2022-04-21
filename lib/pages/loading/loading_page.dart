@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:developer';
-import 'package:cookbook/controllers/gettingrecepies.dart';
+import 'package:cookbook/controllers/get_recipes.dart';
 import 'package:cookbook/main.dart';
-import 'package:cookbook/pages/home/home_page.dart';
 import 'package:cookbook/pages/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -22,12 +20,12 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
     Timer(
       const Duration(seconds: 5),
-      () => Navigator.of(context).pushNamed(HomePage.id),
+      () => Navigator.of(context).pushNamed(LoginPage.id),
     );
 
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
       await fetchRecipes();
-      log('${InheritedLoginProvider.of(context).recipes}');
+      InheritedLoginProvider.of(context).setDisplayedRecipes('');
     });
   }
 

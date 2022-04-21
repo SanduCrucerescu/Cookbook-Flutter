@@ -40,7 +40,7 @@ class CustomButton extends HookConsumerWidget {
       height: height,
       width: width,
       decoration: BoxDecoration(
-        color: color ?? kcPrimaryGreen,
+        color: color ?? kcMedBeige,
         borderRadius: BorderRadius.circular(borderRadius),
         border: state.hovering
             ? Border.all(

@@ -1,12 +1,10 @@
 import 'package:cookbook/models/member/member.dart';
+import 'package:cookbook/models/post/comment/comment.dart';
 import 'package:cookbook/models/post/post.dart';
 
-class Comment extends Post {
-  final int id;
-
-  Comment(
-      {required this.id,
-      required Member creator,
+class DirectMessage extends Post {
+  DirectMessage(
+      {required Member creator,
       required String content,
       required int likes,
       required int dislikes,
@@ -17,10 +15,4 @@ class Comment extends Post {
             likes: likes,
             dislikes: dislikes,
             comments: comments);
-
-  int get getId => id;
-
-  void set id(int id) {
-    this.id = id;
-  }
 }

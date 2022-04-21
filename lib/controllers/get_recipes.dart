@@ -1,13 +1,8 @@
-import 'dart:developer';
-
 import 'package:cookbook/models/ingredient/ingredient.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
-
 import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/models/tag/tag.dart';
 import 'package:mysql1/mysql1.dart';
-import 'dart:typed_data';
-import 'dart:convert';
 
 class GetRecepies {
   late List<Recipe> _recepieList;
@@ -23,27 +18,23 @@ class GetRecepies {
 
   Future<void> getrecep() async {
     _recepieList = [];
-    final DatabaseManager databaseManager = await DatabaseManager.init();
+    final DatabaseManager dbManager = await DatabaseManager.init();
 
-    Results? res =
-        await databaseManager.select(table: "recipes", fields: ["*"]);
+    Results? recipes = await dbManager.select(table: "recipes", fields: ["*"]);
 
-    for (var rs in res!) {
+    for (var rs in recipes!) {
       recipeClass = Recipe(
-          id: rs[0],
-          ownerEmail: rs[4],
-          title: rs[1],
-          longDescription: rs[2].toString(),
-          shortDescription: rs[2].toString(),
-          instructions: rs[3].toString(),
-          // quantity: rs[6]
-          // picture: rs[7],
-          ingredients: await getIngredients(rs[0]),
-          tags: await getTags(rs[0]));
+          id: rs.fields['id'],
+          ownerEmail: rs.fields['member_email'],
+          title: rs.fields['title'],
+          longDescription: rs.fields['description'].toString(),
+          shortDescription: rs.fields['description'].toString(),
+          instructions: rs.fields['instructions'].toString(),
+          quantity: 1,
+          picture: rs.fields['picture'],
+          ingredients: await getIngredients(rs.fields['id']),
+          tags: await getTags(rs.fields['id']));
       setRecipie(recipeClass);
-    }
-    for (Recipe recipe in recepieList) {
-      log(recipe.toString());
     }
   }
 
@@ -79,6 +70,6 @@ class GetRecepies {
 
   @override
   String toString() {
-    return " " + recipeClass.getInstructions;
+    return " " + recipeClass.instructions;
   }
 }

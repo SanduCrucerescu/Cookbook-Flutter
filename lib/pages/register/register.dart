@@ -4,7 +4,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cookbook/components/components.dart';
-import 'package:cookbook/controllers/addUser.dart';
+import 'package:cookbook/controllers/add_user.dart';
 import 'package:cookbook/pages/messages/message_screen.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +51,9 @@ class RegisterPage extends ConsumerWidget {
 }
 
 class RegisterForm extends HookConsumerWidget {
-  RegisterForm({Key? key}) : super(key: key);
+  final bool showShadow;
+
+  RegisterForm({this.showShadow = true, Key? key}) : super(key: key);
 
   final photoProvider = ChangeNotifierProvider<VerificationChangeNotifier>(
     (ref) => VerificationChangeNotifier(),
@@ -76,7 +78,7 @@ class RegisterForm extends HookConsumerWidget {
         decoration: BoxDecoration(
             border: Border.all(
                 color: Colors.black, width: .5, style: BorderStyle.solid),
-            boxShadow: ksStandardBoxShadow,
+            boxShadow: showShadow ? ksStandardBoxShadow : null,
             color: Colors.white),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -95,6 +97,7 @@ class RegisterForm extends HookConsumerWidget {
               field["controller"] = useTextEditingController();
 
               return CustomTextField(
+                maxLines: 1,
                 width: 350,
                 height: 60,
                 margin: const EdgeInsets.all(10),

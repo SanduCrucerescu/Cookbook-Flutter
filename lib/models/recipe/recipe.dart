@@ -1,8 +1,10 @@
+import 'dart:convert';
+
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysql1/mysql1.dart';
 
-import '../ingredient/ingredient.dart';
-import '../tag/tag.dart';
+import 'package:cookbook/models/ingredient/ingredient.dart';
+import 'package:cookbook/models/tag/tag.dart';
 
 class Recipe {
   final int id;
@@ -11,8 +13,8 @@ class Recipe {
   String longDescription;
   String shortDescription;
   String instructions;
-  // double quantity;
-  // Blob picture;
+  double quantity;
+  Blob picture;
   List<Ingredient> ingredients;
   List<Tag> tags;
 
@@ -23,83 +25,62 @@ class Recipe {
     required this.longDescription,
     required this.shortDescription,
     required this.instructions,
-    // required this.quantity
-    // required this.picture,
+    required this.quantity,
+    required this.picture,
     required this.ingredients,
     required this.tags,
   });
 
-  int get getId => id;
-
-  String get getOwnerEmail => ownerEmail;
-
-  String get getTitle => title;
-
-  String get getLongDescription => longDescription;
-
-  String get getShortDescription => shortDescription;
-
-  String get getInstructions => instructions;
-
-  // double get getQuantity => quantity;
-
-  // Blob get getPicture => picture;
-
-  List<Ingredient> get getIngredients => ingredients;
-
-  List<Tag> get getTags => tags;
-
-  void set id(int id) {
-    this.id = id;
-  }
-
-  void set ownerEmail(String ownerEmail) {
-    this.ownerEmail = ownerEmail;
-  }
-
-  void set setTitle(String title) {
-    this.title = title;
-  }
-
-  void set setLongDescription(String longDescription) {
-    this.longDescription = longDescription;
-  }
-
-  void set setShortDescription(String shortDescription) {
-    this.shortDescription = shortDescription;
-  }
-
-  // void set setQuantity(double quantity) {
-  //   this.quantity = quantity;
-  // }
-
-  // void set setPicture(Blob picture) {
-  //   this.picture = picture;
-  // }
-
-  void set setIngredients(List<Ingredient> ingredients) {
-    this.ingredients = ingredients;
-  }
-
-  void set setTags(List<Tag> tags) {
-    this.tags = tags;
-  }
-
   @override
   String toString() {
     String ing = "";
-    String recipe = "$getId " +
-        getTitle +
+    String recipe = "$id " +
+        title +
         " " +
-        getInstructions +
+        instructions +
         " " +
-        getLongDescription +
+        longDescription +
         " " +
-        getOwnerEmail +
+        ownerEmail +
         " ";
     for (Ingredient ingredient in ingredients) {
       ing += ingredient.toString() + " ";
     }
     return recipe + ing;
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'ownerEmail': ownerEmail,
+      'title': title,
+      'longDescription': longDescription,
+      'shortDescription': shortDescription,
+      'instructions': instructions,
+      'quantity': quantity,
+      'picture': picture.toBytes(),
+      'ingredients': ingredients.map((x) => x.toMap()).toList(),
+      'tags': tags.map((x) => x.toMap()).toList(),
+    };
+  }
+
+  factory Recipe.fromMap(Map<String, dynamic> map) {
+    return Recipe(
+      id: map['id']?.toInt() ?? 0,
+      ownerEmail: map['ownerEmail'] ?? '',
+      title: map['title'] ?? '',
+      longDescription: map['longDescription'] ?? '',
+      shortDescription: map['shortDescription'] ?? '',
+      instructions: map['instructions'] ?? '',
+      quantity: map['quantity']?.toDouble() ?? 0.0,
+      picture: Blob.fromBytes(map['picture']),
+      ingredients: List<Ingredient>.from(
+          map['ingredients']?.map((x) => Ingredient.fromMap(x))),
+      tags: List<Tag>.from(map['tags']?.map((x) => Tag.fromMap(x))),
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory Recipe.fromJson(String source) => Recipe.fromMap(json.decode(source));
 }

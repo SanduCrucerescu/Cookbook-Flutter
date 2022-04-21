@@ -1,4 +1,6 @@
-part of controllers;
+import 'package:cookbook/pages/home/home_page.dart';
+import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ResponsiveHomePageBuilder extends ConsumerWidget {
   ResponsiveHomePageBuilder({Key? key}) : super(key: key);
@@ -13,7 +15,7 @@ class ResponsiveHomePageBuilder extends ConsumerWidget {
 
     if (width < 1200) {
       return HomePage.mobile();
-    } else if (width < 1600) {
+    } else if (width < 1680) {
       return HomePage.tablet();
     } else {
       return HomePage.desktop();

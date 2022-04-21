@@ -1,7 +1,12 @@
 import 'package:cookbook/components/components.dart';
+import 'package:cookbook/pages/messages/message_textfield.dart';
+import 'package:cookbook/pages/messages/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import 'conversation_widget.dart';
+import 'inbox_widget.dart';
 
 class MessagePage extends HookConsumerWidget {
   static const String id = "/messages";
@@ -18,10 +23,11 @@ class MessagePage extends HookConsumerWidget {
     ScrollController sc2 = useScrollController();
     final state = ref.watch(messagesProvider);
     Size size = MediaQuery.of(context).size;
+    final tec = useTextEditingController();
 
     return Scaffold(
       body: Container(
-        color: Colors.grey[300],
+        color: const Color(0xFFE3DBCA),
         height: size.height,
         width: size.width,
         child: Column(
@@ -37,23 +43,7 @@ class MessagePage extends HookConsumerWidget {
                 ),
                 Column(
                   children: [
-                    SizedBox(
-                        height: 60,
-                        width: (size.width - 300) / 2,
-                        child: TextField(
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            border: const OutlineInputBorder(),
-                            hintText: 'Search...',
-                            suffixIcon: IconButton(
-                              icon: const Icon(Icons.search),
-                              onPressed: () {
-                                print("hello");
-                              },
-                            ),
-                          ),
-                        )),
+                    const SearchBar(),
                     Container(
                       height: size.height - 200,
                       width: (size.width - 200) / 2,
@@ -62,7 +52,7 @@ class MessagePage extends HookConsumerWidget {
                         controller: sc1,
                         itemCount: 20,
                         itemBuilder: (BuildContext context, int idx) {
-                          return MessageWidget(idx: idx, state: state);
+                          return InboxWidget(idx: idx, state: state);
                         },
                       ),
                     ),
@@ -70,6 +60,9 @@ class MessagePage extends HookConsumerWidget {
                 ),
                 Column(children: [
                   Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Colors.black)),
                     height: size.height - 200,
                     width: (size.width - 200) / 2,
                     margin: const EdgeInsets.only(bottom: 3),
@@ -82,110 +75,12 @@ class MessagePage extends HookConsumerWidget {
                       },
                     ),
                   ),
-                  Row(
-                    children: [
-                      SizedBox(
-                          height: 60,
-                          width: (size.width - 200) / 2,
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white,
-                              border: const OutlineInputBorder(),
-                              hintText: 'Enter message',
-                              suffixIcon: IconButton(
-                                icon: const Icon(Icons.send),
-                                onPressed: () {
-                                  print("hello");
-                                },
-                              ),
-                            ),
-                          )),
-                    ],
-                  ),
+                  const MessageTextField(),
                 ]),
               ],
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class MessageWidget extends StatelessWidget {
-  final int idx;
-  final MessagesChangeNotifier state;
-
-  const MessageWidget({
-    required this.state,
-    required this.idx,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
-    return Container(
-      height: 100,
-      width: size.width / 4,
-      margin: const EdgeInsets.all(2),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: InkWell(
-        onTap: () {
-          print("Helo");
-        },
-        onHover: (val) {
-          print(val);
-        },
-        child: ListTile(
-          leading: CircleAvatar(
-            child: Image.asset('assets/images/ph.png'),
-          ),
-          title: Text("$idx"),
-          subtitle: const Text("Some message"),
-          trailing: Container(
-            height: 30,
-            width: 30,
-            child: TextButton(
-              onPressed: () {},
-              style: TextButton.styleFrom(primary: Colors.black),
-              child: Text("X"),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class ConversationWidget extends StatelessWidget {
-  final int idx;
-
-  const ConversationWidget({
-    required this.idx,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
-    return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5), color: Colors.white),
-      height: 100,
-      width: size.width / 4,
-      child: ListTile(
-        leading: CircleAvatar(
-          child: Image.asset('assets/images/ph.png'),
-        ),
-        title: Text("$idx"),
-        trailing: Text("3:45"),
       ),
     );
   }
