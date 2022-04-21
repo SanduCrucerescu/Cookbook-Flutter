@@ -15,7 +15,7 @@ class ConversationWidget extends StatelessWidget {
 
     if (idx % 2 == 0) {
       return Container(
-        padding: EdgeInsets.only(bottom: 50),
+        padding: EdgeInsets.only(top: 10, bottom: 50),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
@@ -30,20 +30,20 @@ class ConversationWidget extends StatelessWidget {
               margin: EdgeInsets.symmetric(horizontal: 10),
               padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
-                  color: Colors.lightGreenAccent[400],
+                  color: Colors.grey[400],
                   borderRadius: BorderRadius.circular(20)),
               child: Text(
                 "Message jjdkjd kjdkhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh",
-                style: TextStyle(fontWeight: FontWeight.w600),
+                style: TextStyle(fontWeight: FontWeight.w500),
               ),
             ),
-            Container(child: Text("12:45"))
+            Text("12:45"),
           ],
         ),
       );
     } else {
       return Container(
-        padding: EdgeInsets.only(bottom: 50),
+        padding: EdgeInsets.only(top: 10, bottom: 50),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -62,6 +62,7 @@ class ConversationWidget extends StatelessWidget {
               ),
             ),
             Container(
+              padding: EdgeInsets.only(right: 5),
               child: Text("3:45"),
             ),
           ],
