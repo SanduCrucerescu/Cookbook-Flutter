@@ -1,8 +1,8 @@
 import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/models/member/member.dart';
-import 'package:cookbook/pages/adminPage/adminpage.dart';
-import 'package:cookbook/pages/adminPage/searchAdd.dart';
-import 'package:cookbook/pages/adminPage/userTile.dart';
+import 'package:cookbook/pages/admin/admin_page.dart';
+import 'package:cookbook/pages/admin/search_add.dart';
+import 'package:cookbook/pages/admin/user_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:mysql1/mysql1.dart';
 import 'dart:convert';
@@ -43,7 +43,7 @@ class Rectangle extends StatelessWidget {
             padding: const EdgeInsets.all(10.0),
             child: Column(
               children: [
-                searchadd(state: state),
+                SearchAdd(state: state),
                 UsersColumn(state: state),
               ],
             ),

@@ -35,6 +35,10 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (_) => LoadImagePage(),
         );
+      case '/faq':
+        return MaterialPageRoute(
+          builder: (_) => FAQPage(),
+        );
       default:
         // If there is no such named route in the switch statement, e.g. /third
         return _errorRoute();

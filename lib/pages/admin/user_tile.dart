@@ -4,7 +4,7 @@ import 'package:cookbook/models/member/member.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'adminpage.dart';
+import 'admin_page.dart';
 
 class UserTile extends StatelessWidget {
   // TODO final Member member;
