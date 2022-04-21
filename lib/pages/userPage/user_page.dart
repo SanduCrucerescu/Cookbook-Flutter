@@ -5,6 +5,7 @@ import 'package:cookbook/pages/userPage/profile_widget.dart';
 import 'package:cookbook/pages/userPage/user.dart';
 import 'package:cookbook/pages/userPage/user_preferences.dart';
 import 'package:cookbook/theme/colors.dart';
+import 'package:cookbook/theme/text_styles.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 
@@ -109,7 +110,10 @@ class UserPageTextField extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: SelectableText(label),
+            child: SelectableText(
+              label,
+              style: ksLabelTextStyle,
+            ),
           ),
           CustomTextField(
             backgroundColor: Colors.transparent,
