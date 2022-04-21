@@ -89,7 +89,7 @@ class CustomTextField extends ConsumerWidget {
       margin: margin,
       padding: padding,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: backgroundColor,
         borderRadius: borderRadius,
         boxShadow: isShadow
             ? [

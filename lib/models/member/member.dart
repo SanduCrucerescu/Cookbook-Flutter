@@ -6,11 +6,17 @@ class Member {
   final String name;
   final String email;
   final String password;
-  // final List<Recipe> favorites;
+  final List<Recipe>? favorites;
   // final List<Recipe> recipes;
-  //final Blob profilePicture;
+  // final Blob? profilePicture;
 
-  Member(this.name, this.email, this.password);
+  Member({
+    required this.name,
+    required this.email,
+    required this.password,
+    this.favorites,
+    // this.profilePicture,
+  });
 
   String get getName => name;
 
@@ -18,7 +24,7 @@ class Member {
 
   String get getPassword => password;
 
-  // List<Recipe> get getFavorites => favorites;
+  List<Recipe>? get getFavorites => favorites;
 
   // List<Recipe> get getRecipes => recipes;
 
@@ -36,7 +42,7 @@ class Member {
     this.password = password;
   }
 
-  void set favorites(List<Recipe> favorites) {
+  void set favorites(List<Recipe>? favorites) {
     this.favorites = favorites;
   }
 

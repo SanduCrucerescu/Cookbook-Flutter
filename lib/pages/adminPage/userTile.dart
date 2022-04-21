@@ -46,7 +46,7 @@ class UserTile extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(),
                   child: CircleAvatar(
-                    child: Image.asset('assets/images/ph.png'),
+                    child: state.image,
                   ),
                 ),
                 Text(

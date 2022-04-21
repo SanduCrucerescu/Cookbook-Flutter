@@ -5,6 +5,7 @@ import 'package:cookbook/pages/adminPage/searchAdd.dart';
 import 'package:cookbook/pages/adminPage/userTile.dart';
 import 'package:flutter/material.dart';
 import 'package:mysql1/mysql1.dart';
+import 'dart:convert';
 
 class Rectangle extends StatelessWidget {
   final String text;
@@ -80,10 +81,15 @@ class _UsersColumnState extends State<UsersColumn> {
       Results? res = await dbManager?.select(table: 'members', fields: ['*']);
 
       for (var r in res!) {
-        final curr = Member(r['username'], r['email'], r['password']);
+        final curr = Member(
+          name: r['username'],
+          email: r['email'],
+          password: r['password'],
+        );
         members.add(curr); // Something wrong here
       }
       displayedmembers = members;
+      widget.state.currMember = displayedmembers[0];
       print(displayedmembers[0].password); // Idk why it wont work without
       setState(() {});
     });

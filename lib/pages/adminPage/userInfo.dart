@@ -1,4 +1,10 @@
+import 'package:cookbook/components/components.dart';
+import 'package:cookbook/db/database_manager.dart';
+import 'package:cookbook/models/member/member.dart';
+import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'adminpage.dart';
 
 class UserInfo extends StatelessWidget {
@@ -46,15 +52,117 @@ class UserInfo extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
                 child: Container(
-                  color: Color.fromARGB(255, 245, 245, 220),
+                  // color: Color.fromARGB(255, 245, 245, 220),
                   alignment: Alignment.topLeft,
-                  child: Text(
-                      "Name: ${state.userName}\nEmail: ${state.email}\nImage: ${state.image}"),
+                  child: state.currMember == null
+                      ? const Center(child: CircularProgressIndicator())
+                      : Column(
+                          children: [
+                            UserInfoField(
+                                title: 'Name: ',
+                                content: state.userName,
+                                parameterToUpdate: state.currMember!.name),
+                            UserInfoField(
+                              title: 'Email: ',
+                              content: state.email,
+                              parameterToUpdate: state.currMember!.email,
+                            ),
+                            UserInfoField(
+                              title: 'Image: ',
+                              content: 'some image',
+                              parameterToUpdate: state.currMember!.name,
+                            ),
+                            CustomButton(
+                              color: kcMedBeige,
+                              duration: Duration(milliseconds: 100),
+                              onTap: () async {
+                                DatabaseManager dbManager =
+                                    await DatabaseManager.init();
+                                Member member = state.currMember!;
+                                dbManager.update(
+                                  table: 'members',
+                                  params: {
+                                    'name': member.name,
+                                    'emai': member.email,
+                                    'password': member.password,
+                                    'profile_pic:': member
+                                        .name, // TODO : Change to profilePicture
+                                  },
+                                  where: {'email': member.email},
+                                );
+                              },
+                              child: const Text('Apply'),
+                            ),
+                          ],
+                        ),
                 ),
               )
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class UserInfoField extends HookConsumerWidget {
+  final String title, content;
+  String parameterToUpdate;
+  final DatabaseManager dbManager = DatabaseManager();
+
+  UserInfoField({
+    required this.title,
+    required this.content,
+    required this.parameterToUpdate,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final tec = useTextEditingController();
+
+    return SizedBox(
+      width: 410,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            height: 40,
+            width: 300,
+            margin: const EdgeInsets.symmetric(vertical: 5),
+            padding: const EdgeInsets.only(left: 10),
+            color: kcMedBeige,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(title),
+                CustomTextField(
+                  controller: tec,
+                  height: 15,
+                  width: 230,
+                  isShadow: false,
+                  backgroundColor: Colors.transparent,
+                  hintText: content,
+                  fontSize: 12,
+                )
+              ],
+            ),
+          ),
+          Container(
+            color: kcMedBeige,
+            width: 100,
+            height: 40,
+            child: InkWell(
+              onTap: () {
+                print(tec.text);
+                parameterToUpdate = tec.text;
+              },
+              child: const Center(
+                child: Text('Save'),
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

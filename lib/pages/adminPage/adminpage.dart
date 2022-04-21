@@ -1,4 +1,5 @@
 import 'package:cookbook/components/components.dart';
+import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/pages/adminPage/userInfo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -56,9 +57,10 @@ class Admin extends HookConsumerWidget {
 
 class SelectedUserChangeNotifier extends ChangeNotifier {
   int _idx = -1;
+  Member? _currMember;
   String _userName = "";
   String _email = "";
-  String image = "assets/images/ph.png";
+  Image image = Image.asset("assets/images/ph.png");
   String _filteringString = '';
 
   String get filteringString => _filteringString;
@@ -68,6 +70,13 @@ class SelectedUserChangeNotifier extends ChangeNotifier {
   String get email => _email;
 
   String get userName => _userName;
+
+  Member? get currMember => _currMember;
+
+  set currMember(Member? member) {
+    _currMember = member;
+    notifyListeners();
+  }
 
   set filteringString(String val) {
     _filteringString = val;
