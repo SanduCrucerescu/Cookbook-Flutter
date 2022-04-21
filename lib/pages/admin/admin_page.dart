@@ -23,7 +23,7 @@ class Admin extends HookConsumerWidget {
     Size size = MediaQuery.of(context).size;
     // TODO: In Login Screen make Username: Admin return this page
     return (Scaffold(
-      backgroundColor: const Color(0xFFE3DBCA),
+      backgroundColor: Color(0xFFE3DBCA),
       body: Stack(
         children: [
           const NavBar(),
@@ -60,7 +60,7 @@ class SelectedUserChangeNotifier extends ChangeNotifier {
   Member? _currMember;
   String _userName = "";
   String _email = "";
-  Image image = Image.asset("assets/images/ph.png");
+  Image image = Image.asset("assets/images/ph.png"); // doesnt count
   String _filteringString = '';
 
   String get filteringString => _filteringString;

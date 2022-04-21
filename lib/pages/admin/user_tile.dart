@@ -60,8 +60,11 @@ class UserTile extends StatelessWidget {
                     child: state.image,
                   ),
                 ),
-                Text(
-                  email,
+                Padding(
+                  padding: const EdgeInsets.only(left: 15),
+                  child: Text(
+                    email,
+                  ),
                 ),
               ],
             ),

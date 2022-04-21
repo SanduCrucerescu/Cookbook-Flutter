@@ -45,8 +45,8 @@ class UserInfo extends StatelessWidget {
                 width: xSize,
                 alignment: Alignment.topCenter,
                 child: Text(
-                  "${state.email}",
-                  style: const TextStyle(fontSize: 20),
+                  state.userName,
+                  style: const TextStyle(fontSize: 25),
                 ),
               ),
               Padding(
@@ -69,7 +69,7 @@ class UserInfo extends StatelessWidget {
                             ),
                             UserInfoField(
                               title: 'Image: ',
-                              content: 'some image',
+                              content: 'some image', //TODO: replace with image
                               parameterToUpdate: state.currMember!.name,
                             ),
                             CustomButton(
