@@ -35,7 +35,7 @@ class UserInfo extends StatelessWidget {
               Radius.circular(5),
             ),
           ),
-          height: 850,
+          height: 278,
           width: 600,
           //Title of the rectangle
           child: Column(
@@ -123,46 +123,55 @@ class UserInfoField extends HookConsumerWidget {
 
     return SizedBox(
       width: 410,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            height: 40,
-            width: 300,
-            margin: const EdgeInsets.symmetric(vertical: 5),
-            padding: const EdgeInsets.only(left: 10),
-            color: kcMedBeige,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(title),
-                CustomTextField(
-                  controller: tec,
-                  height: 15,
-                  width: 230,
-                  isShadow: false,
-                  backgroundColor: Colors.transparent,
-                  hintText: content,
-                  fontSize: 12,
-                )
-              ],
-            ),
-          ),
-          Container(
-            color: kcMedBeige,
-            width: 100,
-            height: 40,
-            child: InkWell(
-              onTap: () {
-                print(tec.text);
-                parameterToUpdate = tec.text;
-              },
-              child: const Center(
-                child: Text('Save'),
+      child: Expanded(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Container(
+                height: 40,
+                width: 300,
+                margin: const EdgeInsets.symmetric(vertical: 5),
+                padding: const EdgeInsets.only(left: 5),
+                color: kcMedBeige,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(title),
+                    Expanded(
+                      child: CustomTextField(
+                        controller: tec,
+                        height: 15,
+                        width: 230,
+                        isShadow: false,
+                        backgroundColor: Colors.transparent,
+                        hintText: content,
+                        fontSize: 12,
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
-          )
-        ],
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Container(
+                color: kcMedBeige,
+                width: 100,
+                height: 40,
+                child: InkWell(
+                  onTap: () {
+                    print(tec.text);
+                    parameterToUpdate = tec.text;
+                  },
+                  child: const Center(
+                    child: Text('Save'),
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
