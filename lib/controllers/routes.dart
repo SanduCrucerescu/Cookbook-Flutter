@@ -41,6 +41,10 @@ class RouteGenerator {
         );
       case '/faq':
         return MaterialPageRoute(
+          builder: (_) => const FAQPage(),
+        );
+      case '/user':
+        return MaterialPageRoute(
           builder: (_) => const UserPage(),
         );
       default:

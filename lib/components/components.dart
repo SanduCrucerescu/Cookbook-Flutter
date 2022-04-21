@@ -10,6 +10,7 @@ import 'package:cookbook/pages/loading/loading_page.dart';
 import 'package:cookbook/pages/login/login.dart';
 import 'package:cookbook/pages/messages/message_screen.dart';
 import 'package:cookbook/pages/recipeadd/recipe_add.dart';
+import 'package:cookbook/pages/userPage/user_page.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';

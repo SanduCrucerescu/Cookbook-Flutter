@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/pages/userPage/profile_widget.dart';
+import 'package:cookbook/pages/userPage/user.dart';
 import 'package:cookbook/pages/userPage/user_preferences.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:file_selector/file_selector.dart';
@@ -32,46 +33,95 @@ class _UserPageState extends State<UserPage> {
         child: ListView(
           physics: const BouncingScrollPhysics(),
           children: [
-            ProfileWidget(
-              imagePath: user.imagePath,
-              onClicked: () async {},
+            Container(
+              margin: const EdgeInsets.only(top: 10),
+              child: ProfileWidget(
+                imagePath: user.imagePath,
+                onClicked: () async {},
+              ),
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 250, vertical: 35),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
-                      hintText: user.name,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 250, vertical: 0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
-                      hintText: user.email,
-                    ),
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 250, vertical: 35),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'click to change password',
-                    ),
-                  ),
-                )
-              ],
-            )
+            const UserPageForm(user: user)
           ],
         ),
+      ),
+    );
+  }
+}
+
+class UserPageForm extends StatelessWidget {
+  const UserPageForm({
+    Key? key,
+    required this.user,
+  }) : super(key: key);
+
+  final User user;
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        UserPageTextField(
+          size: size,
+          user: user,
+          hintText: user.name,
+          label: "Name",
+        ),
+        UserPageTextField(
+          size: size,
+          user: user,
+          hintText: user.email,
+          label: "Email",
+        ),
+        UserPageTextField(
+          size: size,
+          user: user,
+          hintText: '**************',
+          label: "Password",
+        ),
+      ],
+    );
+  }
+}
+
+class UserPageTextField extends StatelessWidget {
+  final String hintText, label;
+
+  const UserPageTextField({
+    Key? key,
+    required this.hintText,
+    required this.size,
+    required this.user,
+    this.label = '',
+  }) : super(key: key);
+
+  final Size size;
+  final User user;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 700,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: SelectableText(label),
+          ),
+          CustomTextField(
+            backgroundColor: Colors.transparent,
+            isShadow: false,
+            width: size.width,
+            inputDecoration: InputDecoration(
+              border: const OutlineInputBorder(),
+              hintText: hintText,
+            ),
+          ),
+          const SizedBox(height: 20),
+        ],
       ),
     );
   }

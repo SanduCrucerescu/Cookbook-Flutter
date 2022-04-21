@@ -49,5 +49,11 @@ List<Map<String, dynamic>> kSideBarItems = [
     "image": "assets/images/starFilled.png",
     "onTap": FAQPage.id,
     "children": [],
+  },
+  {
+    "text": "M y  P a g e",
+    "image": "assets/images/starFilled.png",
+    "onTap": UserPage.id,
+    "children": [],
   }
 ];
