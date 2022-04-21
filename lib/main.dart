@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:cookbook/controllers/controllers.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
 import 'package:cookbook/pages/login/login.dart';
+import 'package:cookbook/pages/recipeadd/recipe_add.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -31,15 +32,22 @@ class _InheritedLoginProviderWrapperState
     extends State<InheritedLoginProviderWrapper> {
   Map<String?, dynamic>? userData;
   bool isLoggedIn = false;
-  String currPageID = LoadingScreen.id;
+  int _pageId = 0;
   List<Recipe> _recipes = [];
   List<Recipe> _displayedRecipes = [];
 
+  int get pageId => _pageId;
   List<Recipe> get recipes => _recipes;
 
   List<Recipe> get displayedRecipes {
     log('getting displayed recipes');
     return _displayedRecipes;
+  }
+
+  set pageId(int val) {
+    setState(() {
+      _pageId = val;
+    });
   }
 
   void setDisplayedRecipes(String filterinString) {
