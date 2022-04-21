@@ -4,7 +4,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cookbook/components/components.dart';
-import 'package:cookbook/controllers/addUser.dart';
+import 'package:cookbook/controllers/add_user.dart';
 import 'package:cookbook/pages/messages/message_screen.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
@@ -97,6 +97,7 @@ class RegisterForm extends HookConsumerWidget {
               field["controller"] = useTextEditingController();
 
               return CustomTextField(
+                maxLines: 1,
                 width: 350,
                 height: 60,
                 margin: const EdgeInsets.all(10),

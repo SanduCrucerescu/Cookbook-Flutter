@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cookbook/models/ingredient/ingredient.dart';
 import 'package:cookbook/models/member/member.dart';
 
@@ -7,26 +9,10 @@ class ShoppingCart {
 
   ShoppingCart({required this.ingredients, required this.member});
 
-  List<Ingredient> get getIngredients => ingredients;
-
-  Member get getMember => member;
-
-  void set setIngredients(List<Ingredient> ingredients) {
-    this.ingredients = ingredients;
-  }
-
-  void set member(Member member) {
-    this.member = member;
-  }
-
-  void addIngredient(Ingredient ingredient) {
-    ingredients.add(ingredient);
-  }
-
   void removeIngredient(Ingredient removeIngredient) {
-    int removeId = removeIngredient.getId;
+    int removeId = removeIngredient.id;
     for (Ingredient ingredient in ingredients) {
-      int ingredientId = ingredient.getId;
+      int ingredientId = ingredient.id;
       if (ingredientId == removeId) {
         ingredients.remove(ingredient);
       }
@@ -36,7 +22,31 @@ class ShoppingCart {
   void getTotal() {
     double total = 0;
     for (Ingredient ingredient in ingredients) {
-      total += ingredient.getPricePerUnit;
+      total += ingredient.pricePerUnit;
     }
   }
+
+  @override
+  String toString() =>
+      'ShoppingCart(ingredients: $ingredients, member: $member)';
+
+  Map<String, dynamic> toMap() {
+    return {
+      'ingredients': ingredients.map((x) => x.toMap()).toList(),
+      'member': member.toMap(),
+    };
+  }
+
+  factory ShoppingCart.fromMap(Map<String, dynamic> map) {
+    return ShoppingCart(
+      ingredients: List<Ingredient>.from(
+          map['ingredients']?.map((x) => Ingredient.fromMap(x))),
+      member: Member.fromMap(map['member']),
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory ShoppingCart.fromJson(String source) =>
+      ShoppingCart.fromMap(json.decode(source));
 }

@@ -1,9 +1,10 @@
 import 'package:cookbook/components/components.dart';
-import 'package:cookbook/pages/adminPage/userInfo.dart';
+import 'package:cookbook/models/member/member.dart';
+import 'package:cookbook/pages/admin/user_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'Rectangle.dart';
+import 'rectangle.dart';
 
 class Admin extends HookConsumerWidget {
   static const String id = "/admin";
@@ -56,14 +57,26 @@ class Admin extends HookConsumerWidget {
 
 class SelectedUserChangeNotifier extends ChangeNotifier {
   int _idx = -1;
-  String userName = "Jeff";
-  String email = "jeff.bezos@amazon.com";
-  String image = "assets/images/ph.png";
+  Member? _currMember;
+  String _userName = "";
+  String _email = "";
+  Image image = Image.asset("assets/images/ph.png");
   String _filteringString = '';
 
   String get filteringString => _filteringString;
 
   int get idx => _idx;
+
+  String get email => _email;
+
+  String get userName => _userName;
+
+  Member? get currMember => _currMember;
+
+  set currMember(Member? member) {
+    _currMember = member;
+    notifyListeners();
+  }
 
   set filteringString(String val) {
     _filteringString = val;
@@ -72,6 +85,16 @@ class SelectedUserChangeNotifier extends ChangeNotifier {
 
   set idx(int val) {
     _idx = val;
+    notifyListeners();
+  }
+
+  set email(String val) {
+    _email = val;
+    notifyListeners();
+  }
+
+  set userName(String val) {
+    _userName = val;
     notifyListeners();
   }
 }

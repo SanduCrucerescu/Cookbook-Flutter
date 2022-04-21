@@ -1,21 +1,26 @@
 import 'dart:developer';
 import 'package:cookbook/db/database_manager.dart';
+import 'package:cookbook/models/member/member.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'adminpage.dart';
+import 'admin_page.dart';
 
 class UserTile extends StatelessWidget {
   // TODO final Member member;
   final int idx;
   final SelectedUserChangeNotifier state;
+  // final Member member;
   final String email;
+  final String userName;
 
   const UserTile({
     // TODO required this.member,
     required this.email,
     required this.idx,
+    // required this.member,
     required this.state,
+    required this.userName,
     Key? key,
   }) : super(key: key);
 
@@ -33,24 +38,15 @@ class UserTile extends StatelessWidget {
           child: GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
-              log("${state.idx}");
-              state.idx = idx;
-              log("${state.idx}");
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    content: Text('$idx'),
-                  );
-                },
-              );
+              state.email = email;
+              state.userName = userName;
             },
             child: Row(
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(),
                   child: CircleAvatar(
-                    child: Image.asset('assets/images/ph.png'),
+                    child: state.image,
                   ),
                 ),
                 Text(

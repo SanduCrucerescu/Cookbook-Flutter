@@ -35,7 +35,7 @@ abstract class AbstractDatabaseManager {
   void update({
     required String table,
     required Map<String, dynamic> params,
-    required String where,
+    required Map<String, dynamic> where,
   });
 
   void delete({
@@ -169,7 +169,7 @@ class DatabaseManager extends AbstractDatabaseManager {
   void update(
       {required String table,
       required Map<String, dynamic> params,
-      required String where}) {
+      required Map<String, dynamic> where}) {
     // TODO: implement update
   }
 

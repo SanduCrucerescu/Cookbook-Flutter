@@ -1,9 +1,11 @@
 import 'package:cookbook/db/database_manager.dart';
-import 'package:cookbook/pages/adminPage/adminpage.dart';
-import 'package:cookbook/pages/adminPage/searchAdd.dart';
-import 'package:cookbook/pages/adminPage/userTile.dart';
+import 'package:cookbook/models/member/member.dart';
+import 'package:cookbook/pages/admin/admin_page.dart';
+import 'package:cookbook/pages/admin/search_add.dart';
+import 'package:cookbook/pages/admin/user_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:mysql1/mysql1.dart';
+import 'dart:convert';
 
 class Rectangle extends StatelessWidget {
   final String text;
@@ -41,7 +43,7 @@ class Rectangle extends StatelessWidget {
             padding: const EdgeInsets.all(10.0),
             child: Column(
               children: [
-                searchadd(state: state),
+                SearchAdd(state: state),
                 UsersColumn(state: state),
               ],
             ),
@@ -66,8 +68,8 @@ class UsersColumn extends StatefulWidget {
 
 class _UsersColumnState extends State<UsersColumn> {
   DatabaseManager? dbManager;
-  List<String> userEmails = [];
-  List<String> displayedEmails = [];
+  List<Member> members = [];
+  List<Member> displayedmembers = [];
 
   @override
   void initState() {
@@ -76,31 +78,39 @@ class _UsersColumnState extends State<UsersColumn> {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       dbManager = await DatabaseManager.init();
 
-      Results? res =
-          await dbManager?.select(table: 'members', fields: ['email']);
+      Results? res = await dbManager?.select(table: 'members', fields: ['*']);
 
       for (var r in res!) {
-        userEmails.add(r['email'].toString());
-        // print(r['email']);
+        final curr = Member(
+          name: r['username'],
+          email: r['email'],
+          password: r['password'],
+        );
+        members.add(curr); // Something wrong here
       }
-      displayedEmails = userEmails;
+      displayedmembers = members;
+      widget.state.currMember = displayedmembers[0];
+      print(displayedmembers[0].password); // Idk why it wont work without
       setState(() {});
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    displayedEmails = [];
-    print(widget.state.filteringString);
+    displayedmembers = [];
+    //print(widget.state.filteringString);
 
-    for (String email in userEmails) {
-      if (email.startsWith(widget.state.filteringString)) {
-        displayedEmails.add(email);
+    for (Member member in members) {
+      if (member.email.startsWith(widget.state.filteringString)) {
+        displayedmembers.add(member);
       }
     }
 
-    if (userEmails.isEmpty) {
-      return const CircularProgressIndicator();
+    if (members.isEmpty) {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
+        child: Column(children: [const CircularProgressIndicator()]),
+      );
     } else {
       return Expanded(
         child: Padding(
@@ -109,12 +119,13 @@ class _UsersColumnState extends State<UsersColumn> {
             isAlwaysShown: true,
             showTrackOnHover: true,
             child: ListView.builder(
-              itemCount: displayedEmails.length,
+              itemCount: displayedmembers.length,
               itemBuilder: (BuildContext context, int idx) {
                 return UserTile(
                   state: widget.state,
                   idx: idx,
-                  email: displayedEmails[idx],
+                  email: displayedmembers[idx].email,
+                  userName: displayedmembers[idx].name,
                 );
               },
             ),

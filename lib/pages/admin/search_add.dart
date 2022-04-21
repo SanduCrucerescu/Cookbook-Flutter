@@ -3,12 +3,12 @@ import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'adminpage.dart';
-import 'alertbox.dart';
+import 'admin_page.dart';
+import 'alert_box.dart';
 
-class searchadd extends HookConsumerWidget {
+class SearchAdd extends HookConsumerWidget {
   final SelectedUserChangeNotifier state;
-  const searchadd({Key? key, required this.state}) : super(key: key);
+  const SearchAdd({Key? key, required this.state}) : super(key: key);
 
   Widget build(BuildContext context, WidgetRef ref) {
     final tec = useTextEditingController();
@@ -33,7 +33,7 @@ class searchadd extends HookConsumerWidget {
                     },
                     onClickSuffix: () {
                       tec.clear();
-                      state.filteringString = '';
+                      state.filteringString = ''; //  Fix (x) Button
                     },
                     controller: tec,
                     width: 300,
@@ -64,7 +64,7 @@ class searchadd extends HookConsumerWidget {
           Container(
             height: 40,
             width: 40,
-            color: Color(0xFFE4D5B7),
+            color: kcMedBeige,
             child: InkWell(
               onTap: () {
                 areyousure(context);
@@ -89,15 +89,15 @@ class searchadd extends HookConsumerWidget {
       builder: (context) {
         return AlertDialog(
           title: Center(child: Text("Delete User")),
-          content: Text("Are you sure you want to delete User ${state.idx}?"),
+          content: Text("Are you sure you want to delete User ${state.email}?"),
           actions: <Widget>[
             TextButton(
-              onPressed: () => Navigator.pop(context, 'Cancel'),
+              onPressed: () => Navigator.pop(context, 'Abort'),
               child: const Text('Abort', style: TextStyle(color: Colors.green)),
             ),
             TextButton(
               onPressed: () =>
-                  Navigator.pop(context, 'OK'), // Replace with query
+                  Navigator.pop(context, 'Delete'), // Replace with query
               child: const Text('Delete',
                   style: TextStyle(color: Colors.redAccent)),
             ),

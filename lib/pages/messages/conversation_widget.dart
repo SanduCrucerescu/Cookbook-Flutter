@@ -13,16 +13,61 @@ class ConversationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return Container(
-      height: 100,
-      width: size.width / 4,
-      child: ListTile(
-        leading: CircleAvatar(
-          child: Image.asset('assets/images/ph.png'),
+    if (idx % 2 == 0) {
+      return Container(
+        padding: EdgeInsets.only(top: 10, bottom: 50),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Container(
+              padding: EdgeInsets.only(left: 8),
+              child: CircleAvatar(
+                child: Image.asset('assets/images/ph.png'),
+              ),
+            ),
+            Container(
+              constraints: BoxConstraints(maxWidth: 300),
+              margin: EdgeInsets.symmetric(horizontal: 10),
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                  color: Colors.grey[400],
+                  borderRadius: BorderRadius.circular(20)),
+              child: Text(
+                "Message jjdkjd kjdkhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh",
+                style: TextStyle(fontWeight: FontWeight.w500),
+              ),
+            ),
+            Text("12:45"),
+          ],
         ),
-        title: Text("$idx"),
-        trailing: Text("3:45"),
-      ),
-    );
+      );
+    } else {
+      return Container(
+        padding: EdgeInsets.only(top: 10, bottom: 50),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Container(
+              constraints: BoxConstraints(maxWidth: 300),
+              margin: EdgeInsets.symmetric(horizontal: 10),
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                  color: Colors.lightBlue[500],
+                  borderRadius: BorderRadius.circular(20)),
+              child: Text(
+                "Messagssssssssssssssssssssssssssssssssssssssssssssssssssssssssssse",
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(right: 5),
+              child: Text("3:45"),
+            ),
+          ],
+        ),
+      );
+    }
   }
 }
