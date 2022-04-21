@@ -35,9 +35,9 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (_) => LoadImagePage(),
         );
-      case '/addrecipe':
+      case '/faq':
         return MaterialPageRoute(
-          builder: (_) => Recipe_Add(),
+          builder: (_) => FAQPage(),
         );
       default:
         // If there is no such named route in the switch statement, e.g. /third
