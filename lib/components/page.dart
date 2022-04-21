@@ -14,10 +14,15 @@ class CustomPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    Size size = MediaQuery.of(context).size;
+
     return SafeArea(
       child: Scaffold(
         body: Stack(
           children: <Widget>[
+            Container(
+              color: kcLightBeige,
+            ),
             Align(
               alignment: Alignment.topCenter,
               child: NavBar(
