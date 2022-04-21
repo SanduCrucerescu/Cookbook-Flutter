@@ -7,6 +7,7 @@ import 'package:cookbook/pages/loadimage/load_image.dart';
 import 'package:cookbook/pages/loading/loading_page.dart';
 import 'package:cookbook/pages/login/login.dart';
 import 'package:cookbook/pages/messages/message_screen.dart';
+import 'package:cookbook/pages/recipeadd/recipe_add.dart';
 import 'package:cookbook/pages/register/register.dart';
 import 'package:flutter/material.dart';
 import 'package:mysql1/mysql1.dart';
