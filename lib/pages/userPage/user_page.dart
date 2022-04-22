@@ -1,6 +1,6 @@
 import 'dart:io';
-
 import 'package:cookbook/components/components.dart';
+import 'package:cookbook/pages/register/register.dart';
 import 'package:cookbook/pages/userPage/profile_widget.dart';
 import 'package:cookbook/pages/userPage/user.dart';
 import 'package:cookbook/pages/userPage/user_preferences.dart';
@@ -8,9 +8,7 @@ import 'package:cookbook/theme/colors.dart';
 import 'package:cookbook/theme/text_styles.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
-
 import 'package:mysql1/mysql1.dart';
-import '../register/register.dart';
 
 class UserPage extends StatefulWidget {
   static const String id = '/user';
@@ -23,27 +21,21 @@ class UserPage extends StatefulWidget {
 class _UserPageState extends State<UserPage> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     const user = UserPreferences.myUser;
 
     return CustomPage(
-      child: Container(
-        color: kcLightBeige,
-        width: size.width - 200,
-        height: size.height - 100,
-        child: ListView(
-          physics: const BouncingScrollPhysics(),
-          children: [
-            Container(
-              margin: const EdgeInsets.only(top: 10),
-              child: ProfileWidget(
-                imagePath: user.imagePath,
-                onClicked: () async {},
-              ),
+      child: ListView(
+        physics: const BouncingScrollPhysics(),
+        children: [
+          Container(
+            margin: const EdgeInsets.only(top: 10),
+            child: ProfileWidget(
+              imagePath: user.imagePath,
+              onClicked: () async {},
             ),
-            const UserPageForm(user: user)
-          ],
-        ),
+          ),
+          const UserPageForm(user: user)
+        ],
       ),
     );
   }
@@ -89,6 +81,8 @@ class UserPageForm extends StatelessWidget {
 
 class UserPageTextField extends StatelessWidget {
   final String hintText, label;
+  final Size size;
+  final User user;
 
   const UserPageTextField({
     Key? key,
@@ -97,9 +91,6 @@ class UserPageTextField extends StatelessWidget {
     required this.user,
     this.label = '',
   }) : super(key: key);
-
-  final Size size;
-  final User user;
 
   @override
   Widget build(BuildContext context) {

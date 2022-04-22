@@ -6,10 +6,6 @@ class Tag {
 
   Tag({required this.id, required this.name});
 
-  int get getId => id;
-
-  String get getName => name;
-
   Map<String, dynamic> toMap() {
     return {
       'id': id,

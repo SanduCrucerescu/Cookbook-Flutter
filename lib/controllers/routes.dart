@@ -37,7 +37,7 @@ class RouteGenerator {
         );
       case '/addrecipe':
         return MaterialPageRoute(
-          builder: (_) => Recipe_Add(),
+          builder: (_) => RecipeAdd(),
         );
       case '/faq':
         return MaterialPageRoute(

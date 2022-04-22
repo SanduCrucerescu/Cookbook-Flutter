@@ -39,6 +39,7 @@ class SideBar extends ConsumerWidget {
         children: <Widget>[
           Expanded(
             child: ListView.builder(
+              controller: ScrollController(),
               itemCount: items.length,
               itemBuilder: (ctx, idx) {
                 Widget mainTopic = SideBarItem(

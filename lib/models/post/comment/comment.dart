@@ -17,10 +17,4 @@ class Comment extends Post {
             likes: likes,
             dislikes: dislikes,
             comments: comments);
-
-  int get getId => id;
-
-  void set id(int id) {
-    this.id = id;
-  }
 }

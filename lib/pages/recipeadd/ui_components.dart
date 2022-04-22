@@ -1,8 +1,6 @@
-import 'dart:developer';
-
 import 'package:cookbook/components/components.dart';
+import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/pages/recipeadd/dropdown_checkbox.dart';
-import 'package:cookbook/pages/register/register.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -10,17 +8,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysql1/mysql1.dart';
 
-import '../../db/database_manager.dart';
+class UiComponents extends HookConsumerWidget {
+  UiComponents({Key? key}) : super(key: key);
 
-class Ui_Components extends HookConsumerWidget {
-  Ui_Components({Key? key}) : super(key: key);
-
-  final rowPrivider = ChangeNotifierProvider<VerificationChangeNotifier>(
-    (ref) => VerificationChangeNotifier(),
-  );
-
-  String? _firstValue;
-  List<String> items = [
+  final List<String> items = [
     'tbls',
     'tbs',
     'ml',
@@ -28,25 +19,32 @@ class Ui_Components extends HookConsumerWidget {
     'kg',
     'liter',
   ];
+
+  final rowProvider = ChangeNotifierProvider<VerificationChangeNotifier>(
+    (ref) => VerificationChangeNotifier(),
+  );
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(rowPrivider);
+    final state = ref.watch(rowProvider);
     Size size = MediaQuery.of(context).size;
+    final instructionsController = useTextEditingController();
+    final descriptionController = useTextEditingController();
+    final topSearchBarController = useTextEditingController();
+    final firstRowController = useTextEditingController();
 
     if (state.rows.isEmpty) {
-      state.addRow(
-          buildRow(state: state, controller: useTextEditingController()));
+      state.addRow(buildRow(state: state, controller: firstRowController));
     }
 
     return Container(
-      height: size.height - 100,
-      width: size.width - 200,
-      padding: const EdgeInsets.all(80),
+      padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 30),
       child: Center(
         child: ListView(
+          controller: ScrollController(),
           children: <Widget>[
             const Center(
-              child: Text(
+              child: SelectableText(
                 "Add a recipe",
                 style: TextStyle(fontSize: 35),
               ),
@@ -56,12 +54,11 @@ class Ui_Components extends HookConsumerWidget {
               height: 60,
               margin: const EdgeInsets.only(top: 10, bottom: 10),
               hintText: "Recipe name",
-              controller: useTextEditingController(),
-              obscureText: false,
+              controller: topSearchBarController,
             ),
-            const Text(
+            const SelectableText(
               "Ingredients",
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             Container(
               margin: const EdgeInsets.only(top: 10),
@@ -70,7 +67,6 @@ class Ui_Components extends HookConsumerWidget {
                   SizedBox(
                     width: 850,
                     child: Table(
-                      //border: TableBorder.all(color: Colors.black),
                       children: [
                         ...state.rows,
                       ],
@@ -79,28 +75,22 @@ class Ui_Components extends HookConsumerWidget {
                 ],
               ),
             ),
-            CustomTextField(
-              height: 180,
-              margin: const EdgeInsets.only(top: 10, bottom: 10),
+            MultilineTextField(
               hintText: "Description",
-              controller: useTextEditingController(),
-              obscureText: false,
-              maxLines: 4,
+              controller: descriptionController,
+              maxLines: 7,
             ),
-            CustomTextField(
-              height: 200,
-              margin: const EdgeInsets.only(top: 10, bottom: 10),
-              hintText: "Instructions",
-              controller: useTextEditingController(),
-              obscureText: false,
-              maxLines: 5,
+            MultilineTextField(
+              hintText: 'Instructions',
+              controller: instructionsController,
+              maxLines: 7,
             ),
             Center(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   DropDw(
-                    tagProvider: rowPrivider,
+                    tagProvider: rowProvider,
                   ),
                   const SizedBox(
                     width: 10,
@@ -133,7 +123,7 @@ class Ui_Components extends HookConsumerWidget {
                   )
                 : const SizedBox(),
             Padding(
-              padding: EdgeInsets.only(top: 10),
+              padding: const EdgeInsets.only(top: 10),
               child: Center(
                 child: FormButton(
                   onTap: () {
@@ -157,10 +147,16 @@ class Ui_Components extends HookConsumerWidget {
   }) {
     return TableRow(
       children: [
-        Padding(
-          padding: const EdgeInsets.only(right: 10),
+        TableItem(
+          color: Colors.white,
           child: DropdownButton<String>(
-            hint: const Text("foo"),
+            icon: const Icon(
+              Icons.keyboard_arrow_down,
+              color: Colors.black,
+            ),
+            underline: const SizedBox(),
+            focusColor: Colors.white,
+            isExpanded: true,
             items: const [
               DropdownMenuItem(
                 value: 'foo',
@@ -176,47 +172,123 @@ class Ui_Components extends HookConsumerWidget {
             },
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(right: 10),
+        TableItem(
           child: CustomTextField(
-            height: 40,
-            hintText: "Amount",
+            height: 45,
             controller: controller,
-            obscureText: false,
+            hintText: "Amount",
+            fontSize: 12,
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.only(right: 10),
-          child: Text("unit of measure"),
+        const TableItem(
+          child: Center(
+            child: SelectableText(
+              "kg",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
+          ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(right: 10),
+        TableItem(
           child: FormButton(
+            height: 45,
             onTap: () {
               state.setclicked = true;
               state.addRow(
                   buildRow(state: state, controller: TextEditingController()));
-              //print(state.rows.rem);
+              state.popped = state.rows.length;
             },
             text: "Add",
             showShadow: false,
             color: kcLightBeige,
           ),
         ),
-        RowButton(
-          state: state,
-          idx: state.rows.length,
+        TableItem(
+          child: DeleteButton(
+            state: state,
+            idx: state.rows.length,
+          ),
         ),
       ],
     );
   }
 }
 
-class RowButton extends StatelessWidget {
+class TableItem extends StatelessWidget {
+  final Widget child;
+  final Color? color;
+  const TableItem({
+    required this.child,
+    this.color,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.only(right: 10),
+      margin: const EdgeInsets.only(right: 5, top: 2, bottom: 2),
+      height: 45,
+      color: color,
+      child: child,
+    );
+  }
+}
+
+class MultilineTextField extends StatelessWidget {
+  final int maxLines;
+  final TextEditingController controller;
+  final String hintText;
+
+  const MultilineTextField({
+    this.maxLines = 1,
+    required this.controller,
+    this.hintText = '',
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 200,
+      margin: const EdgeInsets.only(top: 10, bottom: 10),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.shade300,
+            blurRadius: 10,
+            spreadRadius: .5,
+          ),
+        ],
+      ),
+      child: TextField(
+        controller: controller,
+        obscureText: false,
+        maxLines: maxLines,
+        decoration: InputDecoration(
+          hintStyle: TextStyle(
+            color: Colors.black.withOpacity(
+              .3,
+            ),
+          ),
+          hintText: hintText,
+          border: InputBorder.none,
+        ),
+      ),
+    );
+  }
+}
+
+// ignore: must_be_immutable
+class DeleteButton extends StatelessWidget {
   final VerificationChangeNotifier state;
   int idx;
 
-  RowButton({
+  DeleteButton({
     Key? key,
     required this.state,
     required this.idx,
@@ -224,15 +296,14 @@ class RowButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (state.popped != null && idx > state.popped!) {
-      idx--;
+    if (state.popped != null && idx >= state.popped!) {
+      idx -= 1;
     }
 
-    print(idx);
     return FormButton(
+      height: 45,
       onTap: () {
         state.deleteRow(idx);
-        //print(state.rows.asMap());
       },
       text: "Remove",
       color: kcLightBeige,
@@ -242,11 +313,14 @@ class RowButton extends StatelessWidget {
 }
 
 class DropDw extends HookConsumerWidget {
-  final tagProvider;
-
-  DropDw({Key? key, required this.tagProvider}) : super(key: key);
+  final ChangeNotifierProvider<VerificationChangeNotifier> tagProvider;
   List<String> _selectedItems = [];
   final List<String> items = [];
+
+  DropDw({
+    Key? key,
+    required this.tagProvider,
+  }) : super(key: key);
 
   void showMultiSelect(BuildContext context) async {
     final DatabaseManager databaseManager = await DatabaseManager.init();
@@ -273,7 +347,6 @@ class DropDw extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(tagProvider);
     return Column(
       children: [
         FormButton(
@@ -339,7 +412,7 @@ class VerificationChangeNotifier extends ChangeNotifier {
 
   void deleteRow(int idx) {
     _rows.removeAt(idx);
-    popped = idx;
+    popped = idx + 1;
     notifyListeners();
   }
 
