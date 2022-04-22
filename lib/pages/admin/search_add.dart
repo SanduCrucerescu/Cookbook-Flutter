@@ -1,4 +1,5 @@
 import 'package:cookbook/components/components.dart';
+import 'package:cookbook/pages/loadimage/load_image.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -20,14 +21,21 @@ class SearchAdd extends HookConsumerWidget {
         ),
       ),
       height: 40,
-      width: 400,
+      // width: 400,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
             child: Row(
               children: [
                 Expanded(
                   child: CustomTextField(
+                    margin: const EdgeInsets.only(right: 5),
+                    isShadow: false,
+                    border: Border.all(
+                        width: 1,
+                        color: Colors.black,
+                        style: BorderStyle.solid),
                     onChanged: (value) {
                       state.filteringString = value;
                     },
@@ -43,20 +51,23 @@ class SearchAdd extends HookConsumerWidget {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(50, 0, 5, 0),
-            child: Container(
-              height: 40,
-              width: 40,
+          Container(
+            height: 40,
+            width: 40,
+            margin: const EdgeInsets.symmetric(horizontal: 5),
+            decoration: BoxDecoration(
               color: kcMedBeige,
-              child: InkWell(
-                onTap: () => addMemberFromAdmin(context),
-                child: Center(
-                  child: SizedBox(
-                    height: 30,
-                    width: 30,
-                    child: Image.asset('assets/images/add.png'),
-                  ),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: InkWell(
+              onTap: () {
+                addMemberFromAdmin(context);
+              },
+              child: Center(
+                child: SizedBox(
+                  height: 30,
+                  width: 30,
+                  child: Image.asset('assets/images/add1.png'),
                 ),
               ),
             ),
@@ -64,16 +75,20 @@ class SearchAdd extends HookConsumerWidget {
           Container(
             height: 40,
             width: 40,
-            color: kcMedBeige,
+            margin: const EdgeInsets.symmetric(horizontal: 5),
+            decoration: BoxDecoration(
+              color: kcMedBeige,
+              borderRadius: BorderRadius.circular(5),
+            ),
             child: InkWell(
               onTap: () {
-                areyousure(context);
+                areyousure(context, state);
               },
               child: Center(
                 child: SizedBox(
                   height: 30,
                   width: 30,
-                  child: Image.asset('assets/images/Remove.png'),
+                  child: Image.asset('assets/images/remove1.png'),
                 ),
               ),
             ),
@@ -83,12 +98,13 @@ class SearchAdd extends HookConsumerWidget {
     );
   }
 
-  Future<dynamic> areyousure(BuildContext context) {
+  Future<dynamic> areyousure(
+      BuildContext context, SelectedUserChangeNotifier state) {
     return showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Center(child: Text("Delete User")),
+          title: const Center(child: Text("Delete User")),
           content: Text("Are you sure you want to delete User ${state.email}?"),
           actions: <Widget>[
             TextButton(

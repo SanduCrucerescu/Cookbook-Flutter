@@ -109,16 +109,7 @@ class RecipeBox extends ConsumerWidget {
             ...recipe.tags.map(
               (tag) => RecipeTag(tag: tag),
             ),
-          ]
-              // children: [
-              //   RecipeTag(text: 'Vegan'),
-              //   RecipeTag(text: 'Vegeterian'),
-              //   RecipeTag(text: 'Bio'),
-              //   RecipeTag(text: 'Natural'),
-              //   RecipeTag(text: 'Öko'),
-              //   RecipeTag(text: 'Nachhaltig'),
-              // ],
-              ),
+          ]),
         ),
         Positioned(
           left: descriptonRowIndent,
