@@ -62,7 +62,7 @@ class GetRecepies {
             "select * from ingredients_for_recipe INNER JOIN ingredients on ingredients_for_recipe.ingredient_id = ingredients.id where recipe_id = $id;");
 
     for (var tag in tags!) {
-      tagClass = Tag(id: tag[1], name: tag[4].toString());
+      tagClass = Tag(id: tag.fields['id'], name: tag.fields['name']);
       tagsList.add(tagClass);
     }
     return tagsList;
