@@ -41,7 +41,7 @@ class RecipeBox extends ConsumerWidget {
           top: 20,
           left: actionRowIndent,
           child: RecipeBoxTopRow(
-            profilePicture: profilePicture,
+            profilePicture: Image.asset('assets/images/ph.png'),
             recipe: recipe,
           ),
         ),
@@ -49,7 +49,10 @@ class RecipeBox extends ConsumerWidget {
         Positioned(
           top: 90,
           left: 15,
-          child: Container(
+          child: AnimatedContainer(
+            duration: const Duration(
+              milliseconds: 100,
+            ),
             decoration: BoxDecoration(
               boxShadow: !state.hovering
                   ? [
@@ -73,14 +76,19 @@ class RecipeBox extends ConsumerWidget {
                       height: 420,
                       color: kcLightBeige,
                       child: Center(
-                        child: SelectableText(
+                        child: Text(
                           recipe.shortDescription,
                         ),
                       ),
                     )
                   : null,
-              image: image,
-              imagePath: image != null ? null : "assets/images/food.png",
+              image: Image.memory(
+                recipe.picture.toBytes() as Uint8List,
+                fit: BoxFit.cover,
+                height: 420,
+                width: 420,
+              ),
+              // imagePath: image != null ? null : "assets/images/food.png",
               width: 420,
               height: 420,
               isImage: true,
@@ -94,27 +102,30 @@ class RecipeBox extends ConsumerWidget {
           child: RecipeActionsRow(),
         ),
         const Positioned(left: horiLineIndent, top: 570, child: HoriLine()),
-        const Positioned(
+        Positioned(
           left: descriptonRowIndent,
           top: 590,
-          child: RecipeInformationRow(
-            text: 'tags',
-            children: [
-              RecipeTag(text: 'Vegan'),
-              RecipeTag(text: 'Vegeterian'),
-              RecipeTag(text: 'Bio'),
-              RecipeTag(text: 'Natural'),
-              RecipeTag(text: 'Öko'),
-              RecipeTag(text: 'Nachhaltig'),
-            ],
-          ),
+          child: RecipeInformationRow(text: 'tags', children: [
+            ...recipe.tags.map(
+              (tag) => RecipeTag(tag: tag),
+            ),
+          ]
+              // children: [
+              //   RecipeTag(text: 'Vegan'),
+              //   RecipeTag(text: 'Vegeterian'),
+              //   RecipeTag(text: 'Bio'),
+              //   RecipeTag(text: 'Natural'),
+              //   RecipeTag(text: 'Öko'),
+              //   RecipeTag(text: 'Nachhaltig'),
+              // ],
+              ),
         ),
-        const Positioned(
+        Positioned(
           left: descriptonRowIndent,
           top: 615,
           child: RecipeInformationRow(
-            text: 'stars',
-            children: [Text('34')],
+            text: 'id, we dont have stars currently',
+            children: [Text(recipe.id.toString())],
           ),
         ),
       ]),
@@ -155,14 +166,21 @@ class RecipeBoxTopRow extends StatelessWidget {
           ],
         ),
       ),
-      title: SelectableText(
-        recipe.title.length > 29
-            ? recipe.title.substring(0, 20) + '...'
-            : recipe.title,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 20,
-        ),
+      title: Column(
+        children: [
+          SelectableText(
+            recipe.title.length > 29
+                ? recipe.title.substring(0, 20) + '...'
+                : recipe.title,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+          ),
+          SelectableText(
+            'by ' + recipe.ownerEmail,
+          ),
+        ],
       ),
       trailing: SizedBox(
         child: Row(
@@ -270,11 +288,11 @@ class RecipeTag extends StatelessWidget {
   final BorderRadius? borderRadius;
   final Color? bgColor, textColor;
   final Border? border;
-  final String text;
+  final Tag tag;
   final TextStyle? textStyle;
 
   const RecipeTag({
-    required this.text,
+    required this.tag,
     this.margin,
     this.padding,
     this.borderRadius,
@@ -301,7 +319,7 @@ class RecipeTag extends StatelessWidget {
             ),
       ),
       child: SelectableText(
-        text,
+        tag.name,
         style: textStyle ??
             const TextStyle(
               fontWeight: FontWeight.bold,

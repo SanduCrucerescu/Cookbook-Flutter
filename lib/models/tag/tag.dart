@@ -20,6 +20,11 @@ class Tag {
     );
   }
 
+  @override
+  String toString() {
+    return 'id: ' + id.toString() + 'name: ' + name;
+  }
+
   String toJson() => json.encode(toMap());
 
   factory Tag.fromJson(String source) => Tag.fromMap(json.decode(source));
