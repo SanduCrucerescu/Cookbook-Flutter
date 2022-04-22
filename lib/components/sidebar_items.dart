@@ -39,7 +39,7 @@ List<Map<String, dynamic>> kSideBarItems = [
   {
     "text": "A d d  r e c i p e",
     "id": 3,
-    "onTap": Recipe_Add.id,
+    "onTap": RecipeAdd.id,
     "icon": const Icon(Icons.add),
     "children": [],
   },

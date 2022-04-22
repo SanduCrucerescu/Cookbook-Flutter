@@ -1,18 +1,18 @@
 import 'package:cookbook/components/components.dart';
-import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/pages/recipeadd/ui_components.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysql1/mysql1.dart';
 
 class MultiSelect extends HookConsumerWidget {
   final List<String> items;
-
   final ChangeNotifierProvider<VerificationChangeNotifier> tagsProider;
 
-  MultiSelect({Key? key, required this.items, required this.tagsProider})
-      : super(key: key);
+  const MultiSelect({
+    Key? key,
+    required this.items,
+    required this.tagsProider,
+  }) : super(key: key);
 
   void _itemChange(String itemValue, bool isSelected, state) {
     if (isSelected) {
