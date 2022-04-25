@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/db/database_manager.dart';
+import 'package:cookbook/pages/recipeadd/DropDown.dart';
 import 'package:cookbook/pages/recipeadd/dropdown_checkbox.dart';
 import 'package:cookbook/theme/colors.dart';
+import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,7 +14,6 @@ import 'package:mysql1/mysql1.dart';
 
 class UiComponents extends HookConsumerWidget {
   UiComponents({Key? key}) : super(key: key);
-
   final List<String> items = [
     'tbls',
     'tbs',
@@ -18,6 +21,12 @@ class UiComponents extends HookConsumerWidget {
     'gr',
     'kg',
     'liter',
+  ];
+  late List<CustDropdownMenuItem<String>> menuItems = [
+    const CustDropdownMenuItem(
+      child: Text(''),
+      value: '',
+    )
   ];
 
   final rowProvider = ChangeNotifierProvider<VerificationChangeNotifier>(
@@ -27,6 +36,7 @@ class UiComponents extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(rowProvider);
+    _getIngredients();
     Size size = MediaQuery.of(context).size;
     final instructionsController = useTextEditingController();
     final descriptionController = useTextEditingController();
@@ -96,10 +106,12 @@ class UiComponents extends HookConsumerWidget {
                     width: 10,
                   ),
                   FormButton(
-                    onTap: () {},
+                    onTap: () {
+                      _openImagePicker(state);
+                    },
                     text: "Select Photo",
                     showShadow: false,
-                    color: kcLightBeige,
+                    color: kcDarkBeige,
                   ),
                 ],
               ),
@@ -114,7 +126,7 @@ class UiComponents extends HookConsumerWidget {
             state.imageAdded
                 ? Center(
                     child: SelectableText(
-                      state.text,
+                      "Photo added: " + state.text,
                       style: GoogleFonts.montserrat(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
@@ -130,7 +142,7 @@ class UiComponents extends HookConsumerWidget {
                     print(state.selectedItems);
                   },
                   text: "Submit",
-                  color: kcLightBeige,
+                  color: kcDarkBeige,
                   showShadow: false,
                 ),
               ),
@@ -141,6 +153,20 @@ class UiComponents extends HookConsumerWidget {
     );
   }
 
+  void _getIngredients() async {
+    final DatabaseManager databaseManager = await DatabaseManager.init();
+
+    Results? res = await databaseManager
+        .select(table: "ingredients", fields: ["id", "name"]);
+
+    for (var rs in res!) {
+      menuItems.add(CustDropdownMenuItem(
+        child: Text(rs[1]),
+        value: "${rs[0]}",
+      ));
+    }
+  }
+
   TableRow buildRow({
     required VerificationChangeNotifier state,
     required TextEditingController controller,
@@ -149,26 +175,15 @@ class UiComponents extends HookConsumerWidget {
       children: [
         TableItem(
           color: Colors.white,
-          child: DropdownButton<String>(
-            icon: const Icon(
-              Icons.keyboard_arrow_down,
-              color: Colors.black,
-            ),
-            underline: const SizedBox(),
-            focusColor: Colors.white,
-            isExpanded: true,
-            items: const [
-              DropdownMenuItem(
-                value: 'foo',
-                child: Text('Foo'),
-              ),
-              DropdownMenuItem(
-                value: 'bar',
-                child: Text('Bar'),
-              ),
-            ],
+          // child: DropDown(
+          //   menuItems: menuItems,
+          //   state: state,
+          // ),
+          child: CustDropDown(
+            items: menuItems,
             onChanged: (val) {
-              print(val);
+              state.addingredints(val);
+              print(state.ingredints);
             },
           ),
         ),
@@ -199,10 +214,13 @@ class UiComponents extends HookConsumerWidget {
               state.addRow(
                   buildRow(state: state, controller: TextEditingController()));
               state.popped = state.rows.length;
+              state.addMap(state.ingredints[state.rows.length - 2],
+                  int.parse(controller.text));
+              print(state.ingredientsMap);
             },
             text: "Add",
             showShadow: false,
-            color: kcLightBeige,
+            color: kcDarkBeige,
           ),
         ),
         TableItem(
@@ -213,6 +231,24 @@ class UiComponents extends HookConsumerWidget {
         ),
       ],
     );
+  }
+}
+
+void _openImagePicker(VerificationChangeNotifier state) async {
+  final typeGroup = XTypeGroup(
+    label: 'images',
+    extensions: const ['jpg', 'jpeg', 'png', 'heic'],
+  );
+
+  final xFile = await openFile(acceptedTypeGroups: [typeGroup]);
+  if (xFile != null) {
+    state.imageAdded = true;
+    state.text = xFile.name;
+
+    File file = File(xFile.path);
+    state.path = file;
+    Blob blob = Blob.fromBytes(await file.readAsBytes());
+    state.photo = blob;
   }
 }
 
@@ -306,58 +342,8 @@ class DeleteButton extends StatelessWidget {
         state.deleteRow(idx);
       },
       text: "Remove",
-      color: kcLightBeige,
+      color: kcDarkBeige,
       showShadow: false,
-    );
-  }
-}
-
-class DropDw extends HookConsumerWidget {
-  final ChangeNotifierProvider<VerificationChangeNotifier> tagProvider;
-  List<String> _selectedItems = [];
-  final List<String> items = [];
-
-  DropDw({
-    Key? key,
-    required this.tagProvider,
-  }) : super(key: key);
-
-  void showMultiSelect(BuildContext context) async {
-    final DatabaseManager databaseManager = await DatabaseManager.init();
-
-    Results? res =
-        await databaseManager.select(table: "tags", fields: ["name"]);
-
-    for (var rs in res!) {
-      items.add(rs[0]);
-    }
-
-    final List<String>? results = await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return MultiSelect(
-          items: items,
-          tagsProider: tagProvider,
-        );
-      },
-    );
-
-    if (results != null) {}
-  }
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-      children: [
-        FormButton(
-          onTap: () {
-            showMultiSelect(context);
-          },
-          text: "Show tags",
-          color: kcLightBeige,
-          showShadow: false,
-        ),
-      ],
     );
   }
 }
@@ -365,11 +351,17 @@ class DropDw extends HookConsumerWidget {
 class VerificationChangeNotifier extends ChangeNotifier {
   List<TableRow> _rows = [];
   List<String> _selectedItems = [];
+  List<String> _ingredints = [];
+  List<Map<String, int>> _ingredientsMap = [];
 
+  String _name = "Ingredients";
+  int _value = 0;
   int? popped;
   bool _imageAdded = false;
   bool _tagsAdded = false;
   String _text = "";
+  late Blob _photo;
+  File? _xFile;
 
   List<TableRow> get rows => _rows;
 
@@ -381,6 +373,18 @@ class VerificationChangeNotifier extends ChangeNotifier {
 
   List<String> get selectedItems => _selectedItems;
 
+  File? get file => _xFile;
+
+  Blob get photo => _photo;
+
+  String get name => _name;
+
+  int get value => _value;
+
+  List<String> get ingredints => _ingredints;
+
+  List<Map<String, int>> get ingredientsMap => _ingredientsMap;
+
   void addTag(String tag) {
     _selectedItems.add(tag);
     notifyListeners();
@@ -388,6 +392,12 @@ class VerificationChangeNotifier extends ChangeNotifier {
 
   void removeTag(String tag) {
     _selectedItems.remove(tag);
+    notifyListeners();
+  }
+
+  void clearTags() {
+    _tagsAdded = false;
+    _selectedItems.clear();
     notifyListeners();
   }
 
@@ -418,6 +428,41 @@ class VerificationChangeNotifier extends ChangeNotifier {
 
   set text(String val) {
     _text = val;
+    notifyListeners();
+  }
+
+  set imageAdded(bool val) {
+    _imageAdded = val;
+    notifyListeners();
+  }
+
+  set photo(Blob file) {
+    _photo = file;
+    notifyListeners();
+  }
+
+  set path(File? path) {
+    _xFile = path;
+    notifyListeners();
+  }
+
+  set name(String name) {
+    _name = name;
+    notifyListeners();
+  }
+
+  set value(int value) {
+    value = value;
+    notifyListeners();
+  }
+
+  void addingredints(String val) {
+    _ingredints.add(val);
+    notifyListeners();
+  }
+
+  void addMap(String key, int value) {
+    _ingredientsMap.add({key: value});
     notifyListeners();
   }
 }
