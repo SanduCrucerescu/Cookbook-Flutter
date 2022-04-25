@@ -3,6 +3,9 @@ import 'package:cookbook/pages/recipeadd/ui_components.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysql1/mysql1.dart';
+
+import '../../db/database_manager.dart';
 
 class MultiSelect extends HookConsumerWidget {
   final List<String> items;
@@ -17,6 +20,7 @@ class MultiSelect extends HookConsumerWidget {
   void _itemChange(String itemValue, bool isSelected, state) {
     if (isSelected) {
       state.setTags(true);
+      state.noTags = false;
       state.addTag(itemValue);
     } else {
       state.removeTag(itemValue);
@@ -55,11 +59,12 @@ class MultiSelect extends HookConsumerWidget {
             _submit(context);
           },
           text: "Submit",
-          color: kcLightBeige,
+          color: kcDarkBeige,
           showShadow: false,
         ),
         FormButton(
           onTap: () {
+            state.clearTags();
             _cancel(context);
           },
           text: "Cancel",
@@ -71,81 +76,52 @@ class MultiSelect extends HookConsumerWidget {
   }
 }
 
-// class MultiSelect extends StatefulWidget {
-//   final List<String> items;
-//   const MultiSelect({Key? key, required this.items}) : super(key: key);
+class DropDw extends HookConsumerWidget {
+  final ChangeNotifierProvider<VerificationChangeNotifier> tagProvider;
+  List<String> _selectedItems = [];
+  final List<String> items = [];
 
-//   @override
-//   State<StatefulWidget> createState() => _MultiSelectState();
-// }
+  DropDw({
+    Key? key,
+    required this.tagProvider,
+  }) : super(key: key);
 
-// class _MultiSelectState extends State<MultiSelect> {
-//   // this variable holds the selected items
-//   final List<String> _selectedItems = [];
+  void showMultiSelect(BuildContext context) async {
+    final DatabaseManager databaseManager = await DatabaseManager.init();
 
-// // This function is triggered when a checkbox is checked or unchecked
-//   void _itemChange(String itemValue, bool isSelected) {
-//     setState(() {
-//       if (isSelected) {
-//         _selectedItems.add(itemValue);
-//       } else {
-//         _selectedItems.remove(itemValue);
-//       }
-//     });
-//   }
+    Results? res =
+        await databaseManager.select(table: "tags", fields: ["name"]);
 
-//   // this function is called when the Cancel button is pressed
-//   void _cancel() {
-//     Navigator.pop(context);
-//   }
+    for (var rs in res!) {
+      items.add(rs[0]);
+    }
 
-// // this function is called when the Submit button is tapped
-//   void _submit() {
-//     Navigator.pop(context, _selectedItems);
-//   }
+    final List<String>? results = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return MultiSelect(
+          items: items,
+          tagsProider: tagProvider,
+        );
+      },
+    );
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return AlertDialog(
-//       title: const Text('Select Topics'),
-//       content: SingleChildScrollView(
-//         child: ListBody(
-//           children: widget.items
-//               .map((item) => CheckboxListTile(
-//                     value: _selectedItems.contains(item),
-//                     title: Text(item),
-//                     controlAffinity: ListTileControlAffinity.leading,
-//                     onChanged: (isChecked) => _itemChange(item, isChecked!),
-//                   ))
-//               .toList(),
-//         ),
-//       ),
-//       actions: [
-//         TextButton(
-//           child: const Text('Cancel'),
-//           onPressed: _cancel,
-//         ),
-//         ElevatedButton(
-//           child: const Text('Submit'),
-//           onPressed: _submit,
-//         ),
-//       ],
-//     );
-//   }
-// }
+    if (results != null) {}
+  }
 
-// class VerificationChangeNotifier extends ChangeNotifier {
-//   List<String> _selectedItems = [];
-
-//   List<String> get selectedItems => _selectedItems;
-
-//   void addTag(String tag) {
-//     _selectedItems.add(tag);
-//     notifyListeners();
-//   }
-
-//   void removeTag(String tag) {
-//     _selectedItems.remove(tag);
-//     notifyListeners();
-//   }
-// }
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Column(
+      children: [
+        FormButton(
+          onTap: () {
+            showMultiSelect(context);
+          },
+          text: "Show tags",
+          color: kcDarkBeige,
+          showShadow: false,
+        ),
+      ],
+    );
+  }
+}
