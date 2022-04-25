@@ -170,17 +170,17 @@ class UserPageForm extends StatelessWidget {
     );
   }
 
-  Widget buildSaveButton() => ButtonWidget(
+  Widget buildSaveButton() => SaveButton(
         text: 'Save Changes',
         onClicked: () {},
       );
 }
 
-class ButtonWidget extends StatelessWidget {
+class SaveButton extends StatelessWidget {
   final String text;
   final VoidCallback onClicked;
 
-  const ButtonWidget({Key? key, required this.text, required this.onClicked})
+  const SaveButton({Key? key, required this.text, required this.onClicked})
       : super(key: key);
 
   @override
