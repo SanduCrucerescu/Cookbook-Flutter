@@ -15,20 +15,17 @@ class ConversationWidget extends StatelessWidget {
 
     if (idx % 2 == 0) {
       return Container(
-        padding: EdgeInsets.only(top: 10, bottom: 50),
+        padding: const EdgeInsets.only(top: 10, bottom: 50, left: 8),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Container(
-              padding: EdgeInsets.only(left: 8),
-              child: CircleAvatar(
-                child: Image.asset('assets/images/ph.png'),
-              ),
+            CircleAvatar(
+              child: Image.asset('assets/images/ph.png'),
             ),
             Container(
-              constraints: BoxConstraints(maxWidth: 300),
-              margin: EdgeInsets.symmetric(horizontal: 10),
-              padding: EdgeInsets.all(8),
+              constraints: const BoxConstraints(maxWidth: 300),
+              margin: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                   color: Colors.grey[400],
                   borderRadius: BorderRadius.circular(20)),
@@ -43,15 +40,15 @@ class ConversationWidget extends StatelessWidget {
       );
     } else {
       return Container(
-        padding: EdgeInsets.only(top: 10, bottom: 50),
+        padding: const EdgeInsets.only(top: 10, bottom: 50, right: 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Container(
-              constraints: BoxConstraints(maxWidth: 300),
-              margin: EdgeInsets.symmetric(horizontal: 10),
-              padding: EdgeInsets.all(8),
+              constraints: const BoxConstraints(maxWidth: 300),
+              margin: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                   color: Colors.lightBlue[500],
                   borderRadius: BorderRadius.circular(20)),
@@ -61,10 +58,7 @@ class ConversationWidget extends StatelessWidget {
                     TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
               ),
             ),
-            Container(
-              padding: EdgeInsets.only(right: 5),
-              child: Text("3:45"),
-            ),
+            Text("3:45"),
           ],
         ),
       );

@@ -16,6 +16,7 @@ class InboxWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    bool toggle = false;
 
     return Container(
       height: 100,
@@ -28,7 +29,8 @@ class InboxWidget extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
-          print("Helo");
+          toggle = !toggle;
+          print(toggle);
         },
         child: ListTile(
           leading: CircleAvatar(
@@ -36,12 +38,12 @@ class InboxWidget extends StatelessWidget {
           ),
           title: Text("$idx"),
           subtitle: const Text("Some message"),
-          trailing: Container(
+          trailing: SizedBox(
             height: 30,
             width: 30,
             child: TextButton(
               onPressed: () {
-                print("hello");
+                state.removeMessage(idx);
               },
               style: TextButton.styleFrom(primary: Colors.black),
               child: const Text("X"),
