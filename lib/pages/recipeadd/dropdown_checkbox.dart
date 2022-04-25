@@ -20,6 +20,7 @@ class MultiSelect extends HookConsumerWidget {
   void _itemChange(String itemValue, bool isSelected, state) {
     if (isSelected) {
       state.setTags(true);
+      state.noTags = false;
       state.addTag(itemValue);
     } else {
       state.removeTag(itemValue);

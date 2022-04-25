@@ -1,12 +1,16 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:cookbook/components/components.dart';
+import 'package:cookbook/controllers/add_recipe.dart';
 import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/pages/recipeadd/DropDown.dart';
 import 'package:cookbook/pages/recipeadd/dropdown_checkbox.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -22,6 +26,8 @@ class UiComponents extends HookConsumerWidget {
     'kg',
     'liter',
   ];
+  late String img64;
+
   late List<CustDropdownMenuItem<String>> menuItems = [
     const CustDropdownMenuItem(
       child: Text(''),
@@ -70,6 +76,17 @@ class UiComponents extends HookConsumerWidget {
               "Ingredients",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
+            state.ingredientValidator
+                ? Center(
+                    child: SelectableText(
+                      state.t,
+                      style: GoogleFonts.montserrat(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red),
+                    ),
+                  )
+                : const SizedBox(),
             Container(
               margin: const EdgeInsets.only(top: 10),
               child: Row(
@@ -134,12 +151,69 @@ class UiComponents extends HookConsumerWidget {
                     ),
                   )
                 : const SizedBox(),
+            state.noTags
+                ? Center(
+                    child: SelectableText(
+                      state.t,
+                      style: GoogleFonts.montserrat(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red),
+                    ),
+                  )
+                : const SizedBox(),
+            state.noInput
+                ? Center(
+                    child: SelectableText(
+                      state.t,
+                      style: GoogleFonts.montserrat(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red),
+                    ),
+                  )
+                : const SizedBox(),
             Padding(
               padding: const EdgeInsets.only(top: 10),
               child: Center(
                 child: FormButton(
-                  onTap: () {
-                    print(state.selectedItems);
+                  onTap: () async {
+                    if (topSearchBarController.text == "" ||
+                        descriptionController.text == "" ||
+                        instructionsController.text == "" ||
+                        state.ingredints.isEmpty) {
+                      state.noInput = true;
+                      state.t = "Please fill all the fields";
+                    } else {
+                      state.noInput = false;
+                      if (state.selectedItems.isEmpty) {
+                        state.noTags = true;
+                        state.t = "Please add some tags";
+                      } else {
+                        if (state.file == null) {
+                          ByteData bytes =
+                              await rootBundle.load('assets/images/ph.png');
+                          Uint8List photobytes = bytes.buffer.asUint8List(
+                              bytes.offsetInBytes, bytes.lengthInBytes);
+
+                          img64 = base64Encode(photobytes);
+                        } else {
+                          final bytes = state.file?.readAsBytesSync();
+                          img64 = base64Encode(bytes!);
+                        }
+
+                        bool add = await AddRecipe.adding(
+                            recipeInfo: {
+                              "title": topSearchBarController.text,
+                              "description": descriptionController.text,
+                              "instructions": instructionsController.text,
+                              "member_email": "abolandr@gnu.org",
+                              "picture": img64
+                            },
+                            ingredients: state.ingredientsMap,
+                            tags: state.selectedItems);
+                      }
+                    }
                   },
                   text: "Submit",
                   color: kcDarkBeige,
@@ -151,6 +225,13 @@ class UiComponents extends HookConsumerWidget {
         ),
       ),
     );
+  }
+
+  bool _isNumeric(String s) {
+    if (s == null) {
+      return false;
+    }
+    return double.tryParse(s) != null;
   }
 
   void _getIngredients() async {
@@ -210,13 +291,28 @@ class UiComponents extends HookConsumerWidget {
           child: FormButton(
             height: 45,
             onTap: () {
-              state.setclicked = true;
-              state.addRow(
-                  buildRow(state: state, controller: TextEditingController()));
-              state.popped = state.rows.length;
-              state.addMap(state.ingredints[state.rows.length - 2],
-                  int.parse(controller.text));
-              print(state.ingredientsMap);
+              //print(state.ingredints.isEmpty);
+              if (state.ingredints.isEmpty) {
+                state.ingredientValidator = true;
+                state.t = "Please select an ingredient";
+              } else {
+                if (controller.text.isEmpty) {
+                  state.ingredientValidator = true;
+                  state.t = "Please insert an amount or ingredient";
+                } else {
+                  if (!_isNumeric(controller.text)) {
+                    state.ingredientValidator = true;
+                    state.t = "Please use numbers for the ammount";
+                  } else {
+                    state.ingredientValidator = false;
+                    state.addRow(buildRow(
+                        state: state, controller: TextEditingController()));
+                    state.popped = state.rows.length;
+                    state.addMap(state.ingredints[state.rows.length - 2],
+                        int.parse(controller.text));
+                  }
+                }
+              }
             },
             text: "Add",
             showShadow: false,
@@ -352,13 +448,15 @@ class VerificationChangeNotifier extends ChangeNotifier {
   List<TableRow> _rows = [];
   List<String> _selectedItems = [];
   List<String> _ingredints = [];
-  List<Map<String, int>> _ingredientsMap = [];
+  Map<String, int> _ingredientsMap = {};
 
-  String _name = "Ingredients";
-  int _value = 0;
+  String _t = "";
   int? popped;
   bool _imageAdded = false;
   bool _tagsAdded = false;
+  bool _noTags = false;
+  bool _ingredientValidator = false;
+  bool _noInput = false;
   String _text = "";
   late Blob _photo;
   File? _xFile;
@@ -377,13 +475,17 @@ class VerificationChangeNotifier extends ChangeNotifier {
 
   Blob get photo => _photo;
 
-  String get name => _name;
-
-  int get value => _value;
+  String get t => _t;
 
   List<String> get ingredints => _ingredints;
 
-  List<Map<String, int>> get ingredientsMap => _ingredientsMap;
+  Map<String, int> get ingredientsMap => _ingredientsMap;
+
+  bool get noTags => _noTags;
+
+  bool get ingredientValidator => _ingredientValidator;
+
+  bool get noInput => _noInput;
 
   void addTag(String tag) {
     _selectedItems.add(tag);
@@ -446,8 +548,8 @@ class VerificationChangeNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  set name(String name) {
-    _name = name;
+  set t(String t) {
+    _t = t;
     notifyListeners();
   }
 
@@ -462,7 +564,22 @@ class VerificationChangeNotifier extends ChangeNotifier {
   }
 
   void addMap(String key, int value) {
-    _ingredientsMap.add({key: value});
+    _ingredientsMap.addAll({key: value});
+    notifyListeners();
+  }
+
+  set noTags(bool val) {
+    _noTags = val;
+    notifyListeners();
+  }
+
+  set ingredientValidator(bool val) {
+    _ingredientValidator = val;
+    notifyListeners();
+  }
+
+  set noInput(bool val) {
+    _noInput = val;
     notifyListeners();
   }
 }

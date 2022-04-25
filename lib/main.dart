@@ -1,6 +1,8 @@
 import 'dart:developer';
+import 'package:cookbook/controllers/add_recipe.dart';
 import 'package:cookbook/controllers/controllers.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
+import 'package:cookbook/pages/loadimage/load_image.dart';
 import 'package:cookbook/pages/login/login.dart';
 import 'package:cookbook/pages/recipeadd/recipe_add.dart';
 import 'package:cookbook/theme/colors.dart';
@@ -134,11 +136,7 @@ class App extends StatelessWidget {
           fontFamily: 'Montserrat',
           primaryColor: kcMedBeige,
         ),
-<<<<<<< HEAD
         initialRoute: RecipeAdd.id,
-=======
-        initialRoute: LoadingScreen.id,
->>>>>>> 30a5de1 (smol fixes v.4)
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );

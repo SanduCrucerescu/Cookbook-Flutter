@@ -2,7 +2,6 @@ library components;
 
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:ffi';
 import 'dart:typed_data';
 import 'package:cookbook/main.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
