@@ -23,24 +23,29 @@ class SearchAdd extends HookConsumerWidget {
       width: 400,
       child: Row(
         children: [
-          Expanded(
-            child: Row(
-              children: [
-                Expanded(
-                  child: CustomTextField(
-                    onChanged: (value) {
-                      state.filteringString = value;
-                    },
-                    onClickSuffix: () {
-                      tec.clear();
-                      state.filteringString = ''; //  Fix (x) Button
-                    },
-                    controller: tec,
-                    width: 300,
-                    borderRadius: const BorderRadius.all(Radius.circular(5)),
+          Container(
+            child: Expanded(
+              child: Row(
+                children: [
+                  Container(
+                    child: Expanded(
+                      child: CustomTextField(
+                        onChanged: (value) {
+                          state.filteringString = value;
+                        },
+                        onClickSuffix: () {
+                          tec.clear();
+                          state.filteringString = ''; //  Fix (x) Button
+                        },
+                        controller: tec,
+                        width: 300,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5)),
+                      ),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           Padding(
