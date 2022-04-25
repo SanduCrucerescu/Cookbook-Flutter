@@ -5,7 +5,6 @@ import 'package:cookbook/pages/admin/search_add.dart';
 import 'package:cookbook/pages/admin/user_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:mysql1/mysql1.dart';
-import 'dart:convert';
 
 class Rectangle extends StatelessWidget {
   final String text;
@@ -90,7 +89,6 @@ class _UsersColumnState extends State<UsersColumn> {
       }
       displayedmembers = members;
       widget.state.currMember = displayedmembers[0];
-      print(displayedmembers[0].password); // Idk why it wont work without
       setState(() {});
     });
   }
@@ -109,7 +107,7 @@ class _UsersColumnState extends State<UsersColumn> {
     if (members.isEmpty) {
       return Padding(
         padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
-        child: Column(children: [const CircularProgressIndicator()]),
+        child: Column(children: const [CircularProgressIndicator()]),
       );
     } else {
       return Expanded(

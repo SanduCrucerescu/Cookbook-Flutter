@@ -26,7 +26,7 @@ class Admin extends HookConsumerWidget {
       backgroundColor: Color(0xFFE3DBCA),
       body: Stack(
         children: [
-          NavBar(),
+          const NavBar(),
           SideBar(items: kSideBarItems),
           Padding(
             padding: const EdgeInsets.fromLTRB(200, 50, 0, 0),
@@ -60,7 +60,7 @@ class SelectedUserChangeNotifier extends ChangeNotifier {
   Member? _currMember;
   String _userName = "";
   String _email = "";
-  Image image = Image.asset("assets/images/ph.png");
+  Image image = Image.asset("assets/images/ph.png"); // doesnt count
   String _filteringString = '';
 
   String get filteringString => _filteringString;

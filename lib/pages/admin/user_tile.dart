@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/models/member/member.dart';
+import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -29,9 +30,7 @@ class UserTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
       child: Container(
-        color: idx.isEven
-            ? const Color.fromARGB(255, 245, 245, 220)
-            : const Color.fromARGB(255, 245, 245, 220),
+        color: idx.isEven ? kcMedBeige : kcLightBeige,
         child: Padding(
           // Size of the user boxes (icon and name)
           padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
