@@ -11,13 +11,22 @@ class FAQPage extends StatefulWidget {
 }
 
 class _FAQPageState extends State<FAQPage> {
-  static const sampleText = 'lorem ipsum dolor sit amet...';
+  static const userAbility =
+      'As a user you can see recipes and interact with them, '
+      'create your own recipes, favorite recipes, see weekly suggestions, '
+      'add recipes to cart and interact with other users. Enjoy!';
+
+  static const addRecipe = 'In order to add a recipe, ';
+  static const favoriteRecipe = '';
+  static const addRcptCart = '';
+
   final List<Item> items = [
-    Item(header: 'What can I do as a user?', body: sampleText),
-    Item(header: 'How do I add a recipe?', body: sampleText),
-    Item(header: 'How to favorite a recipe?', body: sampleText),
-    Item(header: 'How to add a recipe to your cart?', body: sampleText),
+    Item(header: 'What can I do as a user?', body: userAbility),
+    Item(header: 'How do I add a recipe?', body: addRecipe),
+    Item(header: 'How to favorite a recipe?', body: favoriteRecipe),
+    Item(header: 'How to add a recipe to your cart?', body: addRcptCart),
   ];
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
