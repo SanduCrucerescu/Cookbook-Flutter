@@ -12,6 +12,7 @@ class SearchAdd extends HookConsumerWidget {
   final SelectedUserChangeNotifier state;
   const SearchAdd({Key? key, required this.state}) : super(key: key);
 
+  @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tec = useTextEditingController();
 
