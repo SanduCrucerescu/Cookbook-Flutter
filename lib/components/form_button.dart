@@ -38,10 +38,7 @@ class FormButton extends StatelessWidget {
           onTap: onTap,
           child: Text(
             text,
-            style: const TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 15,
-            ),
+            style: ksFormButtonStyle,
           ),
         ),
       ),
