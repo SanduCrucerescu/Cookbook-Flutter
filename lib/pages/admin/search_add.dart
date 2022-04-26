@@ -1,4 +1,5 @@
 import 'package:cookbook/components/components.dart';
+import 'package:cookbook/controllers/delete_user.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -98,8 +99,11 @@ class SearchAdd extends HookConsumerWidget {
                       color: Colors.green, fontWeight: FontWeight.bold)),
             ),
             TextButton(
-              onPressed: () =>
-                  Navigator.pop(context, 'Delete'), // Replace with query
+              onPressed: () async {
+                bool delete = await DeleteUser.Delete(
+                    table: "memebers", where: {"email": state.email});
+              },
+              // Replace with query
               child: const Text('Delete',
                   style: TextStyle(
                       color: Colors.redAccent, fontWeight: FontWeight.bold)),
