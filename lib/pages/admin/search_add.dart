@@ -23,29 +23,24 @@ class SearchAdd extends HookConsumerWidget {
       width: 400,
       child: Row(
         children: [
-          Container(
-            child: Expanded(
-              child: Row(
-                children: [
-                  Container(
-                    child: Expanded(
-                      child: CustomTextField(
-                        onChanged: (value) {
-                          state.filteringString = value;
-                        },
-                        onClickSuffix: () {
-                          tec.clear();
-                          state.filteringString = ''; //  Fix (x) Button
-                        },
-                        controller: tec,
-                        width: 300,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(5)),
-                      ),
-                    ),
+          Expanded(
+            child: Row(
+              children: [
+                Expanded(
+                  child: CustomTextField(
+                    onChanged: (value) {
+                      state.filteringString = value;
+                    },
+                    onClickSuffix: () {
+                      tec.clear();
+                      state.filteringString = ''; //  Fix (x) Button
+                    },
+                    controller: tec,
+                    width: 300,
+                    borderRadius: const BorderRadius.all(Radius.circular(5)),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           Padding(
@@ -98,13 +93,16 @@ class SearchAdd extends HookConsumerWidget {
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.pop(context, 'Abort'),
-              child: const Text('Abort', style: TextStyle(color: Colors.green)),
+              child: const Text('Abort',
+                  style: TextStyle(
+                      color: Colors.green, fontWeight: FontWeight.bold)),
             ),
             TextButton(
               onPressed: () =>
                   Navigator.pop(context, 'Delete'), // Replace with query
               child: const Text('Delete',
-                  style: TextStyle(color: Colors.redAccent)),
+                  style: TextStyle(
+                      color: Colors.redAccent, fontWeight: FontWeight.bold)),
             ),
           ],
         );

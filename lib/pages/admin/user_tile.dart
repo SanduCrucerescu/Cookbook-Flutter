@@ -39,7 +39,7 @@ class UserTile extends StatelessWidget {
             child: Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 45, 0),
+                  padding: const EdgeInsets.fromLTRB(15, 0, 20, 0),
                   child: CircleAvatar(
                     child: state.image,
                   ),
