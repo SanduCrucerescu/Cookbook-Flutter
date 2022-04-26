@@ -25,6 +25,7 @@ class InboxWidget extends StatelessWidget {
     return Container(
       height: 100,
       width: size.width / 4,
+      padding: const EdgeInsets.only(top: 15),
       margin: const EdgeInsets.all(2),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.black),
@@ -42,7 +43,7 @@ class InboxWidget extends StatelessWidget {
                 ? Image.asset("assets/images/ph.png")
                 : Image.memory(member.profilePicture!.toBytes() as Uint8List),
           ),
-          title: Text("$idx"),
+          title: Text(member.name),
           subtitle: Text(member.name),
           trailing: SizedBox(
             height: 30,
