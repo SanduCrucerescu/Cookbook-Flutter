@@ -45,7 +45,8 @@ class UserInfo extends StatelessWidget {
                 alignment: Alignment.topCenter,
                 child: Text(
                   state.userName,
-                  style: const TextStyle(fontSize: 25),
+                  style: const TextStyle(
+                      fontSize: 25, fontWeight: FontWeight.bold),
                 ),
               ),
               Padding(
@@ -90,7 +91,10 @@ class UserInfo extends StatelessWidget {
                                   where: {'email': member.email},
                                 );
                               },
-                              child: const Text('Apply'),
+                              child: Text(
+                                'Apply',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
                             ),
                           ],
                         ),

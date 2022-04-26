@@ -32,22 +32,18 @@ class Admin extends HookConsumerWidget {
             padding: const EdgeInsets.fromLTRB(200, 50, 0, 0),
             child: Row(
               children: [
-                Container(
-                  child: Expanded(
-                    child: Rectangle(
-                      state: state,
-                      text: "User List",
-                      position: Alignment.topLeft,
-                    ),
+                Expanded(
+                  child: Rectangle(
+                    state: state,
+                    text: "User List",
+                    position: Alignment.topLeft,
                   ),
                 ),
-                Container(
-                  child: Expanded(
-                    child: UserInfo(
-                      state: state,
-                      text: "Current User",
-                      position: Alignment.topRight,
-                    ),
+                Expanded(
+                  child: UserInfo(
+                    state: state,
+                    text: "Current User",
+                    position: Alignment.topRight,
                   ),
                 )
               ],
