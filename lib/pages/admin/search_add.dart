@@ -109,13 +109,20 @@ class SearchAdd extends HookConsumerWidget {
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.pop(context, 'Abort'),
-              child: const Text('Abort', style: TextStyle(color: Colors.green)),
+              child: const Text('Abort',
+                  style: TextStyle(
+                      color: Colors.green, fontWeight: FontWeight.bold)),
             ),
             TextButton(
-              onPressed: () =>
-                  Navigator.pop(context, 'Delete'), // Replace with query
+              onPressed: () async {
+                bool delete = await DeleteUser.Delete(
+                    table: "memebers", where: {"email": state.email});
+                Navigator.pop(context, "Delete");
+              },
+              // Replace with query
               child: const Text('Delete',
-                  style: TextStyle(color: Colors.redAccent)),
+                  style: TextStyle(
+                      color: Colors.redAccent, fontWeight: FontWeight.bold)),
             ),
           ],
         );

@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:cookbook/controllers/add_recipe.dart';
 import 'package:cookbook/controllers/controllers.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
+import 'package:cookbook/pages/admin/admin_page.dart';
 import 'package:cookbook/pages/loadimage/load_image.dart';
 import 'package:cookbook/pages/login/login.dart';
 import 'package:cookbook/pages/recipeadd/recipe_add.dart';
@@ -141,7 +142,7 @@ class App extends StatelessWidget {
           fontFamily: 'Montserrat',
           primaryColor: kcMedBeige,
         ),
-        initialRoute: RecipeAdd.id,
+        initialRoute: Admin.id,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );

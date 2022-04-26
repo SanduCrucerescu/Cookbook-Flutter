@@ -7,6 +7,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'rectangle.dart';
 
+// Test
 class Admin extends HookConsumerWidget {
   static const String id = "/admin";
 
@@ -33,18 +34,22 @@ class Admin extends HookConsumerWidget {
             padding: const EdgeInsets.fromLTRB(200, 50, 0, 0),
             child: Row(
               children: [
-                Expanded(
-                  child: Rectangle(
-                    state: state,
-                    text: "User List",
-                    position: Alignment.topLeft,
+                Container(
+                  child: Expanded(
+                    child: Rectangle(
+                      state: state,
+                      text: "User List",
+                      position: Alignment.topLeft,
+                    ),
                   ),
                 ),
-                Expanded(
-                  child: UserInfo(
-                    state: state,
-                    text: "Current User",
-                    position: Alignment.topRight,
+                Container(
+                  child: Expanded(
+                    child: UserInfo(
+                      state: state,
+                      text: "Current User",
+                      position: Alignment.topRight,
+                    ),
                   ),
                 )
               ],

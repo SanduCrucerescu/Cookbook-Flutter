@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 Future<dynamic> addMemberFromAdmin(BuildContext context) {
   return showDialog<String>(
     context: context,
-    builder: (BuildContext context) => AlertDialog(actions: [
-      RegisterForm(
-        showShadow: false,
-      )
-    ]),
+    builder: (BuildContext context) => AlertDialog(
+      actions: [
+        RegisterForm(
+          showShadow: false,
+        ),
+      ],
+    ),
   );
 }
