@@ -102,6 +102,7 @@ class SearchAdd extends HookConsumerWidget {
               onPressed: () async {
                 bool delete = await DeleteUser.Delete(
                     table: "memebers", where: {"email": state.email});
+                Navigator.pop(context, "Delete");
               },
               // Replace with query
               child: const Text('Delete',
