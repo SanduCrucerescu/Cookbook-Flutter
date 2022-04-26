@@ -1,4 +1,6 @@
 import 'package:cookbook/components/components.dart';
+import 'package:cookbook/controllers/get_members.dart';
+import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/pages/messages/message_textfield.dart';
 import 'package:cookbook/pages/messages/search_bar.dart';
 import 'package:cookbook/theme/colors.dart';
@@ -10,22 +12,36 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'conversation_widget.dart';
 import 'inbox_widget.dart';
 
-class MessagePage extends HookConsumerWidget {
+class MessagePage extends StatefulHookConsumerWidget {
   static const String id = "/messages";
-  final messagesProvider = ChangeNotifierProvider<MessagesChangeNotifier>(
-    (ref) => MessagesChangeNotifier(),
-  );
 
-  MessagePage({Key? key}) : super(key: key);
+  const MessagePage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  MessagePageState createState() => MessagePageState();
+}
+
+class MessagePageState extends ConsumerState<MessagePage> {
+  final membersProvider = ChangeNotifierProvider<MessagePageController>(
+    (ref) => MessagePageController(),
+  );
+
+  @override
+  void initState() {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+      ref.read(membersProvider).members = await getMembers();
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     ScrollController sc1 = useScrollController();
     ScrollController sc2 = useScrollController();
-    final state = ref.watch(messagesProvider);
+    final state = ref.watch(membersProvider);
     Size size = MediaQuery.of(context).size;
     final tec = useTextEditingController();
-    bool _toggle = true;
+    bool _toggle = false;
 
     return Scaffold(
       body: Container(
@@ -52,7 +68,7 @@ class MessagePage extends HookConsumerWidget {
                       padding: const EdgeInsets.only(left: 20, right: 20),
                       child: ListView.builder(
                         controller: sc1,
-                        itemCount: 20,
+                        itemCount: state.members.length,
                         itemBuilder: (BuildContext context, int idx) {
                           return InboxWidget(idx: idx, state: state);
                         },
@@ -97,7 +113,10 @@ class MessagePage extends HookConsumerWidget {
                         reverse: true,
                         itemCount: 20,
                         itemBuilder: (BuildContext context, int idx) {
-                          return ConversationWidget(idx: idx);
+                          return ConversationWidget(
+                            idx: idx,
+                            state: state,
+                          );
                         },
                       ),
                     ),
@@ -113,23 +132,23 @@ class MessagePage extends HookConsumerWidget {
   }
 }
 
-class MessagesChangeNotifier extends ChangeNotifier {
-  List<int> _messages = [];
+class MessagePageController extends ChangeNotifier {
+  List<Member> _members = [];
 
-  List<int> get messages => _messages;
+  List<Member> get members => _members;
 
-  set messages(List<int> newMessages) {
-    _messages = newMessages;
+  set members(List<Member> newMember) {
+    _members = newMember;
     notifyListeners();
   }
 
-  void removeMessage(int idx) {
-    _messages.removeAt(idx);
+  void removeMember(int idx) {
+    _members.removeAt(idx);
     notifyListeners();
   }
 
-  void addMessage(int _message) {
-    _messages.add(_message);
+  void addMember(Member _member) {
+    _members.add(_member);
     notifyListeners();
   }
 }
