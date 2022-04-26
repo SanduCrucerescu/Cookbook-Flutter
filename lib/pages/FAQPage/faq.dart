@@ -23,9 +23,12 @@ class _FAQPageState extends State<FAQPage> {
     Size size = MediaQuery.of(context).size;
     // TODO: FAQ Help page, drop down panel of each question
     return CustomPage(
-      child: Container(
+      child: SizedBox(
         width: size.width - 200,
         height: size.height - 100,
+        // Search bar
+
+        // FAQ drop down list
         child: SingleChildScrollView(
           child: ExpansionPanelList.radio(
             animationDuration: Duration(milliseconds: 75),
