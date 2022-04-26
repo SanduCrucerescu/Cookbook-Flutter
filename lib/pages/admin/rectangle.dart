@@ -109,22 +109,24 @@ class _UsersColumnState extends State<UsersColumn> {
         child: Column(children: const [CircularProgressIndicator()]),
       );
     } else {
-      return Expanded(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-          child: Scrollbar(
-            isAlwaysShown: true,
-            showTrackOnHover: true,
-            child: ListView.builder(
-              itemCount: displayedmembers.length,
-              itemBuilder: (BuildContext context, int idx) {
-                return UserTile(
-                  state: widget.state,
-                  idx: idx,
-                  email: displayedmembers[idx].email,
-                  userName: displayedmembers[idx].name,
-                );
-              },
+      return Container(
+        child: Expanded(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+            child: Scrollbar(
+              isAlwaysShown: true,
+              showTrackOnHover: true,
+              child: ListView.builder(
+                itemCount: displayedmembers.length,
+                itemBuilder: (BuildContext context, int idx) {
+                  return UserTile(
+                    state: widget.state,
+                    idx: idx,
+                    email: displayedmembers[idx].email,
+                    userName: displayedmembers[idx].name,
+                  );
+                },
+              ),
             ),
           ),
         ),
