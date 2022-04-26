@@ -2,52 +2,6 @@ import 'package:cookbook/pages/recipeadd/ui_components.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-// class DropDown extends StatefulWidget {
-//   DropDown({
-//     Key? key,
-//     required this.menuItems,
-//     required this.state,
-//   }) : super(key: key);
-
-//   final List<DropdownMenuItem<String>> menuItems;
-//   final VerificationChangeNotifier state;
-//   String value = '';
-
-//   @override
-//   State<DropDown> createState() => _DropDownState();
-// }
-
-// class _DropDownState extends State<DropDown> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Stack(
-//       children: [
-//         DropdownButton<String>(
-//           icon: const Icon(
-//             Icons.keyboard_arrow_down,
-//             color: Colors.black,
-//           ),
-//           underline: const SizedBox(),
-//           focusColor: Colors.white,
-//           isExpanded: true,
-//           items: widget.menuItems,
-//           onChanged: (String? val) {
-//             setState(() {
-//               widget.value = val!;
-//               widget.state.selectedItems.add(val);
-//               //selectedValue = "Ingredients";
-//               print(widget.state.selectedItems);
-//             });
-//             //state.name = val!;
-//             //print(state.name);
-//           },
-//           value: widget.value,
-//         ),
-//       ],
-//     );
-//   }
-// }
-
 class CustDropDown<T> extends StatefulWidget {
   final List<CustDropdownMenuItem> items;
   final Function onChanged;

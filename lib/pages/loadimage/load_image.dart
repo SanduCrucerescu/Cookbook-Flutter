@@ -52,12 +52,12 @@ Future<Image> onTap() async {
   final DatabaseManager dbm = await DatabaseManager.init();
 
   Results? res = await dbm.select(
-    table: 'members',
-    fields: ['profile_picture'],
-    where: {'username': 'photoaaa'},
+    table: 'recipes',
+    fields: ['picture'],
+    where: {'title': 'testphoto'},
   );
 
-  var blob = res!.first['profile_picture'].toString();
+  var blob = res!.first['picture'].toString();
 
   Uint8List image = const Base64Codec().decode(blob);
 
