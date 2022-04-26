@@ -32,10 +32,14 @@ abstract class AbstractDatabaseManager {
       required List<String> fields,
       required Map<String, dynamic> data});
 
+  void insertRecipe({
+    required Map<String, int> data,
+  });
+
   void update({
     required String table,
     required Map<String, dynamic> params,
-    required String where,
+    required Map<String, dynamic> where,
   });
 
   void delete({
@@ -134,6 +138,13 @@ class DatabaseManager extends AbstractDatabaseManager {
     return result;
   }
 
+  bool isNumeric(String s) {
+    if (s == null) {
+      return false;
+    }
+    return double.tryParse(s) != null;
+  }
+
   @override
   Future<Results?> insert(
       {required String table,
@@ -148,7 +159,10 @@ class DatabaseManager extends AbstractDatabaseManager {
     int i = 0;
     for (MapEntry entry in data.entries) {
       i++;
-      query += i < data.length ? "'" + entry.value + "'" : entry.value;
+      //query += i < data.length ? "'" + entry.value + "'" : entry.value;
+      query += isNumeric(entry.value.toString())
+          ? entry.value.toString()
+          : "'" + entry.value + "'";
       query += i < data.length ? "," : "";
     }
     query += ");";
@@ -161,15 +175,29 @@ class DatabaseManager extends AbstractDatabaseManager {
   }
 
   @override
-  void delete({required String table, required Map<String, dynamic> where}) {
-    // TODO: implement deleteFrom
+  Future<Results?> delete(
+      {required String table, required Map<String, dynamic> where}) async {
+    connect();
+
+    String query = '''
+    DELETE FROM $table WHERE
+      ''';
+    for (MapEntry entry in where.entries) {
+      query += entry.key + " = " + "'" + entry.value + "'";
+    }
+
+    query += ";";
+    print(query);
+    result = await cnx!.query(query);
+
+    return result;
   }
 
   @override
   void update(
       {required String table,
       required Map<String, dynamic> params,
-      required String where}) {
+      required Map<String, dynamic> where}) {
     // TODO: implement update
   }
 
@@ -198,5 +226,13 @@ class DatabaseManager extends AbstractDatabaseManager {
     result = await cnx!.query(query);
 
     return result;
+  }
+
+  @override
+  void insertRecipe({required Map<String, int> data}) async {
+    connect();
+
+    String querry = '''
+      ''';
   }
 }

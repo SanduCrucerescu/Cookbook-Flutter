@@ -3,14 +3,17 @@ part of components;
 List<Map<String, dynamic>> kSideBarItems = [
   {
     "text": "H o m e",
+    "id": 0,
     "image": "assets/images/home.png",
     "onTap": HomePage.id,
     "children": [],
   },
   {
     "text": "M y  P a g e",
+    "id": 1,
     "image": "assets/images/ph.png",
-    "onTap": HomePage.id,
+    "icon": const Icon(Icons.person),
+    "onTap": UserPage.id,
     "children": [
       {
         "text": "F a v o u r i t e s",
@@ -19,31 +22,39 @@ List<Map<String, dynamic>> kSideBarItems = [
       {
         "text": "W e e k l y",
         "onTap": HomePage.id,
-      }
+      },
+      {
+        "text": "M e s s a g e s",
+        "onTap": MessagePage.id,
+      },
     ],
   },
-  // {
-  //   "text": "W e e k l y",
-  //   "image": "assets/images/weekly.png",
-  //   "onTap": HomePage.id,
-  //   "children": [],
-  // },
-  // {
-  //   "text": "F a v o u r i t e s",
-  //   "image": "assets/images/starWhite.png",
-  //   "onTap": HomePage.id,
-  //   "children": [],
-  // },
+  {
+    "text": "L o a d i n g",
+    "id": 2,
+    "onTap": LoadingScreen.id,
+    "icon": const Icon(Icons.refresh),
+    "children": [],
+  },
+  {
+    "text": "A d d  r e c i p e",
+    "id": 3,
+    "onTap": RecipeAdd.id,
+    "icon": const Icon(Icons.add),
+    "children": [],
+  },
   {
     "text": "A d m i n",
-    "image": "assets/images/starFilled.png",
+    "id": 4,
     "onTap": Admin.id,
+    "icon": const Icon(Icons.admin_panel_settings),
     "children": [],
   },
   {
     "text": "F A Q",
-    "image": "assets/images/starFilled.png",
+    "id": 5,
     "onTap": FAQPage.id,
+    "icon": const Icon(Icons.help),
     "children": [],
-  }
+  },
 ];

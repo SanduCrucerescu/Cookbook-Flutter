@@ -6,10 +6,6 @@ class Tag {
 
   Tag({required this.id, required this.name});
 
-  int get getId => id;
-
-  String get getName => name;
-
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -22,6 +18,11 @@ class Tag {
       id: map['id']?.toInt() ?? 0,
       name: map['name'] ?? '',
     );
+  }
+
+  @override
+  String toString() {
+    return 'id: ' + id.toString() + 'name: ' + name;
   }
 
   String toJson() => json.encode(toMap());

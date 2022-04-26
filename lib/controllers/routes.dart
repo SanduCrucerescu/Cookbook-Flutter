@@ -13,7 +13,7 @@ class RouteGenerator {
       case '/login':
         // Validation of correct data type
         return MaterialPageRoute(
-          builder: (_) => LoginPage(),
+          builder: (_) => const LoginPage(),
         );
       case '/loading':
         return MaterialPageRoute(
@@ -35,9 +35,17 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (_) => LoadImagePage(),
         );
+      case '/addrecipe':
+        return MaterialPageRoute(
+          builder: (_) => RecipeAdd(),
+        );
       case '/faq':
         return MaterialPageRoute(
-          builder: (_) => FAQPage(),
+          builder: (_) => const FAQPage(),
+        );
+      case '/user':
+        return MaterialPageRoute(
+          builder: (_) => const UserPage(),
         );
       default:
         // If there is no such named route in the switch statement, e.g. /third

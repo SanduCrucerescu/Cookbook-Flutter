@@ -8,7 +8,7 @@ class NavBar extends HookConsumerWidget {
   final List<Widget>? actions;
   final Border? border;
   final bool showSearchBar;
-  final double? height, width;
+  final double? height, width, searchBarHeight, searchBarWidth;
   final TextEditingController? controller;
 
   const NavBar({
@@ -21,6 +21,8 @@ class NavBar extends HookConsumerWidget {
     this.showSearchBar = true,
     this.width,
     this.height,
+    this.searchBarHeight,
+    this.searchBarWidth,
     this.controller,
     Key? key,
   }) : super(key: key);
@@ -60,8 +62,8 @@ class NavBar extends HookConsumerWidget {
                   child: CustomTextField(
                     controller: teController,
                     isShadow: false,
-                    height: 60,
-                    width: 700,
+                    height: searchBarHeight ?? 60,
+                    width: searchBarWidth ?? 700,
                     prefixIcon: const Icon(
                       Icons.expand_more,
                       color: Colors.black,

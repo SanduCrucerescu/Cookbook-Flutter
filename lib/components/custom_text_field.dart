@@ -30,6 +30,7 @@ class CustomTextField extends ConsumerWidget {
   final ValueChanged<String>? onChanged;
   final Function? validator;
   final GestureTapCallback? onTap;
+  final double? cursorWidth, cursorHeight;
   TextEditingController? controller;
 
   CustomTextField({
@@ -71,6 +72,8 @@ class CustomTextField extends ConsumerWidget {
     this.onTap,
     this.controller,
     this.textAlign = TextAlign.start,
+    this.cursorHeight,
+    this.cursorWidth,
     Key? key,
   }) : super(key: key);
 
@@ -89,7 +92,7 @@ class CustomTextField extends ConsumerWidget {
       margin: margin,
       padding: padding,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: backgroundColor,
         borderRadius: borderRadius,
         boxShadow: isShadow
             ? [
@@ -145,7 +148,8 @@ class CustomTextField extends ConsumerWidget {
               child: TextFormField(
                 textAlign: textAlign,
                 controller: controller,
-                cursorWidth: 1.5,
+                cursorWidth: cursorHeight ?? 1.5,
+                cursorHeight: cursorHeight ?? 15,
                 cursorColor: textColor,
                 obscureText: obscureText ? !status.obscured : obscureText,
                 keyboardType: inputType,
