@@ -167,8 +167,6 @@ class DatabaseManager extends AbstractDatabaseManager {
     }
     query += ");";
 
-    log(query);
-
     result = await cnx!.query(query);
 
     return result;
