@@ -134,6 +134,11 @@ class App extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'cookbook',
         theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: kcLightBeige,
+            surface: kcMedBeige,
+            brightness: Brightness.light,
+          ),
           fontFamily: 'Montserrat',
           primaryColor: kcMedBeige,
         ),

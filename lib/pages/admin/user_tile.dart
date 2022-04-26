@@ -26,7 +26,14 @@ class UserTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
       child: Container(
-        color: idx.isEven ? kcMedBeige : kcLightBeige,
+        decoration: BoxDecoration(
+            color: kcLightBeige,
+            border: Border.all(
+              color: kcMedGrey,
+              width: .5,
+              style: BorderStyle.solid,
+            ),
+            borderRadius: BorderRadius.circular(5)),
         child: Padding(
           // Size of the user boxes (icon and name)
           padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
