@@ -1,3 +1,4 @@
+import 'package:cookbook/controllers/get_members.dart';
 import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/pages/admin/admin_page.dart';
@@ -75,18 +76,7 @@ class _UsersColumnState extends State<UsersColumn> {
     super.initState();
 
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
-      dbManager = await DatabaseManager.init();
-
-      Results? res = await dbManager?.select(table: 'members', fields: ['*']);
-
-      for (var r in res!) {
-        final curr = Member(
-          name: r['username'],
-          email: r['email'],
-          password: r['password'],
-        );
-        members.add(curr); // Something wrong here
-      }
+      members = await getMembers();
       displayedmembers = members;
       widget.state.currMember = displayedmembers[0];
       setState(() {});
@@ -96,7 +86,6 @@ class _UsersColumnState extends State<UsersColumn> {
   @override
   Widget build(BuildContext context) {
     displayedmembers = [];
-    //print(widget.state.filteringString);
 
     for (Member member in members) {
       if (member.email.startsWith(widget.state.filteringString)) {
