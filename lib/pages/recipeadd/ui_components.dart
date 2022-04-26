@@ -190,25 +190,26 @@ class UiComponents extends HookConsumerWidget {
                         state.noTags = true;
                         state.t = "Please add some tags";
                       } else {
-                        if (state.file == null) {
-                          ByteData bytes =
-                              await rootBundle.load('assets/images/ph.png');
-                          Uint8List photobytes = bytes.buffer.asUint8List(
-                              bytes.offsetInBytes, bytes.lengthInBytes);
+                        // if (state.file == null) {
+                        //   ByteData bytes =
+                        //       await rootBundle.load('assets/images/ph.png');
+                        //   Uint8List photobytes = bytes.buffer.asUint8List(
+                        //       bytes.offsetInBytes, bytes.lengthInBytes);
 
-                          img64 = base64Encode(photobytes);
-                        } else {
-                          final bytes = state.file?.readAsBytesSync();
-                          img64 = base64Encode(bytes!);
-                        }
-
+                        //   img64 = base64Encode(photobytes);
+                        // } else {
+                        //   final bytes = state.file?.readAsBytesSync();
+                        //   img64 = base64Encode(bytes!);
+                        // }
+                        final bytes = state.file?.readAsBytesSync();
+                        var d = bytes!.toList();
                         bool add = await AddRecipe.adding(
                             recipeInfo: {
                               "title": topSearchBarController.text,
                               "description": descriptionController.text,
                               "instructions": instructionsController.text,
                               "member_email": "abolandr@gnu.org",
-                              "picture": img64
+                              "picture": d.toString()
                             },
                             ingredients: state.ingredientsMap,
                             tags: state.selectedItems);

@@ -175,8 +175,22 @@ class DatabaseManager extends AbstractDatabaseManager {
   }
 
   @override
-  void delete({required String table, required Map<String, dynamic> where}) {
-    // TODO: implement deleteFrom
+  Future<Results?> delete(
+      {required String table, required Map<String, dynamic> where}) async {
+    connect();
+
+    String query = '''
+    DELETE FROM $table WHERE
+      ''';
+    for (MapEntry entry in where.entries) {
+      query += entry.key + " = " + "'" + entry.value + "'";
+    }
+
+    query += ";";
+    print(query);
+    result = await cnx!.query(query);
+
+    return result;
   }
 
   @override
