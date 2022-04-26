@@ -3,10 +3,7 @@ import 'package:cookbook/controllers/add_recipe.dart';
 import 'package:cookbook/controllers/controllers.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
 import 'package:cookbook/pages/admin/admin_page.dart';
-<<<<<<< HEAD
 import 'package:cookbook/pages/loadimage/load_image.dart';
-=======
->>>>>>> 771de3b (Fixed Expanded Error)
 import 'package:cookbook/pages/login/login.dart';
 import 'package:cookbook/pages/recipeadd/recipe_add.dart';
 import 'package:cookbook/theme/colors.dart';
