@@ -54,7 +54,7 @@ Future<Image> onTap() async {
   Results? res = await dbm.select(
     table: 'recipes',
     fields: ['picture'],
-    where: {'title': 'testphoto'},
+    where: {'title': 't'},
   );
 
   var blob = res!.first['picture'].toString();

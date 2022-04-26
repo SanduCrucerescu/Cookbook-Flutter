@@ -450,6 +450,7 @@ class VerificationChangeNotifier extends ChangeNotifier {
   List<String> _selectedItems = [];
   List<String> _ingredints = [];
   Map<String, int> _ingredientsMap = {};
+  List<String> _items = [];
 
   String _t = "";
   int? popped;
@@ -487,6 +488,8 @@ class VerificationChangeNotifier extends ChangeNotifier {
   bool get ingredientValidator => _ingredientValidator;
 
   bool get noInput => _noInput;
+
+  List<String> get items => _items;
 
   void addTag(String tag) {
     _selectedItems.add(tag);
@@ -581,6 +584,11 @@ class VerificationChangeNotifier extends ChangeNotifier {
 
   set noInput(bool val) {
     _noInput = val;
+    notifyListeners();
+  }
+
+  void addTags(String tag) {
+    _items.add(tag);
     notifyListeners();
   }
 }
