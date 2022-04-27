@@ -1,3 +1,4 @@
+import 'package:cookbook/pages/messages/message_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +8,7 @@ class ConversationWidget extends StatelessWidget {
   const ConversationWidget({
     required this.idx,
     Key? key,
+    required MessagePageController state,
   }) : super(key: key);
 
   @override

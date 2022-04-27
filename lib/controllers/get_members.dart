@@ -9,10 +9,10 @@ Future<List<Member>> getMembers() async {
 
   for (var r in res!) {
     final curr = Member(
-      name: r['username'],
-      email: r['email'],
-      password: r['password'],
-    );
+        name: r['username'],
+        email: r['email'],
+        password: r['password'],
+        profilePicture: r['profile_pic']);
     members.add(curr); // Something wrong here
   }
   return members;
