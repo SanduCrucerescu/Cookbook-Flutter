@@ -24,6 +24,7 @@ class SearchBar extends StatelessWidget {
             state.filteringString = value;
             for (Member member in state.members) {
               if (member.name.startsWith(state.filteringString) &&
+                  state.filteringString != "" &&
                   !state.displayedMembers.contains(member)) {
                 state.addDisplayedMember(member);
               } else if (!member.name.startsWith(state.filteringString)) {
