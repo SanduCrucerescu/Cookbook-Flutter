@@ -19,7 +19,6 @@ class InboxWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    bool toggle = false;
     Member member = state.displayedMembers[idx];
 
     return Container(
@@ -34,8 +33,8 @@ class InboxWidget extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
-          toggle = !toggle;
-          print(toggle);
+          state.toggle = !state.toggle;
+          print(state.toggle);
         },
         child: ListTile(
           leading: Profile_Pic(member: member),

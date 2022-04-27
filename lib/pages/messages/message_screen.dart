@@ -41,7 +41,7 @@ class MessagePageState extends ConsumerState<MessagePage> {
     final state = ref.watch(membersProvider);
     Size size = MediaQuery.of(context).size;
     final tec = useTextEditingController();
-    bool _toggle = false;
+    //bool _toggle = false;
 
     return Scaffold(
       body: Container(
@@ -77,7 +77,7 @@ class MessagePageState extends ConsumerState<MessagePage> {
                   ],
                 ),
                 Visibility(
-                  visible: !_toggle,
+                  visible: !state.toggle,
                   child: Column(children: [
                     Container(
                       decoration: BoxDecoration(
@@ -99,7 +99,7 @@ class MessagePageState extends ConsumerState<MessagePage> {
                   ]),
                 ),
                 Visibility(
-                  visible: _toggle,
+                  visible: state.toggle,
                   child: Column(children: [
                     Container(
                       decoration: BoxDecoration(
@@ -136,12 +136,15 @@ class MessagePageController extends ChangeNotifier {
   List<Member> _members = [];
   List<Member> _displayedMembers = [];
   String _filteringString = '';
+  bool _toggle = false;
 
   String get filteringString => _filteringString;
 
   List<Member> get members => _members;
 
   List<Member> get displayedMembers => _displayedMembers;
+
+  bool get toggle => _toggle;
 
   set members(List<Member> newMember) {
     _members = newMember;
@@ -155,6 +158,11 @@ class MessagePageController extends ChangeNotifier {
 
   set filteringString(String val) {
     _filteringString = val;
+    notifyListeners();
+  }
+
+  set toggle(bool cond) {
+    _toggle = cond;
     notifyListeners();
   }
 
