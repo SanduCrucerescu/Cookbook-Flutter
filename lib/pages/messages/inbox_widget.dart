@@ -45,7 +45,7 @@ class InboxWidget extends StatelessWidget {
             width: 30,
             child: TextButton(
               onPressed: () {
-                state.removeMember(idx);
+                state.removeDisplayedMember(member);
               },
               style: TextButton.styleFrom(primary: Colors.black),
               child: const Text("X"),
