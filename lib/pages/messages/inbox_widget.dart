@@ -20,7 +20,7 @@ class InboxWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     bool toggle = false;
-    Member member = state.members[idx];
+    Member member = state.displayedMembers[idx];
 
     return Container(
       height: 100,

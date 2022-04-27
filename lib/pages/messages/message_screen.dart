@@ -61,14 +61,14 @@ class MessagePageState extends ConsumerState<MessagePage> {
                 ),
                 Column(
                   children: [
-                    const SearchBar(),
+                    SearchBar(state: state, tec: tec),
                     Container(
                       height: size.height - 200,
                       width: (size.width - 200) / 2,
                       padding: const EdgeInsets.only(left: 20, right: 20),
                       child: ListView.builder(
                         controller: sc1,
-                        itemCount: state.members.length,
+                        itemCount: state.displayedMembers.length,
                         itemBuilder: (BuildContext context, int idx) {
                           return InboxWidget(idx: idx, state: state);
                         },
@@ -134,11 +134,27 @@ class MessagePageState extends ConsumerState<MessagePage> {
 
 class MessagePageController extends ChangeNotifier {
   List<Member> _members = [];
+  List<Member> _displayedMembers = [];
+  String _filteringString = '';
+
+  String get filteringString => _filteringString;
 
   List<Member> get members => _members;
 
+  List<Member> get displayedMembers => _displayedMembers;
+
   set members(List<Member> newMember) {
     _members = newMember;
+    notifyListeners();
+  }
+
+  set displayedMembers(List<Member> newMember) {
+    _displayedMembers = newMember;
+    notifyListeners();
+  }
+
+  set filteringString(String val) {
+    _filteringString = val;
     notifyListeners();
   }
 
@@ -149,6 +165,16 @@ class MessagePageController extends ChangeNotifier {
 
   void addMember(Member _member) {
     _members.add(_member);
+    notifyListeners();
+  }
+
+  void addDisplayedMember(Member _member) {
+    _displayedMembers.add(_member);
+    notifyListeners();
+  }
+
+  void removeDisplayedMember(Member _member) {
+    _displayedMembers.remove(_member);
     notifyListeners();
   }
 }
