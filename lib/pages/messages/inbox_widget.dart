@@ -38,11 +38,7 @@ class InboxWidget extends StatelessWidget {
           print(toggle);
         },
         child: ListTile(
-          leading: ClipOval(
-            child: member.profilePicture == null
-                ? Image.asset("assets/images/ph.png")
-                : Image.memory(member.profilePicture!.toBytes() as Uint8List),
-          ),
+          leading: Profile_Pic(member: member),
           title: Text(member.name),
           subtitle: Text(member.name),
           trailing: SizedBox(
@@ -58,6 +54,24 @@ class InboxWidget extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class Profile_Pic extends StatelessWidget {
+  const Profile_Pic({
+    Key? key,
+    required this.member,
+  }) : super(key: key);
+
+  final Member member;
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipOval(
+      child: member.profilePicture == null
+          ? Image.asset("assets/images/ph.png")
+          : Image.memory(member.profilePicture!.toBytes() as Uint8List),
     );
   }
 }

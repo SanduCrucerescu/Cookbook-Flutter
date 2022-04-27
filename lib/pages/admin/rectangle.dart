@@ -112,6 +112,8 @@ class _UsersColumnState extends State<UsersColumn> {
                   idx: idx,
                   email: displayedmembers[idx].email,
                   userName: displayedmembers[idx].name,
+                  profile_pic: displayedmembers[idx].profilePicture,
+                  member: displayedmembers[idx],
                 );
               },
             ),
