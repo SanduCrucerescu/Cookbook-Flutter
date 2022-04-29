@@ -16,7 +16,7 @@ Future<List<DirectMessage>> getMessages() async {
         'DATE(`time`)'
       ],
       where: {'sender': 'abolandr@gnu.org', 'receiver': 'abolandr@gnu.org'},
-      or: "or");
+      or: true);
 
   for (var r in res!) {
     final curr = DirectMessage(

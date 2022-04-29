@@ -113,8 +113,8 @@ class DatabaseManager extends AbstractDatabaseManager {
       {required String table,
       required List<String> fields,
       Map<String, dynamic>? where,
-      String? and,
-      String? or,
+      bool? and,
+      bool? or,
       String? group,
       String? having,
       List<int>? limit}) async {
@@ -131,9 +131,9 @@ class DatabaseManager extends AbstractDatabaseManager {
       for (MapEntry entry in where.entries) {
         i++;
         query += entry.key + " = '" + entry.value + "'";
-        if (and != null) {
+        if (and == true) {
           query += i < where.length ? " AND " : "";
-        } else if (or != null) {
+        } else if (or == true) {
           query += i < where.length ? " OR " : "";
         }
       }
