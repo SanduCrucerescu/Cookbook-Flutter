@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
+
 import 'package:mysql1/mysql1.dart';
 
 abstract class AbstractDatabaseManager {
@@ -112,6 +113,8 @@ class DatabaseManager extends AbstractDatabaseManager {
       {required String table,
       required List<String> fields,
       Map<String, dynamic>? where,
+      String? and,
+      String? or,
       String? group,
       String? having,
       List<int>? limit}) async {
@@ -128,7 +131,11 @@ class DatabaseManager extends AbstractDatabaseManager {
       for (MapEntry entry in where.entries) {
         i++;
         query += entry.key + " = '" + entry.value + "'";
-        query += i < where.length ? " AND " : "";
+        if (and != null) {
+          query += i < where.length ? " AND " : "";
+        } else if (or != null) {
+          query += i < where.length ? " OR " : "";
+        }
       }
     }
     query += ";";
