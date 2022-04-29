@@ -1,6 +1,7 @@
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/controllers/get_members.dart';
 import 'package:cookbook/models/member/member.dart';
+import 'package:cookbook/models/post/directMessage/direct_message.dart';
 import 'package:cookbook/pages/messages/message_textfield.dart';
 import 'package:cookbook/pages/messages/search_bar.dart';
 import 'package:cookbook/theme/colors.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../controllers/get_messages.dart';
 import 'conversation_widget.dart';
 import 'inbox_widget.dart';
 
@@ -30,7 +32,9 @@ class MessagePageState extends ConsumerState<MessagePage> {
   void initState() {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       ref.read(membersProvider).members = await getMembers();
+      ref.read(membersProvider).messages = await getMessages();
     });
+
     super.initState();
   }
 
@@ -41,7 +45,6 @@ class MessagePageState extends ConsumerState<MessagePage> {
     final state = ref.watch(membersProvider);
     Size size = MediaQuery.of(context).size;
     final tec = useTextEditingController();
-    //bool _toggle = false;
 
     return Scaffold(
       body: Container(
@@ -111,7 +114,7 @@ class MessagePageState extends ConsumerState<MessagePage> {
                       child: ListView.builder(
                         controller: sc2,
                         reverse: true,
-                        itemCount: 20,
+                        itemCount: state.messages.length,
                         itemBuilder: (BuildContext context, int idx) {
                           return ConversationWidget(
                             idx: idx,
@@ -135,6 +138,7 @@ class MessagePageState extends ConsumerState<MessagePage> {
 class MessagePageController extends ChangeNotifier {
   List<Member> _members = [];
   List<Member> _displayedMembers = [];
+  List<DirectMessage> _messages = [];
   String _filteringString = '';
   bool _toggle = false;
 
@@ -143,6 +147,8 @@ class MessagePageController extends ChangeNotifier {
   List<Member> get members => _members;
 
   List<Member> get displayedMembers => _displayedMembers;
+
+  List<DirectMessage> get messages => _messages;
 
   bool get toggle => _toggle;
 
@@ -153,6 +159,11 @@ class MessagePageController extends ChangeNotifier {
 
   set displayedMembers(List<Member> newMember) {
     _displayedMembers = newMember;
+    notifyListeners();
+  }
+
+  set messages(List<DirectMessage> newMessage) {
+    _messages = newMessage;
     notifyListeners();
   }
 

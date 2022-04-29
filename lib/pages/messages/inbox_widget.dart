@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../controllers/get_messages.dart';
 import '../../models/member/member.dart';
 import 'message_screen.dart';
 
@@ -34,7 +35,7 @@ class InboxWidget extends StatelessWidget {
       child: InkWell(
         onTap: () {
           state.toggle = !state.toggle;
-          print(state.toggle);
+          print(getMessages().toString());
         },
         child: ListTile(
           leading: Profile_Pic(member: member),
