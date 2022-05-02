@@ -7,9 +7,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'admin_page.dart';
 
-class UserInfo extends StatelessWidget {
+class UserInfo extends HookConsumerWidget {
   final String text;
-  final position;
+  final Alignment position;
   final SelectedUserChangeNotifier state;
 
   const UserInfo({
@@ -20,10 +20,13 @@ class UserInfo extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final nameController = useTextEditingController();
+    final emailController = useTextEditingController();
+
     double xSize = 600;
     return Padding(
-      padding: const EdgeInsets.all(80),
+      padding: const EdgeInsets.only(right: 40, bottom: 20, top: 20, left: 20),
       child: Align(
         alignment: position,
         // rectangle itself
@@ -59,18 +62,26 @@ class UserInfo extends StatelessWidget {
                       : Column(
                           children: [
                             UserInfoField(
-                                title: 'Name: ',
-                                content: state.userName,
-                                parameterToUpdate: state.currMember!.name),
+                              title: 'Name: ',
+                              content: state.userName,
+                              controller: nameController,
+                              onTap: () {
+                                state.currMember?.name = nameController.text;
+                              },
+                            ),
                             UserInfoField(
                               title: 'Email: ',
                               content: state.email,
-                              parameterToUpdate: state.currMember!.email,
+                              controller: emailController,
+                              onTap: () {
+                                state.currMember?.email = emailController.text;
+                              },
                             ),
                             UserInfoField(
                               title: 'Image: ',
                               content: 'some image', //TODO: replace with image
-                              parameterToUpdate: state.currMember!.name,
+                              controller: nameController,
+                              onTap: () {},
                             ),
                             CustomButton(
                               color: kcMedBeige,
@@ -79,16 +90,18 @@ class UserInfo extends StatelessWidget {
                                 DatabaseManager dbManager =
                                     await DatabaseManager.init();
                                 Member member = state.currMember!;
+                                print(member.name);
                                 dbManager.update(
                                   table: 'members',
-                                  params: {
-                                    'name': member.name,
-                                    'emai': member.email,
+                                  set: {
+                                    'username': member.name,
+                                    'email': member.email,
                                     'password': member.password,
-                                    // 'profile_pic:': member
-                                    //     .name, // TODO : Change to profilePicture
-                                  },
-                                  where: {'email': member.email},
+                                  }
+                                  // 'profile_pic:': member
+                                  //     .name, // TODO : Change to profilePicture
+                                  ,
+                                  where: {'email': state.currMember!.email},
                                 );
                               },
                               child: const Text(
@@ -110,71 +123,65 @@ class UserInfo extends StatelessWidget {
 
 class UserInfoField extends HookConsumerWidget {
   final String title, content;
-  String parameterToUpdate;
+  final VoidCallback onTap;
   final DatabaseManager dbManager = DatabaseManager();
+  final TextEditingController controller;
 
   UserInfoField({
     required this.title,
     required this.content,
-    required this.parameterToUpdate,
+    required this.onTap,
+    required this.controller,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final tec = useTextEditingController();
-
     return SizedBox(
-      width: 410,
-      child: Expanded(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Container(
-                height: 40,
-                width: 300,
-                margin: const EdgeInsets.symmetric(vertical: 5),
-                padding: const EdgeInsets.only(left: 5),
-                color: kcMedBeige,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(title),
-                    Expanded(
-                      child: CustomTextField(
-                        controller: tec,
-                        height: 15,
-                        width: 230,
-                        isShadow: false,
-                        backgroundColor: Colors.transparent,
-                        hintText: content,
-                        fontSize: 12,
-                      ),
-                    )
-                  ],
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Container(
+              height: 40,
+              width: 300,
+              margin: const EdgeInsets.symmetric(vertical: 5),
+              padding: const EdgeInsets.only(left: 5),
+              color: kcMedBeige,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(title),
+                  Expanded(
+                    child: CustomTextField(
+                      controller: controller,
+                      height: 15,
+                      width: 230,
+                      isShadow: false,
+                      backgroundColor: Colors.transparent,
+                      hintText: content,
+                      fontSize: 12,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: Container(
+              color: kcMedBeige,
+              width: 100,
+              height: 40,
+              child: InkWell(
+                onTap: () => onTap(),
+                child: const Center(
+                  child: Text('Save'),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Container(
-                color: kcMedBeige,
-                width: 100,
-                height: 40,
-                child: InkWell(
-                  onTap: () {
-                    print(tec.text);
-                    parameterToUpdate = tec.text;
-                  },
-                  child: const Center(
-                    child: Text('Save'),
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
