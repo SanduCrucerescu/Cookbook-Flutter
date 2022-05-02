@@ -24,38 +24,27 @@ class Admin extends HookConsumerWidget {
     Size size = MediaQuery.of(context).size;
     // TODO: In Login Screen make Username: Admin return this page
 
-    return Scaffold(
-      backgroundColor: kcLightBeige,
-      body: Stack(
-        children: [
-          const NavBar(),
-          SideBar(items: kSideBarItems),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(200, 50, 0, 0),
-            child: Row(
-              children: [
-                Container(
-                  child: Expanded(
-                    child: Rectangle(
-                      state: state,
-                      text: "User List",
-                      position: Alignment.topLeft,
-                    ),
-                  ),
-                ),
-                Container(
-                  child: Expanded(
-                    child: UserInfo(
-                      state: state,
-                      text: "Current User",
-                      position: Alignment.topRight,
-                    ),
-                  ),
-                )
-              ],
+    return CustomPage(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(200, 50, 0, 0),
+        child: Row(
+          children: [
+            Expanded(
+              child: Rectangle(
+                state: state,
+                text: "User List",
+                position: Alignment.topLeft,
+              ),
             ),
-          )
-        ],
+            Expanded(
+              child: UserInfo(
+                state: state,
+                text: "Current User",
+                position: Alignment.topRight,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

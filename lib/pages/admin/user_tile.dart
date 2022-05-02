@@ -12,16 +12,13 @@ class UserTile extends StatelessWidget {
   final SelectedUserChangeNotifier state;
   final String email;
   final String userName;
-  final Blob? profile_pic;
 
   const UserTile({
     required this.member,
     required this.email,
     required this.idx,
-    // required this.member,
     required this.state,
     required this.userName,
-    required this.profile_pic,
     Key? key,
   }) : super(key: key);
 
