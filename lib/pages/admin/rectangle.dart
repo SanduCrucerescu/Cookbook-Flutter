@@ -98,8 +98,11 @@ class _UsersColumnState extends State<UsersColumn> {
         child: Column(children: const [CircularProgressIndicator()]),
       );
     } else {
-      return Padding(
+      return Container(
+        height: 500,
+        width: 400,
         padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+<<<<<<< HEAD
         child: Scrollbar(
           isAlwaysShown: true,
           showTrackOnHover: true,
@@ -115,6 +118,20 @@ class _UsersColumnState extends State<UsersColumn> {
               );
             },
           ),
+=======
+        child: ListView.builder(
+          itemCount: displayedmembers.length,
+          itemBuilder: (BuildContext context, int idx) {
+            return UserTile(
+              state: widget.state,
+              idx: idx,
+              email: displayedmembers[idx].email,
+              userName: displayedmembers[idx].name,
+              profile_pic: displayedmembers[idx].profilePicture,
+              member: displayedmembers[idx],
+            );
+          },
+>>>>>>> d9b0b6b (Some small fixes)
         ),
       );
     }
