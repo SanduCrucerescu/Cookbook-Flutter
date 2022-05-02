@@ -16,34 +16,35 @@ class SearchBar extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
 
     return SizedBox(
-        height: 60,
-        width: (size.width - 300) / 2,
-        child: TextField(
-          controller: tec,
-          onChanged: (value) {
-            state.filteringString = value;
-            for (Member member in state.members) {
-              if (member.name.startsWith(state.filteringString) &&
-                  state.filteringString != "" &&
-                  !state.displayedMembers.contains(member)) {
-                state.addDisplayedMember(member);
-              } else if (!member.name.startsWith(state.filteringString)) {
-                state.removeDisplayedMember(member);
-              }
+      height: 60,
+      width: (size.width - 300) / 2,
+      child: TextField(
+        controller: tec,
+        onChanged: (value) {
+          state.displayedMembers = [];
+          state.filteringString = value;
+          for (Member member in state.members) {
+            if (member.name
+                .toUpperCase()
+                .startsWith(state.filteringString.toUpperCase())) {
+              state.addDisplayedMember(member);
             }
-          },
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: Colors.white,
-            border: const OutlineInputBorder(),
-            hintText: 'Search...',
-            suffixIcon: IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () {
-                print(state.displayedMembers.toString());
-              },
-            ),
+          }
+        },
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: Colors.white,
+          border: const OutlineInputBorder(),
+          hintText: 'Search...',
+          suffixIcon: IconButton(
+            icon: const Icon(Icons.clear),
+            onPressed: () {
+              tec.clear();
+              state.filteringString = '';
+            },
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

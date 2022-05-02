@@ -6,17 +6,11 @@ import '../db/database_manager.dart';
 Future<List<DirectMessage>> getMessages() async {
   final dbManager = await DatabaseManager.init();
   List<DirectMessage> messages = [];
-  Results? res = await dbManager.select(
-      table: 'messages',
-      fields: [
-        'sender',
-        'receiver',
-        'content',
-        '''TIME_FORMAT(`time`, '%H:%i')''',
-        'DATE(`time`)'
-      ],
-      where: {'sender': 'abolandr@gnu.org', 'receiver': 'abolandr@gnu.org'},
-      or: true);
+  Results? res = await dbManager.query(
+      query:
+          '''SELECT sender, receiver, content, DATE(`time`), TIME_FORMAT(`time`, '%H:%i') 
+          FROM messages WHERE sender = 'abolandr@gnu.org' OR receiver = 'abolandr@gnu.org' 
+          ORDER BY time DESC;''');
 
   for (var r in res!) {
     final curr = DirectMessage(
