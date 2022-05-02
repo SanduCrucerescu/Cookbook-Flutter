@@ -126,55 +126,53 @@ class UserInfoField extends HookConsumerWidget {
 
     return SizedBox(
       width: 410,
-      child: Expanded(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Container(
-                height: 40,
-                width: 300,
-                margin: const EdgeInsets.symmetric(vertical: 5),
-                padding: const EdgeInsets.only(left: 5),
-                color: kcMedBeige,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(title),
-                    Expanded(
-                      child: CustomTextField(
-                        controller: tec,
-                        height: 15,
-                        width: 230,
-                        isShadow: false,
-                        backgroundColor: Colors.transparent,
-                        hintText: content,
-                        fontSize: 12,
-                      ),
-                    )
-                  ],
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Container(
+              height: 40,
+              width: 300,
+              margin: const EdgeInsets.symmetric(vertical: 5),
+              padding: const EdgeInsets.only(left: 5),
+              color: kcMedBeige,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(title),
+                  Expanded(
+                    child: CustomTextField(
+                      controller: tec,
+                      height: 15,
+                      width: 230,
+                      isShadow: false,
+                      backgroundColor: Colors.transparent,
+                      hintText: content,
+                      fontSize: 12,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: Container(
+              color: kcMedBeige,
+              width: 100,
+              height: 40,
+              child: InkWell(
+                onTap: () {
+                  print(tec.text);
+                  parameterToUpdate = tec.text;
+                },
+                child: const Center(
+                  child: Text('Save'),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Container(
-                color: kcMedBeige,
-                width: 100,
-                height: 40,
-                child: InkWell(
-                  onTap: () {
-                    print(tec.text);
-                    parameterToUpdate = tec.text;
-                  },
-                  child: const Center(
-                    child: Text('Save'),
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }

@@ -103,19 +103,16 @@ class _UsersColumnState extends State<UsersColumn> {
         child: Scrollbar(
           isAlwaysShown: true,
           showTrackOnHover: true,
-          child: Container(
-            child: ListView.builder(
-              itemCount: displayedmembers.length,
-              itemBuilder: (BuildContext context, int idx) {
-                return UserTile(
-                  state: widget.state,
-                  idx: idx,
-                  email: displayedmembers[idx].email,
-                  userName: displayedmembers[idx].name,
-                  member: displayedmembers[idx],
-                );
-              },
-            ),
+          child: ListView.builder(
+            itemCount: displayedmembers.length,
+            itemBuilder: (BuildContext context, int idx) {
+              return UserTile(
+                state: widget.state,
+                idx: idx,
+                email: displayedmembers[idx].email,
+                userName: displayedmembers[idx].name,
+              );
+            },
           ),
         ),
       );
