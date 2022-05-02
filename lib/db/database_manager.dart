@@ -201,19 +201,20 @@ class DatabaseManager extends AbstractDatabaseManager {
       required Map<String, dynamic> set}) async {
     connect();
 
-    String query = '''
-        UPDATE  $table SET ''';
+    String query = '''UPDATE  $table SET ''';
     int i = 0;
     for (MapEntry entry in set.entries) {
       i++;
-      query += entry.key + " = " + entry.value;
+      query += entry.key + " = " + "'" + entry.value + "'";
       query += i < set.length ? " , " : "";
     }
     for (MapEntry entry in where.entries) {
-      query += "WHERE" + entry.key + " = " + entry.value;
+      query += " WHERE " + entry.key + " = " + "'" + entry.value + "'";
     }
 
     query += ";";
+
+    print(query);
 
     result = await cnx!.query(query);
 

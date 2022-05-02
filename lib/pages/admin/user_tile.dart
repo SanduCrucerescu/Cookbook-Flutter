@@ -46,6 +46,7 @@ class UserTile extends StatelessWidget {
             onTap: () {
               state.email = email;
               state.userName = userName;
+              state.currMember = member;
             },
             child: ListTile(
               leading: Profile_Pic(member: member),
