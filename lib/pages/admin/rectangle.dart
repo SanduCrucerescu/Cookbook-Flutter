@@ -21,8 +21,8 @@ class Rectangle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(80),
+    return Container(
+      padding: const EdgeInsets.only(right: 20, bottom: 20, top: 20, left: 40),
       child: Align(
         alignment: position,
         // rectangle itself
