@@ -1,7 +1,6 @@
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/pages/admin/user_info.dart';
-import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -21,7 +20,6 @@ class Admin extends HookConsumerWidget {
     final state = ref.watch(selectUserProvider);
     final tec = useTextEditingController();
     Size size = MediaQuery.of(context).size;
-    // TODO: In Login Screen make Username: Admin return this page
 
     return CustomPage(
       child: Row(

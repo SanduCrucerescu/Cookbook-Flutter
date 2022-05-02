@@ -39,7 +39,6 @@ class UserTile extends StatelessWidget {
             ),
             borderRadius: BorderRadius.circular(5)),
         child: Padding(
-          // Size of the user boxes (icon and name)
           padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
           child: GestureDetector(
             behavior: HitTestBehavior.translucent,
