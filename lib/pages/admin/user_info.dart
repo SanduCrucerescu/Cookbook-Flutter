@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/controllers/image_picker.dart';
 import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/models/member/member.dart';
+import 'package:cookbook/pages/login/login.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -12,8 +15,9 @@ class UserInfo extends HookConsumerWidget {
   final String text;
   final Alignment position;
   final SelectedUserChangeNotifier state;
+  late String img64;
 
-  const UserInfo({
+  UserInfo({
     required this.text,
     required this.position,
     required this.state,
@@ -78,15 +82,23 @@ class UserInfo extends HookConsumerWidget {
                                 state.currMember?.email = emailController.text;
                               },
                             ),
-                            Row(
-                              children: [
-                                CustomButton(
-                                  duration: const Duration(days: 0),
-                                  onTap: () async {
-                                    openImagePicker();
-                                  },
-                                ),
-                              ],
+                            Center(
+                              child: Row(
+                                children: [
+                                  CustomButton(
+                                    showShadow: true,
+                                    width: 500,
+                                    child: Text("Change Image"),
+                                    duration: const Duration(days: 0),
+                                    onTap: () async {
+                                      openImagePicker();
+
+                                      //final bytes = state.file?.readAsBytesSync();
+                                      //img64 = base64Encode(bytes!);
+                                    },
+                                  ),
+                                ],
+                              ),
                             ),
                             CustomButton(
                               color: kcMedBeige,
@@ -102,10 +114,8 @@ class UserInfo extends HookConsumerWidget {
                                     'username': member.name,
                                     'email': member.email,
                                     'password': member.password,
-                                  }
-                                  // 'profile_pic:': member
-                                  //     .name, // TODO : Change to profilePicture
-                                  ,
+                                    'profile_pic': img64
+                                  },
                                   where: {'email': state.currMember!.email},
                                 );
                               },
