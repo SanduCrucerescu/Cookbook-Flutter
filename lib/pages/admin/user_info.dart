@@ -1,4 +1,5 @@
 import 'package:cookbook/components/components.dart';
+import 'package:cookbook/controllers/image_picker.dart';
 import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/theme/colors.dart';
@@ -77,11 +78,15 @@ class UserInfo extends HookConsumerWidget {
                                 state.currMember?.email = emailController.text;
                               },
                             ),
-                            UserInfoField(
-                              title: 'Image: ',
-                              content: 'some image', //TODO: replace with image
-                              controller: nameController,
-                              onTap: () {},
+                            Row(
+                              children: [
+                                CustomButton(
+                                  duration: const Duration(days: 0),
+                                  onTap: () async {
+                                    openImagePicker();
+                                  },
+                                ),
+                              ],
                             ),
                             CustomButton(
                               color: kcMedBeige,
