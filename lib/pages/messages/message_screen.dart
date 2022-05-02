@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/controllers/get_members.dart';
 import 'package:cookbook/models/member/member.dart';
@@ -31,8 +33,16 @@ class MessagePageState extends ConsumerState<MessagePage> {
   @override
   void initState() {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
-      ref.read(membersProvider).members = await getMembers();
-      ref.read(membersProvider).messages = await getMessages();
+      final state = ref.read(membersProvider);
+      state.members = await getMembers();
+      state.messages = await getMessages();
+
+      Timer.periodic(const Duration(seconds: 1), (timer) async {
+        final newMessages = await getMessages();
+        if (newMessages != state.messages) {
+          state.messages = newMessages;
+        }
+      });
     });
 
     super.initState();

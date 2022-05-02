@@ -22,6 +22,13 @@ class RecipeBox extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(hoveringProvider);
+    print(recipe.title +
+        ':' +
+        Base64Codec()
+            .decode(
+                Base64Codec().encode(recipe.picture.toBytes()).substring(0, 20))
+            .toString());
+    // print(recipe.title + ':' + recipe.picture.toString().substring(0, 50));
 
     return Container(
       margin: const EdgeInsets.only(top: 20),
@@ -86,6 +93,7 @@ class RecipeBox extends ConsumerWidget {
                 // const Base64Codec()
                 //     .decode(Base64Codec().encode(recipe.picture.toBytes())),
                 recipe.picture.toBytes() as Uint8List,
+                // Base64Codec().encode(recipe.picture.toBytes()),
                 fit: BoxFit.cover,
                 height: 420,
                 width: 420,
@@ -409,7 +417,7 @@ class RecipeBoxIcon extends StatelessWidget {
       margin: margin ?? const EdgeInsets.all(0),
       // color: color,
       child: InkWell(
-        onTap: () {},
+        onTap: onTap == null ? () {} : () => onTap!(),
         onHover: (val) => onHover == null ? {} : onHover!(),
         child: Row(
           children: child != null
