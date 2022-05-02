@@ -31,8 +31,10 @@ class MessagePageState extends ConsumerState<MessagePage> {
   @override
   void initState() {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
-      ref.read(membersProvider).members = await getMembers();
-      ref.read(membersProvider).messages = await getMessages();
+      final state = ref.read(membersProvider);
+      state.members = await getMembers();
+      state.messages = await getMessages();
+      state.displayedMembers = state.members;
     });
 
     super.initState();
@@ -114,7 +116,7 @@ class MessagePageState extends ConsumerState<MessagePage> {
                       child: ListView.builder(
                         controller: sc2,
                         reverse: true,
-                        itemCount: state.messages.length,
+                        itemCount: state.displayedMessages.length,
                         itemBuilder: (BuildContext context, int idx) {
                           return ConversationWidget(
                             idx: idx,
@@ -139,8 +141,10 @@ class MessagePageController extends ChangeNotifier {
   List<Member> _members = [];
   List<Member> _displayedMembers = [];
   List<DirectMessage> _messages = [];
+  List<DirectMessage> _displayedMessages = [];
   String _filteringString = '';
   bool _toggle = false;
+  late int _idx;
 
   String get filteringString => _filteringString;
 
@@ -151,6 +155,10 @@ class MessagePageController extends ChangeNotifier {
   List<DirectMessage> get messages => _messages;
 
   bool get toggle => _toggle;
+
+  int get idx => _idx;
+
+  List<DirectMessage> get displayedMessages => _displayedMessages;
 
   set members(List<Member> newMember) {
     _members = newMember;
@@ -167,6 +175,11 @@ class MessagePageController extends ChangeNotifier {
     notifyListeners();
   }
 
+  set displayedMessages(List<DirectMessage> newMessage) {
+    _displayedMessages = newMessage;
+    notifyListeners();
+  }
+
   set filteringString(String val) {
     _filteringString = val;
     notifyListeners();
@@ -174,6 +187,11 @@ class MessagePageController extends ChangeNotifier {
 
   set toggle(bool cond) {
     _toggle = cond;
+    notifyListeners();
+  }
+
+  set idx(int idx) {
+    _idx = idx;
     notifyListeners();
   }
 
@@ -194,6 +212,16 @@ class MessagePageController extends ChangeNotifier {
 
   void removeDisplayedMember(Member _member) {
     _displayedMembers.remove(_member);
+    notifyListeners();
+  }
+
+  void addDisplayedMessage(DirectMessage _message) {
+    _displayedMessages.add(_message);
+    notifyListeners();
+  }
+
+  void removeDisplayedMessage(DirectMessage _message) {
+    _displayedMessages.remove(_message);
     notifyListeners();
   }
 }

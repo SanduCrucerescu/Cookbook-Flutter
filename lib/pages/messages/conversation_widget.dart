@@ -16,7 +16,7 @@ class ConversationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    if (state.messages[idx].sender != 'abolandr@gnu.org') {
+    if (state.displayedMessages[idx].sender != 'abolandr@gnu.org') {
       return Container(
         padding: const EdgeInsets.only(top: 10, bottom: 50, left: 8),
         child: Row(
@@ -33,11 +33,11 @@ class ConversationWidget extends StatelessWidget {
                   color: Colors.grey[400],
                   borderRadius: BorderRadius.circular(20)),
               child: Text(
-                state.messages[idx].content,
+                state.displayedMessages[idx].content,
                 style: const TextStyle(fontWeight: FontWeight.w500),
               ),
             ),
-            Text(state.messages[idx].time),
+            Text(state.displayedMessages[idx].time),
           ],
         ),
       );
@@ -56,12 +56,12 @@ class ConversationWidget extends StatelessWidget {
                   color: Colors.lightBlue[500],
                   borderRadius: BorderRadius.circular(20)),
               child: Text(
-                state.messages[idx].content,
+                state.displayedMessages[idx].content,
                 style: const TextStyle(
                     color: Colors.white, fontWeight: FontWeight.w500),
               ),
             ),
-            Text(state.messages[idx].time),
+            Text(state.displayedMessages[idx].time),
           ],
         ),
       );

@@ -3,8 +3,8 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../controllers/get_messages.dart';
 import '../../models/member/member.dart';
+import '../../models/post/directMessage/direct_message.dart';
 import 'message_screen.dart';
 
 class InboxWidget extends StatelessWidget {
@@ -35,7 +35,17 @@ class InboxWidget extends StatelessWidget {
       child: InkWell(
         onTap: () {
           state.toggle = !state.toggle;
-          print(getMessages().toString());
+          state.idx = idx;
+          if (state.toggle == false) {
+            state.displayedMessages.clear();
+          } else {
+            for (DirectMessage message in state.messages) {
+              if (message.sender == state.displayedMembers[state.idx].email ||
+                  message.receiver == state.displayedMembers[state.idx].email) {
+                state.addDisplayedMessage(message);
+              }
+            }
+          }
         },
         child: ListTile(
           leading: Profile_Pic(member: member),
