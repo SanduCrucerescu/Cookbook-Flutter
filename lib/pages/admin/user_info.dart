@@ -153,6 +153,10 @@ class UserInfoField extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
+<<<<<<< HEAD
+=======
+      width: 410,
+>>>>>>> d9b0b6b7b3f63dc81ff536953836412d3c6dae02
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -169,7 +173,11 @@ class UserInfoField extends HookConsumerWidget {
                   Text(title),
                   Expanded(
                     child: CustomTextField(
+<<<<<<< HEAD
                       controller: controller,
+=======
+                      controller: tec,
+>>>>>>> d9b0b6b7b3f63dc81ff536953836412d3c6dae02
                       height: 15,
                       width: 230,
                       isShadow: false,
@@ -189,7 +197,14 @@ class UserInfoField extends HookConsumerWidget {
               width: 100,
               height: 40,
               child: InkWell(
+<<<<<<< HEAD
                 onTap: () => onTap(),
+=======
+                onTap: () {
+                  print(tec.text);
+                  parameterToUpdate = tec.text;
+                },
+>>>>>>> d9b0b6b7b3f63dc81ff536953836412d3c6dae02
                 child: const Center(
                   child: Text('Save'),
                 ),

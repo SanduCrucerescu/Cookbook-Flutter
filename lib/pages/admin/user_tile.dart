@@ -28,6 +28,7 @@ class UserTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+<<<<<<< HEAD
       child: Container(
         decoration: BoxDecoration(
             color: kcLightBeige,
@@ -52,6 +53,29 @@ class UserTile extends StatelessWidget {
                 member.email,
               ),
               subtitle: Text(member.name),
+=======
+      decoration: BoxDecoration(
+          color: kcLightBeige,
+          border: Border.all(
+            color: kcMedGrey,
+            width: .5,
+            style: BorderStyle.solid,
+          ),
+          borderRadius: BorderRadius.circular(5)),
+      child: Padding(
+        // Size of the user boxes (icon and name)
+        padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
+        child: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () {
+            state.email = email;
+            state.userName = userName;
+          },
+          child: ListTile(
+            leading: Profile_Pic(member: member),
+            title: Text(
+              email,
+>>>>>>> d9b0b6b7b3f63dc81ff536953836412d3c6dae02
             ),
           ),
         ),

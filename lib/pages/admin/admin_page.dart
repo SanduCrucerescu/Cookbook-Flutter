@@ -22,6 +22,7 @@ class Admin extends HookConsumerWidget {
     Size size = MediaQuery.of(context).size;
 
     return CustomPage(
+<<<<<<< HEAD
       child: Row(
         children: [
           Expanded(
@@ -39,6 +40,28 @@ class Admin extends HookConsumerWidget {
             ),
           ),
         ],
+=======
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(200, 50, 0, 0),
+        child: Row(
+          children: [
+            Expanded(
+              child: Rectangle(
+                state: state,
+                text: "User List",
+                position: Alignment.topLeft,
+              ),
+            ),
+            Expanded(
+              child: UserInfo(
+                state: state,
+                text: "Current User",
+                position: Alignment.topRight,
+              ),
+            )
+          ],
+        ),
+>>>>>>> d9b0b6b7b3f63dc81ff536953836412d3c6dae02
       ),
     );
   }
