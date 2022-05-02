@@ -1,5 +1,6 @@
+import 'dart:async';
+
 import 'package:cookbook/components/components.dart';
-import 'package:cookbook/controllers/get_members.dart';
 import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/models/post/directMessage/direct_message.dart';
 import 'package:cookbook/pages/messages/message_textfield.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../controllers/get_members.dart';
 import '../../controllers/get_messages.dart';
 import 'conversation_widget.dart';
 import 'inbox_widget.dart';
@@ -33,8 +35,18 @@ class MessagePageState extends ConsumerState<MessagePage> {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       final state = ref.read(membersProvider);
       state.members = await getMembers();
-      state.messages = await getMessages();
       state.displayedMembers = state.members;
+
+      Timer.periodic(const Duration(milliseconds: 500), (timer) async {
+        final messages = await getMessages();
+        print(messages.length);
+        print(state.messages.length);
+
+        if (messages.length != state.messages.length) {
+          state.messages = messages;
+          state.displayedMessages = messages;
+        }
+      });
     });
 
     super.initState();
@@ -47,6 +59,7 @@ class MessagePageState extends ConsumerState<MessagePage> {
     final state = ref.watch(membersProvider);
     Size size = MediaQuery.of(context).size;
     final tec = useTextEditingController();
+    final messageTec = useTextEditingController();
 
     return Scaffold(
       body: Container(
@@ -125,7 +138,10 @@ class MessagePageState extends ConsumerState<MessagePage> {
                         },
                       ),
                     ),
-                    const MessageTextField(),
+                    MessageTextField(
+                      state: state,
+                      messageTec: messageTec,
+                    ),
                   ]),
                 ),
               ],
@@ -143,10 +159,13 @@ class MessagePageController extends ChangeNotifier {
   List<DirectMessage> _messages = [];
   List<DirectMessage> _displayedMessages = [];
   String _filteringString = '';
+  String _message = '';
   bool _toggle = false;
   late int _idx;
 
   String get filteringString => _filteringString;
+
+  String get message => _message;
 
   List<Member> get members => _members;
 
@@ -182,6 +201,11 @@ class MessagePageController extends ChangeNotifier {
 
   set filteringString(String val) {
     _filteringString = val;
+    notifyListeners();
+  }
+
+  set message(String val) {
+    _message = val;
     notifyListeners();
   }
 
