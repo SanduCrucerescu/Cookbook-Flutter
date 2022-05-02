@@ -39,6 +39,7 @@ class InboxWidget extends StatelessWidget {
           if (state.toggle == false) {
             state.displayedMessages.clear();
           } else {
+            state.displayedMessages = [];
             for (DirectMessage message in state.messages) {
               if (message.sender == state.displayedMembers[state.idx].email ||
                   message.receiver == state.displayedMembers[state.idx].email) {

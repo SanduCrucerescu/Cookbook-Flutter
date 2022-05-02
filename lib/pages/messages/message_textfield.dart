@@ -1,4 +1,5 @@
 import 'package:cookbook/controllers/send_message.dart';
+import 'package:cookbook/main.dart';
 import 'package:flutter/material.dart';
 
 import 'message_screen.dart';
@@ -37,7 +38,8 @@ class _MessageTextFieldState extends State<MessageTextField> {
                 icon: const Icon(Icons.send),
                 onPressed: () {
                   SendMessage.sendMessage(data: {
-                    'sender': 'abolandr@gnu.org',
+                    'sender':
+                        InheritedLoginProvider.of(context).userData?['email'],
                     'receiver':
                         widget.state.displayedMembers[widget.state.idx].email,
                     'content': widget.state.message,

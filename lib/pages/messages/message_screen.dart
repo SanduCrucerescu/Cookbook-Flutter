@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cookbook/components/components.dart';
+import 'package:cookbook/main.dart';
 import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/models/post/directMessage/direct_message.dart';
 import 'package:cookbook/pages/messages/message_textfield.dart';
@@ -35,16 +36,26 @@ class MessagePageState extends ConsumerState<MessagePage> {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       final state = ref.read(membersProvider);
       state.members = await getMembers();
+<<<<<<< HEAD
       state.displayedMembers = state.members;
 
-      Timer.periodic(const Duration(milliseconds: 500), (timer) async {
+      Timer.periodic(const Duration(milliseconds: 1000), (timer) async {
         final messages = await getMessages();
+        print(InheritedLoginProvider.of(context).userData);
         print(messages.length);
         print(state.messages.length);
 
         if (messages.length != state.messages.length) {
           state.messages = messages;
           state.displayedMessages = messages;
+=======
+      state.messages = await getMessages();
+
+      Timer.periodic(const Duration(seconds: 1), (timer) async {
+        final newMessages = await getMessages();
+        if (newMessages != state.messages) {
+          state.messages = newMessages;
+>>>>>>> d9b0b6b7b3f63dc81ff536953836412d3c6dae02
         }
       });
     });
@@ -131,6 +142,11 @@ class MessagePageState extends ConsumerState<MessagePage> {
                         reverse: true,
                         itemCount: state.displayedMessages.length,
                         itemBuilder: (BuildContext context, int idx) {
+                          if (state.displayedMembers[idx].email ==
+                              InheritedLoginProvider.of(context)
+                                  .userData?['email']) {
+                            return const SizedBox();
+                          }
                           return ConversationWidget(
                             idx: idx,
                             state: state,

@@ -2,7 +2,9 @@ import 'dart:developer';
 import 'dart:math' as math;
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/controllers/controllers.dart';
+import 'package:cookbook/main.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
+import 'package:cookbook/pages/admin/user_info.dart';
 import 'package:cookbook/pages/home/home_page.dart';
 import 'package:cookbook/pages/register/register.dart';
 import 'package:cookbook/theme/colors.dart';
@@ -134,6 +136,9 @@ class LoginForm extends HookConsumerWidget {
                       );
 
                       if (isValid == true) {
+                        InheritedLoginProvider.of(context).userData = {
+                          'email': tec1.text
+                        };
                         Navigator.of(context).pushNamed(HomePage.id);
                       } else {
                         state.loginUnSuccessful = true;

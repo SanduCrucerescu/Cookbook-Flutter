@@ -240,8 +240,12 @@ class UiComponents extends HookConsumerWidget {
 
     Results? res = await databaseManager
         .select(table: "ingredients", fields: ["id", "name"]);
+    final results = [];
+    if (res != null) {
+      final results = res;
+    }
 
-    for (var rs in res!) {
+    for (var rs in results) {
       menuItems.add(CustDropdownMenuItem(
         child: Text(rs[1]),
         value: "${rs[0]}",
