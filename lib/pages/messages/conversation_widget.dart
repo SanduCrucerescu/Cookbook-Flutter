@@ -1,3 +1,4 @@
+import 'package:cookbook/main.dart';
 import 'package:cookbook/pages/messages/message_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +16,12 @@ class ConversationWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    print('sender: ' + state.displayedMessages[idx].sender);
+    print('receiver: ' + state.displayedMessages[idx].receiver);
+    print(InheritedLoginProvider.of(context).userData?['email']);
 
-    if (state.displayedMessages[idx].sender != 'abolandr@gnu.org') {
+    if (state.displayedMessages[idx].receiver ==
+        (InheritedLoginProvider.of(context).userData?['email'])) {
       return Container(
         padding: const EdgeInsets.only(top: 10, bottom: 50, left: 8),
         child: Row(

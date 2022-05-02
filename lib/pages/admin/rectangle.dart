@@ -102,23 +102,6 @@ class _UsersColumnState extends State<UsersColumn> {
         height: 500,
         width: 400,
         padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-<<<<<<< HEAD
-        child: Scrollbar(
-          isAlwaysShown: true,
-          showTrackOnHover: true,
-          child: ListView.builder(
-            itemCount: displayedmembers.length,
-            itemBuilder: (BuildContext context, int idx) {
-              return UserTile(
-                state: widget.state,
-                idx: idx,
-                email: displayedmembers[idx].email,
-                userName: displayedmembers[idx].name,
-                member: displayedmembers[idx],
-              );
-            },
-          ),
-=======
         child: ListView.builder(
           itemCount: displayedmembers.length,
           itemBuilder: (BuildContext context, int idx) {
@@ -131,7 +114,6 @@ class _UsersColumnState extends State<UsersColumn> {
               member: displayedmembers[idx],
             );
           },
->>>>>>> d9b0b6b (Some small fixes)
         ),
       );
     }

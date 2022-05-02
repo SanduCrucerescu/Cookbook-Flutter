@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cookbook/components/components.dart';
+import 'package:cookbook/main.dart';
 import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/models/post/directMessage/direct_message.dart';
 import 'package:cookbook/pages/messages/message_textfield.dart';
@@ -37,8 +38,9 @@ class MessagePageState extends ConsumerState<MessagePage> {
       state.members = await getMembers();
       state.displayedMembers = state.members;
 
-      Timer.periodic(const Duration(milliseconds: 500), (timer) async {
+      Timer.periodic(const Duration(milliseconds: 1000), (timer) async {
         final messages = await getMessages();
+        print(InheritedLoginProvider.of(context).userData);
         print(messages.length);
         print(state.messages.length);
 
@@ -131,6 +133,11 @@ class MessagePageState extends ConsumerState<MessagePage> {
                         reverse: true,
                         itemCount: state.displayedMessages.length,
                         itemBuilder: (BuildContext context, int idx) {
+                          if (state.displayedMembers[idx].email ==
+                              InheritedLoginProvider.of(context)
+                                  .userData?['email']) {
+                            return const SizedBox();
+                          }
                           return ConversationWidget(
                             idx: idx,
                             state: state,
