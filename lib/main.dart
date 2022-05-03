@@ -144,11 +144,7 @@ class App extends StatelessWidget {
           fontFamily: 'Montserrat',
           primaryColor: kcMedBeige,
         ),
-<<<<<<< HEAD
-        initialRoute: ShoppingPage.id,
-=======
         initialRoute: LoadingScreen.id,
->>>>>>> b8d83c8 (Adding star and unstar)
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );
