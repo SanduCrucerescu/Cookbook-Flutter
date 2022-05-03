@@ -88,6 +88,7 @@ class UserInfo extends HookConsumerWidget {
                               child: const Text("Change Image"),
                               duration: const Duration(days: 0),
                               onTap: () async {
+<<<<<<< HEAD
                                 var picture = await openImagePicker();
                                 if (picture != null) {
                                   var name = picture['file'];
@@ -101,6 +102,22 @@ class UserInfo extends HookConsumerWidget {
                                 } else {
                                   openImagePicker();
                                 }
+=======
+                                DatabaseManager dbManager =
+                                    await DatabaseManager.init();
+                                Member member = state.currMember!;
+                                print(member.name);
+                                dbManager.update(
+                                  table: 'members',
+                                  set: {
+                                    'name': member.name,
+                                    'emai': member.email,
+                                    'password': member.password,
+                                    'profile_pic': img64
+                                  },
+                                  where: {'email': state.currMember!.email},
+                                );
+>>>>>>> b8d83c8 (Adding star and unstar)
                               },
                             ),
                             Padding(

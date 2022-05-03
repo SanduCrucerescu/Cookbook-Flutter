@@ -183,12 +183,14 @@ class DatabaseManager extends AbstractDatabaseManager {
     String query = '''
     DELETE FROM $table WHERE
       ''';
+    int i = 0;
     for (MapEntry entry in where.entries) {
-      query += entry.key + " = " + "'" + entry.value + "'";
+      i++;
+      query += entry.key + " = " + "'" + entry.value.toString() + "'";
+      query += i < where.length ? " AND " : "";
     }
 
     query += ";";
-    print(query);
     result = await cnx!.query(query);
 
     return result;
@@ -209,7 +211,7 @@ class DatabaseManager extends AbstractDatabaseManager {
       query += i < set.length ? " , " : "";
     }
     for (MapEntry entry in where.entries) {
-      query += " WHERE " + entry.key + " = " + "'" + entry.value + "'";
+      query += " WHERE " + entry.key + " = " + entry.value;
     }
 
     query += ";";
@@ -237,7 +239,7 @@ class DatabaseManager extends AbstractDatabaseManager {
       int i = 0;
       for (MapEntry entry in where.entries) {
         i++;
-        query += entry.key + " = '" + entry.value + "'";
+        query += entry.key + " = '" + entry.value.toString() + "'";
         query += i < where.length ? " AND " : "";
       }
     }
