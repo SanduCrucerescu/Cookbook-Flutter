@@ -43,12 +43,15 @@ class UiComponents extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(rowProvider);
-    _getIngredients();
     Size size = MediaQuery.of(context).size;
     final instructionsController = useTextEditingController();
     final descriptionController = useTextEditingController();
     final topSearchBarController = useTextEditingController();
     final firstRowController = useTextEditingController();
+
+    print(size);
+
+    _getIngredients();
 
     if (state.rows.isEmpty) {
       state.addRow(buildRow(state: state, controller: firstRowController));

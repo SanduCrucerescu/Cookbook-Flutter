@@ -22,13 +22,6 @@ class RecipeBox extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(hoveringProvider);
-    print(recipe.title +
-        ':' +
-        Base64Codec()
-            .decode(
-                Base64Codec().encode(recipe.picture.toBytes()).substring(0, 20))
-            .toString());
-    // print(recipe.title + ':' + recipe.picture.toString().substring(0, 50));
 
     return Container(
       margin: const EdgeInsets.only(top: 20),
@@ -90,10 +83,7 @@ class RecipeBox extends ConsumerWidget {
                     )
                   : null,
               image: Image.memory(
-                // const Base64Codec()
-                //     .decode(Base64Codec().encode(recipe.picture.toBytes())),
-                recipe.picture.toBytes() as Uint8List,
-                // Base64Codec().encode(recipe.picture.toBytes()),
+                getImageDataFromBlob(recipe.picture),
                 fit: BoxFit.cover,
                 height: 420,
                 width: 420,
@@ -172,7 +162,7 @@ class RecipeBoxTopRow extends StatelessWidget {
       title: Column(
         children: [
           SelectableText(
-            recipe.title.length > 29
+            recipe.title.length > 20
                 ? recipe.title.substring(0, 20) + '...'
                 : recipe.title,
             style: const TextStyle(
@@ -410,6 +400,7 @@ class RecipeBoxRow extends StatelessWidget {
               ),
               Container(
                 height: height,
+                padding: const EdgeInsets.all(0),
                 margin: titleLeftOffset ?? const EdgeInsets.all(0),
                 child: title,
               ),
