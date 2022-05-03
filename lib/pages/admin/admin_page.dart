@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/pages/admin/user_info.dart';
@@ -19,39 +21,51 @@ class Admin extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(selectUserProvider);
     final tec = useTextEditingController();
-
     Size size = MediaQuery.of(context).size;
-    // TODO: In Login Screen make Username: Admin return this page
-    return (Scaffold(
-      backgroundColor: Color(0xFFE3DBCA),
-      body: Stack(
+
+    return CustomPage(
+<<<<<<< HEAD
+      child: Row(
         children: [
-          NavBar(),
-          SideBar(items: kSideBarItems),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(200, 50, 0, 0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Rectangle(
-                    state: state,
-                    text: "User List",
-                    position: Alignment.topLeft,
-                  ),
-                ),
-                Expanded(
-                  child: UserInfo(
-                    state: state,
-                    text: "Current User",
-                    position: Alignment.topRight,
-                  ),
-                )
-              ],
+          Expanded(
+            child: Rectangle(
+              state: state,
+              text: "User List",
+              position: Alignment.topLeft,
             ),
-          )
+          ),
+          Expanded(
+            child: UserInfo(
+              state: state,
+              text: "Current User",
+              position: Alignment.topRight,
+            ),
+          ),
         ],
+=======
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(200, 50, 0, 0),
+        child: Row(
+          children: [
+            Expanded(
+              child: Rectangle(
+                state: state,
+                text: "User List",
+                position: Alignment.topLeft,
+              ),
+            ),
+            Expanded(
+              child: UserInfo(
+                state: state,
+                text: "Current User",
+                position: Alignment.topRight,
+              ),
+            )
+          ],
+        ),
+>>>>>>> d9b0b6b7b3f63dc81ff536953836412d3c6dae02
       ),
-    ));
+    );
   }
 }
 
@@ -60,8 +74,9 @@ class SelectedUserChangeNotifier extends ChangeNotifier {
   Member? _currMember;
   String _userName = "";
   String _email = "";
-  Image image = Image.asset("assets/images/ph.png");
+  Image image = Image.asset("assets/images/ph.png"); // doesnt count
   String _filteringString = '';
+  File? _xFile;
 
   String get filteringString => _filteringString;
 
@@ -72,6 +87,7 @@ class SelectedUserChangeNotifier extends ChangeNotifier {
   String get userName => _userName;
 
   Member? get currMember => _currMember;
+  File? get file => _xFile;
 
   set currMember(Member? member) {
     _currMember = member;
@@ -95,6 +111,11 @@ class SelectedUserChangeNotifier extends ChangeNotifier {
 
   set userName(String val) {
     _userName = val;
+    notifyListeners();
+  }
+
+  set path(File? path) {
+    _xFile = path;
     notifyListeners();
   }
 }

@@ -5,8 +5,10 @@ import 'dart:typed_data';
 
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/controllers/add_user.dart';
+import 'package:cookbook/controllers/image_picker.dart';
 import 'package:cookbook/pages/messages/message_screen.dart';
 import 'package:cookbook/theme/colors.dart';
+import 'package:cookbook/theme/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -83,12 +85,9 @@ class RegisterForm extends HookConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SelectableText(
+            const SelectableText(
               "R E G I S T E R",
-              style: GoogleFonts.montserrat(
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-              ),
+              style: ksFormHeadlineStyle,
             ),
             const SizedBox(height: 20),
             ...List.generate(fields.length, (int idx) {
@@ -125,10 +124,7 @@ class RegisterForm extends HookConsumerWidget {
                 ? Center(
                     child: SelectableText(
                       "Photo added: " + state.text,
-                      style: GoogleFonts.montserrat(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
+                      style: ksFormButtonStyle,
                     ),
                   )
                 : const SizedBox(
@@ -137,8 +133,15 @@ class RegisterForm extends HookConsumerWidget {
             const SizedBox(height: 10),
             FormButton(
                 color: kcMedBeige,
-                onTap: () {
-                  _openImagePicker(state);
+                onTap: () async {
+                  final Map<String, dynamic>? imageData =
+                      await openImagePicker();
+                  if (imageData != null) {
+                    state.photo = imageData['blob'];
+                    state.photoSuccessful = true;
+                    state.path = imageData['file'];
+                    state.text = imageData['name'];
+                  }
                 },
                 text: "A d d  P h o t o"),
             const SizedBox(height: 10),
@@ -173,7 +176,7 @@ class RegisterForm extends HookConsumerWidget {
                         "email": email.text,
                         "password": pass.text,
                         "username": username.text,
-                        "profile_picture": img64,
+                        "profile_pic": img64,
                       },
                     );
                     if (register) {
@@ -203,24 +206,6 @@ class RegisterForm extends HookConsumerWidget {
         ),
       ),
     );
-  }
-
-  void _openImagePicker(VerificationChangeNotifier state) async {
-    final typeGroup = XTypeGroup(
-      label: 'images',
-      extensions: const ['jpg', 'jpeg', 'png', 'heic'],
-    );
-
-    final xFile = await openFile(acceptedTypeGroups: [typeGroup]);
-    if (xFile != null) {
-      state.photoSuccessful = true;
-      state.text = xFile.name;
-
-      File file = File(xFile.path);
-      state.path = file;
-      Blob blob = Blob.fromBytes(await file.readAsBytes());
-      state.photo = blob;
-    }
   }
 }
 

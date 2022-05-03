@@ -19,7 +19,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     super.initState();
 
     Timer(
-      const Duration(seconds: 5),
+      const Duration(seconds: 3),
       () => Navigator.of(context).pushNamed(LoginPage.id),
     );
 
@@ -56,7 +56,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
                   animatedTexts: [
                     TypewriterAnimatedText(
                       'Welcome to our shit cookbook app',
-                      speed: const Duration(milliseconds: 0100),
+                      speed: const Duration(milliseconds: 100),
                       textStyle: const TextStyle(
                         fontFamily: "Elianto",
                         fontSize: 40,

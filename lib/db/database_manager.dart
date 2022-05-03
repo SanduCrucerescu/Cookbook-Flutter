@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
+
 import 'package:mysql1/mysql1.dart';
 
 abstract class AbstractDatabaseManager {
@@ -34,8 +35,8 @@ abstract class AbstractDatabaseManager {
 
   void update({
     required String table,
-    required Map<String, dynamic> params,
     required Map<String, dynamic> where,
+    required Map<String, dynamic> set,
   });
 
   void delete({
@@ -108,6 +109,8 @@ class DatabaseManager extends AbstractDatabaseManager {
       {required String table,
       required List<String> fields,
       Map<String, dynamic>? where,
+      bool? and,
+      bool? or,
       String? group,
       String? having,
       List<int>? limit}) async {
@@ -124,7 +127,11 @@ class DatabaseManager extends AbstractDatabaseManager {
       for (MapEntry entry in where.entries) {
         i++;
         query += entry.key + " = '" + entry.value + "'";
-        query += i < where.length ? " AND " : "";
+        if (and == true) {
+          query += i < where.length ? " AND " : "";
+        } else if (or == true) {
+          query += i < where.length ? " OR " : "";
+        }
       }
     }
     query += ";";
@@ -132,6 +139,13 @@ class DatabaseManager extends AbstractDatabaseManager {
     result = await cnx!.query(query);
 
     return result;
+  }
+
+  bool isNumeric(String s) {
+    if (s == null) {
+      return false;
+    }
+    return double.tryParse(s) != null;
   }
 
   @override
@@ -148,12 +162,13 @@ class DatabaseManager extends AbstractDatabaseManager {
     int i = 0;
     for (MapEntry entry in data.entries) {
       i++;
-      query += i < data.length ? "'" + entry.value + "'" : entry.value;
+      //query += i < data.length ? "'" + entry.value + "'" : entry.value;
+      query += isNumeric(entry.value.toString())
+          ? entry.value.toString()
+          : "'" + entry.value + "'";
       query += i < data.length ? "," : "";
     }
     query += ");";
-
-    log(query);
 
     result = await cnx!.query(query);
 
@@ -161,16 +176,49 @@ class DatabaseManager extends AbstractDatabaseManager {
   }
 
   @override
-  void delete({required String table, required Map<String, dynamic> where}) {
-    // TODO: implement deleteFrom
+  Future<Results?> delete(
+      {required String table, required Map<String, dynamic> where}) async {
+    connect();
+
+    String query = '''
+    DELETE FROM $table WHERE
+      ''';
+    for (MapEntry entry in where.entries) {
+      query += entry.key + " = " + "'" + entry.value + "'";
+    }
+
+    query += ";";
+    print(query);
+    result = await cnx!.query(query);
+
+    return result;
   }
 
   @override
-  void update(
+  Future<Results?> update(
       {required String table,
-      required Map<String, dynamic> params,
-      required Map<String, dynamic> where}) {
-    // TODO: implement update
+      required Map<String, dynamic> where,
+      required Map<String, dynamic> set}) async {
+    connect();
+
+    String query = '''UPDATE  $table SET ''';
+    int i = 0;
+    for (MapEntry entry in set.entries) {
+      i++;
+      query += entry.key + " = " + "'" + entry.value + "'";
+      query += i < set.length ? " , " : "";
+    }
+    for (MapEntry entry in where.entries) {
+      query += " WHERE " + entry.key + " = " + "'" + entry.value + "'";
+    }
+
+    query += ";";
+
+    print(query);
+
+    result = await cnx!.query(query);
+
+    return result;
   }
 
   @override

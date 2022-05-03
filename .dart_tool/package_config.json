@@ -92,6 +92,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "dropdown_button2",
+      "rootUri": "file:///C:/Users/mamoo/Documents/FlutterDev/flutter/.pub-cache/hosted/pub.dartlang.org/dropdown_button2-1.4.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "email_validator",
       "rootUri": "file:///C:/Users/mamoo/Documents/FlutterDev/flutter/.pub-cache/hosted/pub.dartlang.org/email_validator-2.0.1",
       "packageUri": "lib/",
@@ -446,7 +452,7 @@
       "languageVersion": "2.16"
     }
   ],
-  "generated": "2022-04-21T14:32:19.989132Z",
+  "generated": "2022-05-03T01:40:27.436553Z",
   "generator": "pub",
   "generatorVersion": "2.16.2"
 }

@@ -1,3 +1,4 @@
+import 'package:cookbook/controllers/get_members.dart';
 import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/pages/admin/admin_page.dart';
@@ -5,7 +6,6 @@ import 'package:cookbook/pages/admin/search_add.dart';
 import 'package:cookbook/pages/admin/user_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:mysql1/mysql1.dart';
-import 'dart:convert';
 
 class Rectangle extends StatelessWidget {
   final String text;
@@ -21,9 +21,8 @@ class Rectangle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double xSize = 600;
-    return Padding(
-      padding: const EdgeInsets.all(80),
+    return Container(
+      padding: const EdgeInsets.only(right: 20, bottom: 20, top: 20, left: 40),
       child: Align(
         alignment: position,
         // rectangle itself
@@ -76,21 +75,9 @@ class _UsersColumnState extends State<UsersColumn> {
     super.initState();
 
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
-      dbManager = await DatabaseManager.init();
-
-      Results? res = await dbManager?.select(table: 'members', fields: ['*']);
-
-      for (var r in res!) {
-        final curr = Member(
-          name: r['username'],
-          email: r['email'],
-          password: r['password'],
-        );
-        members.add(curr); // Something wrong here
-      }
+      members = await getMembers();
       displayedmembers = members;
       widget.state.currMember = displayedmembers[0];
-      print(displayedmembers[0].password); // Idk why it wont work without
       setState(() {});
     });
   }
@@ -98,7 +85,6 @@ class _UsersColumnState extends State<UsersColumn> {
   @override
   Widget build(BuildContext context) {
     displayedmembers = [];
-    //print(widget.state.filteringString);
 
     for (Member member in members) {
       if (member.email.startsWith(widget.state.filteringString)) {
@@ -109,27 +95,25 @@ class _UsersColumnState extends State<UsersColumn> {
     if (members.isEmpty) {
       return Padding(
         padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
-        child: Column(children: [const CircularProgressIndicator()]),
+        child: Column(children: const [CircularProgressIndicator()]),
       );
     } else {
-      return Expanded(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-          child: Scrollbar(
-            isAlwaysShown: true,
-            showTrackOnHover: true,
-            child: ListView.builder(
-              itemCount: displayedmembers.length,
-              itemBuilder: (BuildContext context, int idx) {
-                return UserTile(
-                  state: widget.state,
-                  idx: idx,
-                  email: displayedmembers[idx].email,
-                  userName: displayedmembers[idx].name,
-                );
-              },
-            ),
-          ),
+      return Container(
+        height: 500,
+        width: 400,
+        padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+        child: ListView.builder(
+          itemCount: displayedmembers.length,
+          itemBuilder: (BuildContext context, int idx) {
+            return UserTile(
+              state: widget.state,
+              idx: idx,
+              email: displayedmembers[idx].email,
+              userName: displayedmembers[idx].name,
+              profile_pic: displayedmembers[idx].profilePicture,
+              member: displayedmembers[idx],
+            );
+          },
         ),
       );
     }

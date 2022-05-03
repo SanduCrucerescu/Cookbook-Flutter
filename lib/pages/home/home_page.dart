@@ -10,17 +10,21 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 class HomePage extends HookConsumerWidget {
   static const String id = "/";
   final int cols;
+  final double searchBarWidth;
 
   HomePage.desktop({Key? key})
       : cols = 3,
+        searchBarWidth = 800,
         super(key: key);
 
   HomePage.tablet({Key? key})
       : cols = 2,
+        searchBarWidth = 800,
         super(key: key);
 
   HomePage.mobile({Key? key})
       : cols = 1,
+        searchBarWidth = 300,
         super(key: key);
 
   final responsivePorvider = ChangeNotifierProvider<ResponsiveNotifier>(
@@ -42,25 +46,20 @@ class HomePage extends HookConsumerWidget {
     return CustomPage(
       showSearchBar: true,
       controller: tec,
-      child: Container(
-        color: kcLightBeige,
-        height: size.height - 100,
-        width: size.width - 200,
-        padding: const EdgeInsets.all(10),
-        child: SizedBox(
-          width: size.width - 220,
-          child: state.recipes.isEmpty == false
-              ? ListView.builder(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  cacheExtent: 50,
-                  itemCount: state.recipes.length,
-                  shrinkWrap: true,
-                  itemBuilder: (ctx, i) => Container(
-                    child: state.recipes[i],
-                  ),
-                )
-              : const SizedBox(),
-        ),
+      searchBarWidth: searchBarWidth,
+      child: SizedBox(
+        width: size.width - 220,
+        child: state.recipes.isEmpty == false
+            ? ListView.builder(
+                physics: const AlwaysScrollableScrollPhysics(),
+                cacheExtent: 50,
+                itemCount: state.recipes.length,
+                shrinkWrap: true,
+                itemBuilder: (ctx, i) => Container(
+                  child: state.recipes[i],
+                ),
+              )
+            : const SizedBox(),
       ),
     );
   }

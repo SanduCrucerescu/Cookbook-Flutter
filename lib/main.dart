@@ -1,7 +1,11 @@
 import 'dart:developer';
+import 'package:cookbook/controllers/add_recipe.dart';
 import 'package:cookbook/controllers/controllers.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
+import 'package:cookbook/pages/admin/admin_page.dart';
+import 'package:cookbook/pages/loadimage/load_image.dart';
 import 'package:cookbook/pages/login/login.dart';
+import 'package:cookbook/pages/recipeadd/recipe_add.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -31,15 +35,22 @@ class _InheritedLoginProviderWrapperState
     extends State<InheritedLoginProviderWrapper> {
   Map<String?, dynamic>? userData;
   bool isLoggedIn = false;
-  String currPageID = LoadingScreen.id;
+  int _pageId = 0;
   List<Recipe> _recipes = [];
   List<Recipe> _displayedRecipes = [];
 
+  int get pageId => _pageId;
   List<Recipe> get recipes => _recipes;
 
   List<Recipe> get displayedRecipes {
     log('getting displayed recipes');
     return _displayedRecipes;
+  }
+
+  set pageId(int val) {
+    setState(() {
+      _pageId = val;
+    });
   }
 
   void setDisplayedRecipes(String filterinString) {
@@ -123,10 +134,15 @@ class App extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'cookbook',
         theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: kcLightBeige,
+            surface: kcMedBeige,
+            brightness: Brightness.light,
+          ),
           fontFamily: 'Montserrat',
           primaryColor: kcMedBeige,
         ),
-        initialRoute: LoadingScreen.id,
+        initialRoute: RecipeAdd.id,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );

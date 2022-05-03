@@ -5,12 +5,15 @@ class FormButton extends StatelessWidget {
   final VoidCallback onTap;
   final bool showShadow;
   final Color? color;
+  final double? height, width;
 
   const FormButton({
     Key? key,
     required this.onTap,
     required this.text,
     this.color,
+    this.height,
+    this.width,
     this.showShadow = true,
   }) : super(key: key);
 
@@ -18,8 +21,8 @@ class FormButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: SizedBox(
-        height: 40,
-        width: 200,
+        height: height ?? 40,
+        width: width ?? 200,
         child: CustomButton(
           showShadow: showShadow,
           color: color,
@@ -35,10 +38,7 @@ class FormButton extends StatelessWidget {
           onTap: onTap,
           child: Text(
             text,
-            style: const TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 15,
-            ),
+            style: ksFormButtonStyle,
           ),
         ),
       ),

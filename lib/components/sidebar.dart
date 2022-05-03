@@ -38,32 +38,38 @@ class SideBar extends ConsumerWidget {
       child: Column(
         children: <Widget>[
           Expanded(
-            flex: 10,
-            child: Column(
-              children: List.generate(
-                items.length,
-                (idx) {
-                  Widget mainTopic = SideBarItem(
-                    collapsed: state.collapsed,
-                    prefixImage: Image.asset(
-                      items[idx]["image"],
-                      height: 20,
-                      fit: BoxFit.fill,
-                    ),
-                    onTap: () {
-                      Navigator.of(context).pushNamed(items[idx]["onTap"]);
-                    },
-                    text: items[idx]["text"],
-                  );
+            child: ListView.builder(
+              controller: ScrollController(),
+              itemCount: items.length,
+              itemBuilder: (ctx, idx) {
+                Widget mainTopic = SideBarItem(
+                  collapsed: state.collapsed,
+                  prefixIcon: items[idx]['icon'],
+                  prefixImage: Image.asset(
+                    items[idx]["image"] ?? 'assets/images/ph.png',
+                    height: 20,
+                    fit: BoxFit.fill,
+                  ),
+                  onTap: () {
+                    InheritedLoginProvider.of(context).pageId =
+                        items[idx]['id'];
+                    Navigator.of(context).pushNamed(items[idx]["onTap"]);
+                  },
+                  text: items[idx]["text"],
+                );
 
-                  if (items[idx]["children"].length == 0) {
-                    return mainTopic;
-                  }
+                if (items[idx]["children"].length == 0 ||
+                    items[idx]['id'] !=
+                        InheritedLoginProvider.of(context).pageId) {
+                  return mainTopic;
+                }
 
-                  List<Map<String, dynamic>> subtopics = items[idx]["children"];
+                List<Map<String, dynamic>> subtopics = items[idx]["children"];
 
-                  return Column(
-                    children: List.generate(
+                return Column(
+                  children: [
+                    mainTopic,
+                    ...List.generate(
                       subtopics.length,
                       (idx2) => SideBarItem(
                           text: subtopics[idx2]["text"],
@@ -72,22 +78,16 @@ class SideBar extends ConsumerWidget {
                               ),
                           collapsed: state.collapsed),
                     ),
-                  );
-                },
-              ),
+                  ],
+                );
+              },
             ),
-          ),
-          const Expanded(
-            flex: 10,
-            child: SizedBox(),
           ),
           SideBarItem(
             collapsed: state.collapsed,
-            prefixImage: state.collapsed
-                ? Image.asset("assets/images/expand.png",
-                    fit: BoxFit.fill, height: 20)
-                : Image.asset("assets/images/collapse.png",
-                    fit: BoxFit.fill, height: 20),
+            prefixIcon: state.collapsed
+                ? const Icon(Icons.chevron_right)
+                : const Icon(Icons.chevron_left),
             text: "C o l l a p s e",
             onTap: () {
               state.collapsed = !state.collapsed;
@@ -179,12 +179,12 @@ class SideBarItem extends ConsumerWidget {
             top: 2,
             child: collapsed
                 ? const SizedBox()
-                : prefixImage ?? prefixIcon ?? const SizedBox(),
+                : prefixIcon ?? prefixImage ?? const SizedBox(),
           ),
           Center(
             child: collapsed
-                ? prefixImage ??
-                    prefixIcon ??
+                ? prefixIcon ??
+                    prefixImage ??
                     Text(
                       text[0],
                       style: GoogleFonts.montserrat(
