@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/controllers/add_recipe.dart';
 import 'package:cookbook/db/database_manager.dart';
+import 'package:cookbook/main.dart';
 import 'package:cookbook/pages/recipeadd/DropDown.dart';
 import 'package:cookbook/pages/recipeadd/dropdown_checkbox.dart';
 import 'package:cookbook/theme/colors.dart';
@@ -211,7 +212,8 @@ class UiComponents extends HookConsumerWidget {
                               "title": topSearchBarController.text,
                               "description": descriptionController.text,
                               "instructions": instructionsController.text,
-                              "member_email": "abolandr@gnu.org",
+                              "member_email": InheritedLoginProvider.of(context)
+                                  .userData?['email'],
                               "picture": d.toString()
                             },
                             ingredients: state.ingredientsMap,

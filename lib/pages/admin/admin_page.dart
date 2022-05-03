@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/pages/admin/user_info.dart';
@@ -51,6 +53,7 @@ class SelectedUserChangeNotifier extends ChangeNotifier {
   String _email = "";
   Image image = Image.asset("assets/images/ph.png"); // doesnt count
   String _filteringString = '';
+  File? _xFile;
 
   String get filteringString => _filteringString;
 
@@ -61,6 +64,7 @@ class SelectedUserChangeNotifier extends ChangeNotifier {
   String get userName => _userName;
 
   Member? get currMember => _currMember;
+  File? get file => _xFile;
 
   set currMember(Member? member) {
     _currMember = member;
@@ -84,6 +88,11 @@ class SelectedUserChangeNotifier extends ChangeNotifier {
 
   set userName(String val) {
     _userName = val;
+    notifyListeners();
+  }
+
+  set path(File? path) {
+    _xFile = path;
     notifyListeners();
   }
 }

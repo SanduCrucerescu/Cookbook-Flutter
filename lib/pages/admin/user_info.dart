@@ -82,28 +82,27 @@ class UserInfo extends HookConsumerWidget {
                                 state.currMember?.email = emailController.text;
                               },
                             ),
-                            Center(
-                              child: Row(
-                                children: [
-                                  CustomButton(
-                                    showShadow: true,
-                                    width: 500,
-                                    child: Text("Change Image"),
-                                    duration: const Duration(days: 0),
-                                    onTap: () async {
-                                      openImagePicker();
-
-                                      //final bytes = state.file?.readAsBytesSync();
-                                      //img64 = base64Encode(bytes!);
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
                             CustomButton(
-                              color: kcMedBeige,
-                              duration: const Duration(milliseconds: 100),
+                              showShadow: true,
+                              width: 550,
+                              child: const Text("Change Image"),
+                              duration: const Duration(days: 0),
                               onTap: () async {
+<<<<<<< HEAD
+                                var picture = await openImagePicker();
+                                if (picture != null) {
+                                  var name = picture['file'];
+                                  /**
+                                 * TODO: pick `file` from Image picker and 
+                                 * encode it then commit to database.
+                                 */
+
+                                  final bytes = name?.readAsBytesSync();
+                                  img64 = base64Encode(bytes!);
+                                } else {
+                                  openImagePicker();
+                                }
+=======
                                 DatabaseManager dbManager =
                                     await DatabaseManager.init();
                                 Member member = state.currMember!;
@@ -111,17 +110,41 @@ class UserInfo extends HookConsumerWidget {
                                 dbManager.update(
                                   table: 'members',
                                   set: {
-                                    'username': member.name,
-                                    'email': member.email,
+                                    'name': member.name,
+                                    'emai': member.email,
                                     'password': member.password,
                                     'profile_pic': img64
                                   },
                                   where: {'email': state.currMember!.email},
                                 );
+>>>>>>> b8d83c8 (Adding star and unstar)
                               },
-                              child: const Text(
-                                'Apply',
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
+                              child: CustomButton(
+                                color: kcMedBeige,
+                                duration: const Duration(milliseconds: 100),
+                                onTap: () async {
+                                  DatabaseManager dbManager =
+                                      await DatabaseManager.init();
+                                  Member member = state.currMember!;
+                                  print(member.name);
+                                  dbManager.update(
+                                    table: 'members',
+                                    set: {
+                                      'username': member.name,
+                                      'email': member.email,
+                                      'password': member.password,
+                                      'profile_pic': img64
+                                    },
+                                    where: {'email': state.currMember!.email},
+                                  );
+                                },
+                                child: const Text(
+                                  'Apply',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
                               ),
                             ),
                           ],

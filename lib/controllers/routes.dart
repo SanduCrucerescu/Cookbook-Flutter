@@ -41,11 +41,15 @@ class RouteGenerator {
         );
       case '/faq':
         return MaterialPageRoute(
-          builder: (_) => const FAQPage(),
+          builder: (_) => FAQPage(),
         );
       case '/user':
         return MaterialPageRoute(
           builder: (_) => const UserPage(),
+        );
+      case '/cart':
+        return MaterialPageRoute(
+          builder: (_) => ShoppingPage(),
         );
       default:
         // If there is no such named route in the switch statement, e.g. /third
