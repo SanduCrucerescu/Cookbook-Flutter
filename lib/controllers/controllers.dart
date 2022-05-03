@@ -6,6 +6,8 @@ import 'package:cookbook/models/shoppingCart/shopping_cart.dart';
 import 'package:cookbook/pages/admin/admin_page.dart';
 import 'package:cookbook/pages/comments/comments.dart';
 import 'package:cookbook/pages/faq/faq.dart';
+import 'package:cookbook/pages/favorites/favorites.dart';
+import 'package:cookbook/pages/favorites/responsive_favorites.dart';
 import 'package:cookbook/pages/home/home_page.dart';
 import 'package:cookbook/pages/home/responsive_home_builder.dart';
 import 'package:cookbook/pages/loadimage/load_image.dart';
