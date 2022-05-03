@@ -88,21 +88,6 @@ class UserInfo extends HookConsumerWidget {
                               child: const Text("Change Image"),
                               duration: const Duration(days: 0),
                               onTap: () async {
-<<<<<<< HEAD
-                                var picture = await openImagePicker();
-                                if (picture != null) {
-                                  var name = picture['file'];
-                                  /**
-                                 * TODO: pick `file` from Image picker and 
-                                 * encode it then commit to database.
-                                 */
-
-                                  final bytes = name?.readAsBytesSync();
-                                  img64 = base64Encode(bytes!);
-                                } else {
-                                  openImagePicker();
-                                }
-=======
                                 DatabaseManager dbManager =
                                     await DatabaseManager.init();
                                 Member member = state.currMember!;
@@ -117,7 +102,6 @@ class UserInfo extends HookConsumerWidget {
                                   },
                                   where: {'email': state.currMember!.email},
                                 );
->>>>>>> b8d83c8 (Adding star and unstar)
                               },
                             ),
                             Padding(

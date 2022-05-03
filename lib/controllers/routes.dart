@@ -29,7 +29,7 @@ class RouteGenerator {
         );
       case '/messages':
         return MaterialPageRoute(
-          builder: (_) => MessagePage(),
+          builder: (_) => const MessagePage(),
         );
       case '/img':
         return MaterialPageRoute(
@@ -37,7 +37,7 @@ class RouteGenerator {
         );
       case '/addrecipe':
         return MaterialPageRoute(
-          builder: (_) => RecipeAdd(),
+          builder: (_) => AddRecipePage(),
         );
       case '/faq':
         return MaterialPageRoute(
@@ -50,6 +50,10 @@ class RouteGenerator {
       case '/cart':
         return MaterialPageRoute(
           builder: (_) => ShoppingPage(),
+        );
+      case '/comments':
+        return MaterialPageRoute(
+          builder: (_) => const CommentsPage(),
         );
       default:
         // If there is no such named route in the switch statement, e.g. /third
