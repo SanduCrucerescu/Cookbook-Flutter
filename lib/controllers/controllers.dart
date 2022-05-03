@@ -1,6 +1,7 @@
 library controllers;
 
 import 'package:cookbook/db/database_manager.dart';
+import 'package:cookbook/models/shoppingCart/shopping_cart.dart';
 import 'package:cookbook/pages/admin/admin_page.dart';
 import 'package:cookbook/pages/faq/faq.dart';
 import 'package:cookbook/pages/home/responsive_home_builder.dart';
@@ -10,6 +11,7 @@ import 'package:cookbook/pages/login/login.dart';
 import 'package:cookbook/pages/messages/message_screen.dart';
 import 'package:cookbook/pages/recipeadd/recipe_add.dart';
 import 'package:cookbook/pages/register/register.dart';
+import 'package:cookbook/pages/shoppingCart/shoppingCart.dart';
 import 'package:cookbook/pages/userPage/user_page.dart';
 import 'package:flutter/material.dart';
 import 'package:mysql1/mysql1.dart';

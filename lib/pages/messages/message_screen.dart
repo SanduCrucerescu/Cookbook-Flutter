@@ -36,7 +36,6 @@ class MessagePageState extends ConsumerState<MessagePage> {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       final state = ref.read(membersProvider);
       state.members = await getMembers();
-<<<<<<< HEAD
       state.displayedMembers = state.members;
 
       Timer.periodic(const Duration(milliseconds: 1000), (timer) async {
@@ -48,14 +47,6 @@ class MessagePageState extends ConsumerState<MessagePage> {
         if (messages.length != state.messages.length) {
           state.messages = messages;
           state.displayedMessages = messages;
-=======
-      state.messages = await getMessages();
-
-      Timer.periodic(const Duration(seconds: 1), (timer) async {
-        final newMessages = await getMessages();
-        if (newMessages != state.messages) {
-          state.messages = newMessages;
->>>>>>> d9b0b6b7b3f63dc81ff536953836412d3c6dae02
         }
       });
     });
