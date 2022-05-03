@@ -1,19 +1,27 @@
+import 'package:cookbook/main.dart';
+import 'package:cookbook/pages/messages/message_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ConversationWidget extends StatelessWidget {
   final int idx;
+  final MessagePageController state;
 
   const ConversationWidget({
     required this.idx,
+    required this.state,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    print('sender: ' + state.displayedMessages[idx].sender);
+    print('receiver: ' + state.displayedMessages[idx].receiver);
+    print(InheritedLoginProvider.of(context).userData?['email']);
 
-    if (idx % 2 == 0) {
+    if (state.displayedMessages[idx].receiver ==
+        (InheritedLoginProvider.of(context).userData?['email'])) {
       return Container(
         padding: const EdgeInsets.only(top: 10, bottom: 50, left: 8),
         child: Row(
@@ -30,11 +38,11 @@ class ConversationWidget extends StatelessWidget {
                   color: Colors.grey[400],
                   borderRadius: BorderRadius.circular(20)),
               child: Text(
-                "Message jjdkjd kjdkhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh",
-                style: TextStyle(fontWeight: FontWeight.w500),
+                state.displayedMessages[idx].content,
+                style: const TextStyle(fontWeight: FontWeight.w500),
               ),
             ),
-            Text("12:45"),
+            Text(state.displayedMessages[idx].time),
           ],
         ),
       );
@@ -53,12 +61,12 @@ class ConversationWidget extends StatelessWidget {
                   color: Colors.lightBlue[500],
                   borderRadius: BorderRadius.circular(20)),
               child: Text(
-                "Messagssssssssssssssssssssssssssssssssssssssssssssssssssssssssssse",
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+                state.displayedMessages[idx].content,
+                style: const TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.w500),
               ),
             ),
-            Text("3:45"),
+            Text(state.displayedMessages[idx].time),
           ],
         ),
       );

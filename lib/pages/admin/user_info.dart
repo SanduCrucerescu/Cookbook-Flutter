@@ -1,18 +1,23 @@
+import 'dart:convert';
+
 import 'package:cookbook/components/components.dart';
+import 'package:cookbook/controllers/image_picker.dart';
 import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/models/member/member.dart';
+import 'package:cookbook/pages/login/login.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'admin_page.dart';
 
-class UserInfo extends StatelessWidget {
+class UserInfo extends HookConsumerWidget {
   final String text;
-  final position;
+  final Alignment position;
   final SelectedUserChangeNotifier state;
+  late String img64;
 
-  const UserInfo({
+  UserInfo({
     required this.text,
     required this.position,
     required this.state,
@@ -20,10 +25,13 @@ class UserInfo extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final nameController = useTextEditingController();
+    final emailController = useTextEditingController();
+
     double xSize = 600;
     return Padding(
-      padding: const EdgeInsets.all(80),
+      padding: const EdgeInsets.only(right: 40, bottom: 20, top: 20, left: 20),
       child: Align(
         alignment: position,
         // rectangle itself
@@ -59,41 +67,67 @@ class UserInfo extends StatelessWidget {
                       : Column(
                           children: [
                             UserInfoField(
-                                title: 'Name: ',
-                                content: state.userName,
-                                parameterToUpdate: state.currMember!.name),
+                              title: 'Name: ',
+                              content: state.userName,
+                              controller: nameController,
+                              onTap: () {
+                                state.currMember?.name = nameController.text;
+                              },
+                            ),
                             UserInfoField(
                               title: 'Email: ',
                               content: state.email,
-                              parameterToUpdate: state.currMember!.email,
-                            ),
-                            UserInfoField(
-                              title: 'Image: ',
-                              content: 'some image', //TODO: replace with image
-                              parameterToUpdate: state.currMember!.name,
+                              controller: emailController,
+                              onTap: () {
+                                state.currMember?.email = emailController.text;
+                              },
                             ),
                             CustomButton(
-                              color: kcMedBeige,
-                              duration: const Duration(milliseconds: 100),
+                              showShadow: true,
+                              width: 550,
+                              child: const Text("Change Image"),
+                              duration: const Duration(days: 0),
                               onTap: () async {
-                                DatabaseManager dbManager =
-                                    await DatabaseManager.init();
-                                Member member = state.currMember!;
-                                dbManager.update(
-                                  table: 'members',
-                                  params: {
-                                    'name': member.name,
-                                    'emai': member.email,
-                                    'password': member.password,
-                                    // 'profile_pic:': member
-                                    //     .name, // TODO : Change to profilePicture
-                                  },
-                                  where: {'email': member.email},
-                                );
+                                var picture = await openImagePicker();
+                                if (picture != null) {
+                                  var name = picture['file'];
+                                  /**
+                                 * TODO: pick `file` from Image picker and 
+                                 * encode it then commit to database.
+                                 */
+
+                                  final bytes = name?.readAsBytesSync();
+                                  img64 = base64Encode(bytes!);
+                                } else {
+                                  openImagePicker();
+                                }
                               },
-                              child: Text(
-                                'Apply',
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
+                              child: CustomButton(
+                                color: kcMedBeige,
+                                duration: const Duration(milliseconds: 100),
+                                onTap: () async {
+                                  DatabaseManager dbManager =
+                                      await DatabaseManager.init();
+                                  Member member = state.currMember!;
+                                  print(member.name);
+                                  dbManager.update(
+                                    table: 'members',
+                                    set: {
+                                      'username': member.name,
+                                      'email': member.email,
+                                      'password': member.password,
+                                      'profile_pic': img64
+                                    },
+                                    where: {'email': state.currMember!.email},
+                                  );
+                                },
+                                child: const Text(
+                                  'Apply',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
                               ),
                             ),
                           ],
@@ -110,77 +144,69 @@ class UserInfo extends StatelessWidget {
 
 class UserInfoField extends HookConsumerWidget {
   final String title, content;
-  String parameterToUpdate;
+  final VoidCallback onTap;
   final DatabaseManager dbManager = DatabaseManager();
+  final TextEditingController controller;
 
   UserInfoField({
     required this.title,
     required this.content,
-    required this.parameterToUpdate,
+    required this.onTap,
+    required this.controller,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final tec = useTextEditingController();
-
     return SizedBox(
       width: 410,
-      child: Container(
-        child: Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                child: Expanded(
-                  child: Container(
-                    height: 40,
-                    width: 300,
-                    margin: const EdgeInsets.symmetric(vertical: 5),
-                    padding: const EdgeInsets.only(left: 5),
-                    color: kcMedBeige,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(title),
-                        Container(
-                          child: Expanded(
-                            child: CustomTextField(
-                              controller: tec,
-                              height: 15,
-                              width: 230,
-                              isShadow: false,
-                              backgroundColor: Colors.transparent,
-                              hintText: content,
-                              fontSize: 12,
-                            ),
-                          ),
-                        )
-                      ],
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Container(
+              height: 40,
+              width: 300,
+              margin: const EdgeInsets.symmetric(vertical: 5),
+              padding: const EdgeInsets.only(left: 5),
+              color: kcMedBeige,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(title),
+                  Expanded(
+                    child: CustomTextField(
+                      controller: tec,
+                      height: 15,
+                      width: 230,
+                      isShadow: false,
+                      backgroundColor: Colors.transparent,
+                      hintText: content,
+                      fontSize: 12,
                     ),
-                  ),
+                  )
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: Container(
+              color: kcMedBeige,
+              width: 100,
+              height: 40,
+              child: InkWell(
+                onTap: () {
+                  print(tec.text);
+                  parameterToUpdate = tec.text;
+                },
+                child: const Center(
+                  child: Text('Save'),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: Container(
-                  color: kcMedBeige,
-                  width: 100,
-                  height: 40,
-                  child: InkWell(
-                    onTap: () {
-                      print(tec.text);
-                      parameterToUpdate = tec.text;
-                    },
-                    child: const Center(
-                      child: Text('Save'),
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
+            ),
+          )
+        ],
       ),
     );
   }

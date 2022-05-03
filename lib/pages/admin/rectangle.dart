@@ -21,8 +21,8 @@ class Rectangle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(80),
+    return Container(
+      padding: const EdgeInsets.only(right: 20, bottom: 20, top: 20, left: 40),
       child: Align(
         alignment: position,
         // rectangle itself
@@ -99,25 +99,21 @@ class _UsersColumnState extends State<UsersColumn> {
       );
     } else {
       return Container(
-        child: Expanded(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-            child: Scrollbar(
-              isAlwaysShown: true,
-              showTrackOnHover: true,
-              child: ListView.builder(
-                itemCount: displayedmembers.length,
-                itemBuilder: (BuildContext context, int idx) {
-                  return UserTile(
-                    state: widget.state,
-                    idx: idx,
-                    email: displayedmembers[idx].email,
-                    userName: displayedmembers[idx].name,
-                  );
-                },
-              ),
-            ),
-          ),
+        height: 500,
+        width: 400,
+        padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+        child: ListView.builder(
+          itemCount: displayedmembers.length,
+          itemBuilder: (BuildContext context, int idx) {
+            return UserTile(
+              state: widget.state,
+              idx: idx,
+              email: displayedmembers[idx].email,
+              userName: displayedmembers[idx].name,
+              profile_pic: displayedmembers[idx].profilePicture,
+              member: displayedmembers[idx],
+            );
+          },
         ),
       );
     }

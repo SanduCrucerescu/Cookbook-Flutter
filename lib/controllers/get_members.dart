@@ -12,8 +12,9 @@ Future<List<Member>> getMembers() async {
       name: r['username'],
       email: r['email'],
       password: r['password'],
+      profilePicture: r['profile_pic'],
     );
-    members.add(curr); // Something wrong here
+    members.add(curr);
   }
   return members;
 }

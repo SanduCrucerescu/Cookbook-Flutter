@@ -5,12 +5,12 @@ import 'package:mysql1/mysql1.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
 
 class Member {
-  final String name;
-  final String email;
-  final String password;
-  final List<Recipe>? favorites;
-  final List<Recipe>? recipes;
-  final Blob? profilePicture;
+  String name;
+  String email;
+  String password;
+  List<Recipe>? favorites;
+  List<Recipe>? recipes;
+  Blob? profilePicture;
 
   Member({
     required this.name,

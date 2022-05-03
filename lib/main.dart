@@ -143,7 +143,7 @@ class App extends StatelessWidget {
           fontFamily: 'Montserrat',
           primaryColor: kcMedBeige,
         ),
-        initialRoute: Admin.id,
+        initialRoute: RecipeAdd.id,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );

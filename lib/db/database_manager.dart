@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
+
 import 'package:mysql1/mysql1.dart';
 
 abstract class AbstractDatabaseManager {
@@ -32,14 +33,10 @@ abstract class AbstractDatabaseManager {
       required List<String> fields,
       required Map<String, dynamic> data});
 
-  void insertRecipe({
-    required Map<String, int> data,
-  });
-
   void update({
     required String table,
-    required Map<String, dynamic> params,
     required Map<String, dynamic> where,
+    required Map<String, dynamic> set,
   });
 
   void delete({
@@ -112,6 +109,8 @@ class DatabaseManager extends AbstractDatabaseManager {
       {required String table,
       required List<String> fields,
       Map<String, dynamic>? where,
+      bool? and,
+      bool? or,
       String? group,
       String? having,
       List<int>? limit}) async {
@@ -128,7 +127,11 @@ class DatabaseManager extends AbstractDatabaseManager {
       for (MapEntry entry in where.entries) {
         i++;
         query += entry.key + " = '" + entry.value + "'";
-        query += i < where.length ? " AND " : "";
+        if (and == true) {
+          query += i < where.length ? " AND " : "";
+        } else if (or == true) {
+          query += i < where.length ? " OR " : "";
+        }
       }
     }
     query += ";";
@@ -167,8 +170,6 @@ class DatabaseManager extends AbstractDatabaseManager {
     }
     query += ");";
 
-    log(query);
-
     result = await cnx!.query(query);
 
     return result;
@@ -194,11 +195,30 @@ class DatabaseManager extends AbstractDatabaseManager {
   }
 
   @override
-  void update(
+  Future<Results?> update(
       {required String table,
-      required Map<String, dynamic> params,
-      required Map<String, dynamic> where}) {
-    // TODO: implement update
+      required Map<String, dynamic> where,
+      required Map<String, dynamic> set}) async {
+    connect();
+
+    String query = '''UPDATE  $table SET ''';
+    int i = 0;
+    for (MapEntry entry in set.entries) {
+      i++;
+      query += entry.key + " = " + "'" + entry.value + "'";
+      query += i < set.length ? " , " : "";
+    }
+    for (MapEntry entry in where.entries) {
+      query += " WHERE " + entry.key + " = " + "'" + entry.value + "'";
+    }
+
+    query += ";";
+
+    print(query);
+
+    result = await cnx!.query(query);
+
+    return result;
   }
 
   @override
@@ -226,13 +246,5 @@ class DatabaseManager extends AbstractDatabaseManager {
     result = await cnx!.query(query);
 
     return result;
-  }
-
-  @override
-  void insertRecipe({required Map<String, int> data}) async {
-    connect();
-
-    String querry = '''
-      ''';
   }
 }
