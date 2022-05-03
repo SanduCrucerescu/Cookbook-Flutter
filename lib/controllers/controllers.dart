@@ -4,6 +4,7 @@ import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/models/shoppingCart/shopping_cart.dart';
 import 'package:cookbook/pages/admin/admin_page.dart';
 import 'package:cookbook/pages/faq/faq.dart';
+import 'package:cookbook/pages/home/home_page.dart';
 import 'package:cookbook/pages/home/responsive_home_builder.dart';
 import 'package:cookbook/pages/loadimage/load_image.dart';
 import 'package:cookbook/pages/loading/loading_page.dart';
