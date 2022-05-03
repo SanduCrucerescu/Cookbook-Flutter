@@ -6,12 +6,36 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 class ShoppingPage extends HookConsumerWidget {
   static const String id = "/cart";
 
-  ShoppingPage({Key? key}) : super(key: key);
+  const ShoppingPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return CustomPage(
-      child: Row(),
+      child: Container(
+        color: Colors.amber,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Shopping Page",
+                    style: TextStyle(fontSize: 40),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              color: Colors.black,
+              height: 100,
+              width: 100,
+            )
+          ],
+        ),
+      ),
     );
   }
 }
