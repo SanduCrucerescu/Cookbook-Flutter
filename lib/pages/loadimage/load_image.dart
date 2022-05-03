@@ -56,10 +56,21 @@ Future<Image> onTap() async {
     fields: ['picture'],
     where: {'title': 't'},
   );
+  Image memImg;
+  Blob img = res!.first['picture'];
+  if (!img.toString().startsWith('/')) {
+    var blob = const Base64Codec().encode(img.toBytes());
 
-  var blob = res!.first['picture'].toString();
+    Uint8List image = const Base64Codec().decode(blob);
 
-  Uint8List image = const Base64Codec().decode(blob);
+    memImg = Image.memory(image);
+  } else {
+    var blob = img.toString();
 
-  return Image.memory(image);
+    Uint8List image = const Base64Codec().decode(blob);
+
+    memImg = Image.memory(image);
+  }
+
+  return memImg;
 }
