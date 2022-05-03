@@ -51,15 +51,10 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (_) => ShoppingPage(),
         );
-<<<<<<< HEAD
-      case '/comments':
-        return MaterialPageRoute(
-          builder: (_) => const CommentsPage(),
-        );
-=======
       case '/favorites':
         return MaterialPageRoute(builder: (_) => ResponsiveFavoritesPage());
->>>>>>> 7363ff8 (Finished the favorites page)
+      case '/comments':
+        return MaterialPageRoute(builder: (_) => CommentsPage());
       default:
         // If there is no such named route in the switch statement, e.g. /third
         return _errorRoute();
