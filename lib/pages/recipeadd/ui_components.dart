@@ -197,19 +197,17 @@ class AddRecipePage extends HookConsumerWidget {
                           state.noTags = true;
                           state.t = "Please add some tags";
                         } else {
-                          // if (state.file == null) {
-                          //   ByteData bytes =
-                          //       await rootBundle.load('assets/images/ph.png');
-                          //   Uint8List photobytes = bytes.buffer.asUint8List(
-                          //       bytes.offsetInBytes, bytes.lengthInBytes);
+                          if (state.file == null) {
+                            ByteData bytes =
+                                await rootBundle.load('assets/images/ph.png');
+                            Uint8List photobytes = bytes.buffer.asUint8List(
+                                bytes.offsetInBytes, bytes.lengthInBytes);
 
-                          //   img64 = base64Encode(photobytes);
-                          // } else {
-                          //   final bytes = state.file?.readAsBytesSync();
-                          //   img64 = base64Encode(bytes!);
-                          // }
-                          final bytes = state.file?.readAsBytesSync();
-                          var d = bytes!.toList();
+                            img64 = base64Encode(photobytes);
+                          } else {
+                            final bytes = state.file?.readAsBytesSync();
+                            img64 = base64Encode(bytes!);
+                          }
                           bool add = await AddRecipe.adding(
                               recipeInfo: {
                                 "title": topSearchBarController.text,
@@ -218,7 +216,7 @@ class AddRecipePage extends HookConsumerWidget {
                                 "member_email":
                                     InheritedLoginProvider.of(context)
                                         .userData?['email'],
-                                "picture": d.toString()
+                                "picture": img64
                               },
                               ingredients: state.ingredientsMap,
                               tags: state.selectedItems);
@@ -250,12 +248,8 @@ class AddRecipePage extends HookConsumerWidget {
 
     Results? res = await databaseManager
         .select(table: "ingredients", fields: ["id", "name"]);
-    final results = [];
-    if (res != null) {
-      final results = res;
-    }
 
-    for (var rs in results) {
+    for (var rs in res!) {
       menuItems.add(CustDropdownMenuItem(
         child: Text(rs[1]),
         value: "${rs[0]}",
