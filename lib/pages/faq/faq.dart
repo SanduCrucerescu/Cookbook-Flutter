@@ -1,43 +1,42 @@
+// ignore_for_file: prefer_const_constructors, prefer_typing_uninitialized_variables, unused_local_variable
 import 'package:cookbook/components/components.dart';
+import 'package:cookbook/pages/faq/helpData.dart';
+import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class FAQPage extends HookConsumerWidget {
+class FAQPage extends StatefulHookConsumerWidget {
   static const String id = '/faq';
   FAQPage({Key? key}) : super(key: key);
 
-  static const userAbility =
-      'As a user you can see recipes and interact with them, '
-      'create your own recipes, favorite recipes, see weekly suggestions, '
-      'add recipes to cart and interact with other users. Enjoy!';
-
-  static const addRecipe =
-      'In order to add a recipe, simply click the "Add recipe" '
-      'button on the left hand side navigation column. Then fill in the '
-      'information for your recipe.';
-
-  static const favoriteRecipe = 'If you as a user want to add a recipe '
-      'to your favorites section; all you need to do is click the star shaped icon '
-      'icon in the individual recipe tile then head to "My Page" section to see '
-      'the "favorites" section button below the once previous "My Page" button.';
-  static const addRcptCart =
-      'To add a recipe to your cart, you will need to click '
-      'the " + " button. After that your cart should now hold the recipe you wish to purchase.';
-
-  final List<Item> items = [
-    Item(header: 'What can I do as a user?', body: userAbility),
-    Item(header: 'How do I add a recipe?', body: addRecipe),
-    Item(header: 'How to favorite a recipe?', body: favoriteRecipe),
-    Item(header: 'How to add a recipe to your cart?', body: addRcptCart),
-  ];
+  final faqProvider = ChangeNotifierProvider<FaqController>(
+    (ref) => FaqController(),
+  );
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final tec = useTextEditingController();
+  _FAQPageState createState() => _FAQPageState();
+}
 
+class _FAQPageState extends ConsumerState<FAQPage> {
+  @override
+  void initState() {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      ref.read(widget.faqProvider).displayedItems = kFaqItems;
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final tec = useTextEditingController();
     Size size = MediaQuery.of(context).size;
-    // TODO: FAQ Help page, drop down panel of each question
+
+    final state = ref.watch(widget.faqProvider);
+
+    // TODO: FAQ Help page, drop down panel of each question,
+    // TODO: Functional search bar.
+
     return CustomPage(
       child: SingleChildScrollView(
         child: Column(
@@ -45,10 +44,16 @@ class FAQPage extends HookConsumerWidget {
             CustomTextField(
               height: 50,
               width: size.width,
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(
+                color: kcMedGrey,
+                width: 1,
+                style: BorderStyle.solid,
+              ),
               controller: tec,
               margin: const EdgeInsets.all(12),
-              onChanged: (val) {
-                // do something
+              onChanged: (value) {
+                state.setItemsFromSearchValue(value);
               },
             ),
             ExpansionPanelList.radio(
@@ -56,7 +61,7 @@ class FAQPage extends HookConsumerWidget {
               dividerColor: Colors.brown[100],
               elevation: 8,
               expandedHeaderPadding: EdgeInsets.only(bottom: 0.0),
-              children: items
+              children: state.displayedItems
                   .map(
                     (item) => ExpansionPanelRadio(
                       canTapOnHeader: true,
@@ -90,6 +95,30 @@ class FAQPage extends HookConsumerWidget {
         ),
       ),
     );
+  }
+}
+
+class FaqController extends ChangeNotifier {
+  List<Item> _displayedItems = [];
+  List<Item> get displayedItems => _displayedItems;
+
+  set displayedItems(List<Item> items) {
+    _displayedItems = items;
+    notifyListeners();
+  }
+
+  void addItem(Item item) {
+    _displayedItems.add(item);
+  }
+
+  void setItemsFromSearchValue(String val) {
+    _displayedItems = [];
+    for (Item item in kFaqItems) {
+      if (item.header.toUpperCase().contains(val.toUpperCase())) {
+        addItem(item);
+      }
+    }
+    notifyListeners();
   }
 }
 

@@ -7,6 +7,7 @@ import 'package:cookbook/controllers/add_delete_favorites.dart';
 import 'package:cookbook/controllers/loadimage.dart';
 import 'package:cookbook/main.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
+import 'package:cookbook/models/shoppingCart/shopping_cart.dart';
 import 'package:cookbook/models/tag/tag.dart';
 import 'package:cookbook/pages/admin/admin_page.dart';
 import 'package:cookbook/pages/faq/faq.dart';
