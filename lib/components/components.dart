@@ -5,9 +5,14 @@ import 'dart:developer';
 import 'dart:typed_data';
 import 'package:cookbook/main.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
+<<<<<<< HEAD
 import 'package:cookbook/models/tag/tag.dart';
 import 'package:cookbook/pages/admin/admin_page.dart';
 import 'package:cookbook/pages/faq/faq.dart';
+=======
+import 'package:cookbook/pages/FAQPage/faq.dart';
+import 'package:cookbook/pages/admin/admin_page.dart';
+>>>>>>> b7f7e42 (commit)
 import 'package:cookbook/pages/home/home_page.dart';
 import 'package:cookbook/pages/loading/loading_page.dart';
 import 'package:cookbook/pages/login/login.dart';
