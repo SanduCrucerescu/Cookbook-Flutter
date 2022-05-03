@@ -17,7 +17,7 @@ List<Map<String, dynamic>> kSideBarItems = [
     "children": [
       {
         "text": "F a v o u r i t e s",
-        "onTap": HomePage.id,
+        "onTap": FavoritesPage.id,
       },
       {
         "text": "W e e k l y",
