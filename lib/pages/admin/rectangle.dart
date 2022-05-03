@@ -99,8 +99,8 @@ class _UsersColumnState extends State<UsersColumn> {
       );
     } else {
       return Container(
-        height: 500,
-        width: 400,
+        height: 698,
+        width: 1000,
         padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
         child: ListView.builder(
           itemCount: displayedmembers.length,
