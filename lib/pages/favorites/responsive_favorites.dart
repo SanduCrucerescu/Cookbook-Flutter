@@ -20,7 +20,6 @@ class ResponsiveFavoritesPage extends ConsumerWidget {
     } else {
       return FavoritesPage.desktop();
     }
-    ;
   }
 }
 
