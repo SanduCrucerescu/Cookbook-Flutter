@@ -47,7 +47,12 @@ class GetRecepies {
             "select * from ingredients_for_recipe INNER JOIN ingredients on ingredients_for_recipe.ingredient_id = ingredients.id where recipe_id = $id;");
     for (var ing in ingredients!) {
       ingredientClass = Ingredient(
-          ing[4], ing[5].toString(), ing[3], ing[6].toString(), ing[7]);
+        id: ing.fields['id'],
+        name: ing.fields['name'],
+        unit: ing.fields['unit'],
+        // amount: ing.fields['amount'],
+        pricePerUnit: ing.fields['pricePerUnit'],
+      );
       ingredient.add(ingredientClass);
     }
     return ingredient;

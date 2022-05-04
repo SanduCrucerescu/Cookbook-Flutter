@@ -11,7 +11,7 @@ class IngridientTile extends StatelessWidget {
   final int idx;
   final SelectedUserChangeNotifier2 state;
   final String name;
-  final String id;
+  final int id;
   final double? pricePerUnit;
 
   const IngridientTile({
@@ -37,21 +37,29 @@ class IngridientTile extends StatelessWidget {
               style: BorderStyle.solid,
             ),
             borderRadius: BorderRadius.circular(5)),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
-          child: GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: () {
-              // state.email = email;
-              // state.userName = userName;
-              // state.currMember = ingridient;
-            },
-            child: ListTile(
-              title: Text(
-                ingridient.name,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            TextButton(onPressed: () {}, child: Text("Add")),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
+              child: GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () {
+                  //state.ingridients_list.add(idx)
+                },
+                child: ListTile(
+                  title: Text(
+                    ingridient.name +
+                        " " +
+                        (ingridient.pricePerUnit).toString() +
+                        " " +
+                        ingridient.unit,
+                  ),
+                ),
               ),
             ),
-          ),
+          ],
         ),
       ),
     );

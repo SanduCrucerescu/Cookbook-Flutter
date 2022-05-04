@@ -1,19 +1,16 @@
 import 'package:cookbook/controllers/get_ingridients.dart';
-import 'package:cookbook/controllers/get_members.dart';
 import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/models/ingredient/ingredient.dart';
-import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/pages/shoppingCart/shoppingPage.dart';
 import 'package:cookbook/pages/shoppingCart/search.dart';
 import 'package:cookbook/pages/shoppingCart/ingridients_list.dart';
 import 'package:flutter/material.dart';
-import 'package:mysql1/mysql1.dart';
 
-class Rectangle extends StatelessWidget {
+class Sqaure extends StatelessWidget {
   final SelectedUserChangeNotifier2 state;
   final position;
 
-  const Rectangle({
+  const Sqaure({
     required this.state,
     required this.position,
     Key? key,
@@ -43,7 +40,7 @@ class Rectangle extends StatelessWidget {
             child: Column(
               children: [
                 SearchIngridient(state: state),
-                UsersColumn(state: state),
+                IngridientColumn(state: state),
               ],
             ),
           ),
@@ -53,8 +50,8 @@ class Rectangle extends StatelessWidget {
   }
 }
 
-class UsersColumn extends StatefulWidget {
-  const UsersColumn({
+class IngridientColumn extends StatefulWidget {
+  const IngridientColumn({
     Key? key,
     required this.state,
   }) : super(key: key);
@@ -62,10 +59,10 @@ class UsersColumn extends StatefulWidget {
   final SelectedUserChangeNotifier2 state;
 
   @override
-  State<UsersColumn> createState() => _UsersColumnState();
+  State<IngridientColumn> createState() => _IngridientColumnState();
 }
 
-class _UsersColumnState extends State<UsersColumn> {
+class _IngridientColumnState extends State<IngridientColumn> {
   DatabaseManager? dbManager;
   List<Ingredient> ingredients = [];
   List<Ingredient> displayedIngridients = [];
@@ -92,6 +89,7 @@ class _UsersColumnState extends State<UsersColumn> {
         displayedIngridients.add(ingridient);
       }
     }
+    // print(displayedIngridients);
 
     if (ingredients.isEmpty) {
       return Padding(
@@ -104,11 +102,12 @@ class _UsersColumnState extends State<UsersColumn> {
         width: 1000,
         padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
         child: ListView.builder(
+          controller: ScrollController(),
           itemCount: displayedIngridients.length,
           itemBuilder: (BuildContext context, int idx) {
             return IngridientTile(
-              pricePerUnit: 10,
-              id: "1",
+              pricePerUnit: ingredients[idx].pricePerUnit,
+              id: ingredients[idx].id,
               ingridient: ingredients[idx],
               state: widget.state,
               idx: idx,

@@ -29,7 +29,7 @@ class ShoppingPage extends HookConsumerWidget {
       child: Row(
         children: [
           Expanded(
-            child: Rectangle(
+            child: Sqaure(
               state: state,
               position: Alignment.topLeft,
             ),

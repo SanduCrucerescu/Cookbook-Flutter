@@ -6,15 +6,15 @@ import 'package:mysql1/mysql1.dart';
 Future<List<Ingredient>> getIngridients() async {
   final dbManager = await DatabaseManager.init();
   List<Ingredient> ingridients = [];
-  Results? res = await dbManager.select(table: 'ingridients', fields: ['*']);
+  Results? res = await dbManager.select(table: 'ingredients', fields: ['*']);
 //TODO this
   for (var r in res!) {
     final curr = Ingredient(
-      r['id'],
-      r['name'],
-      r['unit'],
-      r['amount'],
-      r['pricePerUnit'],
+      id: r['id'],
+      name: r['name'],
+      unit: r['unit'],
+      // amount: r['amount'],
+      pricePerUnit: r['pricePerUnit'],
     );
     ingridients.add(curr);
   }
