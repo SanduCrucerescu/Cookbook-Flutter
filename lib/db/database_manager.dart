@@ -153,10 +153,7 @@ class DatabaseManager extends AbstractDatabaseManager {
       {required String table,
       required List<String> fields,
       required Map<String, dynamic> data}) async {
-    if (cnx == null) {
-      return null;
-    }
-
+    await connect();
     String query = '''
             INSERT INTO $table (${fields.length > 1 ? fields.join(", ") : fields[0]}) VALUES (''';
     int i = 0;
@@ -171,7 +168,7 @@ class DatabaseManager extends AbstractDatabaseManager {
     query += ");";
 
     result = await cnx!.query(query);
-    await cnx!.close();
+    //await cnx!.close();
     return result;
   }
 
