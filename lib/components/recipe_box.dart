@@ -22,13 +22,6 @@ class RecipeBox extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(hoveringProvider);
-    print(recipe.title +
-        ':' +
-        Base64Codec()
-            .decode(
-                Base64Codec().encode(recipe.picture.toBytes()).substring(0, 20))
-            .toString());
-    // print(recipe.title + ':' + recipe.picture.toString().substring(0, 50));
 
     return Container(
       margin: const EdgeInsets.only(top: 20),
@@ -90,10 +83,7 @@ class RecipeBox extends ConsumerWidget {
                     )
                   : null,
               image: Image.memory(
-                // const Base64Codec()
-                //     .decode(Base64Codec().encode(recipe.picture.toBytes())),
-                recipe.picture.toBytes() as Uint8List,
-                // Base64Codec().encode(recipe.picture.toBytes()),
+                getImageDataFromBlob(recipe.picture),
                 fit: BoxFit.cover,
                 height: 420,
                 width: 420,
@@ -106,10 +96,12 @@ class RecipeBox extends ConsumerWidget {
           ),
         ),
         const Positioned(left: horiLineIndent, top: 510, child: HoriLine()),
-        const Positioned(
+        Positioned(
           top: 534,
           left: actionRowIndent,
-          child: RecipeActionsRow(),
+          child: RecipeActionsRow(
+            recipe: recipe,
+          ),
         ),
         const Positioned(left: horiLineIndent, top: 570, child: HoriLine()),
         Positioned(
@@ -170,7 +162,7 @@ class RecipeBoxTopRow extends StatelessWidget {
       title: Column(
         children: [
           SelectableText(
-            recipe.title.length > 29
+            recipe.title.length > 20
                 ? recipe.title.substring(0, 20) + '...'
                 : recipe.title,
             style: const TextStyle(
@@ -201,51 +193,94 @@ class RecipeBoxTopRow extends StatelessWidget {
   }
 }
 
-class RecipeActionsRow extends StatelessWidget {
-  const RecipeActionsRow({
+class RecipeActionsRow extends ConsumerWidget {
+  final Recipe recipe;
+  RecipeActionsRow({
+    required this.recipe,
     Key? key,
   }) : super(key: key);
 
+  final favoritesProvider = ChangeNotifierProvider<VerificationNotifier>(
+      ((ref) => VerificationNotifier()));
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(favoritesProvider);
+
     return RecipeBoxRow(
-      height: 30,
-      width: 400,
-      leading: SizedBox(
-        height: 20,
-        width: 180,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: const [
-            RecipeBoxIcon(
-              icon: Icon(Icons.star),
-              color: Colors.black,
-              height: 33,
-              width: 33,
-            ),
-            RecipeBoxIcon(
-              icon: Icon(Icons.mode_comment_outlined),
-              height: 25,
-              width: 25,
-              color: Colors.black,
-            ),
-            RecipeBoxIcon(
-              icon: Icon(Icons.share),
-              height: 30,
-              width: 30,
-              color: Colors.black,
-            ),
-          ],
-        ),
-      ),
-      trailing: const RecipeBoxIcon(
-        icon: Icon(Icons.add),
         height: 30,
-        width: 30,
-        color: Colors.black,
-      ),
-    );
+        width: 400,
+        title: state.exists
+            ? Center(
+                child: SelectableText(
+                  state.text,
+                  style: GoogleFonts.montserrat(
+                      fontSize: 9,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red),
+                ),
+              )
+            : const SizedBox(),
+        leading: SizedBox(
+          height: 20,
+          width: 180,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              state.isTaped
+                  ? RecipeBoxIcon(
+                      icon: Icon(Icons.star_outlined),
+                      color: Colors.black,
+                      height: 33,
+                      width: 33,
+                      onTap: () {
+                        state.isTaped = false;
+                        Favorites.delete(
+                            email: InheritedLoginProvider.of(context)
+                                .userData?['email'],
+                            recipeID: recipe.id);
+                      },
+                    )
+                  : RecipeBoxIcon(
+                      icon: Icon(Icons.star_outline),
+                      color: Colors.black,
+                      height: 33,
+                      width: 33,
+                      onTap: () async {
+                        bool val = await Favorites.adding(
+                            email: InheritedLoginProvider.of(context)
+                                .userData?['email'],
+                            recipeID: recipe.id);
+                        if (!val) {
+                          state.exists = true;
+                          state.text = "Recipe already inserted";
+                        } else {
+                          state.isTaped = true;
+                        }
+                      },
+                    ),
+              const RecipeBoxIcon(
+                icon: Icon(Icons.mode_comment_outlined),
+                height: 25,
+                width: 25,
+                color: Colors.black,
+              ),
+              const RecipeBoxIcon(
+                icon: Icon(Icons.share),
+                height: 30,
+                width: 30,
+                color: Colors.black,
+              ),
+            ],
+          ),
+        ),
+        trailing: const RecipeBoxIcon(
+          icon: const Icon(Icons.share),
+          height: 30,
+          width: 30,
+          color: Colors.black,
+        ));
   }
 }
 
@@ -365,6 +400,7 @@ class RecipeBoxRow extends StatelessWidget {
               ),
               Container(
                 height: height,
+                padding: const EdgeInsets.all(0),
                 margin: titleLeftOffset ?? const EdgeInsets.all(0),
                 child: title,
               ),
@@ -479,6 +515,33 @@ class RecipeBoxIconHoverNotifier extends ChangeNotifier {
 
   set hovering(bool val) {
     _hovering = val;
+    notifyListeners();
+  }
+}
+
+class VerificationNotifier extends ChangeNotifier {
+  bool _isTaped = false;
+  bool _exists = false;
+  String _text = "";
+
+  bool get isTaped => _isTaped;
+
+  bool get exists => _exists;
+
+  String get text => _text;
+
+  set isTaped(bool val) {
+    _isTaped = val;
+    notifyListeners();
+  }
+
+  set exists(bool val) {
+    _exists = val;
+    notifyListeners();
+  }
+
+  set text(String text) {
+    _text = text;
     notifyListeners();
   }
 }

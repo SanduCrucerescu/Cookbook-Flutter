@@ -17,7 +17,7 @@ List<Map<String, dynamic>> kSideBarItems = [
     "children": [
       {
         "text": "F a v o u r i t e s",
-        "onTap": HomePage.id,
+        "onTap": FavoritesPage.id,
       },
       {
         "text": "W e e k l y",
@@ -39,7 +39,7 @@ List<Map<String, dynamic>> kSideBarItems = [
   {
     "text": "A d d  r e c i p e",
     "id": 3,
-    "onTap": RecipeAdd.id,
+    "onTap": AddRecipePage.id,
     "icon": const Icon(Icons.add),
     "children": [],
   },
@@ -57,4 +57,11 @@ List<Map<String, dynamic>> kSideBarItems = [
     "icon": const Icon(Icons.help),
     "children": [],
   },
+  {
+    "text": "ShoppingCart",
+    "id": 6,
+    "onTap": ShoppingPage.id,
+    "icon": const Icon(Icons.abc),
+    "children": [],
+  }
 ];

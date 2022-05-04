@@ -88,19 +88,20 @@ class UserInfo extends HookConsumerWidget {
                               child: const Text("Change Image"),
                               duration: const Duration(days: 0),
                               onTap: () async {
-                                var picture = await openImagePicker();
-                                if (picture != null) {
-                                  var name = picture['file'];
-                                  /**
-                                 * TODO: pick `file` from Image picker and 
-                                 * encode it then commit to database.
-                                 */
-
-                                  final bytes = name?.readAsBytesSync();
-                                  img64 = base64Encode(bytes!);
-                                } else {
-                                  openImagePicker();
-                                }
+                                DatabaseManager dbManager =
+                                    await DatabaseManager.init();
+                                Member member = state.currMember!;
+                                print(member.name);
+                                dbManager.update(
+                                  table: 'members',
+                                  set: {
+                                    'name': member.name,
+                                    'emai': member.email,
+                                    'password': member.password,
+                                    'profile_pic': img64
+                                  },
+                                  where: {'email': state.currMember!.email},
+                                );
                               },
                             ),
                             Padding(
@@ -159,10 +160,6 @@ class UserInfoField extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
-<<<<<<< HEAD
-=======
-      width: 410,
->>>>>>> d9b0b6b7b3f63dc81ff536953836412d3c6dae02
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -179,11 +176,7 @@ class UserInfoField extends HookConsumerWidget {
                   Text(title),
                   Expanded(
                     child: CustomTextField(
-<<<<<<< HEAD
                       controller: controller,
-=======
-                      controller: tec,
->>>>>>> d9b0b6b7b3f63dc81ff536953836412d3c6dae02
                       height: 15,
                       width: 230,
                       isShadow: false,
@@ -203,14 +196,7 @@ class UserInfoField extends HookConsumerWidget {
               width: 100,
               height: 40,
               child: InkWell(
-<<<<<<< HEAD
                 onTap: () => onTap(),
-=======
-                onTap: () {
-                  print(tec.text);
-                  parameterToUpdate = tec.text;
-                },
->>>>>>> d9b0b6b7b3f63dc81ff536953836412d3c6dae02
                 child: const Center(
                   child: Text('Save'),
                 ),

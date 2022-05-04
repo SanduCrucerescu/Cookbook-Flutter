@@ -6,7 +6,7 @@ import 'dart:typed_data';
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/controllers/add_user.dart';
 import 'package:cookbook/controllers/image_picker.dart';
-import 'package:cookbook/pages/messages/message_screen.dart';
+import 'package:cookbook/pages/home/home_page.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:cookbook/theme/text_styles.dart';
 import 'package:flutter/material.dart';
@@ -14,11 +14,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:file_selector/file_selector.dart';
 import 'package:mysql1/mysql1.dart';
 import 'package:email_validator/email_validator.dart';
-
-import '../home/home_page.dart';
 
 class RegisterPage extends ConsumerWidget {
   static const String id = "/register";

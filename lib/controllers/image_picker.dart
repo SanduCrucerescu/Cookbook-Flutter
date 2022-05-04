@@ -16,7 +16,7 @@ Future<Map<String, dynamic>?> openImagePicker() async {
 
     return {
       'file': file,
-      'blob': Blob.fromBytes(await file.readAsBytes()),
+      'blob': blob,
       'name': xFile.name,
     };
   }

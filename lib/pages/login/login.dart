@@ -13,6 +13,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../main.dart';
+
 class LoginPage extends ConsumerWidget {
   static const String id = "/login";
 
@@ -137,8 +139,9 @@ class LoginForm extends HookConsumerWidget {
 
                       if (isValid == true) {
                         InheritedLoginProvider.of(context).userData = {
-                          'email': tec1.text
+                          "email": tec1.text
                         };
+
                         Navigator.of(context).pushNamed(HomePage.id);
                       } else {
                         state.loginUnSuccessful = true;
