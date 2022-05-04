@@ -49,6 +49,7 @@ class RecipeBox extends ConsumerWidget {
         Positioned(
           top: 90,
           left: 15,
+<<<<<<< HEAD
           child: Consumer(
             builder: (context, ref, child) {
               final _state = ref.watch(hoveringProvider);
@@ -109,6 +110,60 @@ class RecipeBox extends ConsumerWidget {
                 ),
               );
             },
+=======
+          child: AnimatedContainer(
+            duration: const Duration(
+              milliseconds: 100,
+            ),
+            decoration: BoxDecoration(
+              boxShadow: !state.hovering
+                  ? [
+                      const BoxShadow(
+                        spreadRadius: .5,
+                        blurRadius: 15,
+                        color: Color(0xFF606060),
+                        offset: Offset(10, 12),
+                      )
+                    ]
+                  : null,
+            ),
+            child: RecipeBoxIcon(
+              onHover: () {
+                state.hovering = !state.hovering;
+              },
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => RecipePage(
+                              recipe: recipe,
+                            )));
+              },
+              child: state.hovering
+                  ? Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 50),
+                      width: 420,
+                      height: 420,
+                      color: kcLightBeige,
+                      child: Center(
+                        child: Text(
+                          recipe.shortDescription,
+                        ),
+                      ),
+                    )
+                  : null,
+              image: Image.memory(
+                getImageDataFromBlob(recipe.picture),
+                fit: BoxFit.cover,
+                height: 420,
+                width: 420,
+              ),
+              // imagePath: image != null ? null : "assets/images/food.png",
+              width: 420,
+              height: 420,
+              isImage: true,
+            ),
+>>>>>>> 03223d4 (Starting with the recipe page and small changes)
           ),
         ),
         const Positioned(left: horiLineIndent, top: 510, child: HoriLine()),
