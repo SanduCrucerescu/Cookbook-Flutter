@@ -100,6 +100,8 @@ class DatabaseManager extends AbstractDatabaseManager {
 
   @override
   Future<Results?> query({required String query}) async {
+    if (cnx == null) await connect();
+    print(query);
     result = await cnx!.query(query);
     return result;
   }
@@ -115,9 +117,7 @@ class DatabaseManager extends AbstractDatabaseManager {
       String? having,
       List<int>? limit}) async {
     // connect();
-    if (cnx == null) {
-      return null;
-    }
+    if (cnx == null) await connect();
     String query =
         '''SELECT ${fields.length > 1 ? fields.join(", ") : fields[0]} FROM $table ''';
 
@@ -178,7 +178,7 @@ class DatabaseManager extends AbstractDatabaseManager {
   @override
   Future<Results?> delete(
       {required String table, required Map<String, dynamic> where}) async {
-    connect();
+    if (cnx == null) await connect();
 
     String query = '''
     DELETE FROM $table WHERE
@@ -201,7 +201,7 @@ class DatabaseManager extends AbstractDatabaseManager {
       {required String table,
       required Map<String, dynamic> where,
       required Map<String, dynamic> set}) async {
-    connect();
+    if (cnx == null) await connect();
 
     String query = '''UPDATE  $table SET ''';
     int i = 0;
@@ -229,7 +229,7 @@ class DatabaseManager extends AbstractDatabaseManager {
     required List<String> fields,
     Map<String, dynamic>? where,
   }) async {
-    connect();
+    if (cnx == null) await connect();
 
     String query =
         '''SELECT EXISTS(SELECT ${fields.length > 1 ? fields.join(", ") : fields[0]} FROM $table ''';
