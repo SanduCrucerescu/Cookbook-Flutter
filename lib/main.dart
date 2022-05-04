@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:cookbook/controllers/controllers.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
+import 'package:cookbook/pages/recipe/recipe.dart';
 import 'package:cookbook/pages/userPage/user_page.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';

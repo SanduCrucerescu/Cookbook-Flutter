@@ -54,11 +54,19 @@ class GetFavorites {
             "select * from ingredients_for_recipe INNER JOIN ingredients on ingredients_for_recipe.ingredient_id = ingredients.id where recipe_id = $id;");
     for (var ing in ingredients!) {
       ingredientClass = Ingredient(
+<<<<<<< HEAD
         id: ing.fields['id'],
         name: ing.fields['name'],
         unit: ing.fields['unit'],
         pricePerUnit: ing.fields['pricePerUnit'],
       );
+=======
+          id: ing[4],
+          name: ing[5].toString(),
+          unit: ing[6],
+          amount: ing[3],
+          pricePerUnit: ing[7]);
+>>>>>>> 03223d4 (Starting with the recipe page and small changes)
       ingredient.add(ingredientClass);
     }
     return ingredient;
