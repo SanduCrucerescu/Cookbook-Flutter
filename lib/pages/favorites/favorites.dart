@@ -1,12 +1,10 @@
 import 'dart:developer';
-
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/controllers/get_favorites.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
 import '../../main.dart';
 
 class FavoritesPage extends StatefulHookConsumerWidget {
@@ -65,8 +63,6 @@ class _FavoritesPageState extends ConsumerState<FavoritesPage> {
       cols: widget.cols,
     );
 
-    //print(getFavorites.recepieList);
-
     return CustomPage(
       showSearchBar: true,
       controller: tec,
@@ -109,18 +105,20 @@ class ResponsiveNotifier extends ChangeNotifier {
     _recipes = [];
 
     for (int i = 0; i < displayedRecipes.length; i += cols) {
-      log(i.toString());
       _recipes.add(
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: List.generate(
-            i + cols > displayedRecipes.length
-                ? cols - displayedRecipes.length % cols
-                : cols,
+            i > displayedRecipes.length ? displayedRecipes.length % cols : cols,
             (idx) => Center(
-              child: RecipeBox(
-                recipe: displayedRecipes[i + idx],
-              ),
+              child: i + idx < displayedRecipes.length
+                  ? RecipeBox(
+                      recipe: displayedRecipes[i + idx],
+                      isLiked: true,
+                    )
+                  : const SizedBox(
+                      width: 450,
+                    ),
             ),
           ),
         ),

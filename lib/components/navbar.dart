@@ -64,7 +64,7 @@ class NavBar extends HookConsumerWidget {
                     isShadow: false,
                     height: searchBarHeight ?? 60,
                     width: searchBarWidth ?? 700,
-                    prefixIcon: const Icon(
+                    prefixWidget: const Icon(
                       Icons.expand_more,
                       color: Colors.black,
                       size: 35,

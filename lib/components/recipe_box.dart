@@ -3,6 +3,7 @@ part of components;
 class RecipeBox extends ConsumerWidget {
   final Image? profilePicture, image;
   final Recipe recipe;
+  final bool isLiked;
 
   static const double horiLineIndent = 10;
   static const double actionRowIndent = 20;
@@ -10,6 +11,7 @@ class RecipeBox extends ConsumerWidget {
 
   RecipeBox({
     required this.recipe,
+    required this.isLiked,
     this.image,
     this.profilePicture,
     Key? key,
@@ -53,18 +55,18 @@ class RecipeBox extends ConsumerWidget {
             duration: const Duration(
               milliseconds: 100,
             ),
-            decoration: BoxDecoration(
-              boxShadow: !state.hovering
-                  ? [
-                      const BoxShadow(
-                        spreadRadius: .5,
-                        blurRadius: 15,
-                        color: Color(0xFF606060),
-                        offset: Offset(10, 12),
-                      )
-                    ]
-                  : null,
-            ),
+            // decoration: BoxDecoration(
+            //   boxShadow: !state.hovering
+            //       ? [
+            //           const BoxShadow(
+            //             spreadRadius: .5,
+            //             blurRadius: 15,
+            //             color: Color(0xFF606060),
+            //             offset: Offset(10, 12),
+            //           )
+            //         ]
+            //       : null,
+            // ),
             child: RecipeBoxIcon(
               onHover: () {
                 state.hovering = !state.hovering;
@@ -101,6 +103,7 @@ class RecipeBox extends ConsumerWidget {
           left: actionRowIndent,
           child: RecipeActionsRow(
             recipe: recipe,
+            status: isLiked,
           ),
         ),
         const Positioned(left: horiLineIndent, top: 570, child: HoriLine()),
@@ -193,10 +196,12 @@ class RecipeBoxTopRow extends StatelessWidget {
   }
 }
 
-class RecipeActionsRow extends ConsumerWidget {
+class RecipeActionsRow extends StatefulHookConsumerWidget {
   final Recipe recipe;
+  final bool status;
   RecipeActionsRow({
     required this.recipe,
+    required this.status,
     Key? key,
   }) : super(key: key);
 
@@ -204,83 +209,96 @@ class RecipeActionsRow extends ConsumerWidget {
       ((ref) => VerificationNotifier()));
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(favoritesProvider);
+  _RecipeActionsRow createState() => _RecipeActionsRow();
+}
 
+class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      ref.read(widget.favoritesProvider).isTapped = widget.status;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final state = ref.watch(widget.favoritesProvider);
     return RecipeBoxRow(
-        height: 30,
-        width: 400,
-        title: state.exists
-            ? Center(
-                child: SelectableText(
-                  state.text,
-                  style: GoogleFonts.montserrat(
-                      fontSize: 9,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.red),
-                ),
-              )
-            : const SizedBox(),
-        leading: SizedBox(
-          height: 20,
-          width: 180,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              state.isTaped
-                  ? RecipeBoxIcon(
-                      icon: Icon(Icons.star_outlined),
-                      color: Colors.black,
-                      height: 33,
-                      width: 33,
-                      onTap: () {
-                        state.isTaped = false;
-                        Favorites.delete(
-                            email: InheritedLoginProvider.of(context)
-                                .userData?['email'],
-                            recipeID: recipe.id);
-                      },
-                    )
-                  : RecipeBoxIcon(
-                      icon: Icon(Icons.star_outline),
-                      color: Colors.black,
-                      height: 33,
-                      width: 33,
-                      onTap: () async {
-                        bool val = await Favorites.adding(
-                            email: InheritedLoginProvider.of(context)
-                                .userData?['email'],
-                            recipeID: recipe.id);
-                        if (!val) {
-                          state.exists = true;
-                          state.text = "Recipe already inserted";
-                        } else {
-                          state.isTaped = true;
-                        }
-                      },
-                    ),
-              const RecipeBoxIcon(
-                icon: Icon(Icons.mode_comment_outlined),
-                height: 25,
-                width: 25,
-                color: Colors.black,
+      height: 30,
+      width: 400,
+      title: state.exists
+          ? Center(
+              child: SelectableText(
+                state.text,
+                style: GoogleFonts.montserrat(
+                    fontSize: 9,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.red),
               ),
-              const RecipeBoxIcon(
-                icon: Icon(Icons.share),
-                height: 30,
-                width: 30,
-                color: Colors.black,
-              ),
-            ],
-          ),
+            )
+          : const SizedBox(),
+      leading: SizedBox(
+        height: 20,
+        width: 180,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            state.isTapped
+                ? RecipeBoxIcon(
+                    icon: const Icon(Icons.star_outlined),
+                    color: Colors.black,
+                    height: 33,
+                    width: 33,
+                    onTap: () {
+                      Favorites.delete(
+                          email: InheritedLoginProvider.of(context)
+                              .userData?['email'],
+                          recipeID: widget.recipe.id);
+                      state.isTapped = false;
+                    },
+                  )
+                : RecipeBoxIcon(
+                    icon: const Icon(Icons.star_outline),
+                    color: Colors.black,
+                    height: 33,
+                    width: 33,
+                    onTap: () async {
+                      bool val = await Favorites.adding(
+                          email: InheritedLoginProvider.of(context)
+                              .userData?['email'],
+                          recipeID: widget.recipe.id);
+                      if (!val) {
+                        state.exists = true;
+                        state.text = "Recipe already inserted";
+                      } else {
+                        state.isTapped = true;
+                      }
+                    },
+                  ),
+            const RecipeBoxIcon(
+              icon: Icon(Icons.mode_comment_outlined),
+              height: 25,
+              width: 25,
+              color: Colors.black,
+            ),
+            const RecipeBoxIcon(
+              icon: Icon(Icons.share),
+              height: 30,
+              width: 30,
+              color: Colors.black,
+            ),
+          ],
         ),
-        trailing: const RecipeBoxIcon(
-          icon: const Icon(Icons.share),
-          height: 30,
-          width: 30,
-          color: Colors.black,
-        ));
+      ),
+      trailing: const RecipeBoxIcon(
+        icon: Icon(Icons.share),
+        height: 30,
+        width: 30,
+        color: Colors.black,
+      ),
+    );
   }
 }
 
@@ -520,18 +538,18 @@ class RecipeBoxIconHoverNotifier extends ChangeNotifier {
 }
 
 class VerificationNotifier extends ChangeNotifier {
-  bool _isTaped = false;
+  bool _isTapped = false;
   bool _exists = false;
   String _text = "";
 
-  bool get isTaped => _isTaped;
+  bool get isTapped => _isTapped;
 
   bool get exists => _exists;
 
   String get text => _text;
 
-  set isTaped(bool val) {
-    _isTaped = val;
+  set isTapped(bool val) {
+    _isTapped = val;
     notifyListeners();
   }
 
