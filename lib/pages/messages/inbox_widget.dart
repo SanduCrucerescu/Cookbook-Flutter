@@ -33,18 +33,18 @@ class InboxWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
       ),
       child: InkWell(
+        onDoubleTap: () {
+          state.toggle = false;
+        },
         onTap: () {
-          state.toggle = !state.toggle;
+          state.toggle = true;
           state.idx = idx;
-          if (state.toggle == false) {
-            state.displayedMessages.clear();
-          } else {
-            state.displayedMessages = [];
-            for (DirectMessage message in state.messages) {
-              if (message.sender == state.displayedMembers[state.idx].email ||
-                  message.receiver == state.displayedMembers[state.idx].email) {
-                state.addDisplayedMessage(message);
-              }
+          state.displayedMessages.clear();
+          state.displayedMessages = [];
+          for (DirectMessage message in state.messages) {
+            if (message.sender == state.displayedMembers[state.idx].email ||
+                message.receiver == state.displayedMembers[state.idx].email) {
+              state.addDisplayedMessage(message);
             }
           }
         },
