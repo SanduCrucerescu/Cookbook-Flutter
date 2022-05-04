@@ -63,8 +63,6 @@ class _FavoritesPageState extends ConsumerState<FavoritesPage> {
       cols: widget.cols,
     );
 
-    //print(getFavorites.recepieList);
-
     return CustomPage(
       showSearchBar: true,
       controller: tec,
@@ -107,7 +105,6 @@ class ResponsiveNotifier extends ChangeNotifier {
     _recipes = [];
 
     for (int i = 0; i < displayedRecipes.length; i += cols) {
-      log(i.toString());
       _recipes.add(
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -118,6 +115,7 @@ class ResponsiveNotifier extends ChangeNotifier {
             (idx) => Center(
               child: RecipeBox(
                 recipe: displayedRecipes[i + idx],
+                isLiked: true,
               ),
             ),
           ),

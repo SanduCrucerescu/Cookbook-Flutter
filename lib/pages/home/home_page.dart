@@ -96,6 +96,7 @@ class ResponsiveNotifier extends ChangeNotifier {
             (idx) => Center(
               child: RecipeBox(
                 recipe: displayedRecipes[i + idx],
+                isLiked: false,
               ),
             ),
           ),
