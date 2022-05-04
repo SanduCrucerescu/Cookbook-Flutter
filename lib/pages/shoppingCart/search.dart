@@ -22,7 +22,6 @@ class SearchIngridient extends HookConsumerWidget {
         ),
       ),
       height: 40,
-      // width: 400,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -42,7 +41,7 @@ class SearchIngridient extends HookConsumerWidget {
                     },
                     onClickSuffix: () {
                       tec.clear();
-                      state.filteringString = ''; //  Fix (x) Button
+                      state.filteringString = '';
                     },
                     controller: tec,
                     width: 300,
@@ -52,8 +51,6 @@ class SearchIngridient extends HookConsumerWidget {
               ],
             ),
           ),
-          Container(),
-          Container(),
         ],
       ),
     );
