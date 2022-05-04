@@ -17,8 +17,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysql1/mysql1.dart';
 
-class UiComponents extends HookConsumerWidget {
-  UiComponents({Key? key}) : super(key: key);
+class AddRecipePage extends HookConsumerWidget {
+  static const String id = "/addrecipe";
+
+  AddRecipePage({Key? key}) : super(key: key);
   final List<String> items = [
     'tbls',
     'tbs',
@@ -57,177 +59,178 @@ class UiComponents extends HookConsumerWidget {
       state.addRow(buildRow(state: state, controller: firstRowController));
     }
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 30),
-      child: Center(
-        child: ListView(
-          controller: ScrollController(),
-          children: <Widget>[
-            const Center(
-              child: SelectableText(
-                "Add a recipe",
-                style: TextStyle(fontSize: 35),
-              ),
-            ),
-            CustomTextField(
-              width: 300,
-              height: 60,
-              margin: const EdgeInsets.only(top: 10, bottom: 10),
-              hintText: "Recipe name",
-              controller: topSearchBarController,
-            ),
-            const SelectableText(
-              "Ingredients",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            state.ingredientValidator
-                ? Center(
-                    child: SelectableText(
-                      state.t,
-                      style: GoogleFonts.montserrat(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.red),
-                    ),
-                  )
-                : const SizedBox(),
-            Container(
-              margin: const EdgeInsets.only(top: 10),
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 850,
-                    child: Table(
-                      children: [
-                        ...state.rows,
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            MultilineTextField(
-              hintText: "Description",
-              controller: descriptionController,
-              maxLines: 7,
-            ),
-            MultilineTextField(
-              hintText: 'Instructions',
-              controller: instructionsController,
-              maxLines: 7,
-            ),
-            Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  DropDw(
-                    tagProvider: rowProvider,
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  FormButton(
-                    onTap: () {
-                      _openImagePicker(state);
-                    },
-                    text: "Select Photo",
-                    showShadow: false,
-                    color: kcDarkBeige,
-                  ),
-                ],
-              ),
-            ),
-            state.tagsAdded
-                ? Wrap(
-                    children: state.selectedItems
-                        .map((e) => Chip(label: Text(e)))
-                        .toList(),
-                  )
-                : const SizedBox(),
-            state.imageAdded
-                ? Center(
-                    child: SelectableText(
-                      "Photo added: " + state.text,
-                      style: GoogleFonts.montserrat(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.red),
-                    ),
-                  )
-                : const SizedBox(),
-            state.noTags
-                ? Center(
-                    child: SelectableText(
-                      state.t,
-                      style: GoogleFonts.montserrat(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.red),
-                    ),
-                  )
-                : const SizedBox(),
-            state.noInput
-                ? Center(
-                    child: SelectableText(
-                      state.t,
-                      style: GoogleFonts.montserrat(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.red),
-                    ),
-                  )
-                : const SizedBox(),
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: Center(
-                child: FormButton(
-                  onTap: () async {
-                    if (topSearchBarController.text == "" ||
-                        descriptionController.text == "" ||
-                        instructionsController.text == "" ||
-                        state.ingredints.isEmpty) {
-                      state.noInput = true;
-                      state.t = "Please fill all the fields";
-                    } else {
-                      state.noInput = false;
-                      if (state.selectedItems.isEmpty) {
-                        state.noTags = true;
-                        state.t = "Please add some tags";
-                      } else {
-                        // if (state.file == null) {
-                        //   ByteData bytes =
-                        //       await rootBundle.load('assets/images/ph.png');
-                        //   Uint8List photobytes = bytes.buffer.asUint8List(
-                        //       bytes.offsetInBytes, bytes.lengthInBytes);
-
-                        //   img64 = base64Encode(photobytes);
-                        // } else {
-                        //   final bytes = state.file?.readAsBytesSync();
-                        //   img64 = base64Encode(bytes!);
-                        // }
-                        final bytes = state.file?.readAsBytesSync();
-                        var d = bytes!.toList();
-                        bool add = await AddRecipe.adding(
-                            recipeInfo: {
-                              "title": topSearchBarController.text,
-                              "description": descriptionController.text,
-                              "instructions": instructionsController.text,
-                              "member_email": InheritedLoginProvider.of(context)
-                                  .userData?['email'],
-                              "picture": d.toString()
-                            },
-                            ingredients: state.ingredientsMap,
-                            tags: state.selectedItems);
-                      }
-                    }
-                  },
-                  text: "Submit",
-                  color: kcDarkBeige,
-                  showShadow: false,
+    return CustomPage(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 30),
+        child: Center(
+          child: ListView(
+            controller: ScrollController(),
+            children: <Widget>[
+              const Center(
+                child: SelectableText(
+                  "Add a recipe",
+                  style: TextStyle(fontSize: 35),
                 ),
               ),
-            )
-          ],
+              CustomTextField(
+                width: 300,
+                height: 60,
+                margin: const EdgeInsets.only(top: 10, bottom: 10),
+                hintText: "Recipe name",
+                controller: topSearchBarController,
+              ),
+              const SelectableText(
+                "Ingredients",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              state.ingredientValidator
+                  ? Center(
+                      child: SelectableText(
+                        state.t,
+                        style: GoogleFonts.montserrat(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red),
+                      ),
+                    )
+                  : const SizedBox(),
+              Container(
+                margin: const EdgeInsets.only(top: 10),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 850,
+                      child: Table(
+                        children: [
+                          ...state.rows,
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              MultilineTextField(
+                hintText: "Description",
+                controller: descriptionController,
+                maxLines: 7,
+              ),
+              MultilineTextField(
+                hintText: 'Instructions',
+                controller: instructionsController,
+                maxLines: 7,
+              ),
+              Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    DropDw(
+                      tagProvider: rowProvider,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    FormButton(
+                      onTap: () {
+                        _openImagePicker(state);
+                      },
+                      text: "Select Photo",
+                      showShadow: false,
+                      color: kcDarkBeige,
+                    ),
+                  ],
+                ),
+              ),
+              state.tagsAdded
+                  ? Wrap(
+                      children: state.selectedItems
+                          .map((e) => Chip(label: Text(e)))
+                          .toList(),
+                    )
+                  : const SizedBox(),
+              state.imageAdded
+                  ? Center(
+                      child: SelectableText(
+                        "Photo added: " + state.text,
+                        style: GoogleFonts.montserrat(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red),
+                      ),
+                    )
+                  : const SizedBox(),
+              state.noTags
+                  ? Center(
+                      child: SelectableText(
+                        state.t,
+                        style: GoogleFonts.montserrat(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red),
+                      ),
+                    )
+                  : const SizedBox(),
+              state.noInput
+                  ? Center(
+                      child: SelectableText(
+                        state.t,
+                        style: GoogleFonts.montserrat(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red),
+                      ),
+                    )
+                  : const SizedBox(),
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Center(
+                  child: FormButton(
+                    onTap: () async {
+                      if (topSearchBarController.text == "" ||
+                          descriptionController.text == "" ||
+                          instructionsController.text == "" ||
+                          state.ingredints.isEmpty) {
+                        state.noInput = true;
+                        state.t = "Please fill all the fields";
+                      } else {
+                        state.noInput = false;
+                        if (state.selectedItems.isEmpty) {
+                          state.noTags = true;
+                          state.t = "Please add some tags";
+                        } else {
+                          if (state.file == null) {
+                            ByteData bytes =
+                                await rootBundle.load('assets/images/ph.png');
+                            Uint8List photobytes = bytes.buffer.asUint8List(
+                                bytes.offsetInBytes, bytes.lengthInBytes);
+
+                            img64 = base64Encode(photobytes);
+                          } else {
+                            final bytes = state.file?.readAsBytesSync();
+                            img64 = base64Encode(bytes!);
+                          }
+                          bool add = await AddRecipe.adding(
+                              recipeInfo: {
+                                "title": topSearchBarController.text,
+                                "description": descriptionController.text,
+                                "instructions": instructionsController.text,
+                                "member_email":
+                                    InheritedLoginProvider.of(context)
+                                        .userData?['email'],
+                                "picture": img64
+                              },
+                              ingredients: state.ingredientsMap,
+                              tags: state.selectedItems);
+                        }
+                      }
+                    },
+                    text: "Submit",
+                    color: kcDarkBeige,
+                    showShadow: false,
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -245,12 +248,8 @@ class UiComponents extends HookConsumerWidget {
 
     Results? res = await databaseManager
         .select(table: "ingredients", fields: ["id", "name"]);
-    final results = [];
-    if (res != null) {
-      final results = res;
-    }
 
-    for (var rs in results) {
+    for (var rs in res!) {
       menuItems.add(CustDropdownMenuItem(
         child: Text(rs[1]),
         value: "${rs[0]}",
