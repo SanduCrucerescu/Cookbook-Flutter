@@ -37,18 +37,19 @@ class _MessageTextFieldState extends State<MessageTextField> {
               suffixIcon: IconButton(
                 icon: const Icon(Icons.send),
                 onPressed: () {
-                  SendMessage.sendMessage(data: {
-                    'sender':
-                        InheritedLoginProvider.of(context).userData?['email'],
-                    'receiver':
-                        widget.state.displayedMembers[widget.state.idx].email,
-                    'content': widget.state.message,
-                    'time': DateTime.now().toString()
-                  });
-                  widget.messageTec.clear();
-                  widget.state.message = '';
-                  print("message sent");
-                  setState(() {});
+                  if (widget.state.message.isNotEmpty) {
+                    SendMessage.sendMessage(data: {
+                      'sender':
+                          InheritedLoginProvider.of(context).userData?['email'],
+                      'receiver':
+                          widget.state.displayedMembers[widget.state.idx].email,
+                      'content': widget.state.message,
+                      'time': DateTime.now().toString()
+                    });
+                    widget.messageTec.clear();
+                    widget.state.message = '';
+                    setState(() {});
+                  }
                 },
               ),
             ),
