@@ -51,7 +51,10 @@ class InboxWidget extends StatelessWidget {
         child: ListTile(
           leading: Profile_Pic(member: member),
           title: Text(member.name),
-          subtitle: Text(member.name),
+          subtitle: Text(
+            last(),
+            overflow: TextOverflow.ellipsis,
+          ),
           trailing: SizedBox(
             height: 30,
             width: 30,
@@ -66,6 +69,27 @@ class InboxWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String last() {
+    List<DirectMessage> l = [];
+    for (DirectMessage message in state.messages) {
+      if (message.receiver == state.displayedMembers[idx].email ||
+          message.sender == state.displayedMembers[idx].email) {
+        l.add(message);
+      }
+    }
+    if (l.isEmpty) {
+      return "No messages";
+    } else {
+      if (l[0].date.toString() != DateTime.now().toString().substring(0, 10)) {
+        return l[0].content.toString() +
+            " " * 50 +
+            l[0].date.toString().substring(0, 10);
+      } else {
+        return l[0].content.toString() + "" + l[0].time.toString();
+      }
+    }
   }
 }
 
