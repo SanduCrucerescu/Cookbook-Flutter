@@ -137,7 +137,7 @@ class DatabaseManager extends AbstractDatabaseManager {
     query += ";";
 
     result = await cnx!.query(query);
-
+    await cnx!.close();
     return result;
   }
 
@@ -171,7 +171,7 @@ class DatabaseManager extends AbstractDatabaseManager {
     query += ");";
 
     result = await cnx!.query(query);
-
+    await cnx!.close();
     return result;
   }
 
@@ -192,7 +192,7 @@ class DatabaseManager extends AbstractDatabaseManager {
 
     query += ";";
     result = await cnx!.query(query);
-
+    await cnx!.close();
     return result;
   }
 
@@ -216,10 +216,8 @@ class DatabaseManager extends AbstractDatabaseManager {
 
     query += ";";
 
-    print(query);
-
     result = await cnx!.query(query);
-
+    await cnx!.close();
     return result;
   }
 
@@ -246,7 +244,7 @@ class DatabaseManager extends AbstractDatabaseManager {
     query += ");";
 
     result = await cnx!.query(query);
-
+    await cnx!.close();
     return result;
   }
 }
