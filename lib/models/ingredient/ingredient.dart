@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class Ingredient {
   final int id;
-  final String name;
+  String name;
   final int amount;
   final String unit;
   final double pricePerUnit;

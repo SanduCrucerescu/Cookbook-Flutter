@@ -1,7 +1,16 @@
 import 'dart:developer';
 import 'package:cookbook/controllers/controllers.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
+<<<<<<< HEAD
 import 'package:cookbook/pages/userPage/user_page.dart';
+=======
+import 'package:cookbook/pages/admin/admin_page.dart';
+import 'package:cookbook/pages/home/home_page.dart';
+import 'package:cookbook/pages/loadimage/load_image.dart';
+import 'package:cookbook/pages/login/login.dart';
+import 'package:cookbook/pages/recipeadd/recipe_add.dart';
+import 'package:cookbook/pages/shoppingCart/shoppingPage.dart';
+>>>>>>> 2f07b58 (shopping cart proggress)
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

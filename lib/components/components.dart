@@ -16,8 +16,13 @@ import 'package:cookbook/pages/home/home_page.dart';
 import 'package:cookbook/pages/loading/loading_page.dart';
 import 'package:cookbook/pages/login/login.dart';
 import 'package:cookbook/pages/messages/message_screen.dart';
+<<<<<<< HEAD
 import 'package:cookbook/pages/recipeadd/ui_components.dart';
 import 'package:cookbook/pages/shoppingCart/shoppingCart.dart';
+=======
+import 'package:cookbook/pages/recipeadd/recipe_add.dart';
+import 'package:cookbook/pages/shoppingCart/shoppingPage.dart';
+>>>>>>> 2f07b58 (shopping cart proggress)
 import 'package:cookbook/pages/userPage/user_page.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:cookbook/theme/text_styles.dart';
