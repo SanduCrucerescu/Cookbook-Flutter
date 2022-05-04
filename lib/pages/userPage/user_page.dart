@@ -8,11 +8,8 @@ import 'package:cookbook/theme/colors.dart';
 import 'package:cookbook/theme/text_styles.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-=======
->>>>>>> e5c88668098c3281f9c865dcc432fd17e9bb2ae8
 import 'package:mysql1/mysql1.dart';
 
 class UserPage extends ConsumerWidget {
@@ -35,7 +32,6 @@ class UserPageState extends HookConsumerWidget {
   UserPageState({Key? key}) : super(key: key);
 
   @override
-<<<<<<< HEAD
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(photoProvider);
     Size size = MediaQuery.of(context).size;
@@ -57,24 +53,10 @@ class UserPageState extends HookConsumerWidget {
                   _openImagePicker(state);
                 },
               ),
-=======
-  Widget build(BuildContext context) {
-    const user = UserPreferences.myUser;
-
-    return CustomPage(
-      child: ListView(
-        physics: const BouncingScrollPhysics(),
-        children: [
-          Container(
-            margin: const EdgeInsets.only(top: 10),
-            child: ProfileWidget(
-              imagePath: user.imagePath,
-              onClicked: () async {},
->>>>>>> e5c88668098c3281f9c865dcc432fd17e9bb2ae8
             ),
-          ),
-          const UserPageForm(user: user)
-        ],
+            const UserPageForm(user: user),
+          ],
+        ),
       ),
     );
   }
@@ -239,11 +221,7 @@ class UserPageTextField extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: SelectableText(
               label,
-<<<<<<< HEAD
               style: const TextStyle(fontWeight: FontWeight.bold),
-=======
-              style: ksLabelTextStyle,
->>>>>>> e5c88668098c3281f9c865dcc432fd17e9bb2ae8
             ),
           ),
           CustomTextField(
