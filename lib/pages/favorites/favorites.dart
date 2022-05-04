@@ -79,7 +79,13 @@ class _FavoritesPageState extends ConsumerState<FavoritesPage> {
                   child: state.recipes[i],
                 ),
               )
-            : const SizedBox(),
+            : const Center(
+                child: SizedBox(
+                  height: 50,
+                  width: 50,
+                  child: CircularProgressIndicator(),
+                ),
+              ),
       ),
     );
   }
