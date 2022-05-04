@@ -1,6 +1,7 @@
 import 'package:cookbook/models/ingredient/ingredient.dart';
 import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/pages/messages/inbox_widget.dart';
+import 'package:cookbook/pages/shoppingCart/ingridients_to_buy.dart';
 import 'package:cookbook/pages/shoppingCart/shoppingPage.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,7 @@ import 'package:mysql1/src/blob.dart';
 class IngridientTile extends StatelessWidget {
   final Ingredient ingridient;
   final int idx;
-  final SelectedUserChangeNotifier2 state;
+  final SelectedIngridientChangeNotifier2 state;
   final String name;
   final int id;
   final double? pricePerUnit;
@@ -40,14 +41,14 @@ class IngridientTile extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            TextButton(onPressed: () {}, child: Text("Add")),
+            TextButton(
+                onPressed: (/* ingridientList.add(ingridient) */) {},
+                child: Text("Add")),
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
-                onTap: () {
-                  //state.ingridients_list.add(idx)
-                },
+                onTap: () {},
                 child: ListTile(
                   title: Text(
                     ingridient.name +

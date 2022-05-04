@@ -1,3 +1,4 @@
+import 'package:cookbook/models/ingredient/ingredient.dart';
 import 'package:cookbook/pages/shoppingCart/shoppingPage.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -6,11 +7,13 @@ class IngridientsToBuy extends HookConsumerWidget {
   final String text;
   final Alignment position;
   final SelectedIngridientChangeNotifier2 state;
+  final List<Ingredient> ingredientList; // To here
 
   IngridientsToBuy({
     required this.text,
     required this.position,
     required this.state,
+    required this.ingredientList,
     Key? key,
   }) : super(key: key);
 
@@ -21,7 +24,6 @@ class IngridientsToBuy extends HookConsumerWidget {
       padding: const EdgeInsets.only(right: 40, bottom: 20, top: 20, left: 20),
       child: Align(
         alignment: position,
-        // rectangle itself
         child: Column(
           children: [
             Container(
@@ -44,7 +46,7 @@ class IngridientsToBuy extends HookConsumerWidget {
                       itemBuilder: (BuildContext context, int index) {
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text('Ingridient name : Price 10 €'),
+                          child: Text("ingredientList[1].name"),
                         );
                       }),
                 ),

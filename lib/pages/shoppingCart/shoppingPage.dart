@@ -15,8 +15,8 @@ class ShoppingPage extends HookConsumerWidget {
   ShoppingPage({Key? key}) : super(key: key);
 
   final selectUserProvider2 =
-      ChangeNotifierProvider<SelectedUserChangeNotifier2>(
-    (ref) => SelectedUserChangeNotifier2(),
+      ChangeNotifierProvider<SelectedIngridientChangeNotifier2>(
+    (ref) => SelectedIngridientChangeNotifier2(),
   );
 
   @override
@@ -37,7 +37,8 @@ class ShoppingPage extends HookConsumerWidget {
           Expanded(
             child: IngridientsToBuy(
               state: state,
-              text: "Current User",
+              text: state._name,
+              ingredientList: [],
               position: Alignment.topRight,
             ),
           ),
@@ -47,28 +48,21 @@ class ShoppingPage extends HookConsumerWidget {
   }
 }
 
-class SelectedUserChangeNotifier2 extends ChangeNotifier {
+class SelectedIngridientChangeNotifier2 extends ChangeNotifier {
   int _idx = -1;
-  Ingredient? _currMember;
-  String _userName = "";
-  String _email = "";
-  Image image = Image.asset("assets/images/ph.png"); // doesnt count
+  Ingredient? _currIngredient;
+  String _name = "";
   String _filteringString = '';
-  File? _xFile;
 
   String get filteringString => _filteringString;
 
   int get idx => _idx;
 
-  String get email => _email;
+  String get userName => _name;
 
-  String get userName => _userName;
-
-  Ingredient? get currIngridient => _currMember;
-  File? get file => _xFile;
-
+  Ingredient? get currIngridient => _currIngredient;
   set currIngridient(Ingredient? member) {
-    _currMember = member;
+    _currIngredient = member;
     notifyListeners();
   }
 
@@ -82,18 +76,8 @@ class SelectedUserChangeNotifier2 extends ChangeNotifier {
     notifyListeners();
   }
 
-  set email(String val) {
-    _email = val;
-    notifyListeners();
-  }
-
   set userName(String val) {
-    _userName = val;
-    notifyListeners();
-  }
-
-  set path(File? path) {
-    _xFile = path;
+    _name = val;
     notifyListeners();
   }
 }
