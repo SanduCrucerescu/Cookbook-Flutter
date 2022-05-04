@@ -9,7 +9,7 @@ class IngridientsToBuy extends HookConsumerWidget {
   final SelectedIngridientChangeNotifier2 state;
   final List<Ingredient> ingredientList; // To here
 
-  IngridientsToBuy({
+  const IngridientsToBuy({
     required this.text,
     required this.position,
     required this.state,
@@ -41,7 +41,7 @@ class IngridientsToBuy extends HookConsumerWidget {
                   isAlwaysShown: true,
                   controller: null,
                   child: ListView.builder(
-                      controller: null,
+                      controller: ScrollController(), // null?
                       itemCount: 50,
                       itemBuilder: (BuildContext context, int index) {
                         return Row(
@@ -76,17 +76,13 @@ class IngridientsToBuy extends HookConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       TextButton(
-                          onPressed: () {}, child: Text("Save Shopping Cart")),
-                      // TextButton(
-                      //     onPressed: () {}, child: Text("Another Button")),
-                      // TextButton(
-                      //     onPressed: () {},
-                      //     child: Text("And another one Button"))
+                          onPressed: () {/* Commit to Database */},
+                          child: const Text("Save Shopping Cart")),
                     ]),
               ),
             ),
             Container(
-              padding: EdgeInsets.only(top: 10),
+              padding: const EdgeInsets.only(top: 10),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -101,7 +97,7 @@ class IngridientsToBuy extends HookConsumerWidget {
                           Radius.circular(5),
                         ),
                       ),
-                      child: Text("Total Cost: 40€")),
+                      child: const Text("Total Cost: 40€")),
                 ],
               ),
             )
