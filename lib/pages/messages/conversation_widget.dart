@@ -3,6 +3,8 @@ import 'package:cookbook/pages/messages/message_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'inbox_widget.dart';
+
 class ConversationWidget extends StatelessWidget {
   final int idx;
   final MessagePageController state;
@@ -16,9 +18,6 @@ class ConversationWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    print('sender: ' + state.displayedMessages[idx].sender);
-    print('receiver: ' + state.displayedMessages[idx].receiver);
-    print(InheritedLoginProvider.of(context).userData?['email']);
 
     if (state.displayedMessages[idx].receiver ==
         (InheritedLoginProvider.of(context).userData?['email'])) {
@@ -28,8 +27,8 @@ class ConversationWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             CircleAvatar(
-              child: Image.asset('assets/images/ph.png'),
-            ),
+                maxRadius: 25,
+                child: Profile_Pic(member: state.displayedMembers[state.idx])),
             Container(
               constraints: const BoxConstraints(maxWidth: 300),
               margin: const EdgeInsets.symmetric(horizontal: 10),
