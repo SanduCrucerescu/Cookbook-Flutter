@@ -55,18 +55,18 @@ class RecipeBox extends ConsumerWidget {
             duration: const Duration(
               milliseconds: 100,
             ),
-            decoration: BoxDecoration(
-              boxShadow: !state.hovering
-                  ? [
-                      const BoxShadow(
-                        spreadRadius: .5,
-                        blurRadius: 15,
-                        color: Color(0xFF606060),
-                        offset: Offset(10, 12),
-                      )
-                    ]
-                  : null,
-            ),
+            // decoration: BoxDecoration(
+            //   boxShadow: !state.hovering
+            //       ? [
+            //           const BoxShadow(
+            //             spreadRadius: .5,
+            //             blurRadius: 15,
+            //             color: Color(0xFF606060),
+            //             offset: Offset(10, 12),
+            //           )
+            //         ]
+            //       : null,
+            // ),
             child: RecipeBoxIcon(
               onHover: () {
                 state.hovering = !state.hovering;

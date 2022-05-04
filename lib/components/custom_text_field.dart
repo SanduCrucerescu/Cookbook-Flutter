@@ -9,7 +9,8 @@ class CustomTextField extends ConsumerWidget {
   final Color backgroundColor, textColor;
   final Color? accentColor;
   final String? hintText;
-  final Icon? prefixIcon, suffixIcon;
+  final Widget? prefixWidget;
+  final Icon? suffixIcon;
   final AssetImage? prefixImage, suffixImage;
   final TextInputType inputType;
   final EdgeInsets? margin, padding;
@@ -58,7 +59,7 @@ class CustomTextField extends ConsumerWidget {
     this.inputDecoration,
     this.padding,
     this.hintText,
-    this.prefixIcon,
+    this.prefixWidget,
     this.suffixIcon,
     this.prefixImage,
     this.suffixImage,
@@ -129,9 +130,9 @@ class CustomTextField extends ConsumerWidget {
             alignment: Alignment.centerLeft,
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 10),
-              child: prefixIcon != null
+              child: prefixWidget != null
                   ? PrefixIconWidget(
-                      prefixIcon: prefixIcon,
+                      prefixWidget: prefixWidget,
                       prefixImage: prefixImage,
                       status: status,
                       backgroundColor: backgroundColor,
@@ -142,7 +143,7 @@ class CustomTextField extends ConsumerWidget {
           ),
           Center(
             child: Container(
-              margin: prefixIcon != null
+              margin: prefixWidget != null
                   ? const EdgeInsets.only(right: 50, left: 50)
                   : const EdgeInsets.only(right: 50, left: 20),
               child: TextFormField(
@@ -208,11 +209,11 @@ class PrefixIconWidget extends StatelessWidget {
     required this.backgroundColor,
     required this.accentColor,
     this.onPrefixTap,
-    this.prefixIcon,
+    this.prefixWidget,
     this.prefixImage,
   }) : super(key: key);
 
-  final Icon? prefixIcon;
+  final Widget? prefixWidget;
   final AssetImage? prefixImage;
   final TextFieldNotifier status;
   final Color backgroundColor;
@@ -223,13 +224,7 @@ class PrefixIconWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => onPrefixTap,
-      child: prefixImage == null
-          ? Icon(
-              prefixIcon?.icon,
-              color: accentColor,
-              size: prefixIcon?.size,
-            )
-          : ImageIcon(prefixImage),
+      child: prefixWidget,
     );
   }
 }
