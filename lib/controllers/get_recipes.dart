@@ -32,13 +32,13 @@ class GetRecepies {
           instructions: rs.fields['instructions'].toString(),
           quantity: 1,
           picture: rs.fields['picture'],
-          ingredients: await getIngredients(rs.fields['id']),
+          ingredients: await getIngredients(rs.fields['id']) ?? [],
           tags: await getTags(rs.fields['id']));
       setRecipie(recipeClass);
     }
   }
 
-  Future<List<Ingredient>> getIngredients(int id) async {
+  Future<List<Ingredient>?> getIngredients(int id) async {
     final DatabaseManager databaseManager = await DatabaseManager.init();
     List<Ingredient> ingredient = [];
 
