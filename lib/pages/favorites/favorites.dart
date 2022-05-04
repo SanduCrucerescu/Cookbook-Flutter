@@ -109,14 +109,16 @@ class ResponsiveNotifier extends ChangeNotifier {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: List.generate(
-            i + cols > displayedRecipes.length
-                ? cols - (displayedRecipes.length % cols + 1)
-                : cols,
+            i > displayedRecipes.length ? displayedRecipes.length % cols : cols,
             (idx) => Center(
-              child: RecipeBox(
-                recipe: displayedRecipes[i + idx],
-                isLiked: true,
-              ),
+              child: i + idx < displayedRecipes.length
+                  ? RecipeBox(
+                      recipe: displayedRecipes[i + idx],
+                      isLiked: true,
+                    )
+                  : const SizedBox(
+                      width: 450,
+                    ),
             ),
           ),
         ),
