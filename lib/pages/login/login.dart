@@ -139,14 +139,9 @@ class LoginForm extends HookConsumerWidget {
 
                       if (isValid == true) {
                         InheritedLoginProvider.of(context).userData = {
-<<<<<<< HEAD
-                          'email': tec1.text
-                        };
-=======
                           "email": tec1.text
                         };
 
->>>>>>> b8d83c8 (Adding star and unstar)
                         Navigator.of(context).pushNamed(HomePage.id);
                       } else {
                         state.loginUnSuccessful = true;
