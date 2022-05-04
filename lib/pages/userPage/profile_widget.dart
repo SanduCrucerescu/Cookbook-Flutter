@@ -49,12 +49,12 @@ class CircleWidget extends StatelessWidget {
       color: kcLightBeige,
       all: 4,
       child: buildCircle(
-        color: Color.fromARGB(255, 88, 180, 255),
-        all: 6,
+        color: Colors.black,
+        all: 10,
         child: const Icon(
-          Icons.edit,
-          // color: Colors.white,
-          size: 35,
+          Icons.add_a_photo,
+          color: Colors.white,
+          size: 25,
         ),
       ),
     );
