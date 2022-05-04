@@ -216,7 +216,7 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       ref.read(widget.favoritesProvider).isTapped = widget.status;
     });
   }
