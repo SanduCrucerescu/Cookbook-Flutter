@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/models/ingredient/ingredient.dart';
 import 'package:cookbook/models/member/member.dart';
@@ -53,12 +51,12 @@ class SelectedIngridientChangeNotifier2 extends ChangeNotifier {
   Ingredient? _currIngredient;
   String _name = "";
   String _filteringString = '';
+  late List<Ingredient> _ingredientList;
 
-  String get filteringString => _filteringString;
+  List get ingredientList => _ingredientList;
+  String get filteringString => _filteringString; // notify
 
   int get idx => _idx;
-
-  String get userName => _name;
 
   Ingredient? get currIngridient => _currIngredient;
   set currIngridient(Ingredient? member) {

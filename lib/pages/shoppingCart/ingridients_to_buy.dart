@@ -44,9 +44,16 @@ class IngridientsToBuy extends HookConsumerWidget {
                       controller: null,
                       itemCount: 50,
                       itemBuilder: (BuildContext context, int index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text("ingredientList[1].name"),
+                        return Row(
+                          children: [
+                            TextButton(
+                                onPressed: () {/* Remove */},
+                                child: const Text("X")),
+                            const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text("ingredientList[1].name"),
+                            ),
+                          ],
                         );
                       }),
                 ),
@@ -68,12 +75,13 @@ class IngridientsToBuy extends HookConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      TextButton(onPressed: () {}, child: Text("Some Button")),
                       TextButton(
-                          onPressed: () {}, child: Text("Another Button")),
-                      TextButton(
-                          onPressed: () {},
-                          child: Text("And another one Button"))
+                          onPressed: () {}, child: Text("Save Shopping Cart")),
+                      // TextButton(
+                      //     onPressed: () {}, child: Text("Another Button")),
+                      // TextButton(
+                      //     onPressed: () {},
+                      //     child: Text("And another one Button"))
                     ]),
               ),
             ),
@@ -103,69 +111,3 @@ class IngridientsToBuy extends HookConsumerWidget {
     );
   }
 }
-
-// class UserInfoField extends HookConsumerWidget {
-//   final String title, content;
-//   final VoidCallback onTap;
-//   final DatabaseManager dbManager = DatabaseManager();
-//   final TextEditingController controller;
-
-//   UserInfoField({
-//     required this.title,
-//     required this.content,
-//     required this.onTap,
-//     required this.controller,
-//     Key? key,
-//   }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     return SizedBox(
-//       child: Row(
-//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//         children: [
-//           Expanded(
-//             child: Container(
-//               height: 40,
-//               width: 300,
-//               margin: const EdgeInsets.symmetric(vertical: 5),
-//               padding: const EdgeInsets.only(left: 5),
-//               color: kcMedBeige,
-//               child: Row(
-//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                 children: [
-//                   Text(title),
-//                   Expanded(
-//                     child: CustomTextField(
-//                       controller: controller,
-//                       height: 15,
-//                       width: 230,
-//                       isShadow: false,
-//                       backgroundColor: Colors.transparent,
-//                       hintText: content,
-//                       fontSize: 12,
-//                     ),
-//                   )
-//                 ],
-//               ),
-//             ),
-//           ),
-//           Padding(
-//             padding: const EdgeInsets.only(left: 10),
-//             child: Container(
-//               color: kcMedBeige,
-//               width: 100,
-//               height: 40,
-//               child: InkWell(
-//                 onTap: () => onTap(),
-//                 child: const Center(
-//                   child: Text('Remove'),
-//                 ),
-//               ),
-//             ),
-//           )
-//         ],
-//       ),
-//     );
-//   }
-// }
