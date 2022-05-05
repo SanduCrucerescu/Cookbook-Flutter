@@ -1,16 +1,12 @@
 import 'package:cookbook/models/ingredient/ingredient.dart';
-import 'package:cookbook/models/member/member.dart';
-import 'package:cookbook/pages/messages/inbox_widget.dart';
-import 'package:cookbook/pages/shoppingCart/ingridients_to_buy.dart';
 import 'package:cookbook/pages/shoppingCart/shoppingPage.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:mysql1/src/blob.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class IngridientTile extends StatelessWidget {
+class IngridientTile extends HookConsumerWidget {
   final Ingredient ingridient;
   final int idx;
-  final SelectedIngridientChangeNotifier2 state;
   final String name;
   final int id;
   final double? pricePerUnit;
@@ -18,15 +14,15 @@ class IngridientTile extends StatelessWidget {
   const IngridientTile({
     required this.ingridient,
     required this.idx,
-    required this.state,
     required this.id,
     required this.name,
     required this.pricePerUnit,
     Key? key,
   }) : super(key: key);
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(selectIngredientProvider);
+
     return Container(
       padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
       child: Container(
@@ -39,11 +35,20 @@ class IngridientTile extends StatelessWidget {
             ),
             borderRadius: BorderRadius.circular(5)),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            TextButton(
-                onPressed: (/* ingridientList.add(ingridient) */) {},
-                child: Text("Add")),
+            InkWell(
+                onTap: () {
+                  state.addIngredient(ingridient);
+                  print("added " + ingridient.name);
+                  print(
+                      "list size: " + (state.ingredientList.length).toString());
+                },
+                child: const Padding(
+                  padding: EdgeInsets.only(right: 20),
+                  child: Text("Add"),
+                )),
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
               child: GestureDetector(
