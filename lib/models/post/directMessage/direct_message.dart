@@ -1,14 +1,15 @@
 class DirectMessage {
-  final String sender;
-  final String receiver;
-  final String content;
-  final String time;
-  final String date;
+  String? sender;
+  String? receiver;
+  String? content;
+  String? time;
+  String? date;
 
-  DirectMessage(
-      {required this.sender,
-      required this.receiver,
-      required this.content,
-      required this.time,
-      required this.date});
+  DirectMessage({
+    this.sender,
+    this.receiver,
+    this.content,
+    this.time,
+    this.date,
+  });
 }
