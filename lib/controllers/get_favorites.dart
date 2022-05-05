@@ -2,6 +2,7 @@ import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/models/ingredient/ingredient.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
 import 'package:cookbook/models/tag/tag.dart';
+import 'package:flutter/material.dart';
 import 'package:mysql1/mysql1.dart';
 
 class GetFavorites {
@@ -18,7 +19,7 @@ class GetFavorites {
     }
   }
 
-  Future<void> getfav(
+  Future<List<Recipe>?> getfav(
     String? email,
   ) async {
     _recepieList = [];
@@ -42,6 +43,7 @@ class GetFavorites {
           tags: await getTags(rs.fields['id']));
       setRecipie(recipeClass);
     }
+    return _recepieList;
     // print(recepieList);
   }
 
@@ -54,7 +56,12 @@ class GetFavorites {
             "select * from ingredients_for_recipe INNER JOIN ingredients on ingredients_for_recipe.ingredient_id = ingredients.id where recipe_id = $id;");
     for (var ing in ingredients!) {
       ingredientClass = Ingredient(
-          ing[4], ing[5].toString(), ing[3], ing[6].toString(), ing[7]);
+        id: ing.fields['id'],
+        name: ing.fields['name'],
+        unit: ing.fields['unit'],
+        amount: ing.fields['amount'],
+        pricePerUnit: ing.fields['pricePerUnit'],
+      );
       ingredient.add(ingredientClass);
     }
     return ingredient;

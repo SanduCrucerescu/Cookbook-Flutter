@@ -1,19 +1,16 @@
-import 'package:cookbook/controllers/get_members.dart';
+import 'package:cookbook/controllers/get_ingridients.dart';
 import 'package:cookbook/db/database_manager.dart';
-import 'package:cookbook/models/member/member.dart';
-import 'package:cookbook/pages/admin/admin_page.dart';
-import 'package:cookbook/pages/admin/search_add.dart';
-import 'package:cookbook/pages/admin/user_tile.dart';
+import 'package:cookbook/models/ingredient/ingredient.dart';
+import 'package:cookbook/pages/shoppingCart/shoppingPage.dart';
+import 'package:cookbook/pages/shoppingCart/search.dart';
+import 'package:cookbook/pages/shoppingCart/ingridients_list.dart';
 import 'package:flutter/material.dart';
-import 'package:mysql1/mysql1.dart';
 
-class Rectangle extends StatelessWidget {
-  final String text;
-  final SelectedUserChangeNotifier state;
+class Sqaure extends StatelessWidget {
+  final SelectedIngridientChangeNotifier state;
   final position;
 
-  const Rectangle({
-    required this.text,
+  const Sqaure({
     required this.state,
     required this.position,
     Key? key,
@@ -42,8 +39,8 @@ class Rectangle extends StatelessWidget {
             padding: const EdgeInsets.all(10.0),
             child: Column(
               children: [
-                SearchAdd(state: state),
-                UsersColumn(state: state),
+                SearchIngridient(state: state),
+                IngridientColumn(state: state),
               ],
             ),
           ),
@@ -53,46 +50,48 @@ class Rectangle extends StatelessWidget {
   }
 }
 
-class UsersColumn extends StatefulWidget {
-  const UsersColumn({
+class IngridientColumn extends StatefulWidget {
+  const IngridientColumn({
     Key? key,
     required this.state,
   }) : super(key: key);
 
-  final SelectedUserChangeNotifier state;
+  final SelectedIngridientChangeNotifier state;
 
   @override
-  State<UsersColumn> createState() => _UsersColumnState();
+  State<IngridientColumn> createState() => _IngridientColumnState();
 }
 
-class _UsersColumnState extends State<UsersColumn> {
+class _IngridientColumnState extends State<IngridientColumn> {
   DatabaseManager? dbManager;
-  List<Member> members = [];
-  List<Member> displayedmembers = [];
+  List<Ingredient> ingredients = [];
+  List<Ingredient> displayedIngridients = [];
 
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
-      members = await getMembers(context);
-      displayedmembers = members;
-      widget.state.currMember = displayedmembers[0];
+      // TODO this.
+      ingredients = await getIngridients();
+      displayedIngridients = ingredients;
+      widget.state.currIngridient = displayedIngridients[0];
       setState(() {});
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    displayedmembers = [];
+    displayedIngridients = [];
 
-    for (Member member in members) {
-      if (member.email.startsWith(widget.state.filteringString)) {
-        displayedmembers.add(member);
+    for (Ingredient ingridient in ingredients) {
+      if (ingridient.name.startsWith(widget.state.filteringString)) {
+        displayedIngridients.add(ingridient);
       }
     }
+    // print(displayedIngridients);
 
-    if (members.isEmpty) {
+    if (ingredients.isEmpty) {
       return Padding(
         padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
         child: Column(children: const [CircularProgressIndicator()]),
@@ -103,15 +102,15 @@ class _UsersColumnState extends State<UsersColumn> {
         width: 1000,
         padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
         child: ListView.builder(
-          itemCount: displayedmembers.length,
+          controller: ScrollController(),
+          itemCount: displayedIngridients.length,
           itemBuilder: (BuildContext context, int idx) {
-            return UserTile(
-              state: widget.state,
+            return IngridientTile(
+              pricePerUnit: ingredients[idx].pricePerUnit,
+              id: ingredients[idx].id,
+              ingridient: ingredients[idx],
               idx: idx,
-              email: displayedmembers[idx].email,
-              userName: displayedmembers[idx].name,
-              profile_pic: displayedmembers[idx].profilePicture,
-              member: displayedmembers[idx],
+              name: displayedIngridients[idx].name,
             );
           },
         ),

@@ -100,6 +100,8 @@ class DatabaseManager extends AbstractDatabaseManager {
 
   @override
   Future<Results?> query({required String query}) async {
+    await connect();
+    print(query);
     result = await cnx!.query(query);
     return result;
   }
@@ -115,9 +117,7 @@ class DatabaseManager extends AbstractDatabaseManager {
       String? having,
       List<int>? limit}) async {
     // connect();
-    if (cnx == null) {
-      return null;
-    }
+    await connect();
     String query =
         '''SELECT ${fields.length > 1 ? fields.join(", ") : fields[0]} FROM $table ''';
 
@@ -137,11 +137,11 @@ class DatabaseManager extends AbstractDatabaseManager {
     query += ";";
 
     result = await cnx!.query(query);
-
+    await cnx!.close();
     return result;
   }
 
-  bool isNumeric(String s) {
+  bool isNumeric(String? s) {
     if (s == null) {
       return false;
     }
@@ -153,10 +153,7 @@ class DatabaseManager extends AbstractDatabaseManager {
       {required String table,
       required List<String> fields,
       required Map<String, dynamic> data}) async {
-    if (cnx == null) {
-      return null;
-    }
-
+    await connect();
     String query = '''
             INSERT INTO $table (${fields.length > 1 ? fields.join(", ") : fields[0]}) VALUES (''';
     int i = 0;
@@ -172,13 +169,14 @@ class DatabaseManager extends AbstractDatabaseManager {
 
     result = await cnx!.query(query);
 
+    await cnx!.close();
     return result;
   }
 
   @override
   Future<Results?> delete(
       {required String table, required Map<String, dynamic> where}) async {
-    connect();
+    await connect();
 
     String query = '''
     DELETE FROM $table WHERE
@@ -192,7 +190,7 @@ class DatabaseManager extends AbstractDatabaseManager {
 
     query += ";";
     result = await cnx!.query(query);
-
+    await cnx!.close();
     return result;
   }
 
@@ -201,7 +199,7 @@ class DatabaseManager extends AbstractDatabaseManager {
       {required String table,
       required Map<String, dynamic> where,
       required Map<String, dynamic> set}) async {
-    connect();
+    if (cnx == null) await connect();
 
     String query = '''UPDATE  $table SET ''';
     int i = 0;
@@ -216,10 +214,8 @@ class DatabaseManager extends AbstractDatabaseManager {
 
     query += ";";
 
-    print(query);
-
     result = await cnx!.query(query);
-
+    await cnx!.close();
     return result;
   }
 
@@ -229,7 +225,7 @@ class DatabaseManager extends AbstractDatabaseManager {
     required List<String> fields,
     Map<String, dynamic>? where,
   }) async {
-    connect();
+    await connect();
 
     String query =
         '''SELECT EXISTS(SELECT ${fields.length > 1 ? fields.join(", ") : fields[0]} FROM $table ''';
@@ -246,7 +242,7 @@ class DatabaseManager extends AbstractDatabaseManager {
     query += ");";
 
     result = await cnx!.query(query);
-
+    await cnx!.close();
     return result;
   }
 }

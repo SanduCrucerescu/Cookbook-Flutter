@@ -1,23 +1,40 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class Ingredient {
-  final int id;
-  final String name;
-  final int amount;
-  final String unit;
-  final double pricePerUnit;
+class Ingredient with ChangeNotifier {
+  int id;
+  String name;
+  double pricePerUnit;
+  String unit;
+  int? amount;
+  double? changedPrice;
+  int? changedAmount;
   //final double amountFactor;
 
-  Ingredient(
-    this.id,
-    this.name,
+  Ingredient({
+    required this.id,
+    required this.name,
+    required this.unit,
+    required this.pricePerUnit,
     this.amount,
-    this.unit,
-    this.pricePerUnit,
     //this.amountFactor
-  );
+  });
+
+  get getId => id;
+
+  get getName => name;
+
+  get getUnit => unit;
+
+  get getPricePerUnit => pricePerUnit;
+
+  get getAmount => amount;
+
+  get getChangedPrice => changedPrice;
+
+  get getChangedAmout => changedAmount;
 
   @override
   String toString() {
@@ -44,11 +61,11 @@ class Ingredient {
 
   factory Ingredient.fromMap(Map<String, dynamic> map) {
     return Ingredient(
-      map['id']?.toInt() ?? 0,
-      map['name'] ?? '',
-      map['amount']?.toInt() ?? 0,
-      map['unit'] ?? '',
-      map['pricePerUnit']?.toDouble() ?? 0.0,
+      id: map['id']?.toInt() ?? 0,
+      name: map['name'] ?? '',
+      amount: map['amount']?.toInt() ?? 0,
+      unit: map['unit'] ?? '',
+      pricePerUnit: map['pricePerUnit']?.toDouble() ?? 0.0,
     );
   }
 
@@ -56,4 +73,22 @@ class Ingredient {
 
   factory Ingredient.fromJson(String source) =>
       Ingredient.fromMap(json.decode(source));
+
+  void changeAmount(int portion) {
+    switch (portion) {
+      case 2:
+        changedAmount = amount;
+        changedPrice = pricePerUnit;
+        break;
+      case 4:
+        changedAmount = amount! * 2;
+        changedPrice = pricePerUnit * 2;
+        break;
+      case 6:
+        changedAmount = amount! * 4;
+        changedPrice = pricePerUnit * 4;
+        break;
+    }
+    notifyListeners();
+  }
 }

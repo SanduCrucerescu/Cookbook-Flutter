@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:cookbook/components/components.dart';
+import 'package:cookbook/controllers/get_favorites.dart';
 import 'package:cookbook/main.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
 import 'package:cookbook/theme/colors.dart';
@@ -7,50 +8,73 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class HomePage extends HookConsumerWidget {
+class HomePage extends StatefulHookConsumerWidget {
   static const String id = "/";
   final int cols;
   final double searchBarWidth;
 
-  HomePage.desktop({Key? key})
+  const HomePage.desktop({Key? key})
       : cols = 3,
         searchBarWidth = 800,
         super(key: key);
 
-  HomePage.tablet({Key? key})
+  const HomePage.tablet({Key? key})
       : cols = 2,
         searchBarWidth = 800,
         super(key: key);
 
-  HomePage.mobile({Key? key})
+  const HomePage.mobile({Key? key})
       : cols = 1,
         searchBarWidth = 300,
         super(key: key);
 
-  final responsivePorvider = ChangeNotifierProvider<ResponsiveNotifier>(
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends ConsumerState<HomePage> {
+  final responsiveProvider = ChangeNotifierProvider<ResponsiveNotifier>(
     (ref) => ResponsiveNotifier(),
   );
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    Size size = MediaQuery.of(context).size;
-    final state = ref.watch(responsivePorvider);
-    final tec = useTextEditingController();
+  GetFavorites getFavorites = GetFavorites();
+  Future<List<Recipe>?>? items;
 
-    state.setRecipeBoxes(
-      ctx: context,
-      displayedRecipes: InheritedLoginProvider.of(context).displayedRecipes,
-      cols: cols,
-    );
+  @override
+  void initState() {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+      items = getFavorites
+          .getfav(InheritedLoginProvider.of(context).userData?['email']);
+    });
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext contextref) {
+    Size size = MediaQuery.of(context).size;
+    final state = ref.watch(responsiveProvider);
+    final tec = useTextEditingController();
+    final searchBarWidth = widget.searchBarWidth;
 
     return CustomPage(
       showSearchBar: true,
       controller: tec,
       searchBarWidth: searchBarWidth,
-      child: SizedBox(
-        width: size.width - 220,
-        child: state.recipes.isEmpty == false
-            ? ListView.builder(
+      child: FutureBuilder(
+        future: getFavorites
+            .getfav(InheritedLoginProvider.of(context).userData?['email']),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            ref.read(responsiveProvider).setRecipeBoxes(
+                favorites: snapshot.data as List<Recipe>,
+                ctx: context,
+                displayedRecipes:
+                    InheritedLoginProvider.of(context).displayedRecipes,
+                cols: widget.cols);
+            return SizedBox(
+              width: size.width - 220,
+              child: ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
                 cacheExtent: 50,
                 itemCount: state.recipes.length,
@@ -58,8 +82,40 @@ class HomePage extends HookConsumerWidget {
                 itemBuilder: (ctx, i) => Container(
                   child: state.recipes[i],
                 ),
-              )
-            : const SizedBox(),
+              ),
+            );
+          } else {
+            getFavorites
+                .getfav(InheritedLoginProvider.of(context).userData?['email']);
+            return const Center(
+              child: SizedBox(
+                height: 50,
+                width: 50,
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+        },
+        // child: SizedBox(
+        //   width: size.width - 220,
+        //   child: state.recipes.isEmpty == false
+        //       ? ListView.builder(
+        //           physics: const AlwaysScrollableScrollPhysics(),
+        //           cacheExtent: 50,
+        //           itemCount: state.recipes.length,
+        //           shrinkWrap: true,
+        //           itemBuilder: (ctx, i) => Container(
+        //             child: state.recipes[i],
+        //           ),
+        //         )
+        // : const Center(
+        //     child: SizedBox(
+        //       height: 50,
+        //       width: 50,
+        //       child: CircularProgressIndicator(),
+        //     ),
+        //   ),
+        // ),
       ),
     );
   }
@@ -78,25 +134,32 @@ class ResponsiveNotifier extends ChangeNotifier {
   }
 
   void setRecipeBoxes({
+    required List<Recipe>? favorites,
     required BuildContext ctx,
     required List<Recipe> displayedRecipes,
     required int cols,
-  }) async {
+  }) {
     _recipes = [];
 
     for (int i = 0; i < displayedRecipes.length; i += cols) {
-      log(i.toString());
       _recipes.add(
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: List.generate(
-            i + cols > displayedRecipes.length
-                ? cols - displayedRecipes.length % cols
-                : cols,
+            i > displayedRecipes.length ? displayedRecipes.length % cols : cols,
             (idx) => Center(
-              child: RecipeBox(
-                recipe: displayedRecipes[i + idx],
-              ),
+              child: i + idx < displayedRecipes.length
+                  ? RecipeBox(
+                      recipe: displayedRecipes[i + idx],
+                      isLiked: favorites == null
+                          ? true
+                          : favorites
+                              .map((e) => e.ownerEmail)
+                              .contains(displayedRecipes[i + idx].ownerEmail),
+                    )
+                  : const SizedBox(
+                      width: 450,
+                    ),
             ),
           ),
         ),

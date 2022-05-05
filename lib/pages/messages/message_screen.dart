@@ -1,7 +1,4 @@
-import 'dart:async';
-
 import 'package:cookbook/components/components.dart';
-import 'package:cookbook/main.dart';
 import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/models/post/directMessage/direct_message.dart';
 import 'package:cookbook/pages/messages/message_textfield.dart';
@@ -35,20 +32,9 @@ class MessagePageState extends ConsumerState<MessagePage> {
   void initState() {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       final state = ref.read(membersProvider);
-      state.members = await getMembers();
+      state.members = await getMembers(context);
       state.displayedMembers = state.members;
-
-      Timer.periodic(const Duration(milliseconds: 1000), (timer) async {
-        final messages = await getMessages();
-        print(InheritedLoginProvider.of(context).userData);
-        print(messages.length);
-        print(state.messages.length);
-
-        if (messages.length != state.messages.length) {
-          state.messages = messages;
-          state.displayedMessages = messages;
-        }
-      });
+      state.messages = await getMessages();
     });
 
     super.initState();
@@ -133,11 +119,6 @@ class MessagePageState extends ConsumerState<MessagePage> {
                         reverse: true,
                         itemCount: state.displayedMessages.length,
                         itemBuilder: (BuildContext context, int idx) {
-                          if (state.displayedMembers[idx].email ==
-                              InheritedLoginProvider.of(context)
-                                  .userData?['email']) {
-                            return const SizedBox();
-                          }
                           return ConversationWidget(
                             idx: idx,
                             state: state,
@@ -165,14 +146,18 @@ class MessagePageController extends ChangeNotifier {
   List<Member> _displayedMembers = [];
   List<DirectMessage> _messages = [];
   List<DirectMessage> _displayedMessages = [];
+
   String _filteringString = '';
   String _message = '';
   bool _toggle = false;
   late int _idx;
+  String _date = '';
 
   String get filteringString => _filteringString;
 
   String get message => _message;
+
+  String get date => _date;
 
   List<Member> get members => _members;
 
@@ -216,6 +201,11 @@ class MessagePageController extends ChangeNotifier {
     notifyListeners();
   }
 
+  set date(String val) {
+    _date = val;
+    notifyListeners();
+  }
+
   set toggle(bool cond) {
     _toggle = cond;
     notifyListeners();
@@ -226,8 +216,8 @@ class MessagePageController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void removeMember(int idx) {
-    _members.removeAt(idx);
+  void removeMember(Member member) {
+    _members.remove(member);
     notifyListeners();
   }
 

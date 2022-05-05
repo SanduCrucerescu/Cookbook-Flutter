@@ -4,6 +4,8 @@ class Tag {
   final int id;
   final String name;
 
+  get getName => this.name;
+
   Tag({required this.id, required this.name});
 
   Map<String, dynamic> toMap() {

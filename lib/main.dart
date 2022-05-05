@@ -1,10 +1,7 @@
 import 'dart:developer';
-import 'package:cookbook/controllers/add_recipe.dart';
 import 'package:cookbook/controllers/controllers.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
-import 'package:cookbook/pages/admin/admin_page.dart';
-import 'package:cookbook/pages/loadimage/load_image.dart';
-import 'package:cookbook/pages/login/login.dart';
+import 'package:cookbook/pages/shoppingCart/shoppingPage.dart';
 import 'package:cookbook/pages/userPage/user_page.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +40,7 @@ class _InheritedLoginProviderWrapperState
   List<Recipe> get recipes => _recipes;
 
   List<Recipe> get displayedRecipes {
-    log('getting displayed recipes');
+    // log('getting displayed recipes');
     return _displayedRecipes;
   }
 
@@ -54,11 +51,11 @@ class _InheritedLoginProviderWrapperState
   }
 
   void setDisplayedRecipes(String filterinString) {
-    log('setting displayed recipes with: "$filterinString"');
+    // log('setting displayed recipes with: "$filterinString"');
     _displayedRecipes = [];
     for (Recipe r in recipes) {
       if (r.title.toUpperCase().startsWith(filterinString.toUpperCase())) {
-        log(r.title);
+        // log(r.title);
         _displayedRecipes.add(r);
       }
     }
@@ -142,7 +139,7 @@ class App extends StatelessWidget {
           fontFamily: 'Montserrat',
           primaryColor: kcMedBeige,
         ),
-        initialRoute: UserPage.id,
+        initialRoute: ShoppingPage.id,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );

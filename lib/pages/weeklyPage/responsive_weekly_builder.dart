@@ -1,9 +1,10 @@
-import 'package:cookbook/pages/favorites/favorites.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:cookbook/pages/home/home_page.dart';
+import 'package:cookbook/pages/weeklyPage/weeklyPage.dart';
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class ResponsiveFavoritesPage extends ConsumerWidget {
-  ResponsiveFavoritesPage({Key? key}) : super(key: key);
+class ResponsiveWeeklyPageBuilder extends ConsumerWidget {
+  ResponsiveWeeklyPageBuilder({Key? key}) : super(key: key);
 
   final widthProider = ChangeNotifierProvider<WidthChangeNotifier>(
     (ref) => WidthChangeNotifier(),
@@ -14,11 +15,11 @@ class ResponsiveFavoritesPage extends ConsumerWidget {
     double width = MediaQuery.of(context).size.width;
 
     if (width < 1200) {
-      return FavoritesPage.mobile();
+      return WeeklyPage.mobile();
     } else if (width < 1680) {
-      return FavoritesPage.tablet();
+      return WeeklyPage.tablet();
     } else {
-      return FavoritesPage.desktop();
+      return WeeklyPage.desktop();
     }
   }
 }

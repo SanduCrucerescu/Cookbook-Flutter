@@ -21,51 +21,76 @@ class InboxWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     Member member = state.displayedMembers[idx];
+    final _last = last();
 
     return Container(
       height: 100,
       width: size.width / 4,
       padding: const EdgeInsets.only(top: 15),
-      margin: const EdgeInsets.all(2),
+      margin: const EdgeInsets.all(1),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.black),
         color: Colors.white,
         borderRadius: BorderRadius.circular(5),
       ),
       child: InkWell(
+        onDoubleTap: () {
+          state.toggle = false;
+        },
         onTap: () {
-          state.toggle = !state.toggle;
+          state.toggle = true;
           state.idx = idx;
-          if (state.toggle == false) {
-            state.displayedMessages.clear();
-          } else {
-            state.displayedMessages = [];
-            for (DirectMessage message in state.messages) {
-              if (message.sender == state.displayedMembers[state.idx].email ||
-                  message.receiver == state.displayedMembers[state.idx].email) {
-                state.addDisplayedMessage(message);
-              }
+          state.displayedMessages.clear();
+          state.displayedMessages = [];
+          for (DirectMessage message in state.messages) {
+            if (message.sender == state.displayedMembers[state.idx].email ||
+                message.receiver == state.displayedMembers[state.idx].email) {
+              state.addDisplayedMessage(message);
             }
           }
         },
         child: ListTile(
           leading: Profile_Pic(member: member),
-          title: Text(member.name),
-          subtitle: Text(member.name),
-          trailing: SizedBox(
-            height: 30,
-            width: 30,
-            child: TextButton(
-              onPressed: () {
-                state.removeDisplayedMember(member);
-              },
-              style: TextButton.styleFrom(primary: Colors.black),
-              child: const Text("X"),
-            ),
+          title: Text(
+            member.name,
+            style: const TextStyle(fontSize: 14),
           ),
+          subtitle: _last == null
+              ? const Text('No messages')
+              : Text(_last.content.toString(), overflow: TextOverflow.ellipsis),
+          trailing:
+              Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            _last == null
+                ? const Text('')
+                : Text(
+                    _last.date.toString().substring(0, 10),
+                  ),
+            const SizedBox(
+              height: 5,
+            ),
+            _last == null
+                ? const Text('')
+                : Text(
+                    _last.time.toString(),
+                  ),
+          ]),
         ),
       ),
     );
+  }
+
+  DirectMessage? last() {
+    List<DirectMessage> l = [];
+    for (DirectMessage message in state.messages) {
+      if (message.receiver == state.displayedMembers[idx].email ||
+          message.sender == state.displayedMembers[idx].email) {
+        l.add(message);
+      }
+    }
+    if (l.isNotEmpty) {
+      return l[0];
+    }
+    return null;
   }
 }
 

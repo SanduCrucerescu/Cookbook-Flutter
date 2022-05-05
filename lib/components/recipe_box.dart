@@ -3,6 +3,7 @@ part of components;
 class RecipeBox extends ConsumerWidget {
   final Image? profilePicture, image;
   final Recipe recipe;
+  final bool isLiked;
 
   static const double horiLineIndent = 10;
   static const double actionRowIndent = 20;
@@ -10,6 +11,7 @@ class RecipeBox extends ConsumerWidget {
 
   RecipeBox({
     required this.recipe,
+    this.isLiked = false,
     this.image,
     this.profilePicture,
     Key? key,
@@ -21,8 +23,6 @@ class RecipeBox extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(hoveringProvider);
-
     return Container(
       margin: const EdgeInsets.only(top: 20),
       width: 450,
@@ -49,59 +49,83 @@ class RecipeBox extends ConsumerWidget {
         Positioned(
           top: 90,
           left: 15,
-          child: AnimatedContainer(
-            duration: const Duration(
-              milliseconds: 100,
-            ),
-            decoration: BoxDecoration(
-              boxShadow: !state.hovering
-                  ? [
-                      const BoxShadow(
-                        spreadRadius: .5,
-                        blurRadius: 15,
-                        color: Color(0xFF606060),
-                        offset: Offset(10, 12),
-                      )
-                    ]
-                  : null,
-            ),
-            child: RecipeBoxIcon(
-              onHover: () {
-                state.hovering = !state.hovering;
-              },
-              child: state.hovering
-                  ? Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 50),
-                      width: 420,
-                      height: 420,
-                      color: kcLightBeige,
-                      child: Center(
-                        child: Text(
-                          recipe.shortDescription,
+          child: Consumer(
+            builder: (context, ref, child) {
+              final _state = ref.watch(hoveringProvider);
+              return AnimatedContainer(
+                duration: const Duration(
+                  milliseconds: 50,
+                ),
+                decoration: BoxDecoration(
+                  boxShadow: !_state.hovering
+                      ? [
+                          const BoxShadow(
+                            spreadRadius: .5,
+                            blurRadius: 15,
+                            color: Color(0xFFAAAAAA),
+                            offset: Offset(10, 12),
+                          )
+                        ]
+                      : null,
+                ),
+                child: RecipeBoxIcon(
+                  onHover: () {
+                    _state.hovering = !_state.hovering;
+                  },
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RecipePage(
+                          recipe: recipe,
                         ),
                       ),
-                    )
-                  : null,
-              image: Image.memory(
-                getImageDataFromBlob(recipe.picture),
-                fit: BoxFit.cover,
-                height: 420,
-                width: 420,
-              ),
-              // imagePath: image != null ? null : "assets/images/food.png",
-              width: 420,
-              height: 420,
-              isImage: true,
-            ),
+                    );
+                  },
+                  child: _state.hovering
+                      ? Container(
+                          padding: const EdgeInsets.all(10),
+                          width: 420,
+                          height: 420,
+                          // color: kcLightBeige,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.black,
+                              width: .5,
+                            ),
+                          ),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 40),
+                            color: kcLightBeige,
+                            child: Center(
+                              child: SingleChildScrollView(
+                                child: Text(
+                                  recipe.shortDescription,
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      : null,
+                  image: Image.memory(
+                    getImageDataFromBlob(recipe.picture),
+                    fit: BoxFit.cover,
+                    height: 420,
+                    width: 420,
+                  ),
+                  width: 420,
+                  height: 420,
+                  isImage: true,
+                ),
+              );
+            },
           ),
         ),
         const Positioned(left: horiLineIndent, top: 510, child: HoriLine()),
         Positioned(
           top: 534,
           left: actionRowIndent,
-          child: RecipeActionsRow(
-            recipe: recipe,
-          ),
+          child: RecipeActionsRow(recipe: recipe, isLiked: isLiked),
         ),
         const Positioned(left: horiLineIndent, top: 570, child: HoriLine()),
         Positioned(
@@ -193,94 +217,110 @@ class RecipeBoxTopRow extends StatelessWidget {
   }
 }
 
-class RecipeActionsRow extends ConsumerWidget {
+class RecipeActionsRow extends StatefulHookConsumerWidget {
   final Recipe recipe;
+  final bool isLiked;
   RecipeActionsRow({
     required this.recipe,
+    this.isLiked = false,
     Key? key,
   }) : super(key: key);
 
-  final favoritesProvider = ChangeNotifierProvider<VerificationNotifier>(
+  final stateProvider = ChangeNotifierProvider<VerificationNotifier>(
       ((ref) => VerificationNotifier()));
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(favoritesProvider);
+  _RecipeActionsRow createState() => _RecipeActionsRow();
+}
 
+class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      ref.read(widget.stateProvider).isLiked = widget.isLiked;
+      setState(() {});
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final state = ref.watch(widget.stateProvider);
     return RecipeBoxRow(
-        height: 30,
-        width: 400,
-        title: state.exists
-            ? Center(
-                child: SelectableText(
-                  state.text,
-                  style: GoogleFonts.montserrat(
-                      fontSize: 9,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.red),
-                ),
-              )
-            : const SizedBox(),
-        leading: SizedBox(
-          height: 20,
-          width: 180,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              state.isTaped
-                  ? RecipeBoxIcon(
-                      icon: Icon(Icons.star_outlined),
-                      color: Colors.black,
-                      height: 33,
-                      width: 33,
-                      onTap: () {
-                        state.isTaped = false;
-                        Favorites.delete(
-                            email: InheritedLoginProvider.of(context)
-                                .userData?['email'],
-                            recipeID: recipe.id);
-                      },
-                    )
-                  : RecipeBoxIcon(
-                      icon: Icon(Icons.star_outline),
-                      color: Colors.black,
-                      height: 33,
-                      width: 33,
-                      onTap: () async {
-                        bool val = await Favorites.adding(
-                            email: InheritedLoginProvider.of(context)
-                                .userData?['email'],
-                            recipeID: recipe.id);
-                        if (!val) {
-                          state.exists = true;
-                          state.text = "Recipe already inserted";
-                        } else {
-                          state.isTaped = true;
-                        }
-                      },
-                    ),
-              const RecipeBoxIcon(
-                icon: Icon(Icons.mode_comment_outlined),
-                height: 25,
-                width: 25,
-                color: Colors.black,
+      height: 30,
+      width: 400,
+      title: state.exists
+          ? Center(
+              child: SelectableText(
+                state.text,
+                style: GoogleFonts.montserrat(
+                    fontSize: 9,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.red),
               ),
-              const RecipeBoxIcon(
-                icon: Icon(Icons.share),
-                height: 30,
-                width: 30,
-                color: Colors.black,
-              ),
-            ],
-          ),
+            )
+          : const SizedBox(),
+      leading: SizedBox(
+        height: 20,
+        width: 180,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            state.isLiked
+                ? RecipeBoxIcon(
+                    icon: const Icon(Icons.star_outlined),
+                    color: Colors.black,
+                    height: 33,
+                    width: 33,
+                    onTap: () {
+                      Favorites.delete(
+                          email: InheritedLoginProvider.of(context)
+                              .userData?['email'],
+                          recipeID: widget.recipe.id);
+                      state.isLiked = false;
+                    },
+                  )
+                : RecipeBoxIcon(
+                    icon: const Icon(Icons.star_outline),
+                    color: Colors.black,
+                    height: 33,
+                    width: 33,
+                    onTap: () async {
+                      bool val = await Favorites.adding(
+                          email: InheritedLoginProvider.of(context)
+                              .userData?['email'],
+                          recipeID: widget.recipe.id);
+                      if (!val) {
+                        state.exists = true;
+                        state.text = "Recipe already inserted";
+                      } else {
+                        state.isLiked = true;
+                      }
+                    },
+                  ),
+            const RecipeBoxIcon(
+              icon: Icon(Icons.mode_comment_outlined),
+              height: 25,
+              width: 25,
+              color: Colors.black,
+            ),
+            const RecipeBoxIcon(
+              icon: Icon(Icons.share),
+              height: 30,
+              width: 30,
+              color: Colors.black,
+            ),
+          ],
         ),
-        trailing: const RecipeBoxIcon(
-          icon: const Icon(Icons.share),
-          height: 30,
-          width: 30,
-          color: Colors.black,
-        ));
+      ),
+      trailing: const RecipeBoxIcon(
+        icon: Icon(Icons.share),
+        height: 30,
+        width: 30,
+        color: Colors.black,
+      ),
+    );
   }
 }
 
@@ -520,18 +560,18 @@ class RecipeBoxIconHoverNotifier extends ChangeNotifier {
 }
 
 class VerificationNotifier extends ChangeNotifier {
-  bool _isTaped = false;
+  bool _isTapped = false;
   bool _exists = false;
   String _text = "";
 
-  bool get isTaped => _isTaped;
+  bool get isLiked => _isTapped;
 
   bool get exists => _exists;
 
   String get text => _text;
 
-  set isTaped(bool val) {
-    _isTaped = val;
+  set isLiked(bool val) {
+    _isTapped = val;
     notifyListeners();
   }
 
