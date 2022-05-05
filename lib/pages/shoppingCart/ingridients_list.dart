@@ -36,6 +36,7 @@ class IngridientTile extends HookConsumerWidget {
             ),
             borderRadius: BorderRadius.circular(5)),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             InkWell(
@@ -45,7 +46,10 @@ class IngridientTile extends HookConsumerWidget {
                   print(
                       "list size: " + (state.ingredientList.length).toString());
                 },
-                child: const Text("Add")),
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 20),
+                  child: const Text("Add"),
+                )),
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
               child: GestureDetector(

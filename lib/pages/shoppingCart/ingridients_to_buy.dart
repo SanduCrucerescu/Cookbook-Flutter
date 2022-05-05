@@ -1,23 +1,23 @@
 import 'package:cookbook/models/ingredient/ingredient.dart';
 import 'package:cookbook/pages/shoppingCart/shoppingPage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class IngridientsToBuy extends HookConsumerWidget {
-  final String text;
+  // Stateful
   final Alignment position;
-  final SelectedIngridientChangeNotifier2 state; // To here
+  final SelectedIngridientChangeNotifier2 state;
+  // To here
   final int idx;
 
   const IngridientsToBuy({
-    required this.text,
     required this.position,
     required this.state,
     required this.idx,
     Key? key,
   }) : super(key: key);
 
-  @override
   Widget build(BuildContext context, WidgetRef ref) {
     getIngredientPrice() {
       double total = 0;
@@ -49,8 +49,8 @@ class IngridientsToBuy extends HookConsumerWidget {
                   isAlwaysShown: true,
                   controller: ScrollController(),
                   child: ListView.builder(
-                      controller: ScrollController(), // null?
-                      itemCount: state.ingredientList.length,
+                      controller: ScrollController(),
+                      itemCount: state.ingredientList.length, // NULL???????
                       itemBuilder: (BuildContext context, int index) {
                         return Row(
                           children: [
@@ -58,7 +58,9 @@ class IngridientsToBuy extends HookConsumerWidget {
                               padding: const EdgeInsets.all(8.0),
                               child: InkWell(
                                   onTap: () {
-                                    // TODO: remove from the list
+                                    state.ingredientList.removeAt(idx);
+                                    print("removed" +
+                                        state.ingredientList[idx].name);
                                   },
                                   child: const Text("X")),
                             ),
