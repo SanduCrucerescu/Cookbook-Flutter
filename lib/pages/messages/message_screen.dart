@@ -35,12 +35,6 @@ class MessagePageState extends ConsumerState<MessagePage> {
       state.members = await getMembers(context);
       state.displayedMembers = state.members;
       state.messages = await getMessages();
-      // for (Member member in state.displayedMembers) {
-      //   if (member.email ==
-      //       InheritedLoginProvider.of(context).userData?['email']) {
-      //     state.removeDisplayedMember(member);
-      //   }
-      // }
     });
 
     super.initState();
@@ -152,14 +146,18 @@ class MessagePageController extends ChangeNotifier {
   List<Member> _displayedMembers = [];
   List<DirectMessage> _messages = [];
   List<DirectMessage> _displayedMessages = [];
+
   String _filteringString = '';
   String _message = '';
   bool _toggle = false;
   late int _idx;
+  String _date = '';
 
   String get filteringString => _filteringString;
 
   String get message => _message;
+
+  String get date => _date;
 
   List<Member> get members => _members;
 
@@ -200,6 +198,11 @@ class MessagePageController extends ChangeNotifier {
 
   set message(String val) {
     _message = val;
+    notifyListeners();
+  }
+
+  set date(String val) {
+    _date = val;
     notifyListeners();
   }
 
