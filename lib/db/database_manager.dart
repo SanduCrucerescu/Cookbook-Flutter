@@ -100,7 +100,7 @@ class DatabaseManager extends AbstractDatabaseManager {
 
   @override
   Future<Results?> query({required String query}) async {
-    if (cnx == null) await connect();
+    await connect();
     print(query);
     result = await cnx!.query(query);
     return result;
@@ -116,7 +116,8 @@ class DatabaseManager extends AbstractDatabaseManager {
       String? group,
       String? having,
       List<int>? limit}) async {
-    if (cnx == null) await connect();
+    // connect();
+    await connect();
     String query =
         '''SELECT ${fields.length > 1 ? fields.join(", ") : fields[0]} FROM $table ''';
 
@@ -148,37 +149,34 @@ class DatabaseManager extends AbstractDatabaseManager {
   }
 
   @override
-  Future<Results?> insert({
-    required String table,
-    required List<String> fields,
-    required Map<String, dynamic> data,
-  }) async {
+  Future<Results?> insert(
+      {required String table,
+      required List<String> fields,
+      required Map<String, dynamic> data}) async {
     await connect();
-    String q = '''
-INSERT INTO $table (${fields.length > 1 ? fields.join(", ") : fields[0]}) VALUES (''';
+    String query = '''
+            INSERT INTO $table (${fields.length > 1 ? fields.join(", ") : fields[0]}) VALUES (''';
     int i = 0;
     for (MapEntry entry in data.entries) {
       i++;
       //query += i < data.length ? "'" + entry.value + "'" : entry.value;
-      q += isNumeric(entry.value.toString())
+      query += isNumeric(entry.value.toString())
           ? entry.value.toString()
           : "'" + entry.value + "'";
-      q += i < data.length ? "," : "";
+      query += i < data.length ? "," : "";
     }
-    q += ");";
+    query += ");";
 
-    result = await cnx!.query(q);
+    result = await cnx!.query(query);
 
     await cnx!.close();
     return result;
   }
 
   @override
-  Future<Results?> delete({
-    required String table,
-    required Map<String, dynamic> where,
-  }) async {
-    if (cnx == null) await connect();
+  Future<Results?> delete(
+      {required String table, required Map<String, dynamic> where}) async {
+    await connect();
 
     String query = '''
     DELETE FROM $table WHERE
@@ -227,7 +225,7 @@ INSERT INTO $table (${fields.length > 1 ? fields.join(", ") : fields[0]}) VALUES
     required List<String> fields,
     Map<String, dynamic>? where,
   }) async {
-    if (cnx == null) await connect();
+    await connect();
 
     String query =
         '''SELECT EXISTS(SELECT ${fields.length > 1 ? fields.join(", ") : fields[0]} FROM $table ''';
