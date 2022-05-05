@@ -35,9 +35,8 @@ class ShoppingPage extends HookConsumerWidget {
           Expanded(
             child: IngridientsToBuy(
               state: state,
-              text: state._name,
-              ingredientList: [],
               position: Alignment.topRight,
+              idx: state._idx,
             ),
           ),
         ],
@@ -47,20 +46,26 @@ class ShoppingPage extends HookConsumerWidget {
 }
 
 class SelectedIngridientChangeNotifier2 extends ChangeNotifier {
-  int _idx = -1;
+  int _idx = 0;
   Ingredient? _currIngredient;
   String _name = "";
   String _filteringString = '';
-  late List<Ingredient> _ingredientList;
+  List<Ingredient> _ingredientList = [];
 
-  List get ingredientList => _ingredientList;
   String get filteringString => _filteringString; // notify
 
   int get idx => _idx;
 
   Ingredient? get currIngridient => _currIngredient;
-  set currIngridient(Ingredient? member) {
-    _currIngredient = member;
+
+  List<Ingredient> get ingredientList => _ingredientList;
+  set currIngridient(Ingredient? ingredient) {
+    _currIngredient = ingredient;
+    notifyListeners();
+  }
+
+  set ingredientList(List e) {
+    ingredientList = e;
     notifyListeners();
   }
 
@@ -71,11 +76,6 @@ class SelectedIngridientChangeNotifier2 extends ChangeNotifier {
 
   set idx(int val) {
     _idx = val;
-    notifyListeners();
-  }
-
-  set userName(String val) {
-    _name = val;
     notifyListeners();
   }
 }

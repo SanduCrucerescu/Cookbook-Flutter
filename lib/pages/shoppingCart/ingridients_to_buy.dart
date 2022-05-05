@@ -6,19 +6,27 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 class IngridientsToBuy extends HookConsumerWidget {
   final String text;
   final Alignment position;
-  final SelectedIngridientChangeNotifier2 state;
-  final List<Ingredient> ingredientList; // To here
+  final SelectedIngridientChangeNotifier2 state; // To here
+  final int idx;
 
   const IngridientsToBuy({
     required this.text,
     required this.position,
     required this.state,
-    required this.ingredientList,
+    required this.idx,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    getIngredientPrice() {
+      double total = 0;
+      for (Ingredient e in state.ingredientList) {
+        total += e.pricePerUnit;
+      }
+      return total;
+    }
+
     double xSize = 600;
     return Container(
       padding: const EdgeInsets.only(right: 40, bottom: 20, top: 20, left: 20),
@@ -39,19 +47,24 @@ class IngridientsToBuy extends HookConsumerWidget {
               child: SizedBox(
                 child: Scrollbar(
                   isAlwaysShown: true,
-                  controller: null,
+                  controller: ScrollController(),
                   child: ListView.builder(
                       controller: ScrollController(), // null?
-                      itemCount: 50,
+                      itemCount: state.ingredientList.length,
                       itemBuilder: (BuildContext context, int index) {
                         return Row(
                           children: [
-                            TextButton(
-                                onPressed: () {/* Remove */},
-                                child: const Text("X")),
-                            const Padding(
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: InkWell(
+                                  onTap: () {
+                                    // TODO: remove from the list
+                                  },
+                                  child: const Text("X")),
+                            ),
+                            Padding(
                               padding: EdgeInsets.all(8.0),
-                              child: Text("ingredientList[1].name"),
+                              child: Text(state.ingredientList[index].name),
                             ),
                           ],
                         );
@@ -88,6 +101,19 @@ class IngridientsToBuy extends HookConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Container(
+                      child: Text("Me and Lui",
+                          style: TextStyle(
+                            color: Colors.black,
+                          )),
+                      width: 200.00,
+                      height: 140.00,
+                      decoration: new BoxDecoration(
+                        image: new DecorationImage(
+                          image: ExactAssetImage('assets/images/IMG_5407.JPG'),
+                          fit: BoxFit.fitHeight,
+                        ),
+                      )),
+                  Container(
                       height: 50,
                       width: 150,
                       decoration: BoxDecoration(
@@ -97,7 +123,8 @@ class IngridientsToBuy extends HookConsumerWidget {
                           Radius.circular(5),
                         ),
                       ),
-                      child: const Text("Total Cost: 40€")),
+                      child: Text(
+                          "Total Cost: " + getIngredientPrice().toString())),
                 ],
               ),
             )
