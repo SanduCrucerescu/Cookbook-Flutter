@@ -11,7 +11,7 @@ class RecipeBox extends ConsumerWidget {
 
   RecipeBox({
     required this.recipe,
-    required this.isLiked,
+    this.isLiked = false,
     this.image,
     this.profilePicture,
     Key? key,
@@ -74,12 +74,13 @@ class RecipeBox extends ConsumerWidget {
                   },
                   onTap: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => RecipePage(
-                            recipe: recipe,
-                          ),
-                        ));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RecipePage(
+                          recipe: recipe,
+                        ),
+                      ),
+                    );
                   },
                   child: _state.hovering
                       ? Container(
@@ -124,10 +125,7 @@ class RecipeBox extends ConsumerWidget {
         Positioned(
           top: 534,
           left: actionRowIndent,
-          child: RecipeActionsRow(
-            recipe: recipe,
-            isLiked: isLiked,
-          ),
+          child: RecipeActionsRow(recipe: recipe, isLiked: isLiked),
         ),
         const Positioned(left: horiLineIndent, top: 570, child: HoriLine()),
         Positioned(
