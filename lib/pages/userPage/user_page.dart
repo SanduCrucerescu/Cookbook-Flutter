@@ -1,5 +1,8 @@
+import 'dart:ffi';
 import 'dart:io';
 import 'package:cookbook/components/components.dart';
+import 'package:cookbook/controllers/get_members.dart';
+import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/pages/register/register.dart';
 import 'package:cookbook/pages/userPage/profile_widget.dart';
 import 'package:cookbook/pages/userPage/user.dart';
@@ -12,6 +15,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:mysql1/mysql1.dart';
 
+import '../../controllers/image_picker.dart';
+
 class UserPage extends ConsumerWidget {
   static const String id = '/user';
   const UserPage({Key? key}) : super(key: key);
@@ -22,7 +27,15 @@ class UserPage extends ConsumerWidget {
   }
 }
 
+
+
 class UserPageState extends HookConsumerWidget {
+  List<Member> user;
+  Member oneUser;
+
+
+
+
   final photoProvider = ChangeNotifierProvider<VerificationChangeNotifier>(
     (ref) => VerificationChangeNotifier(),
   );
@@ -31,11 +44,26 @@ class UserPageState extends HookConsumerWidget {
 
   UserPageState({Key? key}) : super(key: key);
 
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+      user = await getMembers();
+      oneUser = user[0];
+    });
+  }
+
+
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(photoProvider);
     Size size = MediaQuery.of(context).size;
-    const user = UserPreferences.myUser;
+    const user = await getMembers();
+    
 
     return CustomPage(
       child: Container(
@@ -50,7 +78,14 @@ class UserPageState extends HookConsumerWidget {
               child: ProfileWidget(
                 imagePath: user.imagePath,
                 onClicked: () async {
-                  _openImagePicker(state);
+                  final Map<String, dynamic>? imageData =
+                      await openImagePicker();
+                  if (imageData != null) {
+                    state.photo = imageData['blob'];
+                    state.photoSuccessful = true;
+                    state.path = imageData['file'];
+                    state.text = imageData['name'];
+                  }
                 },
               ),
             ),
@@ -59,25 +94,6 @@ class UserPageState extends HookConsumerWidget {
         ),
       ),
     );
-  }
-
-//todo: The photo picker and changer are yet to be implemented
-  void _openImagePicker(VerificationChangeNotifier state) async {
-    final typeGroup = XTypeGroup(
-      label: 'images',
-      extensions: const ['jpg', 'jpeg', 'png', 'heic'],
-    );
-
-    final xFile = await openFile(acceptedTypeGroups: [typeGroup]);
-    if (xFile != null) {
-      state.photoSuccessful = true;
-      state.text = xFile.name;
-
-      File file = File(xFile.path);
-      state.path = file;
-      Blob blob = Blob.fromBytes(await file.readAsBytes());
-      state.photo = blob;
-    }
   }
 }
 
@@ -163,7 +179,7 @@ class UserPageForm extends StatelessWidget {
         UserPageTextField(
           size: size,
           user: user,
-          hintText: '**************',
+          hintText: '********',
           label: "Password",
         ),
         Center(child: buildSaveButton())
@@ -171,6 +187,7 @@ class UserPageForm extends StatelessWidget {
     );
   }
 
+//todo Add save button function
   Widget buildSaveButton() => SaveButton(
         text: 'Save Changes',
         onClicked: () {},
