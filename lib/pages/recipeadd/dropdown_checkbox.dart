@@ -68,7 +68,6 @@ class MultiSelect extends HookConsumerWidget {
                   duration: const Duration(milliseconds: 200),
                   onTap: () async {
                     if (controller.text.isEmpty) {
-                      print("dd");
                     } else {
                       bool val = await AddTag.addTag(table: "tags", data: {
                         "name": controller.text,
