@@ -7,7 +7,7 @@ import 'package:cookbook/pages/shoppingCart/ingridients_list.dart';
 import 'package:flutter/material.dart';
 
 class Sqaure extends StatelessWidget {
-  final SelectedIngridientChangeNotifier2 state;
+  final SelectedIngridientChangeNotifier state;
   final position;
 
   const Sqaure({
@@ -56,7 +56,7 @@ class IngridientColumn extends StatefulWidget {
     required this.state,
   }) : super(key: key);
 
-  final SelectedIngridientChangeNotifier2 state;
+  final SelectedIngridientChangeNotifier state;
 
   @override
   State<IngridientColumn> createState() => _IngridientColumnState();
@@ -109,7 +109,6 @@ class _IngridientColumnState extends State<IngridientColumn> {
               pricePerUnit: ingredients[idx].pricePerUnit,
               id: ingredients[idx].id,
               ingridient: ingredients[idx],
-              state: widget.state,
               idx: idx,
               name: displayedIngridients[idx].name,
             );

@@ -1,24 +1,29 @@
 import 'package:cookbook/models/ingredient/ingredient.dart';
 import 'package:cookbook/pages/shoppingCart/shoppingPage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class IngridientsToBuy extends HookConsumerWidget {
-  // Stateful
+class IngridientsToBuy extends StatefulHookConsumerWidget {
   final Alignment position;
-  final SelectedIngridientChangeNotifier2 state;
-  // To here
   final int idx;
 
   const IngridientsToBuy({
     required this.position,
-    required this.state,
     required this.idx,
     Key? key,
   }) : super(key: key);
 
-  Widget build(BuildContext context, WidgetRef ref) {
+  @override
+  _IngridientsToBuyState createState() => _IngridientsToBuyState();
+}
+
+class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
+  @override
+  Widget build(BuildContext context) {
+    final position = widget.position;
+    final state = ref.watch(selectIngredientProvider);
+    final idx = widget.idx;
+
     getIngredientPrice() {
       double total = 0;
       for (Ingredient e in state.ingredientList) {
@@ -45,33 +50,29 @@ class IngridientsToBuy extends HookConsumerWidget {
               height: 500,
               width: xSize,
               child: SizedBox(
-                child: Scrollbar(
-                  isAlwaysShown: true,
-                  controller: ScrollController(),
-                  child: ListView.builder(
-                      controller: ScrollController(),
-                      itemCount: state.ingredientList.length, // NULL???????
-                      itemBuilder: (BuildContext context, int index) {
-                        return Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: InkWell(
-                                  onTap: () {
-                                    state.ingredientList.removeAt(idx);
-                                    print("removed" +
-                                        state.ingredientList[idx].name);
-                                  },
-                                  child: const Text("X")),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text(state.ingredientList[index].name),
-                            ),
-                          ],
-                        );
-                      }),
-                ),
+                child: ListView.builder(
+                    controller: ScrollController(),
+                    itemCount: state.ingredientList.length, // NULL???????
+                    itemBuilder: (BuildContext context, int index) {
+                      return Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: InkWell(
+                                onTap: () {
+                                  state.removeIngredientAt(idx);
+                                  print("removed: " +
+                                      state.ingredientList[idx].name);
+                                },
+                                child: const Text("X")),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(state.ingredientList[index].name),
+                          ),
+                        ],
+                      );
+                    }),
               ),
             ),
             Padding(
@@ -103,14 +104,14 @@ class IngridientsToBuy extends HookConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Container(
-                      child: Text("Me and Lui",
+                      child: const Text("Me and Lui",
                           style: TextStyle(
                             color: Colors.black,
                           )),
                       width: 200.00,
                       height: 140.00,
-                      decoration: new BoxDecoration(
-                        image: new DecorationImage(
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
                           image: ExactAssetImage('assets/images/IMG_5407.JPG'),
                           fit: BoxFit.fitHeight,
                         ),
@@ -125,8 +126,13 @@ class IngridientsToBuy extends HookConsumerWidget {
                           Radius.circular(5),
                         ),
                       ),
-                      child: Text(
-                          "Total Cost: " + getIngredientPrice().toString())),
+                      child: Center(
+                        child: Text(
+                            "Total Cost: " +
+                                getIngredientPrice().toString() +
+                                "€",
+                            style: TextStyle(fontSize: 15)),
+                      )),
                 ],
               ),
             )

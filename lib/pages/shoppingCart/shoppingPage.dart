@@ -12,14 +12,9 @@ class ShoppingPage extends HookConsumerWidget {
 
   ShoppingPage({Key? key}) : super(key: key);
 
-  final selectUserProvider2 =
-      ChangeNotifierProvider<SelectedIngridientChangeNotifier2>(
-    (ref) => SelectedIngridientChangeNotifier2(),
-  );
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(selectUserProvider2);
+    final state = ref.watch(selectIngredientProvider);
     final tec = useTextEditingController();
     Size size = MediaQuery.of(context).size;
 
@@ -34,7 +29,6 @@ class ShoppingPage extends HookConsumerWidget {
           ),
           Expanded(
             child: IngridientsToBuy(
-              state: state,
               position: Alignment.topRight,
               idx: state._idx,
             ),
@@ -45,7 +39,12 @@ class ShoppingPage extends HookConsumerWidget {
   }
 }
 
-class SelectedIngridientChangeNotifier2 extends ChangeNotifier {
+final selectIngredientProvider =
+    ChangeNotifierProvider<SelectedIngridientChangeNotifier>(
+  (ref) => SelectedIngridientChangeNotifier(),
+);
+
+class SelectedIngridientChangeNotifier extends ChangeNotifier {
   int _idx = 0;
   Ingredient? _currIngredient;
   String _name = "";
@@ -59,13 +58,29 @@ class SelectedIngridientChangeNotifier2 extends ChangeNotifier {
   Ingredient? get currIngridient => _currIngredient;
 
   List<Ingredient> get ingredientList => _ingredientList;
+
   set currIngridient(Ingredient? ingredient) {
     _currIngredient = ingredient;
     notifyListeners();
   }
 
-  set ingredientList(List e) {
-    ingredientList = e;
+  void addIngredient(Ingredient ingredient) {
+    _ingredientList.add(ingredient);
+    notifyListeners();
+  }
+
+  void removeIngredient(Ingredient ingredient) {
+    _ingredientList.remove(ingredient);
+    notifyListeners();
+  }
+
+  void removeIngredientAt(int idx) {
+    _ingredientList.removeAt(idx);
+    notifyListeners();
+  }
+
+  set ingredientList(List<Ingredient> list) {
+    ingredientList = list;
     notifyListeners();
   }
 

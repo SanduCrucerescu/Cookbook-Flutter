@@ -8,7 +8,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class SearchIngridient extends HookConsumerWidget {
-  final SelectedIngridientChangeNotifier2 state;
+  final SelectedIngridientChangeNotifier state;
   const SearchIngridient({Key? key, required this.state}) : super(key: key);
 
   @override

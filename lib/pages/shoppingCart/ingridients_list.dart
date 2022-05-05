@@ -3,12 +3,10 @@ import 'package:cookbook/pages/shoppingCart/shoppingPage.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mysql1/src/blob.dart';
 
 class IngridientTile extends HookConsumerWidget {
   final Ingredient ingridient;
   final int idx;
-  final SelectedIngridientChangeNotifier2 state;
   final String name;
   final int id;
   final double? pricePerUnit;
@@ -16,7 +14,6 @@ class IngridientTile extends HookConsumerWidget {
   const IngridientTile({
     required this.ingridient,
     required this.idx,
-    required this.state,
     required this.id,
     required this.name,
     required this.pricePerUnit,
@@ -24,6 +21,8 @@ class IngridientTile extends HookConsumerWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(selectIngredientProvider);
+
     return Container(
       padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
       child: Container(
@@ -41,14 +40,14 @@ class IngridientTile extends HookConsumerWidget {
           children: [
             InkWell(
                 onTap: () {
-                  state.ingredientList.add(ingridient);
+                  state.addIngredient(ingridient);
                   print("added " + ingridient.name);
                   print(
                       "list size: " + (state.ingredientList.length).toString());
                 },
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 20),
-                  child: const Text("Add"),
+                child: const Padding(
+                  padding: EdgeInsets.only(right: 20),
+                  child: Text("Add"),
                 )),
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
