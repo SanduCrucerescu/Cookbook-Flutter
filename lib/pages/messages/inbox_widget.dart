@@ -33,25 +33,28 @@ class InboxWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
       ),
       child: InkWell(
+        onDoubleTap: () {
+          state.toggle = false;
+        },
         onTap: () {
-          state.toggle = !state.toggle;
+          state.toggle = true;
           state.idx = idx;
-          if (state.toggle == false) {
-            state.displayedMessages.clear();
-          } else {
-            state.displayedMessages = [];
-            for (DirectMessage message in state.messages) {
-              if (message.sender == state.displayedMembers[state.idx].email ||
-                  message.receiver == state.displayedMembers[state.idx].email) {
-                state.addDisplayedMessage(message);
-              }
+          state.displayedMessages.clear();
+          state.displayedMessages = [];
+          for (DirectMessage message in state.messages) {
+            if (message.sender == state.displayedMembers[state.idx].email ||
+                message.receiver == state.displayedMembers[state.idx].email) {
+              state.addDisplayedMessage(message);
             }
           }
         },
         child: ListTile(
           leading: Profile_Pic(member: member),
           title: Text(member.name),
-          subtitle: Text(member.name),
+          subtitle: Text(
+            last(),
+            overflow: TextOverflow.ellipsis,
+          ),
           trailing: SizedBox(
             height: 30,
             width: 30,
@@ -66,6 +69,27 @@ class InboxWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String last() {
+    List<DirectMessage> l = [];
+    for (DirectMessage message in state.messages) {
+      if (message.receiver == state.displayedMembers[idx].email ||
+          message.sender == state.displayedMembers[idx].email) {
+        l.add(message);
+      }
+    }
+    if (l.isEmpty) {
+      return "No messages";
+    } else {
+      if (l[0].date.toString() != DateTime.now().toString().substring(0, 10)) {
+        return l[0].content.toString() +
+            " " * 50 +
+            l[0].date.toString().substring(0, 10);
+      } else {
+        return l[0].content.toString() + "" + l[0].time.toString();
+      }
+    }
   }
 }
 

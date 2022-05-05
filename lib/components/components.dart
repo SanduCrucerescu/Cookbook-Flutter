@@ -19,12 +19,15 @@ import 'package:cookbook/pages/messages/message_screen.dart';
 import 'package:cookbook/pages/recipeadd/ui_components.dart';
 import 'package:cookbook/pages/shoppingCart/shoppingPage.dart';
 import 'package:cookbook/pages/userPage/user_page.dart';
+import 'package:cookbook/pages/weeklyPage/weeklyPage.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:cookbook/theme/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import '../pages/recipe/recipe.dart';
 
 part 'custom_text_field.dart';
 part 'custom_text_field_notifier.dart';

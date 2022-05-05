@@ -1,30 +1,28 @@
 import 'dart:developer';
 import 'package:cookbook/components/components.dart';
-import 'package:cookbook/controllers/get_favorites.dart';
+import 'package:cookbook/main.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
+import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../main.dart';
 
-class FavoritesPage extends StatefulHookConsumerWidget {
-  static const String id = '/favorites';
+class WeeklyPage extends HookConsumerWidget {
+  static const String id = "/weeklypage";
   final int cols;
   final double searchBarWidth;
 
-  FavoritesPage(this.cols, this.searchBarWidth, {Key? key}) : super(key: key);
-
-  FavoritesPage.desktop({Key? key})
+  WeeklyPage.desktop({Key? key})
       : cols = 3,
         searchBarWidth = 800,
         super(key: key);
 
-  FavoritesPage.tablet({Key? key})
+  WeeklyPage.tablet({Key? key})
       : cols = 2,
         searchBarWidth = 800,
         super(key: key);
 
-  FavoritesPage.mobile({Key? key})
+  WeeklyPage.mobile({Key? key})
       : cols = 1,
         searchBarWidth = 300,
         super(key: key);
@@ -34,39 +32,21 @@ class FavoritesPage extends StatefulHookConsumerWidget {
   );
 
   @override
-  _FavoritesPageState createState() => _FavoritesPageState();
-}
-
-class _FavoritesPageState extends ConsumerState<FavoritesPage> {
-  GetFavorites getFavorites = GetFavorites();
-
-  @override
-  void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
-      await getFavorites
-          .getfav(InheritedLoginProvider.of(context).userData?['email']);
-      setState(() {});
-    });
-
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     Size size = MediaQuery.of(context).size;
-    final state = ref.watch(widget.responsivePorvider);
+    final state = ref.watch(responsivePorvider);
     final tec = useTextEditingController();
 
     state.setRecipeBoxes(
       ctx: context,
-      displayedRecipes: getFavorites.recepieList ?? [],
-      cols: widget.cols,
+      displayedRecipes: InheritedLoginProvider.of(context).displayedRecipes,
+      cols: cols,
     );
 
     return CustomPage(
-      showSearchBar: true,
+      showSearchBar: false,
       controller: tec,
-      searchBarWidth: widget.searchBarWidth,
+      searchBarWidth: searchBarWidth,
       child: SizedBox(
         width: size.width - 220,
         child: state.recipes.isEmpty == false
@@ -79,13 +59,7 @@ class _FavoritesPageState extends ConsumerState<FavoritesPage> {
                   child: state.recipes[i],
                 ),
               )
-            : const Center(
-                child: SizedBox(
-                  height: 50,
-                  width: 50,
-                  child: CircularProgressIndicator(),
-                ),
-              ),
+            : const SizedBox(),
       ),
     );
   }
@@ -111,20 +85,19 @@ class ResponsiveNotifier extends ChangeNotifier {
     _recipes = [];
 
     for (int i = 0; i < displayedRecipes.length; i += cols) {
+      log(i.toString());
       _recipes.add(
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: List.generate(
-            i > displayedRecipes.length ? displayedRecipes.length % cols : cols,
+            i + cols > displayedRecipes.length
+                ? cols - displayedRecipes.length % cols
+                : cols,
             (idx) => Center(
-              child: i + idx < displayedRecipes.length
-                  ? RecipeBox(
-                      recipe: displayedRecipes[i + idx],
-                      isLiked: true,
-                    )
-                  : const SizedBox(
-                      width: 450,
-                    ),
+              child: RecipeBox(
+                recipe: displayedRecipes[i + idx],
+                isLiked: false,
+              ),
             ),
           ),
         ),

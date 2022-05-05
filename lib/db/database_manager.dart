@@ -116,7 +116,6 @@ class DatabaseManager extends AbstractDatabaseManager {
       String? group,
       String? having,
       List<int>? limit}) async {
-    // connect();
     if (cnx == null) await connect();
     String query =
         '''SELECT ${fields.length > 1 ? fields.join(", ") : fields[0]} FROM $table ''';
@@ -141,7 +140,7 @@ class DatabaseManager extends AbstractDatabaseManager {
     return result;
   }
 
-  bool isNumeric(String s) {
+  bool isNumeric(String? s) {
     if (s == null) {
       return false;
     }
@@ -149,32 +148,36 @@ class DatabaseManager extends AbstractDatabaseManager {
   }
 
   @override
-  Future<Results?> insert(
-      {required String table,
-      required List<String> fields,
-      required Map<String, dynamic> data}) async {
+  Future<Results?> insert({
+    required String table,
+    required List<String> fields,
+    required Map<String, dynamic> data,
+  }) async {
     await connect();
-    String query = '''
-            INSERT INTO $table (${fields.length > 1 ? fields.join(", ") : fields[0]}) VALUES (''';
+    String q = '''
+INSERT INTO $table (${fields.length > 1 ? fields.join(", ") : fields[0]}) VALUES (''';
     int i = 0;
     for (MapEntry entry in data.entries) {
       i++;
       //query += i < data.length ? "'" + entry.value + "'" : entry.value;
-      query += isNumeric(entry.value.toString())
+      q += isNumeric(entry.value.toString())
           ? entry.value.toString()
           : "'" + entry.value + "'";
-      query += i < data.length ? "," : "";
+      q += i < data.length ? "," : "";
     }
-    query += ");";
+    q += ");";
 
-    result = await cnx!.query(query);
-    //await cnx!.close();
+    result = await cnx!.query(q);
+
+    await cnx!.close();
     return result;
   }
 
   @override
-  Future<Results?> delete(
-      {required String table, required Map<String, dynamic> where}) async {
+  Future<Results?> delete({
+    required String table,
+    required Map<String, dynamic> where,
+  }) async {
     if (cnx == null) await connect();
 
     String query = '''

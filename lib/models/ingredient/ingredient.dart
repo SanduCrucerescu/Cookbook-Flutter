@@ -7,7 +7,7 @@ class Ingredient {
   String name;
   double pricePerUnit;
   String unit;
-  // int amount;
+  int amount;
   //final double amountFactor;
 
   Ingredient({
@@ -15,16 +15,26 @@ class Ingredient {
     required this.name,
     required this.unit,
     required this.pricePerUnit,
-    // this.amount = 1,
+    required this.amount,
     //this.amountFactor
   });
+
+  get getId => id;
+
+  get getName => name;
+
+  get getUnit => unit;
+
+  get getPricePerUnit => pricePerUnit;
+
+  get getAmount => amount;
 
   @override
   String toString() {
     return name +
         ":" +
-        // amount.toString() +
-        // ":" +
+        amount.toString() +
+        ":" +
         unit +
         ":" +
         pricePerUnit.toString();
@@ -36,7 +46,7 @@ class Ingredient {
     return {
       'id': id,
       'name': name,
-      // 'amount': amount,
+      'amount': amount,
       'unit': unit,
       'pricePerUnit': pricePerUnit,
     };
@@ -46,7 +56,7 @@ class Ingredient {
     return Ingredient(
       id: map['id']?.toInt() ?? 0,
       name: map['name'] ?? '',
-      // amount: map['amount']?.toInt() ?? 0,
+      amount: map['amount']?.toInt() ?? 0,
       unit: map['unit'] ?? '',
       pricePerUnit: map['pricePerUnit']?.toDouble() ?? 0.0,
     );

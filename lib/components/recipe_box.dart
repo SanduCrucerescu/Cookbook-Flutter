@@ -11,7 +11,7 @@ class RecipeBox extends ConsumerWidget {
 
   RecipeBox({
     required this.recipe,
-    required this.isLiked,
+    this.isLiked = false,
     this.image,
     this.profilePicture,
     Key? key,
@@ -23,8 +23,6 @@ class RecipeBox extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(hoveringProvider);
-
     return Container(
       margin: const EdgeInsets.only(top: 20),
       width: 450,
@@ -51,60 +49,83 @@ class RecipeBox extends ConsumerWidget {
         Positioned(
           top: 90,
           left: 15,
-          child: AnimatedContainer(
-            duration: const Duration(
-              milliseconds: 100,
-            ),
-            // decoration: BoxDecoration(
-            //   boxShadow: !state.hovering
-            //       ? [
-            //           const BoxShadow(
-            //             spreadRadius: .5,
-            //             blurRadius: 15,
-            //             color: Color(0xFF606060),
-            //             offset: Offset(10, 12),
-            //           )
-            //         ]
-            //       : null,
-            // ),
-            child: RecipeBoxIcon(
-              onHover: () {
-                state.hovering = !state.hovering;
-              },
-              child: state.hovering
-                  ? Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 50),
-                      width: 420,
-                      height: 420,
-                      color: kcLightBeige,
-                      child: Center(
-                        child: Text(
-                          recipe.shortDescription,
+          child: Consumer(
+            builder: (context, ref, child) {
+              final _state = ref.watch(hoveringProvider);
+              return AnimatedContainer(
+                duration: const Duration(
+                  milliseconds: 50,
+                ),
+                decoration: BoxDecoration(
+                  boxShadow: !_state.hovering
+                      ? [
+                          const BoxShadow(
+                            spreadRadius: .5,
+                            blurRadius: 15,
+                            color: Color(0xFFAAAAAA),
+                            offset: Offset(10, 12),
+                          )
+                        ]
+                      : null,
+                ),
+                child: RecipeBoxIcon(
+                  onHover: () {
+                    _state.hovering = !_state.hovering;
+                  },
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RecipePage(
+                          recipe: recipe,
                         ),
                       ),
-                    )
-                  : null,
-              image: Image.memory(
-                getImageDataFromBlob(recipe.picture),
-                fit: BoxFit.cover,
-                height: 420,
-                width: 420,
-              ),
-              // imagePath: image != null ? null : "assets/images/food.png",
-              width: 420,
-              height: 420,
-              isImage: true,
-            ),
+                    );
+                  },
+                  child: _state.hovering
+                      ? Container(
+                          padding: const EdgeInsets.all(10),
+                          width: 420,
+                          height: 420,
+                          // color: kcLightBeige,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.black,
+                              width: .5,
+                            ),
+                          ),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 40),
+                            color: kcLightBeige,
+                            child: Center(
+                              child: SingleChildScrollView(
+                                child: Text(
+                                  recipe.shortDescription,
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      : null,
+                  image: Image.memory(
+                    getImageDataFromBlob(recipe.picture),
+                    fit: BoxFit.cover,
+                    height: 420,
+                    width: 420,
+                  ),
+                  width: 420,
+                  height: 420,
+                  isImage: true,
+                ),
+              );
+            },
           ),
         ),
         const Positioned(left: horiLineIndent, top: 510, child: HoriLine()),
         Positioned(
           top: 534,
           left: actionRowIndent,
-          child: RecipeActionsRow(
-            recipe: recipe,
-            status: isLiked,
-          ),
+          child: RecipeActionsRow(recipe: recipe, isLiked: isLiked),
         ),
         const Positioned(left: horiLineIndent, top: 570, child: HoriLine()),
         Positioned(
@@ -198,14 +219,14 @@ class RecipeBoxTopRow extends StatelessWidget {
 
 class RecipeActionsRow extends StatefulHookConsumerWidget {
   final Recipe recipe;
-  final bool status;
+  final bool isLiked;
   RecipeActionsRow({
     required this.recipe,
-    required this.status,
+    this.isLiked = false,
     Key? key,
   }) : super(key: key);
 
-  final favoritesProvider = ChangeNotifierProvider<VerificationNotifier>(
+  final stateProvider = ChangeNotifierProvider<VerificationNotifier>(
       ((ref) => VerificationNotifier()));
 
   @override
@@ -217,13 +238,14 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
   void initState() {
     super.initState();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      ref.read(widget.favoritesProvider).isTapped = widget.status;
+      ref.read(widget.stateProvider).isLiked = widget.isLiked;
+      setState(() {});
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(widget.favoritesProvider);
+    final state = ref.watch(widget.stateProvider);
     return RecipeBoxRow(
       height: 30,
       width: 400,
@@ -245,7 +267,7 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            state.isTapped
+            state.isLiked
                 ? RecipeBoxIcon(
                     icon: const Icon(Icons.star_outlined),
                     color: Colors.black,
@@ -256,7 +278,7 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
                           email: InheritedLoginProvider.of(context)
                               .userData?['email'],
                           recipeID: widget.recipe.id);
-                      state.isTapped = false;
+                      state.isLiked = false;
                     },
                   )
                 : RecipeBoxIcon(
@@ -273,7 +295,7 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
                         state.exists = true;
                         state.text = "Recipe already inserted";
                       } else {
-                        state.isTapped = true;
+                        state.isLiked = true;
                       }
                     },
                   ),
@@ -542,13 +564,13 @@ class VerificationNotifier extends ChangeNotifier {
   bool _exists = false;
   String _text = "";
 
-  bool get isTapped => _isTapped;
+  bool get isLiked => _isTapped;
 
   bool get exists => _exists;
 
   String get text => _text;
 
-  set isTapped(bool val) {
+  set isLiked(bool val) {
     _isTapped = val;
     notifyListeners();
   }

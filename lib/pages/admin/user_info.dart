@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/controllers/image_picker.dart';
 import 'package:cookbook/db/database_manager.dart';

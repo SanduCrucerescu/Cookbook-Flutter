@@ -50,7 +50,7 @@ class GetRecepies {
         id: ing.fields['id'],
         name: ing.fields['name'],
         unit: ing.fields['unit'],
-        // amount: ing.fields['amount'],
+        amount: ing.fields['amount'],
         pricePerUnit: ing.fields['pricePerUnit'],
       );
       ingredient.add(ingredientClass);
