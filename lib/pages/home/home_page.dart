@@ -38,11 +38,12 @@ class _HomePageState extends ConsumerState<HomePage> {
   );
 
   GetFavorites getFavorites = GetFavorites();
+  Future<List<Recipe>?>? items;
 
   @override
   void initState() {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
-      await getFavorites
+      items = getFavorites
           .getfav(InheritedLoginProvider.of(context).userData?['email']);
     });
 
@@ -56,21 +57,24 @@ class _HomePageState extends ConsumerState<HomePage> {
     final tec = useTextEditingController();
     final searchBarWidth = widget.searchBarWidth;
 
-    ref.read(responsiveProvider).setRecipeBoxes(
-          favorites: getFavorites.recepieList,
-          ctx: context,
-          displayedRecipes: InheritedLoginProvider.of(context).displayedRecipes,
-          cols: widget.cols,
-        );
-
     return CustomPage(
       showSearchBar: true,
       controller: tec,
       searchBarWidth: searchBarWidth,
-      child: SizedBox(
-        width: size.width - 220,
-        child: state.recipes.isEmpty == false
-            ? ListView.builder(
+      child: FutureBuilder(
+        future: getFavorites
+            .getfav(InheritedLoginProvider.of(context).userData?['email']),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            ref.read(responsiveProvider).setRecipeBoxes(
+                favorites: snapshot.data as List<Recipe>,
+                ctx: context,
+                displayedRecipes:
+                    InheritedLoginProvider.of(context).displayedRecipes,
+                cols: widget.cols);
+            return SizedBox(
+              width: size.width - 220,
+              child: ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
                 cacheExtent: 50,
                 itemCount: state.recipes.length,
@@ -78,14 +82,40 @@ class _HomePageState extends ConsumerState<HomePage> {
                 itemBuilder: (ctx, i) => Container(
                   child: state.recipes[i],
                 ),
-              )
-            : const Center(
-                child: SizedBox(
-                  height: 50,
-                  width: 50,
-                  child: CircularProgressIndicator(),
-                ),
               ),
+            );
+          } else {
+            getFavorites
+                .getfav(InheritedLoginProvider.of(context).userData?['email']);
+            return const Center(
+              child: SizedBox(
+                height: 50,
+                width: 50,
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+        },
+        // child: SizedBox(
+        //   width: size.width - 220,
+        //   child: state.recipes.isEmpty == false
+        //       ? ListView.builder(
+        //           physics: const AlwaysScrollableScrollPhysics(),
+        //           cacheExtent: 50,
+        //           itemCount: state.recipes.length,
+        //           shrinkWrap: true,
+        //           itemBuilder: (ctx, i) => Container(
+        //             child: state.recipes[i],
+        //           ),
+        //         )
+        // : const Center(
+        //     child: SizedBox(
+        //       height: 50,
+        //       width: 50,
+        //       child: CircularProgressIndicator(),
+        //     ),
+        //   ),
+        // ),
       ),
     );
   }
@@ -108,7 +138,7 @@ class ResponsiveNotifier extends ChangeNotifier {
     required BuildContext ctx,
     required List<Recipe> displayedRecipes,
     required int cols,
-  }) async {
+  }) {
     _recipes = [];
 
     for (int i = 0; i < displayedRecipes.length; i += cols) {
@@ -122,7 +152,7 @@ class ResponsiveNotifier extends ChangeNotifier {
                   ? RecipeBox(
                       recipe: displayedRecipes[i + idx],
                       isLiked: favorites == null
-                          ? false
+                          ? true
                           : favorites
                               .map((e) => e.ownerEmail)
                               .contains(displayedRecipes[i + idx].ownerEmail),

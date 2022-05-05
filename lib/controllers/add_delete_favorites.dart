@@ -9,8 +9,6 @@ class Favorites {
   }) async {
     final DatabaseManager databaseManager = await DatabaseManager.init();
 
-    int length = 0;
-
     Results? exists = await databaseManager.exists(table: "favorites", fields: [
       "*"
     ], where: {
