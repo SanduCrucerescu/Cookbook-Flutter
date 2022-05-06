@@ -17,8 +17,6 @@ class ConversationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
     if (state.displayedMessages[idx].receiver ==
         (InheritedLoginProvider.of(context).userData?['email'])) {
       return Container(
@@ -32,9 +30,13 @@ class ConversationWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   CircleAvatar(
-                      maxRadius: 25,
-                      child: ProfilePic(
-                          member: state.displayedMembers[state.idx])),
+                    maxRadius: 25,
+                    child: ProfilePic(
+                      member: state.displayedMembers[state.idx],
+                      height: 50,
+                      width: 50,
+                    ),
+                  ),
                   Container(
                     constraints: const BoxConstraints(maxWidth: 300),
                     margin: const EdgeInsets.symmetric(horizontal: 10),
