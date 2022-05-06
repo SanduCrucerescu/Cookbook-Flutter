@@ -31,22 +31,20 @@ class ProfileWidget extends StatelessWidget {
       child: Center(
         child: Stack(
           children: [
-            ClipOval(
-              child: SizedBox(
+            SizedBox(
+              height: 100 * scale,
+              width: 100 * scale,
+              child: ProfilePic(
+                member: member,
                 height: 100 * scale,
                 width: 100 * scale,
-                child: ProfilePic(
-                  member: member,
-                  height: 100 * scale,
-                  width: 100 * scale,
-                  scale: scale / 10,
-                ),
+                scale: scale / 10,
               ),
             ),
             Positioned(
               bottom: 0,
               right: 4,
-              child: ProfilePictureWidget(
+              child: EditProfilePictureButton(
                 scale: scale,
               ),
             ),
@@ -58,10 +56,10 @@ class ProfileWidget extends StatelessWidget {
 }
 
 // * This is for the edit icon, edit icon background and the outline.
-class ProfilePictureWidget extends StatelessWidget {
+class EditProfilePictureButton extends StatelessWidget {
   final double? scale;
 
-  const ProfilePictureWidget({
+  const EditProfilePictureButton({
     this.scale,
     Key? key,
   }) : super(key: key);
