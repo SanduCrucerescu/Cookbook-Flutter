@@ -43,7 +43,6 @@ class InboxWidget extends StatelessWidget {
           state.toggle = true;
           state.idx = idx;
           state.displayedMessages.clear();
-          state.displayedMessages = [];
           for (DirectMessage message in state.messages) {
             if (message.sender == state.displayedMembers[state.idx].email ||
                 message.receiver == state.displayedMembers[state.idx].email) {
@@ -52,7 +51,11 @@ class InboxWidget extends StatelessWidget {
           }
         },
         child: ListTile(
-          leading: ProfilePic(member: member),
+          leading: ProfilePic(
+            member: member,
+            height: 50,
+            width: 50,
+          ),
           title: Text(
             member.name,
             style: const TextStyle(fontSize: 14),
