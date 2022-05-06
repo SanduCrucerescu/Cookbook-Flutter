@@ -1,31 +1,47 @@
-import 'dart:ffi';
-import 'dart:io';
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:cookbook/components/components.dart';
-import 'package:cookbook/controllers/get_members.dart';
+import 'package:cookbook/db/database_manager.dart';
+import 'package:cookbook/db/queries/get_members.dart';
+import 'package:cookbook/main.dart';
 import 'package:cookbook/models/member/member.dart';
+import 'package:cookbook/pages/messages/inbox_widget.dart';
 import 'package:cookbook/pages/userPage/profile_widget.dart';
+import 'package:cookbook/pages/userPage/user_page_provider.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../db/database_manager.dart';
-import '../admin/admin_page.dart';
 
-class UserPage extends ConsumerWidget {
-  Member user;
+class UserPage extends StatefulHookConsumerWidget {
   static const String id = '/user';
-  UserPage({Key? key, required this.user}) : super(key: key);
+  const UserPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return UserPageState();
-  }
+  _UserPageState createState() => _UserPageState();
 }
 
-class UserPageState extends HookConsumerWidget {
-  get user => null;
+class _UserPageState extends ConsumerState<UserPage> {
+  Member? member;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  void initState() {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
+      final data = InheritedLoginProvider.of(context).userData;
+      if (data != null) {
+        member = await getMember(
+            context, InheritedLoginProvider.of(context).userData!['email']);
+        setState(() {});
+      }
+    });
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
     return CustomPage(
@@ -36,27 +52,11 @@ class UserPageState extends HookConsumerWidget {
         child: ListView(
           physics: const BouncingScrollPhysics(),
           children: [
-            Container(
-              margin: const EdgeInsets.only(top: 10),
-              // child: ProfileWidget(
-              //   user:
-              // imagePath: user.profilePicture,
-              // onClicked: () async {
-              //   final Map<String, dynamic>? imageData =
-              //       await openImagePicker();
-              //   if (imageData != null) {
-              //     state.photo = imageData['String'];
-              //     state.photoSuccessful = true;
-              //     state.path = imageData['file'];
-              //     state.text = imageData['name'];
-              //   }
-              // },
-              // ),
-              // child: const UsersColumn()),
-              // const UserPageForm(user: ),
-            ),
+            member == null ? const SizedBox() : ProfileWidget(member: member!),
             // const UsersColumn()
-            UserPageForm(user: user)
+            UserPageForm(
+              user: member,
+            ),
           ],
         ),
       ),
@@ -109,10 +109,12 @@ class _UsersColumnState extends State<UsersColumn> {
           itemBuilder: (BuildContext context, int idx) {
             return Row(
               children: [
-                UserProfilePicture(
-                  user: displayedmembers[1],
+                ProfilePic(
+                  member: displayedmembers[1],
                 ),
-                UserPageForm(user: displayedmembers[1])
+                UserPageForm(
+                  user: displayedmembers[1],
+                )
               ],
             );
           },
@@ -124,57 +126,79 @@ class _UsersColumnState extends State<UsersColumn> {
 
 //todo: The photo picker and changer are yet to be implemented
 
-class UserPageForm extends StatelessWidget {
+class UserPageForm extends HookConsumerWidget {
+  final Member? user;
+
   const UserPageForm({
     Key? key,
     required this.user,
   }) : super(key: key);
 
-  final Member user;
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     Size size = MediaQuery.of(context).size;
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        UserPageTextField(
-          size: size,
-          user: user,
-          hintText: user.name,
-          label: "Name",
-        ),
-        UserPageTextField(
-          size: size,
-          user: user,
-          hintText: user.email,
-          label: "Email",
-        ),
-        UserPageTextField(
-          size: size,
-          user: user,
-          hintText: '********',
-          label: "Password",
-        ),
-        Center(child: buildSaveButton())
-      ],
-    );
-  }
+    final TextEditingController nameController = useTextEditingController();
+    final TextEditingController emailController = useTextEditingController();
+    final TextEditingController passwordController = useTextEditingController();
 
-//todo Add save button function
-  Widget buildSaveButton() => SaveButton(
-        text: 'Save Changes',
-        onClicked: () {},
-      );
+    return user == null
+        ? const Center(
+            child: SizedBox(
+              height: 50,
+              width: 50,
+              child: CircularProgressIndicator(),
+            ),
+          )
+        : Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              UserPageTextField(
+                size: size,
+                user: user!,
+                hintText: user!.name,
+                label: "Name",
+              ),
+              UserPageTextField(
+                size: size,
+                user: user!,
+                hintText: user!.email,
+                label: "Email",
+              ),
+              UserPageTextField(
+                size: size,
+                user: user!,
+                hintText: '********',
+                label: "Password",
+              ),
+              Center(
+                child: SaveButton(
+                  text: 'Save Changes',
+                  onClicked: () async {
+                    await onSave(
+                      name: nameController.text,
+                      email: emailController.text,
+                      password: passwordController.text,
+                      ref: ref,
+                      context: context,
+                    );
+                  },
+                ),
+              ),
+            ],
+          );
+  }
 }
 
 class SaveButton extends StatelessWidget {
   final String text;
   final VoidCallback onClicked;
 
-  const SaveButton({Key? key, required this.text, required this.onClicked})
-      : super(key: key);
+  const SaveButton({
+    Key? key,
+    required this.text,
+    required this.onClicked,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ElevatedButton(
@@ -231,4 +255,44 @@ class UserPageTextField extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<void> onSave({
+  required String name,
+  required String email,
+  required String password,
+  required WidgetRef ref,
+  required BuildContext context,
+}) async {
+  final data = ref.read(userPageProvider).data;
+
+  DatabaseManager dbManager = await DatabaseManager.init();
+
+  String img64;
+
+  final file = data!['imgData']['file'];
+
+  if (file == null) {
+    ByteData bytes = await rootBundle.load('assets/images/ph.png');
+    Uint8List photobytes =
+        bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes);
+
+    img64 = base64Encode(photobytes);
+  } else {
+    final bytes = file.readAsBytesSync();
+    img64 = base64Encode(bytes!);
+  }
+
+  dbManager.update(
+    table: 'members',
+    set: {
+      'name': name,
+      'emai': email,
+      'password': password,
+      'profile_pic': img64
+    },
+    where: {
+      'email': InheritedLoginProvider.of(context).userData!['email'],
+    },
+  );
 }

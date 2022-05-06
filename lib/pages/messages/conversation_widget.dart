@@ -33,7 +33,7 @@ class ConversationWidget extends StatelessWidget {
                 children: [
                   CircleAvatar(
                       maxRadius: 25,
-                      child: Profile_Pic(
+                      child: ProfilePic(
                           member: state.displayedMembers[state.idx])),
                   Container(
                     constraints: const BoxConstraints(maxWidth: 300),

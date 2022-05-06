@@ -50,7 +50,7 @@ class InboxWidget extends StatelessWidget {
           }
         },
         child: ListTile(
-          leading: Profile_Pic(member: member),
+          leading: ProfilePic(member: member),
           title: Text(
             member.name,
             style: const TextStyle(fontSize: 14),
@@ -94,20 +94,29 @@ class InboxWidget extends StatelessWidget {
   }
 }
 
-class Profile_Pic extends StatelessWidget {
-  const Profile_Pic({
+class ProfilePic extends StatelessWidget {
+  final Member member;
+  final double? height, width, scale;
+
+  const ProfilePic({
     Key? key,
     required this.member,
+    this.height,
+    this.width,
+    this.scale,
   }) : super(key: key);
-
-  final Member member;
 
   @override
   Widget build(BuildContext context) {
     return ClipOval(
       child: member.profilePicture == null
           ? Image.asset("assets/images/ph.png")
-          : Image.memory(member.profilePicture!.toBytes() as Uint8List),
+          : Image.memory(
+              member.profilePicture!.toBytes() as Uint8List,
+              width: width,
+              height: height,
+              scale: scale ?? 1.0,
+            ),
     );
   }
 }
