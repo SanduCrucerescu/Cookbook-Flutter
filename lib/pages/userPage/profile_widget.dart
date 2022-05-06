@@ -1,22 +1,22 @@
+import 'package:cookbook/models/member/member.dart';
+import 'package:cookbook/pages/messages/inbox_widget.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 
 // *This code is for the image (pfp)
-
 class ProfileWidget extends StatelessWidget {
-  final String imagePath;
-  final VoidCallback onClicked;
+  Member user;
 
-  const ProfileWidget(
-      {Key? key, required this.imagePath, required this.onClicked})
-      : super(key: key);
+  ProfileWidget({Key? key, required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Stack(
         children: [
-          UserProfilePicture(imagePath: imagePath, onClicked: onClicked),
+          UserProfilePicture(
+            user: user,
+          ),
           const Positioned(
             bottom: 0,
             right: 4,
@@ -61,32 +61,19 @@ class CircleWidget extends StatelessWidget {
   }
 }
 
-// *This determines how the image looks in this case circle shape.
+// *This determines how the image looks, in this case circle shape.
 class UserProfilePicture extends StatelessWidget {
-  const UserProfilePicture({
-    Key? key,
-    required this.imagePath,
-    required this.onClicked,
-  }) : super(key: key);
+  Member user;
 
-  final String imagePath;
-  final VoidCallback onClicked;
+  UserProfilePicture({Key? key, required final this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final image = NetworkImage(imagePath);
-
     return ClipOval(
       child: Material(
         color: Colors.transparent,
-        child: Ink.image(
-          image: image,
-          fit: BoxFit.cover,
-          width: 200,
-          height: 200,
-          child: InkWell(
-            onTap: onClicked,
-          ),
+        child: Profile_Pic(
+          member: user,
         ),
       ),
     );
