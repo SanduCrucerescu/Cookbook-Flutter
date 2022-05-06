@@ -1,4 +1,4 @@
-import '../db/database_manager.dart';
+import '../database_manager.dart';
 
 class SendMessage {
   static Future<bool> sendMessage({required Map<String, dynamic> data}) async {

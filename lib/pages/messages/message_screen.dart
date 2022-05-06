@@ -9,8 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../controllers/get_members.dart';
-import '../../controllers/get_messages.dart';
+import '../../db/queries/get_members.dart';
+import '../../db/queries/get_messages.dart';
 import 'conversation_widget.dart';
 import 'inbox_widget.dart';
 

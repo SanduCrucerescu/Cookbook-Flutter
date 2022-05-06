@@ -61,7 +61,7 @@ class RouteGenerator {
         );
       case '/comments':
         return MaterialPageRoute(
-          builder: (_) => const CommentsPage(),
+          builder: (_) => CommentsPage(recipe: args as Recipe),
         );
       default:
         // If there is no such named route in the switch statement, e.g. /third

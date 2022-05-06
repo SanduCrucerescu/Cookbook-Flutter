@@ -1,4 +1,4 @@
-import 'package:cookbook/controllers/get_ingridients.dart';
+import 'package:cookbook/db/queries/get_ingridients.dart';
 import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/models/ingredient/ingredient.dart';
 import 'package:cookbook/pages/shoppingCart/shoppingPage.dart';
