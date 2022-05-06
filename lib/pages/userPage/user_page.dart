@@ -3,23 +3,17 @@ import 'dart:io';
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/controllers/get_members.dart';
 import 'package:cookbook/models/member/member.dart';
-import 'package:cookbook/pages/register/register.dart';
 import 'package:cookbook/pages/userPage/profile_widget.dart';
-import 'package:cookbook/pages/userPage/user.dart';
-import 'package:cookbook/pages/userPage/user_preferences.dart';
 import 'package:cookbook/theme/colors.dart';
-import 'package:cookbook/theme/text_styles.dart';
-import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-import 'package:mysql1/mysql1.dart';
-
-import '../../controllers/image_picker.dart';
+import '../../db/database_manager.dart';
+import '../admin/admin_page.dart';
 
 class UserPage extends ConsumerWidget {
+  Member user;
   static const String id = '/user';
-  const UserPage({Key? key}) : super(key: key);
+  UserPage({Key? key, required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,43 +21,12 @@ class UserPage extends ConsumerWidget {
   }
 }
 
-
-
 class UserPageState extends HookConsumerWidget {
-  List<Member> user;
-  Member oneUser;
-
-
-
-
-  final photoProvider = ChangeNotifierProvider<VerificationChangeNotifier>(
-    (ref) => VerificationChangeNotifier(),
-  );
-
-  late String img64;
-
-  UserPageState({Key? key}) : super(key: key);
-
-
-
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
-      user = await getMembers();
-      oneUser = user[0];
-    });
-  }
-
-
+  get user => null;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(photoProvider);
     Size size = MediaQuery.of(context).size;
-    const user = await getMembers();
-    
 
     return CustomPage(
       child: Container(
@@ -75,21 +38,25 @@ class UserPageState extends HookConsumerWidget {
           children: [
             Container(
               margin: const EdgeInsets.only(top: 10),
-              child: ProfileWidget(
-                imagePath: user.imagePath,
-                onClicked: () async {
-                  final Map<String, dynamic>? imageData =
-                      await openImagePicker();
-                  if (imageData != null) {
-                    state.photo = imageData['blob'];
-                    state.photoSuccessful = true;
-                    state.path = imageData['file'];
-                    state.text = imageData['name'];
-                  }
-                },
-              ),
+              // child: ProfileWidget(
+              //   user:
+              // imagePath: user.profilePicture,
+              // onClicked: () async {
+              //   final Map<String, dynamic>? imageData =
+              //       await openImagePicker();
+              //   if (imageData != null) {
+              //     state.photo = imageData['String'];
+              //     state.photoSuccessful = true;
+              //     state.path = imageData['file'];
+              //     state.text = imageData['name'];
+              //   }
+              // },
+              // ),
+              // child: const UsersColumn()),
+              // const UserPageForm(user: ),
             ),
-            const UserPageForm(user: user),
+            // const UsersColumn()
+            UserPageForm(user: user)
           ],
         ),
       ),
@@ -97,57 +64,65 @@ class UserPageState extends HookConsumerWidget {
   }
 }
 
-//todo: The photo picker and changer are yet to be implemented
-class VerificationChangeNotifier extends ChangeNotifier {
-  bool _photoSuccessful = false;
-  bool _wrongData = false;
-  String _wrongDataText = "";
-  String _text = "";
-  late Blob _photo;
-  File? _xFile;
+class UsersColumn extends StatefulWidget {
+  const UsersColumn({
+    Key? key,
+  }) : super(key: key);
 
-  bool get photoSuccessful => _photoSuccessful;
+  @override
+  State<UsersColumn> createState() => _UsersColumnState();
+}
 
-  bool get wrongData => _wrongData;
+class _UsersColumnState extends State<UsersColumn> {
+  DatabaseManager? dbManager;
+  List<Member> members = [];
+  List<Member> displayedmembers = [];
 
-  String get wrongDataText => _wrongDataText;
+  @override
+  void initState() {
+    super.initState();
 
-  String get text => _text;
-
-  File? get file => _xFile;
-
-  Blob get photo => _photo;
-
-  set photoSuccessful(bool val) {
-    _photoSuccessful = val;
-    notifyListeners();
+    WidgetsBinding.instance?.addPostFrameCallback(
+      (timeStamp) async {
+        members = await getMembers(context);
+        displayedmembers = members;
+      },
+    );
   }
 
-  set wrongData(bool val) {
-    _wrongData = val;
-    notifyListeners();
-  }
+  @override
+  Widget build(BuildContext context) {
+    displayedmembers = [];
 
-  set wrongDataText(String txt) {
-    _wrongDataText = txt;
-    notifyListeners();
-  }
-
-  set text(String val) {
-    _text = val;
-    notifyListeners();
-  }
-
-  set photo(Blob file) {
-    _photo = file;
-    notifyListeners();
-  }
-
-  set path(File? path) {
-    _xFile = path;
-    notifyListeners();
+    if (members.isEmpty) {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
+        child: Column(children: const [CircularProgressIndicator()]),
+      );
+    } else {
+      return Container(
+        height: 698,
+        width: 1000,
+        padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+        child: ListView.builder(
+          itemCount: displayedmembers.length,
+          itemBuilder: (BuildContext context, int idx) {
+            return Row(
+              children: [
+                UserProfilePicture(
+                  user: displayedmembers[1],
+                ),
+                UserPageForm(user: displayedmembers[1])
+              ],
+            );
+          },
+        ),
+      );
+    }
   }
 }
+
+//todo: The photo picker and changer are yet to be implemented
 
 class UserPageForm extends StatelessWidget {
   const UserPageForm({
@@ -155,7 +130,7 @@ class UserPageForm extends StatelessWidget {
     required this.user,
   }) : super(key: key);
 
-  final User user;
+  final Member user;
 
   @override
   Widget build(BuildContext context) {
@@ -217,7 +192,7 @@ class SaveButton extends StatelessWidget {
 class UserPageTextField extends StatelessWidget {
   final String hintText, label;
   final Size size;
-  final User user;
+  final Member user;
 
   const UserPageTextField({
     Key? key,
