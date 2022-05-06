@@ -1,7 +1,9 @@
 import 'dart:typed_data';
 
+import 'package:cookbook/controllers/loadimage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mysql1/mysql1.dart';
 
 import '../../models/member/member.dart';
 import '../../models/post/directMessage/direct_message.dart';
@@ -110,12 +112,17 @@ class ProfilePic extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipOval(
       child: member.profilePicture == null
-          ? Image.asset("assets/images/ph.png")
+          ? Image.asset(
+              "assets/images/ph.png",
+              height: height,
+              width: width,
+            )
           : Image.memory(
-              member.profilePicture!.toBytes() as Uint8List,
+              getImageDataFromBlob(member.profilePicture!),
               width: width,
               height: height,
               scale: scale ?? 1.0,
+              fit: BoxFit.cover,
             ),
     );
   }

@@ -109,7 +109,7 @@ class _UsersColumnState extends State<UsersColumn> {
           itemBuilder: (BuildContext context, int idx) {
             return Row(
               children: [
-                ProfilePic(
+                ProfileWidget(
                   member: displayedmembers[1],
                 ),
                 UserPageForm(
@@ -276,11 +276,7 @@ Future<void> onSave({
 
   String img64;
 
-  // print(data!['imgData']);
-
   final file = data!['imgData']['file'];
-
-  print(file);
 
   if (file == null) {
     ByteData bytes = await rootBundle.load('assets/images/ph.png');
@@ -293,16 +289,34 @@ Future<void> onSave({
     img64 = base64Encode(bytes!);
   }
 
+  Map<String, dynamic> toUpdate = {};
+
+  if (name != '') {
+    toUpdate['username'] = name;
+  }
+
+  if (email != '') {
+    toUpdate['email'] = email;
+  }
+
+  if (password != '') {
+    toUpdate['password'] = password;
+  }
+
+  if (file != null) {
+    toUpdate['profile_pic'] = img64;
+  }
+
   dbManager.update(
     table: 'members',
-    set: {
-      'username': name,
-      'email': email,
-      'password': password,
-      'profile_pic': img64
-    },
+    set: toUpdate,
     where: {
       'email': InheritedLoginProvider.of(context).userData!['email'],
     },
   );
+
+  final userData = InheritedLoginProvider.of(context).userData;
+  userData!['email'] = email;
+  userData['name'] = name;
+  userData['password'] = password;
 }
