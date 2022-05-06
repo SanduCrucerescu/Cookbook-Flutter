@@ -158,18 +158,21 @@ class UserPageForm extends HookConsumerWidget {
                 user: user!,
                 hintText: user!.name,
                 label: "Name",
+                controller: nameController,
               ),
               UserPageTextField(
                 size: size,
                 user: user!,
                 hintText: user!.email,
                 label: "Email",
+                controller: emailController,
               ),
               UserPageTextField(
                 size: size,
                 user: user!,
                 hintText: '********',
                 label: "Password",
+                controller: passwordController,
               ),
               Center(
                 child: SaveButton(
@@ -217,9 +220,11 @@ class UserPageTextField extends StatelessWidget {
   final String hintText, label;
   final Size size;
   final Member user;
+  final TextEditingController controller;
 
   const UserPageTextField({
     Key? key,
+    required this.controller,
     required this.hintText,
     required this.size,
     required this.user,
@@ -241,6 +246,7 @@ class UserPageTextField extends StatelessWidget {
             ),
           ),
           CustomTextField(
+            controller: controller,
             backgroundColor: Colors.transparent,
             isShadow: false,
             width: size.width,
@@ -270,7 +276,11 @@ Future<void> onSave({
 
   String img64;
 
+  // print(data!['imgData']);
+
   final file = data!['imgData']['file'];
+
+  print(file);
 
   if (file == null) {
     ByteData bytes = await rootBundle.load('assets/images/ph.png');
@@ -286,8 +296,8 @@ Future<void> onSave({
   dbManager.update(
     table: 'members',
     set: {
-      'name': name,
-      'emai': email,
+      'username': name,
+      'email': email,
       'password': password,
       'profile_pic': img64
     },
