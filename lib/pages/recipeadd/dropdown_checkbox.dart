@@ -1,5 +1,5 @@
 import 'package:cookbook/components/components.dart';
-import 'package:cookbook/controllers/add_tag.dart';
+import 'package:cookbook/db/queries/add_tag.dart';
 import 'package:cookbook/pages/recipeadd/ui_components.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';

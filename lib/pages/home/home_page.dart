@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'package:cookbook/components/components.dart';
-import 'package:cookbook/controllers/get_favorites.dart';
+import 'package:cookbook/db/queries/get_favorites.dart';
 import 'package:cookbook/main.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
 import 'package:cookbook/theme/colors.dart';

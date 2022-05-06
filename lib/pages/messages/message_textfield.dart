@@ -1,4 +1,4 @@
-import 'package:cookbook/controllers/send_message.dart';
+import 'package:cookbook/db/queries/send_message.dart';
 import 'package:cookbook/main.dart';
 import 'package:flutter/material.dart';
 

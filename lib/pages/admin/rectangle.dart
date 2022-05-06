@@ -1,4 +1,4 @@
-import 'package:cookbook/controllers/get_members.dart';
+import 'package:cookbook/db/queries/get_members.dart';
 import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/pages/admin/admin_page.dart';

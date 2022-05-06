@@ -1,5 +1,5 @@
 import 'package:cookbook/components/components.dart';
-import 'package:cookbook/controllers/delete_user.dart';
+import 'package:cookbook/db/queries/delete_user.dart';
 import 'package:cookbook/pages/loadimage/load_image.dart';
 import 'package:cookbook/pages/shoppingCart/shoppingPage.dart';
 import 'package:cookbook/theme/colors.dart';

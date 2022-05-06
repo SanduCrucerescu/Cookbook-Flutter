@@ -1,6 +1,6 @@
 import 'package:mysql1/mysql1.dart';
 
-import '../db/database_manager.dart';
+import '../database_manager.dart';
 
 class Favorites {
   static Future<bool> adding({
