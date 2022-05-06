@@ -209,10 +209,12 @@ class DatabaseManager extends AbstractDatabaseManager {
       query += i < set.length ? " , " : "";
     }
     for (MapEntry entry in where.entries) {
-      query += " WHERE " + entry.key + " = " + entry.value;
+      query += " WHERE " + entry.key + " = '" + entry.value + "'";
     }
 
     query += ";";
+
+    print(query);
 
     result = await cnx!.query(query);
     await cnx!.close();
