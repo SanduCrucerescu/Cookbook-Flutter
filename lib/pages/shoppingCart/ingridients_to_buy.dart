@@ -59,16 +59,23 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: InkWell(
-                                onTap: () {
-                                  state.removeIngredientAt(idx);
-                                  print("removed: " +
-                                      state.ingredientList[idx].name);
-                                },
-                                child: const Text("X")),
+                              onTap: () {
+                                state.removeIngredientAt(idx);
+                                print("removed: " +
+                                    state.ingredientList[idx].name);
+                              },
+                              child: SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: Image.asset('assets/images/remove1.png'),
+                              ),
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text(state.ingredientList[index].name),
+                            child: Text(
+                                capitalize(state.ingredientList[index].name),
+                                style: TextStyle(fontSize: 20)),
                           ),
                         ],
                       );
@@ -142,3 +149,6 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
     );
   }
 }
+
+String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
+// Database ingredients are all lowercase so...
