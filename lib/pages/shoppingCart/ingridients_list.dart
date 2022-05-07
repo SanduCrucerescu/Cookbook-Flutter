@@ -1,4 +1,5 @@
 import 'package:cookbook/models/ingredient/ingredient.dart';
+import 'package:cookbook/pages/shoppingCart/ingridients_to_buy.dart';
 import 'package:cookbook/pages/shoppingCart/shoppingPage.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
@@ -38,29 +39,38 @@ class IngridientTile extends HookConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            InkWell(
+            Container(
+              padding: const EdgeInsets.only(top: 10),
+              child: InkWell(
                 onTap: () {
                   state.addIngredient(ingridient);
-                  print("added " + ingridient.name);
-                  print(
-                      "list size: " + (state.ingredientList.length).toString());
+                  // print("added " + ingridient.name);
+                  // print(
+                  //     "list size: " + (state.ingredientList.length).toString());
                 },
-                child: const Padding(
-                  padding: EdgeInsets.only(right: 20),
-                  child: Text("Add"),
-                )),
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 20),
+                  child: SizedBox(
+                    height: 30,
+                    width: 30,
+                    child: Image.asset('assets/images/add.png'),
+                  ),
+                ),
+              ),
+            ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
+              padding: const EdgeInsets.only(left: 8, right: 8),
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: () {},
                 child: ListTile(
                   title: Text(
-                    ingridient.name +
-                        " " +
+                    capitalize(ingridient.name +
+                        "   " +
                         (ingridient.pricePerUnit).toString() +
-                        " " +
-                        ingridient.unit,
+                        "€   " +
+                        ingridient.unit),
+                    style: TextStyle(fontSize: 20),
                   ),
                 ),
               ),
