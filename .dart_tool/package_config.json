@@ -362,12 +362,15 @@
       "languageVersion": "2.12"
     },
     {
+<<<<<<< HEAD
       "name": "pull_to_refresh",
       "rootUri": "file:///Users/alex/flutter/.pub-cache/hosted/pub.dartlang.org/pull_to_refresh-2.0.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
+=======
+>>>>>>> d8f1a46 (rebase)
       "name": "quiver",
       "rootUri": "file:///Users/alex/flutter/.pub-cache/hosted/pub.dartlang.org/quiver-3.1.0",
       "packageUri": "lib/",
@@ -470,7 +473,11 @@
       "languageVersion": "2.16"
     }
   ],
+<<<<<<< HEAD
   "generated": "2022-05-09T14:43:34.506049Z",
+=======
+  "generated": "2022-05-08T18:03:59.695853Z",
+>>>>>>> d8f1a46 (rebase)
   "generator": "pub",
   "generatorVersion": "2.18.0-37.0.dev"
 }
