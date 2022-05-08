@@ -52,9 +52,9 @@ Future<Image> onTap() async {
   final DatabaseManager dbm = await DatabaseManager.init();
 
   Results? res = await dbm.select(
-    table: 'recipes',
+    table: 'members',
     fields: ['picture'],
-    where: {'title': 't'},
+    where: {'title': 'abolandr@gnu.org'},
   );
   Image memImg;
   Blob img = res!.first['picture'];

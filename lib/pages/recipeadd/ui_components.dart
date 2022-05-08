@@ -3,10 +3,16 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cookbook/components/components.dart';
+<<<<<<< HEAD
 import 'package:cookbook/db/queries/add_recipe.dart';
+=======
+import 'package:cookbook/controllers/add_recipe.dart';
+import 'package:cookbook/controllers/get_ingridients.dart';
+>>>>>>> f3225e7 (commit)
 import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/main.dart';
 import 'package:cookbook/components/DropDown.dart';
+import 'package:cookbook/models/ingredient/ingredient.dart';
 import 'package:cookbook/pages/recipeadd/dropdown_checkbox.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:file_selector/file_selector.dart';
@@ -19,6 +25,7 @@ import 'package:mysql1/mysql1.dart';
 
 class AddRecipePage extends HookConsumerWidget {
   static const String id = "/addrecipe";
+  List<Ingredient> ingredients = [];
 
   AddRecipePage({Key? key}) : super(key: key);
   final List<String> items = [
@@ -245,14 +252,12 @@ class AddRecipePage extends HookConsumerWidget {
 
   void _getIngredients() async {
     final DatabaseManager databaseManager = await DatabaseManager.init();
+    ingredients = await getIngridients();
 
-    Results? res = await databaseManager
-        .select(table: "ingredients", fields: ["id", "name"]);
-
-    for (var rs in res!) {
+    for (int i = 0; i < ingredients.length; i++) {
       menuItems.add(CustDropdownMenuItem(
-        child: Text(rs[1]),
-        value: "${rs[0]}",
+        child: Text(ingredients[i].name),
+        value: "${ingredients[i].name}",
       ));
     }
   }
@@ -265,15 +270,15 @@ class AddRecipePage extends HookConsumerWidget {
       children: [
         TableItem(
           color: Colors.white,
-          // child: DropDown(
-          //   menuItems: menuItems,
-          //   state: state,
-          // ),
           child: CustDropDown(
             items: menuItems,
             onChanged: (val) {
               state.addingredints(val);
-              print(state.ingredints);
+              for (Ingredient ingredient in ingredients) {
+                if (ingredient.name == val) {
+                  state.setUnit = ingredient.unit;
+                }
+              }
             },
           ),
         ),
@@ -285,11 +290,11 @@ class AddRecipePage extends HookConsumerWidget {
             fontSize: 12,
           ),
         ),
-        const TableItem(
+        TableItem(
           child: Center(
             child: SelectableText(
-              "kg",
-              style: TextStyle(
+              state.unit, //TODO rebuildong the widget
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
               ),
@@ -461,6 +466,7 @@ class VerificationChangeNotifier extends ChangeNotifier {
   List<String> _items = [];
 
   String _t = "";
+  String _unit = "Unit";
   int? popped;
   bool _imageAdded = false;
   bool _tagsAdded = false;
@@ -498,6 +504,8 @@ class VerificationChangeNotifier extends ChangeNotifier {
   bool get noInput => _noInput;
 
   List<String> get items => _items;
+
+  String get unit => _unit;
 
   void addTag(String tag) {
     _selectedItems.add(tag);
@@ -597,6 +605,11 @@ class VerificationChangeNotifier extends ChangeNotifier {
 
   void addTags(String tag) {
     _items.add(tag);
+    notifyListeners();
+  }
+
+  set setUnit(String val) {
+    _unit = val;
     notifyListeners();
   }
 }

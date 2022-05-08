@@ -22,9 +22,15 @@ abstract class AbstractDatabaseManager {
 
     /// cnx = mysql.connector.connect(user="beryllium", password="{your_password}", host="", port=3306, database="{your_database}", ssl_ca="{ca-cert filename}", ssl_disabled=False)
   }) : settings = ConnectionSettings(
+<<<<<<< HEAD
             host: host ?? 'beryllium3rd.mysql.database.azure.com',
             user: user ?? 'beryllium',
             password: password ?? '1dv508project!',
+=======
+            host: host ?? 'localhost',
+            user: user ?? 'root1',
+            password: password ?? 'root1',
+>>>>>>> c6d765d (rebase)
             db: db ?? 'cookbook',
             port: port ?? 3306);
 
