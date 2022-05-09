@@ -327,8 +327,11 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
           ],
         ),
       ),
-      trailing: const RecipeBoxIcon(
-        icon: Icon(Icons.share),
+      trailing: RecipeBoxIcon(
+        onTap: () {
+          addWeekly(context);
+        },
+        icon: Icon(Icons.add),
         height: 30,
         width: 30,
         color: Colors.black,
@@ -367,6 +370,133 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
       },
     );
   }
+}
+
+int weekNumber(DateTime date) {
+  int dayOfYear = int.parse(DateFormat("D").format(date));
+  return ((dayOfYear - date.weekday + 10) / 7).floor();
+}
+
+Future<dynamic> addWeekly(BuildContext context) {
+  final List<CustDropdownMenuItem<String>> mealType = [
+    const CustDropdownMenuItem(
+      child: Text("Breakfast"),
+      value: 'Breakfast',
+    ),
+    const CustDropdownMenuItem(
+      child: Text("Lunch"),
+      value: 'Lunch',
+    ),
+    const CustDropdownMenuItem(
+      child: Text("Dinner"),
+      value: 'Dinner',
+    ),
+  ];
+
+  final List<CustDropdownMenuItem<String>> weekDays = [
+    const CustDropdownMenuItem(
+      child: Text("Monday"),
+      value: 'Monday',
+    ),
+    const CustDropdownMenuItem(
+      child: Text("Tuesday"),
+      value: 'Tuesday',
+    ),
+    const CustDropdownMenuItem(
+      child: Text("Wednesday"),
+      value: 'Wednesday',
+    ),
+    const CustDropdownMenuItem(
+      child: Text("Thursday"),
+      value: 'Thursday',
+    ),
+    const CustDropdownMenuItem(
+      child: Text("Friday"),
+      value: 'Friday',
+    ),
+    const CustDropdownMenuItem(
+      child: Text("Saturday"),
+      value: 'Saturday',
+    ),
+    const CustDropdownMenuItem(
+      child: Text("Sunday"),
+      value: 'Sunday',
+    ),
+  ];
+  return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Add weekly recipe"),
+          actions: [
+            Container(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      const SelectableText(
+                        "Week",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      NumericStepButton(
+                        counter: weekNumber(DateTime.now()),
+                        onChanged: (val) {
+                          print("Aaa");
+                        },
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      const SelectableText(
+                        "Day of week:",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                          width: 150,
+                          child: CustDropDown(
+                              items: weekDays, onChanged: (val) {}))
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    children: [
+                      const SelectableText(
+                        "Meal Type:",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                          width: 150,
+                          child: CustDropDown(
+                              items: mealType, onChanged: (val) {}))
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  CustomButton(
+                    duration: const Duration(milliseconds: 200),
+                    onTap: () {},
+                    child: const Text("Add Recipe"),
+                    width: 150,
+                    height: 50,
+                  ),
+                ],
+              ),
+            )
+          ],
+        );
+      });
 }
 
 class RecipeInformationRow extends StatelessWidget {

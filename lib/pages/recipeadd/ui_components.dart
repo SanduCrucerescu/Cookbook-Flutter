@@ -3,12 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cookbook/components/components.dart';
-<<<<<<< HEAD
 import 'package:cookbook/db/queries/add_recipe.dart';
-=======
-import 'package:cookbook/controllers/add_recipe.dart';
-import 'package:cookbook/controllers/get_ingridients.dart';
->>>>>>> f3225e7 (commit)
 import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/main.dart';
 import 'package:cookbook/components/DropDown.dart';
@@ -22,6 +17,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysql1/mysql1.dart';
+
+import '../../db/queries/get_ingridients.dart';
 
 class AddRecipePage extends HookConsumerWidget {
   static const String id = "/addrecipe";

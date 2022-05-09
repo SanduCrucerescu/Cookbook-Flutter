@@ -230,6 +230,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "intl",
+      "rootUri": "file:///Users/alex/flutter/.pub-cache/hosted/pub.dartlang.org/intl-0.17.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "js",
       "rootUri": "file:///Users/alex/flutter/.pub-cache/hosted/pub.dartlang.org/js-0.6.4",
       "packageUri": "lib/",
@@ -474,10 +480,14 @@
     }
   ],
 <<<<<<< HEAD
+<<<<<<< HEAD
   "generated": "2022-05-09T14:43:34.506049Z",
 =======
   "generated": "2022-05-08T18:03:59.695853Z",
 >>>>>>> d8f1a46 (rebase)
+=======
+  "generated": "2022-05-09T14:03:14.738414Z",
+>>>>>>> 0d9cb82 (Starting with adding into weakly)
   "generator": "pub",
   "generatorVersion": "2.18.0-37.0.dev"
 }

@@ -142,6 +142,10 @@ http_parser
 2.12
 file:///Users/alex/flutter/.pub-cache/hosted/pub.dartlang.org/http_parser-4.0.0/
 file:///Users/alex/flutter/.pub-cache/hosted/pub.dartlang.org/http_parser-4.0.0/lib/
+intl
+2.12
+file:///Users/alex/flutter/.pub-cache/hosted/pub.dartlang.org/intl-0.17.0/
+file:///Users/alex/flutter/.pub-cache/hosted/pub.dartlang.org/intl-0.17.0/lib/
 js
 2.16
 file:///Users/alex/flutter/.pub-cache/hosted/pub.dartlang.org/js-0.6.4/
