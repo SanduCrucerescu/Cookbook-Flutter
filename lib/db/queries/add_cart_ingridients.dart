@@ -1,10 +1,14 @@
 //TODO this
 import 'package:cookbook/db/database_manager.dart';
+import 'package:cookbook/main.dart';
 import 'package:cookbook/models/ingredient/ingredient.dart';
 import 'package:cookbook/models/member/member.dart';
+import 'package:flutter/material.dart';
 import 'package:mysql1/mysql1.dart';
 
-Future<List<Ingredient>> getCartIngridients() async {
+Future<List<Ingredient>> getCartIngridients(BuildContext context) async {
+  var a = InheritedLoginProvider.of(context).userData!['email'];
+  a = a.toString(); //here
   final dbManager = await DatabaseManager.init();
   List<Ingredient> ingridients = [];
 
@@ -15,7 +19,8 @@ JOIN ingredients_for_recipe
 ON ingredients_for_recipe.id =cartingredients.ingredients_for_recipe_id
 JOIN ingredients ON ingredients.id=ingredients_for_recipe.ingredient_id
 JOIN members ON members.cart_id=cartingredients.cart_id
-WHERE members.username="Queenie Bogace";'''); // TODO:Change Queenie to current user
+WHERE members.email="${a}";''');
+  print(a + "here"); // TODO:Change Queenie to current user
 //TODO this
   for (var r in res!) {
     final curr = Ingredient(

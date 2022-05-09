@@ -22,7 +22,7 @@ class _ShoppingPageState extends ConsumerState<ShoppingPage> {
   void initState() {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       ref.read(selectIngredientProvider).ingredientList =
-          await getCartIngridients();
+          await getCartIngridients(context);
       setState(() {});
     });
     super.initState();
