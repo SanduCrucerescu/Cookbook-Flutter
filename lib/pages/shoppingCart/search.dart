@@ -1,5 +1,5 @@
 import 'package:cookbook/components/components.dart';
-import 'package:cookbook/controllers/delete_user.dart';
+import 'package:cookbook/db/queries/delete_user.dart';
 import 'package:cookbook/pages/loadimage/load_image.dart';
 import 'package:cookbook/pages/shoppingCart/shoppingPage.dart';
 import 'package:cookbook/theme/colors.dart';
@@ -8,7 +8,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class SearchIngridient extends HookConsumerWidget {
-  final SelectedIngridientChangeNotifier2 state;
+  final SelectedIngridientChangeNotifier state;
   const SearchIngridient({Key? key, required this.state}) : super(key: key);
 
   @override

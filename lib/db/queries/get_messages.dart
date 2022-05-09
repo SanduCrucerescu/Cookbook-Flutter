@@ -1,7 +1,7 @@
 import 'package:cookbook/models/post/directMessage/direct_message.dart';
 import 'package:mysql1/mysql1.dart';
 
-import '../db/database_manager.dart';
+import '../database_manager.dart';
 
 Future<List<DirectMessage>> getMessages() async {
   final dbManager = await DatabaseManager.init();

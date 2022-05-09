@@ -3,7 +3,7 @@ library components;
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:typed_data';
-import 'package:cookbook/controllers/add_delete_favorites.dart';
+import 'package:cookbook/db/queries/add_delete_favorites.dart';
 import 'package:cookbook/controllers/loadimage.dart';
 import 'package:cookbook/main.dart';
 import 'package:cookbook/models/recipe/recipe.dart';

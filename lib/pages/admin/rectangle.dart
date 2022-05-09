@@ -1,4 +1,4 @@
-import 'package:cookbook/controllers/get_members.dart';
+import 'package:cookbook/db/queries/get_members.dart';
 import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/pages/admin/admin_page.dart';
@@ -100,7 +100,6 @@ class _UsersColumnState extends State<UsersColumn> {
     } else {
       return Container(
         height: 698,
-        width: 1000,
         padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
         child: ListView.builder(
           itemCount: displayedmembers.length,

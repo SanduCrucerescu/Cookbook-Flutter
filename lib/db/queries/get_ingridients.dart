@@ -6,6 +6,7 @@ import 'package:mysql1/mysql1.dart';
 Future<List<Ingredient>> getIngridients() async {
   final dbManager = await DatabaseManager.init();
   List<Ingredient> ingridients = [];
+
   Results? res = await dbManager.select(table: 'ingredients', fields: ['*']);
 //TODO this
   for (var r in res!) {

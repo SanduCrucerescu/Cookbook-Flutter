@@ -2,6 +2,7 @@ import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/models/ingredient/ingredient.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
 import 'package:cookbook/models/tag/tag.dart';
+import 'package:flutter/material.dart';
 import 'package:mysql1/mysql1.dart';
 
 class GetFavorites {
@@ -18,7 +19,7 @@ class GetFavorites {
     }
   }
 
-  Future<void> getfav(
+  Future<List<Recipe>?> getfav(
     String? email,
   ) async {
     _recepieList = [];
@@ -42,6 +43,7 @@ class GetFavorites {
           tags: await getTags(rs.fields['id']));
       setRecipie(recipeClass);
     }
+    return _recepieList;
     // print(recepieList);
   }
 

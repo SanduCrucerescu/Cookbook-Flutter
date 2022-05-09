@@ -47,7 +47,7 @@ class UserTile extends StatelessWidget {
               state.currMember = member;
             },
             child: ListTile(
-              leading: Profile_Pic(member: member),
+              leading: ProfilePic(member: member),
               title: Text(
                 member.email,
               ),

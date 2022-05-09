@@ -1,13 +1,16 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class Ingredient {
+class Ingredient with ChangeNotifier {
   int id;
   String name;
   double pricePerUnit;
   String unit;
-  int amount;
+  int? amount;
+  double? changedPrice;
+  int? changedAmount;
   //final double amountFactor;
 
   Ingredient({
@@ -15,7 +18,7 @@ class Ingredient {
     required this.name,
     required this.unit,
     required this.pricePerUnit,
-    required this.amount,
+    this.amount,
     //this.amountFactor
   });
 
@@ -28,6 +31,10 @@ class Ingredient {
   get getPricePerUnit => pricePerUnit;
 
   get getAmount => amount;
+
+  get getChangedPrice => changedPrice;
+
+  get getChangedAmout => changedAmount;
 
   @override
   String toString() {
@@ -66,4 +73,22 @@ class Ingredient {
 
   factory Ingredient.fromJson(String source) =>
       Ingredient.fromMap(json.decode(source));
+
+  void changeAmount(int portion) {
+    switch (portion) {
+      case 2:
+        changedAmount = amount;
+        changedPrice = pricePerUnit;
+        break;
+      case 4:
+        changedAmount = amount! * 2;
+        changedPrice = pricePerUnit * 2;
+        break;
+      case 6:
+        changedAmount = amount! * 4;
+        changedPrice = pricePerUnit * 4;
+        break;
+    }
+    notifyListeners();
+  }
 }

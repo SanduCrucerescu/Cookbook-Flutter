@@ -26,6 +26,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "binary_tree",
+      "rootUri": "file:///opt/homebrew/Caskroom/flutter/2.10.4/flutter/.pub-cache/hosted/pub.dartlang.org/binary_tree-1.0.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
       "name": "boolean_selector",
       "rootUri": "file:///opt/homebrew/Caskroom/flutter/2.10.4/flutter/.pub-cache/hosted/pub.dartlang.org/boolean_selector-2.1.0",
       "packageUri": "lib/",
@@ -356,6 +362,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "quiver",
+      "rootUri": "file:///opt/homebrew/Caskroom/flutter/2.10.4/flutter/.pub-cache/hosted/pub.dartlang.org/quiver-3.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "riverpod",
       "rootUri": "file:///opt/homebrew/Caskroom/flutter/2.10.4/flutter/.pub-cache/hosted/pub.dartlang.org/riverpod-1.0.3",
       "packageUri": "lib/",
@@ -452,7 +464,7 @@
       "languageVersion": "2.16"
     }
   ],
-  "generated": "2022-05-05T09:13:31.684541Z",
+  "generated": "2022-05-09T10:07:40.777236Z",
   "generator": "pub",
   "generatorVersion": "2.16.2"
 }

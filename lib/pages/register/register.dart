@@ -4,7 +4,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cookbook/components/components.dart';
-import 'package:cookbook/controllers/add_user.dart';
+import 'package:cookbook/db/queries/add_user.dart';
 import 'package:cookbook/controllers/image_picker.dart';
 import 'package:cookbook/pages/home/home_page.dart';
 import 'package:cookbook/theme/colors.dart';

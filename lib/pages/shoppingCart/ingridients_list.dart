@@ -1,16 +1,13 @@
 import 'package:cookbook/models/ingredient/ingredient.dart';
-import 'package:cookbook/models/member/member.dart';
-import 'package:cookbook/pages/messages/inbox_widget.dart';
 import 'package:cookbook/pages/shoppingCart/ingridients_to_buy.dart';
 import 'package:cookbook/pages/shoppingCart/shoppingPage.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:mysql1/src/blob.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class IngridientTile extends StatelessWidget {
+class IngridientTile extends HookConsumerWidget {
   final Ingredient ingridient;
   final int idx;
-  final SelectedIngridientChangeNotifier2 state;
   final String name;
   final int id;
   final double? pricePerUnit;
@@ -18,15 +15,15 @@ class IngridientTile extends StatelessWidget {
   const IngridientTile({
     required this.ingridient,
     required this.idx,
-    required this.state,
     required this.id,
     required this.name,
     required this.pricePerUnit,
     Key? key,
   }) : super(key: key);
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(selectIngredientProvider);
+
     return Container(
       padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
       child: Container(
@@ -39,23 +36,41 @@ class IngridientTile extends StatelessWidget {
             ),
             borderRadius: BorderRadius.circular(5)),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            TextButton(
-                onPressed: (/* ingridientList.add(ingridient) */) {},
-                child: Text("Add")),
+            Container(
+              padding: const EdgeInsets.only(top: 10),
+              child: InkWell(
+                onTap: () {
+                  state.addIngredient(ingridient);
+                  // print("added " + ingridient.name);
+                  // print(
+                  //     "list size: " + (state.ingredientList.length).toString());
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 20),
+                  child: SizedBox(
+                    height: 30,
+                    width: 30,
+                    child: Image.asset('assets/images/add.png'),
+                  ),
+                ),
+              ),
+            ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
+              padding: const EdgeInsets.only(left: 8, right: 8),
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: () {},
                 child: ListTile(
                   title: Text(
-                    ingridient.name +
-                        " " +
+                    capitalize(ingridient.name +
+                        "   " +
                         (ingridient.pricePerUnit).toString() +
-                        " " +
-                        ingridient.unit,
+                        "€   " +
+                        ingridient.unit),
+                    style: TextStyle(fontSize: 20),
                   ),
                 ),
               ),

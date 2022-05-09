@@ -1,16 +1,17 @@
+import 'package:binary_tree/binary_tree.dart';
 import 'package:cookbook/components/components.dart';
+import 'package:cookbook/main.dart';
 import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/models/post/directMessage/direct_message.dart';
 import 'package:cookbook/pages/messages/message_textfield.dart';
 import 'package:cookbook/pages/messages/search_bar.dart';
 import 'package:cookbook/theme/colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-import '../../controllers/get_members.dart';
-import '../../controllers/get_messages.dart';
+import 'package:quiver/iterables.dart';
+import '../../db/queries/get_members.dart';
+import '../../db/queries/get_messages.dart';
 import 'conversation_widget.dart';
 import 'inbox_widget.dart';
 
@@ -33,14 +34,8 @@ class MessagePageState extends ConsumerState<MessagePage> {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       final state = ref.read(membersProvider);
       state.members = await getMembers(context);
-      state.displayedMembers = state.members;
       state.messages = await getMessages();
-      // for (Member member in state.displayedMembers) {
-      //   if (member.email ==
-      //       InheritedLoginProvider.of(context).userData?['email']) {
-      //     state.removeDisplayedMember(member);
-      //   }
-      // }
+      state.advancedSetDisplayedMembers(state.members, context);
     });
 
     super.initState();
@@ -55,93 +50,77 @@ class MessagePageState extends ConsumerState<MessagePage> {
     final tec = useTextEditingController();
     final messageTec = useTextEditingController();
 
-    return Scaffold(
-      body: Container(
-        color: const Color(0xFFE3DBCA),
-        height: size.height,
-        width: size.width,
-        child: Column(
-          children: [
-            const NavBar(
-              showSearchBar: false,
-            ),
-            Row(
-              children: [
-                SideBar(
-                  items: kSideBarItems,
-                  margin: const EdgeInsets.all(0),
+    return CustomPage(
+      child: Row(
+        children: [
+          Column(
+            children: [
+              SearchBar(state: state, tec: tec),
+              Container(
+                height: size.height - 200,
+                width: (size.width - 200) / 2,
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                child: ListView.builder(
+                  controller: sc1,
+                  itemCount: state.displayedMembers.length,
+                  itemBuilder: (BuildContext context, int idx) {
+                    return InboxWidget(idx: idx, state: state);
+                  },
                 ),
-                Column(
-                  children: [
-                    SearchBar(state: state, tec: tec),
-                    Container(
-                      height: size.height - 200,
-                      width: (size.width - 200) / 2,
-                      padding: const EdgeInsets.only(left: 20, right: 20),
-                      child: ListView.builder(
-                        controller: sc1,
-                        itemCount: state.displayedMembers.length,
-                        itemBuilder: (BuildContext context, int idx) {
-                          return InboxWidget(idx: idx, state: state);
-                        },
-                      ),
-                    ),
-                  ],
+              ),
+            ],
+          ),
+          Visibility(
+            visible: !state.toggle,
+            child: Column(children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: kcLightBeige,
+                  border: Border.all(color: Colors.black),
                 ),
-                Visibility(
-                  visible: !state.toggle,
-                  child: Column(children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: kcLightBeige,
-                        border: Border.all(color: Colors.black),
-                      ),
-                      height: size.height - 200,
-                      width: (size.width - 200) / 2,
-                      child: const Center(
-                        child: Text(
-                          "No Conversation Selected",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 25,
-                          ),
-                        ),
-                      ),
+                height: size.height - 200,
+                width: (size.width - 200) / 2,
+                child: const Center(
+                  child: Text(
+                    "No Conversation Selected",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 25,
                     ),
-                  ]),
+                  ),
                 ),
-                Visibility(
-                  visible: state.toggle,
-                  child: Column(children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: Colors.black)),
-                      height: size.height - 200,
-                      width: (size.width - 200) / 2,
-                      margin: const EdgeInsets.only(bottom: 3),
-                      child: ListView.builder(
-                        controller: sc2,
-                        reverse: true,
-                        itemCount: state.displayedMessages.length,
-                        itemBuilder: (BuildContext context, int idx) {
-                          return ConversationWidget(
-                            idx: idx,
-                            state: state,
-                          );
-                        },
-                      ),
-                    ),
-                    MessageTextField(
+              ),
+            ]),
+          ),
+          Visibility(
+            visible: state.toggle,
+            child: Column(children: [
+              Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Colors.black)),
+                height: size.height - 200,
+                width: (size.width - 200) / 2,
+                margin: const EdgeInsets.only(bottom: 3),
+                child: ListView.builder(
+                  controller: sc2,
+                  reverse: true,
+                  itemCount: state.displayedMessages.length,
+                  itemBuilder: (BuildContext context, int idx) {
+                    return ConversationWidget(
+                      idx: idx,
                       state: state,
-                      messageTec: messageTec,
-                    ),
-                  ]),
+                    );
+                  },
                 ),
-              ],
-            ),
-          ],
-        ),
+              ),
+              MessageTextField(
+                state: state,
+                messageTec: messageTec,
+              ),
+            ]),
+          ),
+        ],
       ),
     );
   }
@@ -152,14 +131,18 @@ class MessagePageController extends ChangeNotifier {
   List<Member> _displayedMembers = [];
   List<DirectMessage> _messages = [];
   List<DirectMessage> _displayedMessages = [];
+
   String _filteringString = '';
   String _message = '';
   bool _toggle = false;
   late int _idx;
+  String _date = '';
 
   String get filteringString => _filteringString;
 
   String get message => _message;
+
+  String get date => _date;
 
   List<Member> get members => _members;
 
@@ -173,13 +156,71 @@ class MessagePageController extends ChangeNotifier {
 
   List<DirectMessage> get displayedMessages => _displayedMessages;
 
+  bool earlier(String initial, String other) {
+    var chars1 = initial.split('-: ').map((e) => int.parse(e)).toList();
+    var chars2 = other.split('-: ').map((e) => int.parse(e)).toList();
+
+    for (var pair in zip([chars1, chars2])) {
+      if (pair[0] < pair[1]) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   set members(List<Member> newMember) {
     _members = newMember;
     notifyListeners();
   }
 
-  set displayedMembers(List<Member> newMember) {
-    _displayedMembers = newMember;
+  set displayedMembers(List<Member> newMembers) {
+    _displayedMembers = newMembers;
+    notifyListeners();
+  }
+
+  Member? getMemberByEmail(String? email) {
+    for (Member m in _members) {
+      if (m.email == email) {
+        return m;
+      }
+    }
+  }
+
+  void advancedSetDisplayedMembers(
+      List<Member> newMembers, BuildContext context) {
+    List<Member> membersWithChat = [];
+    List<DirectMessage> lastMessages = [];
+    final String email = InheritedLoginProvider.of(context).userData!['email'];
+    for (DirectMessage mes in _messages) {
+      final mem =
+          getMemberByEmail(mes.sender != email ? mes.sender : mes.receiver);
+      if ((mes.sender == email || mes.receiver == email) &&
+          !membersWithChat.contains(mem) &&
+          mem != null) {
+        membersWithChat.add(mem);
+        lastMessages.add(mes);
+      }
+    }
+
+    final orderedMessages = BinaryTree<DirectMessage>();
+    List<Member> orderedMembersWithChat = [];
+
+    for (DirectMessage dm in lastMessages) {
+      orderedMessages.insert(dm);
+    }
+
+    for (DirectMessage dm in orderedMessages.toList()) {
+      orderedMembersWithChat.add(membersWithChat.elementAt(membersWithChat
+          .indexWhere((e) => e.email == dm.receiver || e.email == dm.sender)));
+      // print(dm.toString());
+    }
+
+    for (Member _member in membersWithChat) {
+      newMembers.remove(_member);
+    }
+
+    _displayedMembers = [...membersWithChat, ...newMembers];
     notifyListeners();
   }
 
@@ -200,6 +241,11 @@ class MessagePageController extends ChangeNotifier {
 
   set message(String val) {
     _message = val;
+    notifyListeners();
+  }
+
+  set date(String val) {
+    _date = val;
     notifyListeners();
   }
 
@@ -241,37 +287,5 @@ class MessagePageController extends ChangeNotifier {
   void removeDisplayedMessage(DirectMessage _message) {
     _displayedMessages.remove(_message);
     notifyListeners();
-  }
-}
-
-class T extends StatefulWidget {
-  const T({Key? key}) : super(key: key);
-
-  @override
-  State<T> createState() => _TState();
-}
-
-class _TState extends State<T> {
-  late ScrollController sc1;
-
-  @override
-  void initState() {
-    sc1 = ScrollController();
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        child: ListView(
-      controller: sc1,
-      children: [],
-    ));
-  }
-
-  @override
-  void dispose() {
-    sc1.dispose();
-    super.dispose();
   }
 }

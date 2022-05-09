@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:cookbook/controllers/get_recipes.dart';
+import 'package:cookbook/db/queries/get_recipes.dart';
 import 'package:cookbook/main.dart';
 import 'package:cookbook/pages/login/login.dart';
 import 'package:flutter/material.dart';

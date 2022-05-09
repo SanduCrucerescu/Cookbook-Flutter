@@ -1,6 +1,6 @@
 import 'package:mysql1/mysql1.dart';
 
-import '../db/database_manager.dart';
+import '../database_manager.dart';
 
 class Favorites {
   static Future<bool> adding({
@@ -8,8 +8,6 @@ class Favorites {
     int? recipeID,
   }) async {
     final DatabaseManager databaseManager = await DatabaseManager.init();
-
-    int length = 0;
 
     Results? exists = await databaseManager.exists(table: "favorites", fields: [
       "*"

@@ -1,5 +1,8 @@
-import 'package:cookbook/controllers/send_message.dart';
+import 'package:cookbook/db/queries/get_members.dart';
+import 'package:cookbook/db/queries/get_messages.dart';
+import 'package:cookbook/db/queries/send_message.dart';
 import 'package:cookbook/main.dart';
+import 'package:cookbook/models/post/directMessage/direct_message.dart';
 import 'package:flutter/material.dart';
 
 import 'message_screen.dart';
@@ -16,8 +19,11 @@ class MessageTextField extends StatefulWidget {
 }
 
 class _MessageTextFieldState extends State<MessageTextField> {
+  String? msg;
+
   @override
   Widget build(BuildContext context) {
+    final state = widget.state;
     Size size = MediaQuery.of(context).size;
     return Row(
       children: [
@@ -27,7 +33,7 @@ class _MessageTextFieldState extends State<MessageTextField> {
           child: TextField(
             controller: widget.messageTec,
             onChanged: (value) {
-              widget.state.message = value;
+              msg = value;
             },
             decoration: InputDecoration(
               filled: true,
@@ -36,18 +42,30 @@ class _MessageTextFieldState extends State<MessageTextField> {
               hintText: 'Enter message',
               suffixIcon: IconButton(
                 icon: const Icon(Icons.send),
-                onPressed: () {
-                  if (widget.state.message.isNotEmpty) {
-                    SendMessage.sendMessage(data: {
+                onPressed: () async {
+                  if (msg != null) {
+                    await SendMessage.sendMessage(data: {
                       'sender':
                           InheritedLoginProvider.of(context).userData?['email'],
                       'receiver':
-                          widget.state.displayedMembers[widget.state.idx].email,
-                      'content': widget.state.message,
+                          state.displayedMembers[widget.state.idx].email,
+                      'content': msg,
                       'time': DateTime.now().toString()
                     });
                     widget.messageTec.clear();
-                    widget.state.message = '';
+                    msg = '';
+                    state.messages = await getMessages();
+                    state.members = await getMembers(context);
+                    state.displayedMessages.clear();
+                    for (DirectMessage message in state.messages) {
+                      if (message.sender ==
+                              state.displayedMembers[state.idx].email ||
+                          message.receiver ==
+                              state.displayedMembers[state.idx].email) {
+                        state.addDisplayedMessage(message);
+                      }
+                    }
+                    state.advancedSetDisplayedMembers(state.members, context);
                     setState(() {});
                   }
                 },
