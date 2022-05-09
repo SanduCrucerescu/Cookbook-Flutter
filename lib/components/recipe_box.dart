@@ -299,11 +299,21 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
                       }
                     },
                   ),
-            const RecipeBoxIcon(
-              icon: Icon(Icons.mode_comment_outlined),
+            RecipeBoxIcon(
+              icon: const Icon(Icons.mode_comment_outlined),
               height: 25,
               width: 25,
               color: Colors.black,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CommentsPage(
+                      recipe: widget.recipe,
+                    ),
+                  ),
+                );
+              },
             ),
             const RecipeBoxIcon(
               icon: Icon(Icons.share),

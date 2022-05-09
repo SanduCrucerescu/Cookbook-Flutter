@@ -25,7 +25,7 @@ class Recipe {
     required this.longDescription,
     required this.shortDescription,
     required this.instructions,
-    required this.quantity,
+    this.quantity = 1,
     required this.picture,
     required this.ingredients,
     required this.tags,

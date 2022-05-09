@@ -51,28 +51,29 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
               width: xSize,
               child: SizedBox(
                 child: ListView.builder(
-                    controller: ScrollController(),
-                    itemCount: state.ingredientList.length, // NULL???????
-                    itemBuilder: (BuildContext context, int index) {
-                      return Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: InkWell(
-                                onTap: () {
-                                  state.removeIngredientAt(idx);
-                                  print("removed: " +
-                                      state.ingredientList[idx].name);
-                                },
-                                child: const Text("X")),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(state.ingredientList[index].name),
-                          ),
-                        ],
-                      );
-                    }),
+                  controller: ScrollController(),
+                  itemCount: state.ingredientList.length, // NULL???????
+                  itemBuilder: (BuildContext context, int index) {
+                    return Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: InkWell(
+                              onTap: () {
+                                state.removeIngredientAt(idx);
+                                print("removed: " +
+                                    state.ingredientList[idx].name);
+                              },
+                              child: const Text("X")),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(state.ingredientList[index].name),
+                        ),
+                      ],
+                    );
+                  },
+                ),
               ),
             ),
             Padding(
@@ -88,13 +89,15 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                 height: 100,
                 width: xSize,
                 child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextButton(
-                          onPressed: () {/* Commit to Database */},
-                          child: const Text("Save Shopping Cart")),
-                    ]),
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      onPressed: () {/* Commit to Database */},
+                      child: const Text("Save Shopping Cart"),
+                    ),
+                  ],
+                ),
               ),
             ),
             Container(
@@ -104,35 +107,38 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Container(
-                      child: const Text("Me and Lui",
-                          style: TextStyle(
-                            color: Colors.black,
-                          )),
-                      width: 200.00,
-                      height: 140.00,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: ExactAssetImage('assets/images/IMG_5407.JPG'),
-                          fit: BoxFit.fitHeight,
-                        ),
-                      )),
-                  Container(
-                      height: 50,
-                      width: 150,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(5),
-                        ),
+                    child: const Text(
+                      "Me and Lui",
+                      style: TextStyle(
+                        color: Colors.black,
                       ),
-                      child: Center(
-                        child: Text(
-                            "Total Cost: " +
-                                getIngredientPrice().toString() +
-                                "€",
-                            style: TextStyle(fontSize: 15)),
-                      )),
+                    ),
+                    width: 200.00,
+                    height: 140.00,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: ExactAssetImage('assets/images/IMG_5407.JPG'),
+                        fit: BoxFit.fitHeight,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: 50,
+                    width: 150,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(5),
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Total Cost: " + getIngredientPrice().toString() + "€",
+                        style: const TextStyle(fontSize: 15),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             )

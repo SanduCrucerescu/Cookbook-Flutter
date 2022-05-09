@@ -75,7 +75,7 @@ class _HomePageState extends ConsumerState<HomePage> {
             return SizedBox(
               width: size.width - 220,
               child: ListView.builder(
-                physics: const AlwaysScrollableScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 cacheExtent: 50,
                 itemCount: state.recipes.length,
                 shrinkWrap: true,
