@@ -11,7 +11,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:quiver/iterables.dart';
 import '../../db/queries/get_members.dart';
 import '../../db/queries/get_messages.dart';
@@ -52,21 +51,6 @@ class MessagePageState extends ConsumerState<MessagePage> {
     Size size = MediaQuery.of(context).size;
     final tec = useTextEditingController();
     final messageTec = useTextEditingController();
-
-    RefreshController _refreshController =
-        RefreshController(initialRefresh: false);
-
-    void _onRefresh() async {
-      await Future.delayed(Duration(milliseconds: 1000));
-      print('refresh');
-      _refreshController.refreshCompleted();
-    }
-
-    void _onLoading() async {
-      await Future.delayed(Duration(milliseconds: 1000));
-      print('loading');
-      _refreshController.loadComplete();
-    }
 
     return CustomPage(
       child: Row(
