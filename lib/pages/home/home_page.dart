@@ -96,26 +96,6 @@ class _HomePageState extends ConsumerState<HomePage> {
             );
           }
         },
-        // child: SizedBox(
-        //   width: size.width - 220,
-        //   child: state.recipes.isEmpty == false
-        //       ? ListView.builder(
-        //           physics: const AlwaysScrollableScrollPhysics(),
-        //           cacheExtent: 50,
-        //           itemCount: state.recipes.length,
-        //           shrinkWrap: true,
-        //           itemBuilder: (ctx, i) => Container(
-        //             child: state.recipes[i],
-        //           ),
-        //         )
-        // : const Center(
-        //     child: SizedBox(
-        //       height: 50,
-        //       width: 50,
-        //       child: CircularProgressIndicator(),
-        //     ),
-        //   ),
-        // ),
       ),
     );
   }
