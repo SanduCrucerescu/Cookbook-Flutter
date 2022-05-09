@@ -24,9 +24,14 @@ dependencies:
   google_fonts: ^2.3.1
   hooks_riverpod: ^1.0.3
   mysql1: ^0.19.2
+<<<<<<< HEAD
   pull_to_refresh: ^2.0.0
+=======
+>>>>>>> d8f1a46 (rebase)
   quiver: ^3.1.0
   riverpod: ^1.0.3
+  binary_tree: ^1.0.5
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_lints: ^1.0.0

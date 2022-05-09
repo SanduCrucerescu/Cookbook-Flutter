@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cookbook/pages/recipeadd/ui_components.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,13 +35,13 @@ class _CustDropDownState extends State<CustDropDown>
   bool _isOpen = false, _isAnyItemSelected = false, _isReverse = false;
   late OverlayEntry _overlayEntry;
   late RenderBox? _renderBox;
-  Widget? _itemSelected;
+  String? _itemSelected;
   late Offset dropDownOffset;
   final LayerLink _layerLink = LayerLink();
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         setState(() {
           dropDownOffset = getOffset();
@@ -50,14 +52,14 @@ class _CustDropDownState extends State<CustDropDown>
           if (mounted) {
             setState(() {
               _isAnyItemSelected = true;
-              _itemSelected = widget.items[widget.defaultSelectedIndex];
+              _itemSelected = widget.items[widget.defaultSelectedIndex].value;
               widget.onChanged(widget.items[widget.defaultSelectedIndex].value);
             });
           }
         }
       }
     });
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
 
@@ -140,7 +142,7 @@ class _CustDropDownState extends State<CustDropDown>
                                             if (mounted) {
                                               setState(() {
                                                 _isAnyItemSelected = true;
-                                                _itemSelected = item.child;
+                                                _itemSelected = item.value;
                                                 _removeOverlay();
                                                 if (widget.onChanged != null)
                                                   widget.onChanged(item.value);
@@ -207,7 +209,10 @@ class _CustDropDownState extends State<CustDropDown>
                 child: _isAnyItemSelected
                     ? Padding(
                         padding: const EdgeInsets.only(left: 4.0),
-                        child: _itemSelected!,
+                        child: Text(
+                          _itemSelected!.toString(),
+                          style: TextStyle(fontSize: 16),
+                        ),
                       )
                     : Padding(
                         padding:
@@ -255,7 +260,7 @@ class _CustDropDownState extends State<CustDropDown>
 }
 
 class CustDropdownMenuItem<T> extends StatelessWidget {
-  final T value;
+  final String value;
   final Widget child;
 
   const CustDropdownMenuItem({required this.value, required this.child});

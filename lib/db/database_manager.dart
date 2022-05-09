@@ -22,9 +22,21 @@ abstract class AbstractDatabaseManager {
 
     /// cnx = mysql.connector.connect(user="beryllium", password="{your_password}", host="", port=3306, database="{your_database}", ssl_ca="{ca-cert filename}", ssl_disabled=False)
   }) : settings = ConnectionSettings(
+<<<<<<< HEAD
+<<<<<<< HEAD
             host: host ?? 'beryllium3rd.mysql.database.azure.com',
             user: user ?? 'beryllium',
             password: password ?? '1dv508project!',
+=======
+            host: host ?? 'localhost',
+            user: user ?? 'root1',
+            password: password ?? 'root1',
+>>>>>>> c6d765d (rebase)
+=======
+            host: host ?? 'beryllium3rd.mysql.database.azure.com',
+            user: user ?? 'beryllium',
+            password: password ?? '1dv508project!',
+>>>>>>> 0d9cb82 (Starting with adding into weakly)
             db: db ?? 'cookbook',
             port: port ?? 3306);
 
@@ -166,7 +178,6 @@ class DatabaseManager extends AbstractDatabaseManager {
       query += i < data.length ? "," : "";
     }
     query += ");";
-
     result = await cnx!.query(query);
 
     await cnx!.close();
@@ -199,7 +210,7 @@ class DatabaseManager extends AbstractDatabaseManager {
       {required String table,
       required Map<String, dynamic> where,
       required Map<String, dynamic> set}) async {
-    if (cnx == null) await connect();
+    await connect();
 
     String query = '''UPDATE  $table SET ''';
     int i = 0;
@@ -209,12 +220,10 @@ class DatabaseManager extends AbstractDatabaseManager {
       query += i < set.length ? " , " : "";
     }
     for (MapEntry entry in where.entries) {
-      query += " WHERE " + entry.key + " = '" + entry.value + "'";
+      query += " WHERE " + entry.key + " = " + entry.value;
     }
 
     query += ";";
-
-    print(query);
 
     result = await cnx!.query(query);
     await cnx!.close();
