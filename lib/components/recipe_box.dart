@@ -305,11 +305,14 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
               width: 25,
               color: Colors.black,
             ),
-            const RecipeBoxIcon(
+            RecipeBoxIcon(
               icon: Icon(Icons.share),
               height: 30,
               width: 30,
               color: Colors.black,
+              onTap: () {
+                areyousure2(context);
+              },
             ),
           ],
         ),
@@ -320,6 +323,38 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
         width: 30,
         color: Colors.black,
       ),
+    );
+  }
+
+  Future<dynamic> areyousure2(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Center(child: Text("Share Message")),
+          content: Container(
+            height: 50,
+            child: Column(
+              children: [Text('Hello'), Text("Search2...")],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'Abort'),
+              child: const Text('Abort',
+                  style: TextStyle(
+                      color: Colors.green, fontWeight: FontWeight.bold)),
+            ),
+            TextButton(
+              // Replace with query
+              onPressed: () {},
+              child: const Text('Delete',
+                  style: TextStyle(
+                      color: Colors.redAccent, fontWeight: FontWeight.bold)),
+            ),
+          ],
+        );
+      },
     );
   }
 }
