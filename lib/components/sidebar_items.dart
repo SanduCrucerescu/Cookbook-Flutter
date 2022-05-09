@@ -63,5 +63,12 @@ List<Map<String, dynamic>> kSideBarItems = [
     "onTap": ShoppingPage.id,
     "icon": const Icon(Icons.abc),
     "children": [],
+  },
+  {
+    "text": "Comments",
+    "id": 7,
+    "onTap": CommentsPage.id,
+    "icon": const Icon(Icons.mode_comment_outlined),
+    "children": [],
   }
 ];

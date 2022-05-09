@@ -10,6 +10,7 @@ import 'package:cookbook/models/recipe/recipe.dart';
 import 'package:cookbook/models/shoppingCart/shopping_cart.dart';
 import 'package:cookbook/models/tag/tag.dart';
 import 'package:cookbook/pages/admin/admin_page.dart';
+import 'package:cookbook/pages/comments/comments.dart';
 import 'package:cookbook/pages/faq/faq.dart';
 import 'package:cookbook/pages/favorites/favorites.dart';
 import 'package:cookbook/pages/home/home_page.dart';

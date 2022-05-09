@@ -32,7 +32,7 @@ class _UserPageState extends ConsumerState<UserPage> {
       final data = InheritedLoginProvider.of(context).userData;
       if (data != null) {
         member = await getMember(
-            context, InheritedLoginProvider.of(context).userData!['email']);
+            InheritedLoginProvider.of(context).userData!['email']);
         setState(() {});
       }
     });
@@ -63,68 +63,6 @@ class _UserPageState extends ConsumerState<UserPage> {
     );
   }
 }
-
-class UsersColumn extends StatefulWidget {
-  const UsersColumn({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  State<UsersColumn> createState() => _UsersColumnState();
-}
-
-class _UsersColumnState extends State<UsersColumn> {
-  DatabaseManager? dbManager;
-  List<Member> members = [];
-  List<Member> displayedmembers = [];
-
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance?.addPostFrameCallback(
-      (timeStamp) async {
-        members = await getMembers(context);
-        displayedmembers = members;
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    displayedmembers = [];
-
-    if (members.isEmpty) {
-      return Padding(
-        padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
-        child: Column(children: const [CircularProgressIndicator()]),
-      );
-    } else {
-      return Container(
-        height: 698,
-        width: 1000,
-        padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-        child: ListView.builder(
-          itemCount: displayedmembers.length,
-          itemBuilder: (BuildContext context, int idx) {
-            return Row(
-              children: [
-                ProfileWidget(
-                  member: displayedmembers[1],
-                ),
-                UserPageForm(
-                  user: displayedmembers[1],
-                )
-              ],
-            );
-          },
-        ),
-      );
-    }
-  }
-}
-
-//todo: The photo picker and changer are yet to be implemented
 
 class UserPageForm extends HookConsumerWidget {
   final Member? user;

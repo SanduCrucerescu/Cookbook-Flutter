@@ -24,7 +24,7 @@ Future<List<Member>> getMembers(BuildContext context) async {
   return members;
 }
 
-Future<Member> getMember(BuildContext context, String email) async {
+Future<Member> getMember(String email) async {
   final dbManager = await DatabaseManager.init();
   Results? res = await dbManager
       .select(table: 'members', fields: ['*'], where: {'email': email});

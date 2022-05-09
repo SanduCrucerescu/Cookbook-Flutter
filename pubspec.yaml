@@ -24,6 +24,7 @@ dependencies:
   google_fonts: ^2.3.1
   hooks_riverpod: ^1.0.3
   mysql1: ^0.19.2
+  pull_to_refresh: ^2.0.0
   quiver: ^3.1.0
   riverpod: ^1.0.3
 

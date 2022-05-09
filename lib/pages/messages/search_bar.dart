@@ -15,7 +15,8 @@ class SearchBar extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return SizedBox(
+    return Container(
+      margin: const EdgeInsets.only(top: 20),
       height: 60,
       width: (size.width - 300) / 2,
       child: TextField(

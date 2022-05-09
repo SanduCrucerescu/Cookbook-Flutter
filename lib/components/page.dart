@@ -2,13 +2,13 @@ part of components;
 
 class CustomPage extends HookConsumerWidget {
   final Widget child;
-  final bool? showSearchBar;
+  final bool showSearchBar;
   final TextEditingController? controller;
   final double? searchBarWidth;
 
   const CustomPage({
     required this.child,
-    this.showSearchBar,
+    this.showSearchBar = false,
     this.controller,
     this.searchBarWidth,
     Key? key,
@@ -30,7 +30,7 @@ class CustomPage extends HookConsumerWidget {
               child: NavBar(
                 searchBarWidth: searchBarWidth,
                 controller: controller,
-                showSearchBar: showSearchBar ?? false,
+                showSearchBar: showSearchBar,
               ),
             ),
             SideBar(items: kSideBarItems),

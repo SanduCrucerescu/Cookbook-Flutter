@@ -52,35 +52,29 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
               width: xSize,
               child: SizedBox(
                 child: ListView.builder(
-                    controller: ScrollController(),
-                    itemCount: state.ingredientList.length, // NULL???????
-                    itemBuilder: (BuildContext context, int index) {
-                      return Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: InkWell(
+                  controller: ScrollController(),
+                  itemCount: state.ingredientList.length, // NULL???????
+                  itemBuilder: (BuildContext context, int index) {
+                    return Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: InkWell(
                               onTap: () {
                                 state.removeIngredientAt(idx);
                                 print("removed: " +
                                     state.ingredientList[idx].name);
                               },
-                              child: SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: Image.asset('assets/images/remove1.png'),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                                capitalize(state.ingredientList[index].name),
-                                style: TextStyle(fontSize: 20)),
-                          ),
-                        ],
-                      );
-                    }),
+                              child: const Text("X")),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(state.ingredientList[index].name),
+                        ),
+                      ],
+                    );
+                  },
+                ),
               ),
             ),
             Container(
@@ -95,12 +89,16 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                 ),
                 height: 100,
                 width: xSize,
-                child: TextButton(
-                    style: ButtonStyle(
-                        animationDuration: Duration(microseconds: 10)),
-                    onPressed: () {/* Commit to Database */},
-                    child: const Text("Save Shopping Cart",
-                        style: TextStyle(fontSize: 25))),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      onPressed: () {/* Commit to Database */},
+                      child: const Text("Save Shopping Cart"),
+                    ),
+                  ],
+                ),
               ),
             ),
             Container(
@@ -110,35 +108,38 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Container(
-                      child: const Text("Me and Lui",
-                          style: TextStyle(
-                            color: Colors.black,
-                          )),
-                      width: 200.00,
-                      height: 140.00,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: ExactAssetImage('assets/images/IMG_5407.JPG'),
-                          fit: BoxFit.fitHeight,
-                        ),
-                      )),
-                  Container(
-                      height: 50,
-                      width: 150,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(5),
-                        ),
+                    child: const Text(
+                      "Me and Lui",
+                      style: TextStyle(
+                        color: Colors.black,
                       ),
-                      child: Center(
-                        child: Text(
-                            "Total Cost: " +
-                                getIngredientPrice().toString() +
-                                "€",
-                            style: TextStyle(fontSize: 15)),
-                      )),
+                    ),
+                    width: 200.00,
+                    height: 140.00,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: ExactAssetImage('assets/images/IMG_5407.JPG'),
+                        fit: BoxFit.fitHeight,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: 50,
+                    width: 150,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(5),
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Total Cost: " + getIngredientPrice().toString() + "€",
+                        style: const TextStyle(fontSize: 15),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             )
