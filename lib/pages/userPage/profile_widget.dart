@@ -71,11 +71,11 @@ class EditProfilePictureButton extends StatelessWidget {
       padding: scale == null ? 4 : 4 * scale!,
       child: CircleWidget(
         color: Colors.black,
-        padding: scale == null ? 10 : 10 * scale!,
+        padding: scale == null ? 10 : 5 * scale!,
         child: Icon(
           Icons.add_a_photo,
           color: Colors.white,
-          size: scale == null ? 25 : 25 * scale!,
+          size: scale == null ? 25 : 15 * scale!,
         ),
       ),
     );

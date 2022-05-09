@@ -1,5 +1,6 @@
 import 'package:cookbook/models/ingredient/ingredient.dart';
 import 'package:cookbook/pages/shoppingCart/shoppingPage.dart';
+import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -76,7 +77,7 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                 ),
               ),
             ),
-            Padding(
+            Container(
               padding: const EdgeInsets.only(top: 10.0),
               child: Container(
                 decoration: BoxDecoration(
@@ -148,3 +149,5 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
     );
   }
 }
+
+String capitalize(String s) => s[0].toUpperCase() + s.substring(1);

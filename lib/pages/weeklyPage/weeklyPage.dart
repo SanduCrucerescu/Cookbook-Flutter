@@ -1,11 +1,13 @@
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers
+
 import 'dart:developer';
 import 'package:cookbook/components/components.dart';
-import 'package:cookbook/main.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:quiver/collection.dart';
 
 class WeeklyPage extends HookConsumerWidget {
   static const String id = "/weeklypage";
@@ -27,39 +29,73 @@ class WeeklyPage extends HookConsumerWidget {
         searchBarWidth = 300,
         super(key: key);
 
-  final responsivePorvider = ChangeNotifierProvider<ResponsiveNotifier>(
-    (ref) => ResponsiveNotifier(),
-  );
+  final List<String> days = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thurday',
+    'Friday',
+    'Saturday',
+    'Sunday'
+  ];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Size size = MediaQuery.of(context).size;
-    final state = ref.watch(responsivePorvider);
     final tec = useTextEditingController();
 
-    state.setRecipeBoxes(
-      ctx: context,
-      displayedRecipes: InheritedLoginProvider.of(context).displayedRecipes,
-      cols: cols,
-    );
-
     return CustomPage(
-      showSearchBar: false,
       controller: tec,
       searchBarWidth: searchBarWidth,
-      child: SizedBox(
-        width: size.width - 220,
-        child: state.recipes.isEmpty == false
-            ? ListView.builder(
-                physics: const AlwaysScrollableScrollPhysics(),
-                cacheExtent: 50,
-                itemCount: state.recipes.length,
-                shrinkWrap: true,
-                itemBuilder: (ctx, i) => Container(
-                  child: state.recipes[i],
+      child: ListView.builder(
+        itemCount: 10,
+        itemBuilder: (context, idx) {
+          return Column(
+            children: [
+              Container(
+                  padding: const EdgeInsets.only(top: 7),
+                  child: Text('Week ${idx + 1}',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 18))),
+              Container(
+                height: 500,
+                margin: const EdgeInsets.only(top: 10, left: 10, right: 10),
+                decoration: BoxDecoration(
+                  color: kcLightBeige,
+                  border: Border.all(
+                    width: .5,
+                    color: Colors.black,
+                    style: BorderStyle.solid,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
                 ),
-              )
-            : const SizedBox(),
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 7,
+                  itemBuilder: (context, jdx) {
+                    return Container(
+                      margin: const EdgeInsets.all(10),
+                      width: 400,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: kcMedBeige,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8, left: 10),
+                        child: SelectableText(
+                          days[jdx],
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

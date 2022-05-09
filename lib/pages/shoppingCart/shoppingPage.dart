@@ -1,4 +1,5 @@
 import 'package:cookbook/components/components.dart';
+import 'package:cookbook/db/queries/add_cart_ingridients.dart';
 import 'package:cookbook/models/ingredient/ingredient.dart';
 import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/pages/shoppingCart/ingridients_to_buy.dart';
@@ -7,16 +8,32 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'square.dart';
 
-class ShoppingPage extends HookConsumerWidget {
+class ShoppingPage extends StatefulHookConsumerWidget {
   static const String id = "/cart";
 
   ShoppingPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _ShoppingPageState createState() => _ShoppingPageState();
+}
+
+class _ShoppingPageState extends ConsumerState<ShoppingPage> {
+  @override
+  void initState() {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+      ref.read(selectIngredientProvider).ingredientList =
+          await getCartIngridients(context);
+      setState(() {});
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final state = ref.watch(selectIngredientProvider);
     final tec = useTextEditingController();
     Size size = MediaQuery.of(context).size;
+    print(state.ingredientList);
 
     return CustomPage(
       child: Row(
@@ -80,7 +97,7 @@ class SelectedIngridientChangeNotifier extends ChangeNotifier {
   }
 
   set ingredientList(List<Ingredient> list) {
-    ingredientList = list;
+    _ingredientList = list;
     notifyListeners();
   }
 
