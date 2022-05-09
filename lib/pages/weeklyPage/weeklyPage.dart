@@ -50,14 +50,9 @@ class WeeklyPage extends HookConsumerWidget {
         itemBuilder: (context, idx) {
           return Column(
             children: [
-              Padding(
+              Container(
                 padding: const EdgeInsets.only(top: 7),
-                child: Container(
-                  child: Text(
-                    'Week X',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
+                child: Text('Week X'),
               ),
               Container(
                 height: 500,
