@@ -5,11 +5,11 @@ class DeleteUser {
     required String table,
     required Map<String, String> where,
   }) async {
-    final DatabaseManager databaseManager = await DatabaseManager.init();
+    final DatabaseManager dbManager = await DatabaseManager.init();
 
-    Future? res = databaseManager
-        .delete(table: "members", where: {"email": where["email"]});
-
+    Future? res =
+        dbManager.delete(table: "members", where: {"email": where["email"]});
+    dbManager.close();
     return true;
   }
 }

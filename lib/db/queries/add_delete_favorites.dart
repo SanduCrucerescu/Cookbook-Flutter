@@ -7,9 +7,9 @@ class Favorites {
     String? email,
     int? recipeID,
   }) async {
-    final DatabaseManager databaseManager = await DatabaseManager.init();
+    final DatabaseManager dbManager = await DatabaseManager.init();
 
-    Results? exists = await databaseManager.exists(table: "favorites", fields: [
+    Results? exists = await dbManager.exists(table: "favorites", fields: [
       "*"
     ], where: {
       "email": email,
@@ -23,15 +23,14 @@ class Favorites {
     }
 
     if (exist == 0) {
-      Results? insert =
-          await databaseManager.insert(table: "favorites", fields: [
+      Results? insert = await dbManager.insert(table: "favorites", fields: [
         "email",
         "id"
       ], data: {
         "email": email,
         "id": recipeID,
       });
-
+      dbManager.close();
       return true;
     } else {
       return false;
