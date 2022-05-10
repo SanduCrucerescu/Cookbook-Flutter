@@ -1,13 +1,6 @@
-<<<<<<< HEAD
 import 'package:cookbook/controllers/controllers.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
 import 'package:cookbook/pages/home/home_page.dart';
-=======
-import 'dart:developer';
-import 'package:cookbook/controllers/controllers.dart';
-import 'package:cookbook/models/recipe/recipe.dart';
-import 'package:cookbook/pages/recipeadd/ui_components.dart';
->>>>>>> c6d765d (rebase)
 import 'package:cookbook/pages/shoppingCart/shoppingPage.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
@@ -144,11 +137,7 @@ class App extends StatelessWidget {
           fontFamily: 'Montserrat',
           primaryColor: kcMedBeige,
         ),
-<<<<<<< HEAD
-        initialRoute: WeeklyPage.id,
-=======
-        initialRoute: LoadingScreen.id,
->>>>>>> c6d765d (rebase)
+        initialRoute: ShoppingPage.id,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );
