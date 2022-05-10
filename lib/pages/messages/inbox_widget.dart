@@ -1,9 +1,7 @@
-import 'dart:typed_data';
-
 import 'package:cookbook/controllers/loadimage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mysql1/mysql1.dart';
+import 'package:intl/intl.dart';
 
 import '../../models/member/member.dart';
 import '../../models/post/directMessage/direct_message.dart';
@@ -67,9 +65,9 @@ class InboxWidget extends StatelessWidget {
               Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             _last == null
                 ? const Text('')
-                : Text(
+                : Text(DateFormat.MMMEd().format(DateTime.parse(
                     _last.date.toString().substring(0, 10),
-                  ),
+                  ))),
             const SizedBox(
               height: 5,
             ),
