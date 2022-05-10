@@ -61,7 +61,7 @@ List<Map<String, dynamic>> kSideBarItems = [
     "text": "ShoppingCart",
     "id": 6,
     "onTap": ShoppingPage.id,
-    "icon": const Icon(Icons.abc),
+    "icon": const Icon(Icons.shopping_cart),
     "children": [],
   },
   {
