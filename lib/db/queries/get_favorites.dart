@@ -2,6 +2,7 @@ import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/models/ingredient/ingredient.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
 import 'package:cookbook/models/tag/tag.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mysql1/mysql1.dart';
 
@@ -23,9 +24,9 @@ class GetFavorites {
     String? email,
   ) async {
     _recepieList = [];
-    final DatabaseManager databaseManager = await DatabaseManager.init();
+    final DatabaseManager dbManager = await DatabaseManager.init();
 
-    Results? fav = await databaseManager.query(
+    Results? fav = await dbManager.query(
         query:
             "select recipes.id, title, description, instructions, member_email, picture from favorites inner join recipes on favorites.id = recipes.id where email = '$email';");
 
@@ -43,15 +44,16 @@ class GetFavorites {
           tags: await getTags(rs.fields['id']));
       setRecipie(recipeClass);
     }
+    dbManager.close();
     return _recepieList;
     // print(recepieList);
   }
 
   Future<List<Ingredient>> getIngredients(int id) async {
-    final DatabaseManager databaseManager = await DatabaseManager.init();
+    final DatabaseManager dbManager = await DatabaseManager.init();
     List<Ingredient> ingredient = [];
 
-    Results? ingredients = await databaseManager.query(
+    Results? ingredients = await dbManager.query(
         query:
             "select * from ingredients_for_recipe INNER JOIN ingredients on ingredients_for_recipe.ingredient_id = ingredients.id where recipe_id = $id;");
     for (var ing in ingredients!) {
@@ -64,14 +66,15 @@ class GetFavorites {
       );
       ingredient.add(ingredientClass);
     }
+    dbManager.close();
     return ingredient;
   }
 
   Future<List<Tag>> getTags(int id) async {
-    final DatabaseManager databaseManager = await DatabaseManager.init();
+    final DatabaseManager dbManager = await DatabaseManager.init();
     List<Tag> tagsList = [];
 
-    Results? tags = await databaseManager.query(
+    Results? tags = await dbManager.query(
         query:
             "select * from ingredients_for_recipe INNER JOIN ingredients on ingredients_for_recipe.ingredient_id = ingredients.id where recipe_id = $id;");
 
@@ -79,6 +82,7 @@ class GetFavorites {
       tagClass = Tag(id: tag.fields['id'], name: tag.fields['name']);
       tagsList.add(tagClass);
     }
+    dbManager.close();
     return tagsList;
   }
 

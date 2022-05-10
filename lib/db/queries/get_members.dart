@@ -30,6 +30,7 @@ Future<Member> getMember(String email) async {
       .select(table: 'members', fields: ['*'], where: {'email': email});
 
   final row = res!.first;
+  dbManager.close();
 
   return Member(
     name: row['username'],
