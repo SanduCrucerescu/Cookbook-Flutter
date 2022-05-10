@@ -3,6 +3,7 @@ import 'package:cookbook/pages/shoppingCart/ingridients_to_buy.dart';
 import 'package:cookbook/pages/shoppingCart/shoppingPage.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class IngridientTile extends HookConsumerWidget {
@@ -12,7 +13,7 @@ class IngridientTile extends HookConsumerWidget {
   final int id;
   final double? pricePerUnit;
 
-  const IngridientTile({
+  IngridientTile({
     required this.ingridient,
     required this.idx,
     required this.id,
@@ -43,7 +44,8 @@ class IngridientTile extends HookConsumerWidget {
               padding: const EdgeInsets.only(top: 10),
               child: InkWell(
                 onTap: () {
-                  state.addIngredient(ingridient);
+                  ingridientAmountBox(context, state);
+                  //state.addIngredient(ingridient);
                   // print("added " + ingridient.name);
                   // print(
                   //     "list size: " + (state.ingredientList.length).toString());
@@ -78,6 +80,48 @@ class IngridientTile extends HookConsumerWidget {
           ],
         ),
       ),
+    );
+  }
+
+  TextEditingController ingridientController = TextEditingController();
+  Future<dynamic> ingridientAmountBox(
+      BuildContext context, SelectedIngridientChangeNotifier state) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Center(child: Text("Add ${state.currIngridient?.name}")),
+          content: TextField(
+            controller: ingridientController,
+            decoration: const InputDecoration(labelText: "Enter amount"),
+            keyboardType: TextInputType.number,
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.digitsOnly
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'Abort'),
+              child: const Text('Abort',
+                  style: TextStyle(
+                      color: Color.fromARGB(255, 250, 111, 5),
+                      fontWeight: FontWeight.bold)),
+            ),
+            TextButton(
+              onPressed: () {
+                int amountToAdd = int.parse(ingridientController.text);
+                for (int i = 0; i < amountToAdd; i++) {
+                  state.addIngredient(ingridient);
+                }
+                Navigator.pop(context);
+              },
+              child: const Text("Add",
+                  style: TextStyle(
+                      color: Colors.green, fontWeight: FontWeight.bold)),
+            )
+          ],
+        );
+      },
     );
   }
 }

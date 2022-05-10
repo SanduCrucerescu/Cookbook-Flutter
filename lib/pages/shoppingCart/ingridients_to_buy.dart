@@ -1,3 +1,4 @@
+import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/models/ingredient/ingredient.dart';
 import 'package:cookbook/pages/shoppingCart/shoppingPage.dart';
 import 'package:cookbook/theme/colors.dart';
@@ -69,7 +70,9 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(state.ingredientList[index].name),
+                          child: Text(
+                              capitalize(state.ingredientList[index].name),
+                              style: TextStyle(fontSize: 20)),
                         ),
                       ],
                     );
