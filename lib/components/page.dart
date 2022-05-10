@@ -42,7 +42,7 @@ class CustomPage extends HookConsumerWidget {
                 color: kcLightBeige,
                 child: child,
               ),
-            )
+            ),
           ],
         ),
       ),

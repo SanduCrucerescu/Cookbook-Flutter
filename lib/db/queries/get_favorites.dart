@@ -46,7 +46,6 @@ class GetFavorites {
     }
     dbManager.close();
     return _recepieList;
-    // print(recepieList);
   }
 
   Future<List<Ingredient>> getIngredients(int id) async {

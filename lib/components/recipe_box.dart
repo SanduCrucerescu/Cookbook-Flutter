@@ -125,7 +125,10 @@ class RecipeBox extends ConsumerWidget {
         Positioned(
           top: 534,
           left: actionRowIndent,
-          child: RecipeActionsRow(recipe: recipe, isLiked: isLiked),
+          child: RecipeActionsRow(
+            recipe: recipe,
+            isLiked: isLiked,
+          ),
         ),
         const Positioned(left: horiLineIndent, top: 570, child: HoriLine()),
         Positioned(
@@ -227,7 +230,8 @@ class RecipeActionsRow extends StatefulHookConsumerWidget {
   }) : super(key: key);
 
   final stateProvider = ChangeNotifierProvider<VerificationNotifier>(
-      ((ref) => VerificationNotifier()));
+    ((ref) => VerificationNotifier()),
+  );
 
   @override
   _RecipeActionsRow createState() => _RecipeActionsRow();

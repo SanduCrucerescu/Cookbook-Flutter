@@ -44,7 +44,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
         fit: StackFit.expand,
         children: <Widget>[
           Image.asset(
-            "assets/images/bg1.png",
+            "assets/images/bg4.png",
             fit: BoxFit.fill,
           ),
           Positioned(
@@ -100,7 +100,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
                     ),
                     // Placeholder
                     Text(
-                      "hallo",
+                      "Aloah",
                       softWrap: true,
                       textAlign: TextAlign.center,
                       style: TextStyle(

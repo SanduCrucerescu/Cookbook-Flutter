@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/db/queries/get_favorites.dart';
 import 'package:cookbook/main.dart';
@@ -37,22 +38,10 @@ class _HomePageState extends ConsumerState<HomePage> {
     (ref) => ResponsiveNotifier(),
   );
 
-  GetFavorites getFavorites = GetFavorites();
-  Future<List<Recipe>?>? items;
+  final GetFavorites getFavorites = GetFavorites();
 
   @override
-  void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
-      items = getFavorites
-          .getfav(InheritedLoginProvider.of(context).userData?['email']);
-    });
-
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext contextref) {
-    Size size = MediaQuery.of(context).size;
+  Widget build(BuildContext context) {
     final state = ref.watch(responsiveProvider);
     final tec = useTextEditingController();
     final searchBarWidth = widget.searchBarWidth;
@@ -62,18 +51,19 @@ class _HomePageState extends ConsumerState<HomePage> {
       controller: tec,
       searchBarWidth: searchBarWidth,
       child: FutureBuilder(
-        future: getFavorites
-            .getfav(InheritedLoginProvider.of(context).userData?['email']),
+        future: getFavorites.getfav(
+          InheritedLoginProvider.of(context).userData?['email'],
+        ),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            ref.read(responsiveProvider).setRecipeBoxes(
-                favorites: snapshot.data as List<Recipe>,
-                ctx: context,
-                displayedRecipes:
-                    InheritedLoginProvider.of(context).displayedRecipes,
-                cols: widget.cols);
+            state.setRecipeBoxes(
+              favorites: snapshot.data as List<Recipe>,
+              ctx: context,
+              displayedRecipes:
+                  InheritedLoginProvider.of(context).displayedRecipes,
+              cols: widget.cols,
+            );
             return SizedBox(
-              width: size.width - 220,
               child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
                 cacheExtent: 50,
@@ -85,12 +75,11 @@ class _HomePageState extends ConsumerState<HomePage> {
               ),
             );
           } else {
-            getFavorites
-                .getfav(InheritedLoginProvider.of(context).userData?['email']);
+            getFavorites.getfav(
+              InheritedLoginProvider.of(context).userData?['email'],
+            );
             return const Center(
-              child: SizedBox(
-                height: 50,
-                width: 50,
+              child: Center(
                 child: CircularProgressIndicator(),
               ),
             );
