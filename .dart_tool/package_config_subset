@@ -142,13 +142,10 @@ http_parser
 2.12
 file:///opt/homebrew/Caskroom/flutter/2.10.4/flutter/.pub-cache/hosted/pub.dartlang.org/http_parser-4.0.0/
 file:///opt/homebrew/Caskroom/flutter/2.10.4/flutter/.pub-cache/hosted/pub.dartlang.org/http_parser-4.0.0/lib/
-<<<<<<< HEAD
 intl
 2.12
 file:///opt/homebrew/Caskroom/flutter/2.10.4/flutter/.pub-cache/hosted/pub.dartlang.org/intl-0.17.0/
 file:///opt/homebrew/Caskroom/flutter/2.10.4/flutter/.pub-cache/hosted/pub.dartlang.org/intl-0.17.0/lib/
-=======
->>>>>>> 2ef1b9a63c51f7d449645c6e6f07d75c02fff3bf
 js
 2.12
 file:///opt/homebrew/Caskroom/flutter/2.10.4/flutter/.pub-cache/hosted/pub.dartlang.org/js-0.6.3/
@@ -237,13 +234,6 @@ pub_semver
 2.12
 file:///opt/homebrew/Caskroom/flutter/2.10.4/flutter/.pub-cache/hosted/pub.dartlang.org/pub_semver-2.1.1/
 file:///opt/homebrew/Caskroom/flutter/2.10.4/flutter/.pub-cache/hosted/pub.dartlang.org/pub_semver-2.1.1/lib/
-<<<<<<< HEAD
-=======
-pull_to_refresh
-2.12
-file:///opt/homebrew/Caskroom/flutter/2.10.4/flutter/.pub-cache/hosted/pub.dartlang.org/pull_to_refresh-2.0.0/
-file:///opt/homebrew/Caskroom/flutter/2.10.4/flutter/.pub-cache/hosted/pub.dartlang.org/pull_to_refresh-2.0.0/lib/
->>>>>>> 2ef1b9a63c51f7d449645c6e6f07d75c02fff3bf
 quiver
 2.12
 file:///opt/homebrew/Caskroom/flutter/2.10.4/flutter/.pub-cache/hosted/pub.dartlang.org/quiver-3.1.0/
