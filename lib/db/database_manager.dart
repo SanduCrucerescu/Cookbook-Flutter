@@ -103,6 +103,7 @@ class DatabaseManager extends AbstractDatabaseManager {
     await connect();
     print(query);
     result = await cnx!.query(query);
+    await close();
     return result;
   }
 

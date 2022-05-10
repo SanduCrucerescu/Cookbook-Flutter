@@ -67,10 +67,9 @@ class CommentTile extends StatelessWidget {
       margin: const EdgeInsets.only(left: 5, right: 5, top: 5),
       decoration: const BoxDecoration(
         border: Border(
-          left: BorderSide(color: Colors.black, width: 1),
-          right: BorderSide.none,
-          top: BorderSide.none,
-          bottom: BorderSide.none,
+          left: BorderSide(color: Colors.black, width: .5),
+          right: BorderSide(color: Colors.black, width: .5),
+          top: BorderSide(color: Colors.black, width: .5),
         ),
       ),
       child: Column(
@@ -97,13 +96,15 @@ class CommentTile extends StatelessWidget {
                         ),
                         child: InkWell(
                           onTap: () {},
-                          child: comment.creator.profilePicture == null
-                              ? Image.asset('assets/images/ph.png')
-                              : Image.memory(
-                                  getImageDataFromBlob(
-                                      comment.creator.profilePicture!),
-                                  fit: BoxFit.fill,
-                                ),
+                          child: ClipOval(
+                            child: comment.creator.profilePicture == null
+                                ? Image.asset('assets/images/ph.png')
+                                : Image.memory(
+                                    getImageDataFromBlob(
+                                        comment.creator.profilePicture!),
+                                    fit: BoxFit.fill,
+                                  ),
+                          ),
                         ),
                       ),
                       Container(
@@ -134,15 +135,29 @@ class CommentTile extends StatelessWidget {
                           child: SelectableText(comment.content),
                         ),
                       ),
-                      Container(
-                        height: 40,
-                        width: 40,
-                        margin: const EdgeInsets.all(5),
-                        decoration: const BoxDecoration(),
-                        child: InkWell(
-                          onTap: () {},
-                          child: const Icon(Icons.settings),
-                        ),
+                      Row(
+                        children: [
+                          Container(
+                            height: 40,
+                            width: 40,
+                            margin: const EdgeInsets.all(5),
+                            decoration: const BoxDecoration(),
+                            child: InkWell(
+                              onTap: () {},
+                              child: const Icon(Icons.reply),
+                            ),
+                          ),
+                          Container(
+                            height: 40,
+                            width: 40,
+                            margin: const EdgeInsets.all(5),
+                            decoration: const BoxDecoration(),
+                            child: InkWell(
+                              onTap: () {},
+                              child: const Icon(Icons.settings),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

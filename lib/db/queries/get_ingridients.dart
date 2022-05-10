@@ -19,5 +19,6 @@ Future<List<Ingredient>> getIngridients() async {
     );
     ingridients.add(curr);
   }
+  dbManager.close();
   return ingridients;
 }
