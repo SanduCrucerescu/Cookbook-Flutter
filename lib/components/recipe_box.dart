@@ -241,18 +241,31 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
   @override
   void initState() {
     super.initState();
+<<<<<<< HEAD
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
       ref.read(stateProvider).isLiked = widget.isLiked;
       final membersState = ref.read(membersProvider);
       membersState.members = await getMembers(context);
       membersState.advancedSetDisplayedMembers(membersState.members, context);
+=======
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+      ref.read(widget.stateProvider).isLiked = widget.isLiked;
+      final membersState = ref.read(membersProvider);
+      membersState.members = await getMembers(context);
+      membersState.advancedSetDisplayedMembers(membersState.members, context);
+      setState(() {});
+>>>>>>> 0cb3fb2 (continue share function)
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final membersState = ref.watch(membersProvider);
+<<<<<<< HEAD
     final state = ref.watch(stateProvider);
+=======
+    final state = ref.watch(widget.stateProvider);
+>>>>>>> 0cb3fb2 (continue share function)
     final searchTec = useTextEditingController();
     final commentTec = useTextEditingController();
 
@@ -369,7 +382,11 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
         return AlertDialog(
           backgroundColor: kcMedBeige,
           title: const Center(child: Text("Share Recipe")),
+<<<<<<< HEAD
           content: SizedBox(
+=======
+          content: Container(
+>>>>>>> 0cb3fb2 (continue share function)
             height: size.height - 200,
             width: (size.width - 100) / 2,
             child: Column(
@@ -436,7 +453,13 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
                 }
                 commentTec.clear();
                 state.message = '';
+<<<<<<< HEAD
                 state.shareMembers.clear();
+=======
+                print(state.shareMembers);
+                state.shareMembers.clear();
+                print(state.shareMembers);
+>>>>>>> 0cb3fb2 (continue share function)
               },
               child: const Text('Send',
                   style: TextStyle(
