@@ -226,12 +226,15 @@
     {
       "name": "http_parser",
       "rootUri": "file:///opt/homebrew/Caskroom/flutter/2.10.4/flutter/.pub-cache/hosted/pub.dartlang.org/http_parser-4.0.0",
+<<<<<<< HEAD
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "intl",
       "rootUri": "file:///opt/homebrew/Caskroom/flutter/2.10.4/flutter/.pub-cache/hosted/pub.dartlang.org/intl-0.17.0",
+=======
+>>>>>>> 2ef1b9a63c51f7d449645c6e6f07d75c02fff3bf
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -364,6 +367,15 @@
     {
       "name": "pub_semver",
       "rootUri": "file:///opt/homebrew/Caskroom/flutter/2.10.4/flutter/.pub-cache/hosted/pub.dartlang.org/pub_semver-2.1.1",
+<<<<<<< HEAD
+=======
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "pull_to_refresh",
+      "rootUri": "file:///opt/homebrew/Caskroom/flutter/2.10.4/flutter/.pub-cache/hosted/pub.dartlang.org/pull_to_refresh-2.0.0",
+>>>>>>> 2ef1b9a63c51f7d449645c6e6f07d75c02fff3bf
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -470,7 +482,11 @@
       "languageVersion": "2.16"
     }
   ],
+<<<<<<< HEAD
   "generated": "2022-05-09T15:01:03.485370Z",
+=======
+  "generated": "2022-05-09T14:56:08.259076Z",
+>>>>>>> 2ef1b9a63c51f7d449645c6e6f07d75c02fff3bf
   "generator": "pub",
   "generatorVersion": "2.16.2"
 }
