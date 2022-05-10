@@ -1,3 +1,4 @@
+import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/models/ingredient/ingredient.dart';
 import 'package:cookbook/pages/shoppingCart/shoppingPage.dart';
 import 'package:cookbook/theme/colors.dart';
@@ -89,6 +90,7 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                 ),
                 height: 100,
                 width: xSize,
+<<<<<<< HEAD
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -99,6 +101,16 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                     ),
                   ],
                 ),
+=======
+                child: TextButton(
+                    style: ButtonStyle(
+                        animationDuration: Duration(microseconds: 10)),
+                    onPressed: () {
+                      print(state.ingredientList[idx]);
+                    },
+                    child: const Text("Save Shopping Cart",
+                        style: TextStyle(fontSize: 25))),
+>>>>>>> f3042b0 (Query changed)
               ),
             ),
             Container(

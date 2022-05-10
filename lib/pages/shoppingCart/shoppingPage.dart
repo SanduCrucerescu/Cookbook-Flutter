@@ -1,5 +1,5 @@
 import 'package:cookbook/components/components.dart';
-import 'package:cookbook/db/queries/add_cart_ingridients.dart';
+import 'package:cookbook/db/queries/get_cart_ingridients.dart';
 import 'package:cookbook/models/ingredient/ingredient.dart';
 import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/pages/shoppingCart/ingridients_to_buy.dart';
