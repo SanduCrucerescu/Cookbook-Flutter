@@ -26,7 +26,8 @@ class _CommentsPageState extends ConsumerState<CommentsPage> {
   @override
   void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
-      ref.read(commentsProvider).comments = await getComments(id: 3);
+      ref.read(commentsProvider).comments =
+          await getComments(id: widget.recipe.id);
       setState(() {});
     });
     super.initState();

@@ -316,7 +316,7 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
               },
             ),
             RecipeBoxIcon(
-              icon: Icon(Icons.share),
+              icon: const Icon(Icons.share),
               height: 30,
               width: 30,
               color: Colors.black,
