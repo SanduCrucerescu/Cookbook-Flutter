@@ -70,7 +70,9 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(state.ingredientList[index].name),
+                          child: Text(
+                              capitalize(state.ingredientList[index].name),
+                              style: TextStyle(fontSize: 20)),
                         ),
                       ],
                     );
