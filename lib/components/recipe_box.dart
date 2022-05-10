@@ -237,15 +237,22 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       ref.read(widget.stateProvider).isLiked = widget.isLiked;
+      final membersState = ref.read(membersProvider);
+      membersState.members = await getMembers(context);
+      membersState.advancedSetDisplayedMembers(membersState.members, context);
       setState(() {});
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final membersState = ref.watch(membersProvider);
     final state = ref.watch(widget.stateProvider);
+    final searchTec = useTextEditingController();
+    final commentTec = useTextEditingController();
+
     return RecipeBoxRow(
       height: 30,
       width: 400,
@@ -321,7 +328,7 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
               width: 30,
               color: Colors.black,
               onTap: () {
-                areyousure2(context);
+                areyousure2(context, searchTec, commentTec, membersState);
               },
             ),
           ],
@@ -331,7 +338,7 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
         onTap: () {
           addWeekly(context);
         },
-        icon: Icon(Icons.add),
+        icon: const Icon(Icons.add),
         height: 30,
         width: 30,
         color: Colors.black,
@@ -339,31 +346,93 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
     );
   }
 
-  Future<dynamic> areyousure2(BuildContext context) {
+  Future<dynamic> areyousure2(
+    BuildContext context,
+    TextEditingController searchTec,
+    TextEditingController commentTec,
+    MessagePageController state,
+  ) {
+    Size size = MediaQuery.of(context).size;
     return showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Center(child: Text("Share Message")),
+          backgroundColor: kcMedBeige,
+          title: const Center(child: Text("Share Recipe")),
           content: Container(
-            height: 50,
+            height: size.height - 200,
+            width: (size.width - 100) / 2,
             child: Column(
-              children: [Text('Hello'), Text("Search2...")],
+              children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                CustomTextField(
+                  onChanged: (value) {
+                    state.displayedMembers = [];
+                    state.filteringString = value;
+                    for (Member member in state.members) {
+                      if (member.name
+                          .toUpperCase()
+                          .startsWith(state.filteringString.toUpperCase())) {
+                        state.addDisplayedMember(member);
+                      }
+                    }
+                  },
+                  onClickSuffix: () {
+                    searchTec.clear();
+                    state.filteringString = '';
+                  },
+                  controller: searchTec,
+                  margin: const EdgeInsets.only(bottom: 20),
+                  backgroundColor: kcLightBeige,
+                  border: Border.all(color: Colors.black),
+                  height: 50,
+                  hintText: 'Search Recipient...',
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                const ShareListview(),
+                CustomTextField(
+                  onChanged: (comment) {
+                    state.message = comment;
+                  },
+                  onClickSuffix: () {
+                    commentTec.clear();
+                    state.message = '';
+                  },
+                  controller: commentTec,
+                  backgroundColor: kcLightBeige,
+                  border: Border.all(color: Colors.black),
+                  margin: const EdgeInsets.only(top: 75),
+                  height: 50,
+                  hintText: 'Write a comment...',
+                )
+              ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              onPressed: () => Navigator.pop(context, 'Abort'),
-              child: const Text('Abort',
+              onPressed: () {
+                for (int i = 0; i < state.shareMembers.length; i++) {
+                  SendMessage.sendMessage(data: {
+                    'sender':
+                        InheritedLoginProvider.of(context).userData?['email'],
+                    'receiver': state.shareMembers[i].email,
+                    'content': state.message,
+                    'time': DateTime.now().toString()
+                  });
+                }
+                commentTec.clear();
+                state.message = '';
+                print(state.shareMembers);
+                state.shareMembers.clear();
+                print(state.shareMembers);
+              },
+              child: const Text('Send',
                   style: TextStyle(
-                      color: Colors.green, fontWeight: FontWeight.bold)),
-            ),
-            TextButton(
-              // Replace with query
-              onPressed: () {},
-              child: const Text('Delete',
-                  style: TextStyle(
-                      color: Colors.redAccent, fontWeight: FontWeight.bold)),
+                      color: Colors.black, fontWeight: FontWeight.bold)),
             ),
           ],
         );
