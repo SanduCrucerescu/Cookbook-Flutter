@@ -1,5 +1,4 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers
-
 import 'dart:developer';
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
