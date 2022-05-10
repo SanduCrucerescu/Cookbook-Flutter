@@ -6,7 +6,7 @@ class AddRecipe {
       {Map<String, dynamic>? recipeInfo,
       Map<String, int>? ingredients,
       List<String>? tags}) async {
-    final DatabaseManager databaseManager = await DatabaseManager.init();
+    final DatabaseManager dbManager = await DatabaseManager.init();
     List<int> ingredientID = [];
     List<int> amount = [];
 
@@ -18,7 +18,7 @@ class AddRecipe {
       amount.add(value);
     });
 
-    Future? res = databaseManager.insert(table: "recipes", fields: [
+    Future? res = dbManager.insert(table: "recipes", fields: [
       "title",
       "description",
       "instructions",
@@ -32,7 +32,7 @@ class AddRecipe {
       "picture": recipeInfo?["picture"]
     });
 
-    Future? id = databaseManager.query(query: "SELECT MAX(id) FROM recipes;");
+    Future? id = dbManager.query(query: "SELECT MAX(id) FROM recipes;");
 
     int idVal = 0;
 
@@ -41,7 +41,7 @@ class AddRecipe {
     }
 
     for (int i = 0; i < ingredients.length; i++) {
-      Future? ingredients = databaseManager.insert(
+      Future? ingredients = dbManager.insert(
           table: "ingredients_for_recipe",
           fields: [
             "recipe_id",
@@ -56,7 +56,7 @@ class AddRecipe {
     }
 
     for (int i = 0; i < tags!.length; i++) {
-      Future? id = databaseManager.select(table: "tags", fields: [
+      Future? id = dbManager.select(table: "tags", fields: [
         "id"
       ], where: {
         "name": tags[i],
@@ -69,7 +69,7 @@ class AddRecipe {
       }
 
       Future? ingredients =
-          databaseManager.insert(table: "recipes_has_tags", fields: [
+          dbManager.insert(table: "recipes_has_tags", fields: [
         "recipes_id",
         "tags_id"
       ], data: {
@@ -77,6 +77,7 @@ class AddRecipe {
         "tags_id": idTag,
       });
     }
+    dbManager.close();
     return true;
   }
 }

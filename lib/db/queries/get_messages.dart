@@ -22,5 +22,6 @@ Future<List<DirectMessage>> getMessages() async {
 
     messages.add(curr); // Something wrong here
   }
+  dbManager.close();
   return messages;
 }

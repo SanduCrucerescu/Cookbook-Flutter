@@ -39,20 +39,7 @@ INNER JOIN posts ON comments.post_id = posts.id
     out.add(curr);
   }
 
+  dbManager.close();
+
   return out;
 }
-
-// Future<List<Comment>> nestedComments(
-//     DatabaseManager dbManager, int postId) async {
-//   Results? rs = await dbManager.select(table: 'comments', fields: ['id']);
-
-//   List<Comment> out;
-
-//   for (ResultRow row in rs!) {
-//     if (row.fields['post_id'] == postId) {
-//       await nestedComments(dbManager, row.fields['post_id']);
-//     }
-//   }
-
-//   return out;
-// }
