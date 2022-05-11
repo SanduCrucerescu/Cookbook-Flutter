@@ -1,15 +1,7 @@
 import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/db/queries/add_cart_ingidients.dart';
-<<<<<<< HEAD
-<<<<<<< HEAD
 import 'package:cookbook/db/queries/get_cart_ingridients.dart';
 import 'package:cookbook/main.dart';
-=======
->>>>>>> 0ac05fc (commit)
-=======
-import 'package:cookbook/db/queries/get_cart_ingridients.dart';
-import 'package:cookbook/main.dart';
->>>>>>> 3202038 (commit)
 import 'package:cookbook/models/ingredient/ingredient.dart';
 import 'package:cookbook/pages/shoppingCart/shoppingPage.dart';
 import 'package:cookbook/theme/colors.dart';
@@ -66,8 +58,6 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
               height: 500,
               width: xSize,
               child: SizedBox(
-<<<<<<< HEAD
-<<<<<<< HEAD
                 child: state.ingredientList == null
                     ? const CircularProgressIndicator()
                     : ListView.builder(
@@ -97,73 +87,6 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                           );
                         },
                       ),
-=======
-=======
->>>>>>> 85ac6f9 (commi)
-                child: ListView.builder(
-                  controller: ScrollController(),
-                  itemCount: state.ingredientList.length, // NULL???????
-                  itemBuilder: (BuildContext context, int index) {
-                    return Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: InkWell(
-                              onTap: () {
-                                state.removeIngredientAt(idx);
-                                print("removed: " +
-                                    state.ingredientList[idx].name);
-                              },
-                              child: const Text("X")),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                              capitalize(state.ingredientList[index].name +
-                                  "  " +
-                                  (state.ingredientList[index].amount)
-                                      .toString()),
-                              style: TextStyle(fontSize: 20)),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-<<<<<<< HEAD
->>>>>>> 3202038 (commit)
-=======
-=======
-                child: state.ingredientList == null
-                    ? const CircularProgressIndicator()
-                    : ListView.builder(
-                        controller: ScrollController(),
-                        itemCount: state.ingredientList!.length, // NULL???????
-                        itemBuilder: (BuildContext context, int index) {
-                          return Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: InkWell(
-                                    onTap: () {
-                                      state.removeIngredientAt(idx);
-                                      print("removed: " +
-                                          state.ingredientList![idx].name);
-                                    },
-                                    child: const Text("X")),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                    capitalize(
-                                        state.ingredientList![index].name),
-                                    style: TextStyle(fontSize: 20)),
-                              ),
-                            ],
-                          );
-                        },
-                      ),
->>>>>>> 249ea74 (Semi fixed bug with unintended refreshes)
->>>>>>> 85ac6f9 (commi)
               ),
             ),
             Container(
@@ -180,8 +103,6 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                 width: xSize,
                 child: TextButton(
                   onPressed: () {
-<<<<<<< HEAD
-<<<<<<< HEAD
                     print(getCurrentCart(context));
                     print(state.ingredientList);
                     var success = AddCartIngridients.addToCart(
@@ -193,25 +114,6 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                     );
                     // Yep it works
                     print(success);
-=======
-=======
-                    print(getCurrentCart(context));
-                    print(state.ingredientList);
->>>>>>> 3202038 (commit)
-                    var success = AddCartIngridients.addToCart(
-                      cartInfo: {
-                        "cart_id": getCurrentCart(context),
-                        "ingredient_id": 3,
-                        "amount": 4
-                      },
-                    );
-<<<<<<< HEAD
-                    //Yep it works
->>>>>>> 0ac05fc (commit)
-=======
-                    // Yep it works
-                    print(success);
->>>>>>> 3202038 (commit)
                   },
                   child: const Text("Save Shopping Cart"),
                 ),
