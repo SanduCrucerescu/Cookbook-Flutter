@@ -44,10 +44,14 @@ class GetFavorites {
     }
     dbManager.close();
 <<<<<<< HEAD
+<<<<<<< HEAD
     return recepieList;
 =======
     return _recepieList;
 >>>>>>> a9cc257 (commi)
+=======
+    return recepieList;
+>>>>>>> 85ac6f9 (commi)
   }
 
   Future<List<Ingredient>> getIngredients(int id) async {

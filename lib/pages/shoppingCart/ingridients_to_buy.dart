@@ -67,6 +67,7 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
               width: xSize,
               child: SizedBox(
 <<<<<<< HEAD
+<<<<<<< HEAD
                 child: state.ingredientList == null
                     ? const CircularProgressIndicator()
                     : ListView.builder(
@@ -97,6 +98,8 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                         },
                       ),
 =======
+=======
+>>>>>>> 85ac6f9 (commi)
                 child: ListView.builder(
                   controller: ScrollController(),
                   itemCount: state.ingredientList.length, // NULL???????
@@ -126,7 +129,41 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                     );
                   },
                 ),
+<<<<<<< HEAD
 >>>>>>> 3202038 (commit)
+=======
+=======
+                child: state.ingredientList == null
+                    ? const CircularProgressIndicator()
+                    : ListView.builder(
+                        controller: ScrollController(),
+                        itemCount: state.ingredientList!.length, // NULL???????
+                        itemBuilder: (BuildContext context, int index) {
+                          return Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: InkWell(
+                                    onTap: () {
+                                      state.removeIngredientAt(idx);
+                                      print("removed: " +
+                                          state.ingredientList![idx].name);
+                                    },
+                                    child: const Text("X")),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                    capitalize(
+                                        state.ingredientList![index].name),
+                                    style: TextStyle(fontSize: 20)),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+>>>>>>> 249ea74 (Semi fixed bug with unintended refreshes)
+>>>>>>> 85ac6f9 (commi)
               ),
             ),
             Container(

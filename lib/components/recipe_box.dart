@@ -230,12 +230,15 @@ class RecipeActionsRow extends StatefulHookConsumerWidget {
   }) : super(key: key);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   final stateProvider = ChangeNotifierProvider<VerificationNotifier>(
     ((ref) => VerificationNotifier()),
   );
 
 >>>>>>> a9cc257 (commi)
+=======
+>>>>>>> 85ac6f9 (commi)
   @override
   _RecipeActionsRow createState() => _RecipeActionsRow();
 }
@@ -248,6 +251,7 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
   @override
   void initState() {
     super.initState();
+<<<<<<< HEAD
 <<<<<<< HEAD
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
       ref.read(stateProvider).isLiked = widget.isLiked;
@@ -262,6 +266,13 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
       membersState.advancedSetDisplayedMembers(membersState.members, context);
       setState(() {});
 >>>>>>> 0cb3fb2 (continue share function)
+=======
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
+      ref.read(stateProvider).isLiked = widget.isLiked;
+      final membersState = ref.read(membersProvider);
+      membersState.members = await getMembers(context);
+      membersState.advancedSetDisplayedMembers(membersState.members, context);
+>>>>>>> 85ac6f9 (commi)
     });
   }
 
@@ -269,10 +280,14 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
   Widget build(BuildContext context) {
     final membersState = ref.watch(membersProvider);
 <<<<<<< HEAD
+<<<<<<< HEAD
     final state = ref.watch(stateProvider);
 =======
     final state = ref.watch(widget.stateProvider);
 >>>>>>> 0cb3fb2 (continue share function)
+=======
+    final state = ref.watch(stateProvider);
+>>>>>>> 85ac6f9 (commi)
     final searchTec = useTextEditingController();
     final commentTec = useTextEditingController();
 
@@ -363,10 +378,17 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
       trailing: RecipeBoxIcon(
         onTap: () {
 <<<<<<< HEAD
+<<<<<<< HEAD
           // addWeekly(context);
 =======
           addWeekly(context, state, widget.recipe);
 >>>>>>> ce0b8c1 (Finished the alert dialog to insert recipes into weeklys)
+=======
+          addWeekly(context, state, widget.recipe);
+=======
+          // addWeekly(context);
+>>>>>>> 249ea74 (Semi fixed bug with unintended refreshes)
+>>>>>>> 85ac6f9 (commi)
         },
         icon: const Icon(Icons.add),
         height: 30,
@@ -390,10 +412,14 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
           backgroundColor: kcMedBeige,
           title: const Center(child: Text("Share Recipe")),
 <<<<<<< HEAD
+<<<<<<< HEAD
           content: SizedBox(
 =======
           content: Container(
 >>>>>>> 0cb3fb2 (continue share function)
+=======
+          content: SizedBox(
+>>>>>>> 85ac6f9 (commi)
             height: size.height - 200,
             width: (size.width - 100) / 2,
             child: Column(
@@ -461,12 +487,16 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
                 commentTec.clear();
                 state.message = '';
 <<<<<<< HEAD
+<<<<<<< HEAD
                 state.shareMembers.clear();
 =======
                 print(state.shareMembers);
                 state.shareMembers.clear();
                 print(state.shareMembers);
 >>>>>>> 0cb3fb2 (continue share function)
+=======
+                state.shareMembers.clear();
+>>>>>>> 85ac6f9 (commi)
               },
               child: const Text('Send',
                   style: TextStyle(
@@ -532,6 +562,7 @@ Future<dynamic> addWeekly(
     ),
   ];
   return showDialog(
+<<<<<<< HEAD
 <<<<<<< HEAD
     context: context,
     builder: (context) {
@@ -612,6 +643,8 @@ Future<dynamic> addWeekly(
     },
   );
 =======
+=======
+>>>>>>> 85ac6f9 (commi)
       context: context,
       builder: (context) {
         return AlertDialog(
@@ -735,7 +768,90 @@ Future<dynamic> addWeekly(
           ],
         );
       });
+<<<<<<< HEAD
 >>>>>>> ce0b8c1 (Finished the alert dialog to insert recipes into weeklys)
+=======
+=======
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text("Add weekly recipe"),
+        actions: [
+          Container(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    const SelectableText(
+                      "Week",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    NumericStepButton(
+                      counter: weekNumber(DateTime.now()),
+                      onChanged: (val) {},
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    const SelectableText(
+                      "Day of week:",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    SizedBox(
+                      width: 150,
+                      child: CustDropDown(
+                        items: weekDays,
+                        onChanged: (val) {},
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  children: [
+                    const SelectableText(
+                      "Meal Type:",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    SizedBox(
+                      width: 150,
+                      child: CustDropDown(
+                        items: mealType,
+                        onChanged: (val) {},
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                CustomButton(
+                  duration: const Duration(milliseconds: 200),
+                  onTap: () {},
+                  child: const Text("Add Recipe"),
+                  width: 150,
+                  height: 50,
+                ),
+              ],
+            ),
+          )
+        ],
+      );
+    },
+  );
+>>>>>>> 249ea74 (Semi fixed bug with unintended refreshes)
+>>>>>>> 85ac6f9 (commi)
 }
 
 class RecipeInformationRow extends StatelessWidget {
