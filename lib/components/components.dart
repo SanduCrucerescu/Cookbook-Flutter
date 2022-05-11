@@ -11,6 +11,7 @@ import 'package:cookbook/controllers/loadimage.dart';
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import 'package:cookbook/db/queries/get_members.dart';
 import 'package:cookbook/db/queries/send_message.dart';
 =======
@@ -19,6 +20,8 @@ import 'package:cookbook/db/queries/add_weaklys.dart';
 =======
 =======
 >>>>>>> 85ac6f9 (commi)
+=======
+>>>>>>> 1c80980 (commi)
 import 'package:cookbook/db/queries/add_weaklys.dart';
 =======
 import 'package:cookbook/db/queries/get_members.dart';
@@ -31,7 +34,17 @@ import 'package:cookbook/db/queries/send_message.dart';
 import 'package:cookbook/db/queries/get_members.dart';
 import 'package:cookbook/db/queries/send_message.dart';
 >>>>>>> 249ea74 (Semi fixed bug with unintended refreshes)
+<<<<<<< HEAD
 >>>>>>> 85ac6f9 (commi)
+=======
+=======
+import 'package:cookbook/db/queries/get_members.dart';
+import 'package:cookbook/db/queries/send_message.dart';
+=======
+import 'package:cookbook/db/queries/add_weaklys.dart';
+>>>>>>> ce0b8c1 (Finished the alert dialog to insert recipes into weeklys)
+>>>>>>> 2d12c16 (commit)
+>>>>>>> 1c80980 (commi)
 import 'package:cookbook/main.dart';
 import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/models/recipe/recipe.dart';

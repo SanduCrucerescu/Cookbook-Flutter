@@ -105,13 +105,19 @@ class DatabaseManager extends AbstractDatabaseManager {
     result = await cnx!.query(query);
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 2d12c16 (commit)
     await close();
 =======
     cnx!.close();
 >>>>>>> 6f3a264 (Finished the alert dialog to insert recipes into weeklys)
+<<<<<<< HEAD
 =======
     cnx!.close();
 >>>>>>> 859b58c (smol changes)
+=======
+>>>>>>> 2d12c16 (commit)
     return result;
   }
 
