@@ -37,10 +37,6 @@ class _HomePageState extends ConsumerState<HomePage> {
   );
 
   final GetFavorites getFavorites = GetFavorites();
-<<<<<<< HEAD
-<<<<<<< HEAD
-  Future<List<Recipe>?>? items;
-=======
   Future<List<Recipe>?>? items;
 
   @override
@@ -53,24 +49,8 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     super.initState();
   }
->>>>>>> 85ac6f9 (commi)
 
   @override
-  void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
-      items = getFavorites.getfav(
-        InheritedLoginProvider.of(context).userData?['email'],
-      );
-    });
-
-    super.initState();
-  }
-
-  @override
-=======
-
-  @override
->>>>>>> a9cc257 (commi)
   Widget build(BuildContext context) {
     final state = ref.watch(responsiveProvider);
     final tec = useTextEditingController();
@@ -81,29 +61,11 @@ class _HomePageState extends ConsumerState<HomePage> {
       controller: tec,
       searchBarWidth: searchBarWidth,
       child: FutureBuilder(
-<<<<<<< HEAD
-<<<<<<< HEAD
         future: items,
         builder: (context, snapshot) {
           if (snapshot.hasData || state.recipes == null) {
             state.setRecipeBoxes(
-              favorites: snapshot.data as List<Recipe>?,
-=======
-        future: getFavorites.getfav(
-          InheritedLoginProvider.of(context).userData?['email'],
-        ),
-=======
-        future: items,
->>>>>>> 85ac6f9 (commi)
-        builder: (context, snapshot) {
-          if (snapshot.hasData || state.recipes == null) {
-            state.setRecipeBoxes(
-<<<<<<< HEAD
               favorites: snapshot.data as List<Recipe>,
->>>>>>> a9cc257 (commi)
-=======
-              favorites: snapshot.data as List<Recipe>?,
->>>>>>> 85ac6f9 (commi)
               ctx: context,
               displayedRecipes:
                   InheritedLoginProvider.of(context).displayedRecipes,
@@ -119,15 +81,9 @@ class _HomePageState extends ConsumerState<HomePage> {
               ),
             );
           } else {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
             getFavorites.getfav(
               InheritedLoginProvider.of(context).userData?['email'],
             );
->>>>>>> a9cc257 (commi)
-=======
->>>>>>> 85ac6f9 (commi)
             return const Center(
               child: Center(
                 child: CircularProgressIndicator(),
