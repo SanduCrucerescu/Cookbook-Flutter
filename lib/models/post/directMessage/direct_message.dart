@@ -6,14 +6,15 @@ class DirectMessage implements Comparable {
   String? content;
   String? time;
   String? date;
+  int? recipeID;
 
-  DirectMessage({
-    this.sender,
-    this.receiver,
-    this.content,
-    this.time,
-    this.date,
-  });
+  DirectMessage(
+      {this.sender,
+      this.receiver,
+      this.content,
+      this.time,
+      this.date,
+      this.recipeID});
 
   @override
   int compareTo(other) {

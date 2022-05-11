@@ -1,11 +1,11 @@
-import 'package:cookbook/db/queries/get_members.dart';
 import 'package:cookbook/db/database_manager.dart';
+import 'package:cookbook/db/queries/get_members.dart';
 import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/pages/admin/admin_page.dart';
 import 'package:cookbook/pages/admin/search_add.dart';
 import 'package:cookbook/pages/admin/user_tile.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mysql1/mysql1.dart';
 
 class Rectangle extends StatelessWidget {
   final String text;

@@ -1,4 +1,17 @@
-part of components;
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+import '../pages/admin/admin_page.dart';
+import '../pages/comments/comments.dart';
+import '../pages/faq/faq.dart';
+import '../pages/favorites/favorites.dart';
+import '../pages/home/home_page.dart';
+import '../pages/loading/loading_page.dart';
+import '../pages/messages/message_screen.dart';
+import '../pages/recipeadd/ui_components.dart';
+import '../pages/shoppingCart/shoppingPage.dart';
+import '../pages/userPage/user_page.dart';
+import '../pages/weeklyPage/weeklyPage.dart';
 
 List<Map<String, dynamic>> kSideBarItems = [
   {
