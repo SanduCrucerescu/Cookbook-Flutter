@@ -3,9 +3,9 @@ import 'package:flutter_test/flutter_test.dart';
 
 class AddUser {
   static Future<bool> adding({Map<String, dynamic>? userInfo}) async {
-    final DatabaseManager databaseManager = await DatabaseManager.init();
+    final DatabaseManager dbManager = await DatabaseManager.init();
 
-    Future? res = databaseManager.insert(table: "members", fields: [
+    Future? res = dbManager.insert(table: "members", fields: [
       "email",
       "password",
       "username",
@@ -16,6 +16,7 @@ class AddUser {
       "username": userInfo?["username"],
       "profile_picture": userInfo?["profile_picture"]
     });
+    dbManager.close();
     return true;
   }
 }

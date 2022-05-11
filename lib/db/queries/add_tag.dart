@@ -4,11 +4,11 @@ import 'package:mysql1/mysql1.dart';
 class AddTag {
   static Future<bool> addTag(
       {required String table, Map<String, dynamic>? data}) async {
-    final DatabaseManager databaseManager = await DatabaseManager.init();
+    final DatabaseManager dbManager = await DatabaseManager.init();
 
-    Results? res = await databaseManager
+    Results? res = await dbManager
         .insert(table: table, fields: ["name"], data: {"name": data!["name"]});
-
+    dbManager.close();
     return true;
   }
 }

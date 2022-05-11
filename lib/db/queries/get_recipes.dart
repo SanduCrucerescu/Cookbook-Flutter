@@ -36,13 +36,14 @@ class GetRecepies {
           tags: await getTags(rs.fields['id']));
       setRecipie(recipeClass);
     }
+    dbManager.close();
   }
 
   Future<List<Ingredient>?> getIngredients(int id) async {
-    final DatabaseManager databaseManager = await DatabaseManager.init();
+    final DatabaseManager dbManager = await DatabaseManager.init();
     List<Ingredient> ingredient = [];
 
-    Results? ingredients = await databaseManager.query(
+    Results? ingredients = await dbManager.query(
         query:
             "select * from ingredients_for_recipe INNER JOIN ingredients on ingredients_for_recipe.ingredient_id = ingredients.id where recipe_id = $id;");
     for (var ing in ingredients!) {
@@ -55,14 +56,15 @@ class GetRecepies {
       );
       ingredient.add(ingredientClass);
     }
+    dbManager.close();
     return ingredient;
   }
 
   Future<List<Tag>> getTags(int id) async {
-    final DatabaseManager databaseManager = await DatabaseManager.init();
+    final DatabaseManager dbManager = await DatabaseManager.init();
     List<Tag> tagsList = [];
 
-    Results? tags = await databaseManager.query(
+    Results? tags = await dbManager.query(
         query:
             "select * from ingredients_for_recipe INNER JOIN ingredients on ingredients_for_recipe.ingredient_id = ingredients.id where recipe_id = $id;");
 
@@ -70,6 +72,7 @@ class GetRecepies {
       tagClass = Tag(id: tag.fields['id'], name: tag.fields['name']);
       tagsList.add(tagClass);
     }
+    dbManager.close();
     return tagsList;
   }
 

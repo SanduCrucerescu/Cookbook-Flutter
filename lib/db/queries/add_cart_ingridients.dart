@@ -32,5 +32,6 @@ WHERE members.email="${a}";''');
     );
     ingridients.add(curr);
   }
+  dbManager.close();
   return ingridients;
 }

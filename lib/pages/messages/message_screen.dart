@@ -7,11 +7,11 @@ import 'package:cookbook/pages/messages/message_textfield.dart';
 import 'package:cookbook/pages/messages/search_bar.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:quiver/iterables.dart';
+
 import '../../db/queries/get_members.dart';
 import '../../db/queries/get_messages.dart';
 import 'conversation_widget.dart';
@@ -129,9 +129,14 @@ class MessagePageState extends ConsumerState<MessagePage> {
   }
 }
 
+final membersProvider = ChangeNotifierProvider<MessagePageController>(
+  (ref) => MessagePageController(),
+);
+
 class MessagePageController extends ChangeNotifier {
   List<Member> _members = [];
   List<Member> _displayedMembers = [];
+  List<Member> _shareMembers = [];
   List<DirectMessage> _messages = [];
   List<DirectMessage> _displayedMessages = [];
 
@@ -150,6 +155,8 @@ class MessagePageController extends ChangeNotifier {
   List<Member> get members => _members;
 
   List<Member> get displayedMembers => _displayedMembers;
+
+  List<Member> get shareMembers => _shareMembers;
 
   List<DirectMessage> get messages => _messages;
 
@@ -182,6 +189,11 @@ class MessagePageController extends ChangeNotifier {
     notifyListeners();
   }
 
+  set shareMembers(List<Member> newMembers) {
+    _shareMembers = newMembers;
+    notifyListeners();
+  }
+
   Member? getMemberByEmail(String? email) {
     for (Member m in _members) {
       if (m.email == email) {
@@ -191,13 +203,16 @@ class MessagePageController extends ChangeNotifier {
   }
 
   void advancedSetDisplayedMembers(
-      List<Member> newMembers, BuildContext context) {
+    List<Member> newMembers,
+    BuildContext context,
+  ) {
     List<Member> membersWithChat = [];
     List<DirectMessage> lastMessages = [];
     final String email = InheritedLoginProvider.of(context).userData!['email'];
     for (DirectMessage mes in _messages) {
-      final mem =
-          getMemberByEmail(mes.sender != email ? mes.sender : mes.receiver);
+      final mem = getMemberByEmail(
+        mes.sender != email ? mes.sender : mes.receiver,
+      );
       if ((mes.sender == email || mes.receiver == email) &&
           !membersWithChat.contains(mem) &&
           mem != null) {
@@ -274,6 +289,16 @@ class MessagePageController extends ChangeNotifier {
 
   void addDisplayedMember(Member _member) {
     _displayedMembers.add(_member);
+    notifyListeners();
+  }
+
+  void addShareMember(Member _member) {
+    _shareMembers.add(_member);
+    notifyListeners();
+  }
+
+  void removeShareMember(Member _member) {
+    _shareMembers.remove(_member);
     notifyListeners();
   }
 
