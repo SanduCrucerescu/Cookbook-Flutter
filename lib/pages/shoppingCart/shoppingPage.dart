@@ -88,6 +88,11 @@ class SelectedIngridientChangeNotifier extends ChangeNotifier {
     }
   }
 
+  void addAdditionalIngredients(Ingredient a, int amountToAdd) {
+    a.amount = a.amount! + amountToAdd;
+    notifyListeners();
+  }
+
   void removeIngredient(Ingredient ingredient) {
     if (_ingredientList != null) {
       _ingredientList!.remove(ingredient);
