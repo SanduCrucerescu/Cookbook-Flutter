@@ -1,7 +1,10 @@
 import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/db/queries/add_cart_ingidients.dart';
+<<<<<<< HEAD
 import 'package:cookbook/db/queries/get_cart_ingridients.dart';
 import 'package:cookbook/main.dart';
+=======
+>>>>>>> 0ac05fc (commit)
 import 'package:cookbook/models/ingredient/ingredient.dart';
 import 'package:cookbook/pages/shoppingCart/shoppingPage.dart';
 import 'package:cookbook/theme/colors.dart';
@@ -103,6 +106,7 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                 width: xSize,
                 child: TextButton(
                   onPressed: () {
+<<<<<<< HEAD
                     print(getCurrentCart(context));
                     print(state.ingredientList);
                     var success = AddCartIngridients.addToCart(
@@ -114,6 +118,16 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                     );
                     // Yep it works
                     print(success);
+=======
+                    var success = AddCartIngridients.addToCart(
+                      cartInfo: {
+                        "cart_id": 27,
+                        "ingredients_for_recipe_id": 1,
+                        "quantity": 1
+                      },
+                    );
+                    //Yep it works
+>>>>>>> 0ac05fc (commit)
                   },
                   child: const Text("Save Shopping Cart"),
                 ),
