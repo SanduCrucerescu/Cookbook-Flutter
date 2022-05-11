@@ -20,13 +20,12 @@ class SideBar extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Size size = MediaQuery.of(context).size;
     final state = ref.watch(sideBarCangeNotifier);
 
     return Container(
       padding: padding ?? const EdgeInsets.all(10),
       margin: margin ?? const EdgeInsets.only(top: 100),
-      height: height ?? size.height - 100,
+      height: height,
       width: width ?? state.width,
       decoration: const BoxDecoration(
         border: Border(

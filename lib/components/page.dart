@@ -22,9 +22,7 @@ class CustomPage extends HookConsumerWidget {
       child: Scaffold(
         body: Stack(
           children: <Widget>[
-            Container(
-              color: kcLightBeige,
-            ),
+            Container(color: kcLightBeige),
             Align(
               alignment: Alignment.topCenter,
               child: NavBar(

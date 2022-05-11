@@ -66,7 +66,7 @@ class SelectedIngridientChangeNotifier extends ChangeNotifier {
   Ingredient? _currIngredient;
   String _name = "";
   String _filteringString = '';
-  List<Ingredient> _ingredientList = [];
+  List<Ingredient>? _ingredientList = [];
 
   String get filteringString => _filteringString; // notify
 
@@ -74,7 +74,7 @@ class SelectedIngridientChangeNotifier extends ChangeNotifier {
 
   Ingredient? get currIngridient => _currIngredient;
 
-  List<Ingredient> get ingredientList => _ingredientList;
+  List<Ingredient>? get ingredientList => _ingredientList;
 
   set currIngridient(Ingredient? ingredient) {
     _currIngredient = ingredient;
@@ -82,21 +82,27 @@ class SelectedIngridientChangeNotifier extends ChangeNotifier {
   }
 
   void addIngredient(Ingredient ingredient) {
-    _ingredientList.add(ingredient);
-    notifyListeners();
+    if (_ingredientList != null) {
+      _ingredientList!.add(ingredient);
+      notifyListeners();
+    }
   }
 
   void removeIngredient(Ingredient ingredient) {
-    _ingredientList.remove(ingredient);
-    notifyListeners();
+    if (_ingredientList != null) {
+      _ingredientList!.remove(ingredient);
+      notifyListeners();
+    }
   }
 
   void removeIngredientAt(int idx) {
-    _ingredientList.removeAt(idx);
-    notifyListeners();
+    if (_ingredientList != null) {
+      _ingredientList!.removeAt(idx);
+      notifyListeners();
+    }
   }
 
-  set ingredientList(List<Ingredient> list) {
+  set ingredientList(List<Ingredient>? list) {
     _ingredientList = list;
     notifyListeners();
   }
