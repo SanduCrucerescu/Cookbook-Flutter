@@ -125,10 +125,7 @@ class RecipeBox extends ConsumerWidget {
         Positioned(
           top: 534,
           left: actionRowIndent,
-          child: RecipeActionsRow(
-            recipe: recipe,
-            isLiked: isLiked,
-          ),
+          child: RecipeActionsRow(recipe: recipe, isLiked: isLiked),
         ),
         const Positioned(left: horiLineIndent, top: 570, child: HoriLine()),
         Positioned(
@@ -230,23 +227,18 @@ class RecipeActionsRow extends StatefulHookConsumerWidget {
   }) : super(key: key);
 
   final stateProvider = ChangeNotifierProvider<VerificationNotifier>(
-    ((ref) => VerificationNotifier()),
-  );
+      ((ref) => VerificationNotifier()));
 
   @override
   _RecipeActionsRow createState() => _RecipeActionsRow();
 }
 
 class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
-  final stateProvider = ChangeNotifierProvider<VerificationNotifier>(
-    ((ref) => VerificationNotifier()),
-  );
-
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
-      ref.read(stateProvider).isLiked = widget.isLiked;
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+      ref.read(widget.stateProvider).isLiked = widget.isLiked;
       final membersState = ref.read(membersProvider);
       membersState.members = await getMembers(context);
       membersState.advancedSetDisplayedMembers(membersState.members, context);
@@ -257,10 +249,7 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
   @override
   Widget build(BuildContext context) {
     final membersState = ref.watch(membersProvider);
-
-    final state = ref.watch(stateProvider);
-    //final state = ref.watch(widget.stateProvider);
-
+    final state = ref.watch(widget.stateProvider);
     final searchTec = useTextEditingController();
     final commentTec = useTextEditingController();
 
@@ -272,10 +261,9 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
               child: SelectableText(
                 state.text,
                 style: GoogleFonts.montserrat(
-                  fontSize: 9,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.red,
-                ),
+                    fontSize: 9,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.red),
               ),
             )
           : const SizedBox(),
@@ -294,10 +282,9 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
                     width: 33,
                     onTap: () {
                       Favorites.delete(
-                        email: InheritedLoginProvider.of(context)
-                            .userData?['email'],
-                        recipeID: widget.recipe.id,
-                      );
+                          email: InheritedLoginProvider.of(context)
+                              .userData?['email'],
+                          recipeID: widget.recipe.id);
                       state.isLiked = false;
                     },
                   )
@@ -308,10 +295,9 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
                     width: 33,
                     onTap: () async {
                       bool val = await Favorites.adding(
-                        email: InheritedLoginProvider.of(context)
-                            .userData?['email'],
-                        recipeID: widget.recipe.id,
-                      );
+                          email: InheritedLoginProvider.of(context)
+                              .userData?['email'],
+                          recipeID: widget.recipe.id);
                       if (!val) {
                         state.exists = true;
                         state.text = "Recipe already inserted";
@@ -373,7 +359,7 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
         return AlertDialog(
           backgroundColor: kcMedBeige,
           title: const Center(child: Text("Share Recipe")),
-          content: SizedBox(
+          content: Container(
             height: size.height - 200,
             width: (size.width - 100) / 2,
             child: Column(
@@ -441,10 +427,9 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
                 }
                 commentTec.clear();
                 state.message = '';
+                print(state.shareMembers);
                 state.shareMembers.clear();
-
-                state.shareMembers.clear();
-                state.shareMembers.clear();
+                print(state.shareMembers);
               },
               child: const Text('Send',
                   style: TextStyle(
@@ -862,6 +847,7 @@ class HoriLine extends StatelessWidget {
 
 class RecipeBoxIconHoverNotifier extends ChangeNotifier {
   bool _hovering = false;
+
   bool get hovering => _hovering;
 
   set hovering(bool val) {

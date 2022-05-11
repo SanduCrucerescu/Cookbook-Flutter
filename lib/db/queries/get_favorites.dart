@@ -43,7 +43,6 @@ class GetFavorites {
       setRecipie(recipeClass);
     }
     dbManager.close();
-
     return recepieList;
   }
 

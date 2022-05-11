@@ -1,9 +1,9 @@
 import 'dart:developer';
-
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/db/queries/get_favorites.dart';
 import 'package:cookbook/main.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
+import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -37,22 +37,22 @@ class _HomePageState extends ConsumerState<HomePage> {
     (ref) => ResponsiveNotifier(),
   );
 
-  final GetFavorites getFavorites = GetFavorites();
+  GetFavorites getFavorites = GetFavorites();
   Future<List<Recipe>?>? items;
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
-      items = getFavorites.getfav(
-        InheritedLoginProvider.of(context).userData?['email'],
-      );
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+      items = getFavorites
+          .getfav(InheritedLoginProvider.of(context).userData?['email']);
     });
 
     super.initState();
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext contextref) {
+    Size size = MediaQuery.of(context).size;
     final state = ref.watch(responsiveProvider);
     final tec = useTextEditingController();
     final searchBarWidth = widget.searchBarWidth;
@@ -62,31 +62,35 @@ class _HomePageState extends ConsumerState<HomePage> {
       controller: tec,
       searchBarWidth: searchBarWidth,
       child: FutureBuilder(
-        future: items,
+        future: getFavorites
+            .getfav(InheritedLoginProvider.of(context).userData?['email']),
         builder: (context, snapshot) {
-          if (snapshot.hasData || state.recipes == null) {
-            state.setRecipeBoxes(
-              favorites: snapshot.data as List<Recipe>,
-              ctx: context,
-              displayedRecipes:
-                  InheritedLoginProvider.of(context).displayedRecipes,
-              cols: widget.cols,
-            );
+          if (snapshot.hasData) {
+            ref.read(responsiveProvider).setRecipeBoxes(
+                favorites: snapshot.data as List<Recipe>,
+                ctx: context,
+                displayedRecipes:
+                    InheritedLoginProvider.of(context).displayedRecipes,
+                cols: widget.cols);
             return SizedBox(
+              width: size.width - 220,
               child: ListView.builder(
+                physics: const AlwaysScrollableScrollPhysics(),
                 cacheExtent: 50,
-                itemCount: state.recipes!.length,
+                itemCount: state.recipes.length,
+                shrinkWrap: true,
                 itemBuilder: (ctx, i) => Container(
-                  child: state.recipes![i],
+                  child: state.recipes[i],
                 ),
               ),
             );
           } else {
-            getFavorites.getfav(
-              InheritedLoginProvider.of(context).userData?['email'],
-            );
+            getFavorites
+                .getfav(InheritedLoginProvider.of(context).userData?['email']);
             return const Center(
-              child: Center(
+              child: SizedBox(
+                height: 50,
+                width: 50,
                 child: CircularProgressIndicator(),
               ),
             );
@@ -99,11 +103,8 @@ class _HomePageState extends ConsumerState<HomePage> {
 
 class ResponsiveNotifier extends ChangeNotifier {
   String _filteringString = '';
-  List<Widget>? _recipes;
+  List<Widget> _recipes = [];
   int rows = 10;
-  int _internalCols = 0;
-
-  int get internalCols => _internalCols;
 
   String get filteringString => _filteringString;
 
@@ -118,11 +119,10 @@ class ResponsiveNotifier extends ChangeNotifier {
     required List<Recipe> displayedRecipes,
     required int cols,
   }) {
-    final List<Widget> _newRecipes = [];
-    _internalCols = cols;
+    _recipes = [];
 
     for (int i = 0; i < displayedRecipes.length; i += cols) {
-      _newRecipes.add(
+      _recipes.add(
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: List.generate(
@@ -145,10 +145,9 @@ class ResponsiveNotifier extends ChangeNotifier {
         ),
       );
     }
-    _recipes = _newRecipes;
   }
 
-  List<Widget>? get recipes {
+  List<Widget> get recipes {
     log('get _recipes');
     return _recipes;
   }
