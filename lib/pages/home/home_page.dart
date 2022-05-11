@@ -1,4 +1,5 @@
 import 'dart:developer';
+
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/db/queries/get_favorites.dart';
 import 'package:cookbook/main.dart';

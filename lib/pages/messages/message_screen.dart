@@ -1,10 +1,10 @@
 import 'package:binary_tree/binary_tree.dart';
 import 'package:cookbook/components/components.dart';
-import 'package:cookbook/db/queries/get_members.dart';
-import 'package:cookbook/db/queries/get_messages.dart';
+import 'package:cookbook/db/queries/get_recipes.dart';
 import 'package:cookbook/main.dart';
 import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/models/post/directMessage/direct_message.dart';
+import 'package:cookbook/models/recipe/recipe.dart';
 import 'package:cookbook/pages/messages/message_textfield.dart';
 import 'package:cookbook/pages/messages/search_bar.dart';
 import 'package:cookbook/theme/colors.dart';
@@ -13,6 +13,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:quiver/iterables.dart';
+
+import '../../db/queries/get_members.dart';
+import '../../db/queries/get_messages.dart';
 import 'conversation_widget.dart';
 import 'inbox_widget.dart';
 
@@ -35,8 +38,11 @@ class MessagePageState extends ConsumerState<MessagePage> {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       final state = ref.read(membersProvider);
       state.members = await getMembers(context);
-      state.messages = await getMessages();
+      state.messages = await getMessages(context);
       state.advancedSetDisplayedMembers(state.members, context);
+      GetRecepies getRecepies = GetRecepies();
+      getRecepies.getrecep();
+      state._recipes = getRecepies.recepieList;
     });
 
     super.initState();
@@ -138,6 +144,7 @@ class MessagePageController extends ChangeNotifier {
   List<Member> _shareMembers = [];
   List<DirectMessage> _messages = [];
   List<DirectMessage> _displayedMessages = [];
+  List<Recipe> _recipes = [];
 
   String _filteringString = '';
   String _message = '';
@@ -158,6 +165,8 @@ class MessagePageController extends ChangeNotifier {
   List<Member> get shareMembers => _shareMembers;
 
   List<DirectMessage> get messages => _messages;
+
+  List<Recipe> get recipes => _recipes;
 
   bool get toggle => _toggle;
 
@@ -190,6 +199,11 @@ class MessagePageController extends ChangeNotifier {
 
   set shareMembers(List<Member> newMembers) {
     _shareMembers = newMembers;
+    notifyListeners();
+  }
+
+  set recipes(List<Recipe> newRecipes) {
+    _recipes = newRecipes;
     notifyListeners();
   }
 
@@ -314,5 +328,14 @@ class MessagePageController extends ChangeNotifier {
   void removeDisplayedMessage(DirectMessage _message) {
     _displayedMessages.remove(_message);
     notifyListeners();
+  }
+
+  Recipe? getRecipe(int id) {
+    for (Recipe r in recipes) {
+      if (r.id == id) {
+        return r;
+      }
+    }
+    return null;
   }
 }

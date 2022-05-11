@@ -435,16 +435,15 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
                         InheritedLoginProvider.of(context).userData?['email'],
                     'receiver': state.shareMembers[i].email,
                     'content': state.message,
-                    'time': DateTime.now().toString()
-                  });
+                    'time': DateTime.now().toString(),
+                    'recipeID': widget.recipe.id
+                  }, n: true);
                 }
                 commentTec.clear();
                 state.message = '';
                 state.shareMembers.clear();
 
-                print(state.shareMembers);
                 state.shareMembers.clear();
-                print(state.shareMembers);
                 state.shareMembers.clear();
               },
               child: const Text('Send',
