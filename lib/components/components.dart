@@ -8,43 +8,9 @@ import 'package:cookbook/components/NumericStepIncrement.dart';
 import 'package:cookbook/components/share_recipe_listview.dart';
 import 'package:cookbook/db/queries/add_delete_favorites.dart';
 import 'package:cookbook/controllers/loadimage.dart';
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-import 'package:cookbook/db/queries/get_members.dart';
-import 'package:cookbook/db/queries/send_message.dart';
-=======
 import 'package:cookbook/db/queries/add_weaklys.dart';
->>>>>>> ce0b8c1 (Finished the alert dialog to insert recipes into weeklys)
-=======
-=======
->>>>>>> 85ac6f9 (commi)
-=======
->>>>>>> 1c80980 (commi)
-import 'package:cookbook/db/queries/add_weaklys.dart';
-=======
 import 'package:cookbook/db/queries/get_members.dart';
 import 'package:cookbook/db/queries/send_message.dart';
->>>>>>> 6816726 (changed add to cart feature)
-<<<<<<< HEAD
->>>>>>> 3202038 (commit)
-=======
-=======
-import 'package:cookbook/db/queries/get_members.dart';
-import 'package:cookbook/db/queries/send_message.dart';
->>>>>>> 249ea74 (Semi fixed bug with unintended refreshes)
-<<<<<<< HEAD
->>>>>>> 85ac6f9 (commi)
-=======
-=======
-import 'package:cookbook/db/queries/get_members.dart';
-import 'package:cookbook/db/queries/send_message.dart';
-=======
-import 'package:cookbook/db/queries/add_weaklys.dart';
->>>>>>> ce0b8c1 (Finished the alert dialog to insert recipes into weeklys)
->>>>>>> 2d12c16 (commit)
->>>>>>> 1c80980 (commi)
 import 'package:cookbook/main.dart';
 import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
@@ -70,7 +36,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+
 import '../pages/recipe/recipe.dart';
+
 part 'custom_text_field.dart';
 part 'custom_text_field_notifier.dart';
 part 'custom_button.dart';

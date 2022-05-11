@@ -107,6 +107,7 @@ class DatabaseManager extends AbstractDatabaseManager {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 2d12c16 (commit)
     await close();
@@ -122,6 +123,9 @@ class DatabaseManager extends AbstractDatabaseManager {
 =======
     cnx!.close();
 >>>>>>> a6596f3 (merge)
+=======
+    await close();
+>>>>>>> 9fb7efb (Added cartId to the InheritedProvider)
     return result;
   }
 

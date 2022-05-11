@@ -11,7 +11,7 @@ class RecipeBox extends ConsumerWidget {
 
   RecipeBox({
     required this.recipe,
-    required this.isLiked,
+    this.isLiked = false,
     this.image,
     this.profilePicture,
     Key? key,
@@ -254,13 +254,17 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 7ef59b4 (merge)
+=======
+>>>>>>> c09583a (commi)
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
       ref.read(stateProvider).isLiked = widget.isLiked;
       final membersState = ref.read(membersProvider);
       membersState.members = await getMembers(context);
       membersState.advancedSetDisplayedMembers(membersState.members, context);
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
@@ -283,6 +287,8 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
       setState(() {});
 >>>>>>> 8e6b174 (merge)
 >>>>>>> 7ef59b4 (merge)
+=======
+>>>>>>> c09583a (commi)
     });
   }
 
@@ -390,6 +396,7 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
           // addWeekly(context);
 =======
           addWeekly(context, state, widget.recipe);
@@ -397,6 +404,8 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
 =======
 =======
 >>>>>>> 1c80980 (commi)
+=======
+>>>>>>> c09583a (commi)
           addWeekly(context, state, widget.recipe);
 =======
           // addWeekly(context);
@@ -410,7 +419,13 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
           addWeekly(context, state, widget.recipe);
 >>>>>>> ce0b8c1 (Finished the alert dialog to insert recipes into weeklys)
 >>>>>>> 2d12c16 (commit)
+<<<<<<< HEAD
 >>>>>>> 1c80980 (commi)
+=======
+=======
+          addWeekly(context, state, widget.recipe);
+>>>>>>> 9fb7efb (Added cartId to the InheritedProvider)
+>>>>>>> c09583a (commi)
         },
         icon: const Icon(Icons.add),
         height: 30,
@@ -587,6 +602,7 @@ Future<dynamic> addWeekly(
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     context: context,
     builder: (context) {
       return AlertDialog(
@@ -670,6 +686,8 @@ Future<dynamic> addWeekly(
 >>>>>>> 85ac6f9 (commi)
 =======
 >>>>>>> 1c80980 (commi)
+=======
+>>>>>>> c09583a (commi)
       context: context,
       builder: (context) {
         return AlertDialog(
@@ -884,6 +902,8 @@ Future<dynamic> addWeekly(
 =======
 =======
 =======
+=======
+>>>>>>> 9fb7efb (Added cartId to the InheritedProvider)
       context: context,
       builder: (context) {
         return AlertDialog(
@@ -1007,9 +1027,15 @@ Future<dynamic> addWeekly(
           ],
         );
       });
+<<<<<<< HEAD
 >>>>>>> ce0b8c1 (Finished the alert dialog to insert recipes into weeklys)
 >>>>>>> 2d12c16 (commit)
+<<<<<<< HEAD
 >>>>>>> 1c80980 (commi)
+=======
+=======
+>>>>>>> 9fb7efb (Added cartId to the InheritedProvider)
+>>>>>>> c09583a (commi)
 }
 
 class RecipeInformationRow extends StatelessWidget {

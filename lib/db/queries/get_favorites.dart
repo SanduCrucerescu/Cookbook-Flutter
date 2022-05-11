@@ -46,6 +46,7 @@ class GetFavorites {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     return recepieList;
 =======
     return _recepieList;
@@ -61,6 +62,9 @@ class GetFavorites {
     // print(recepieList);
 >>>>>>> 8e6b174 (merge)
 >>>>>>> 7ef59b4 (merge)
+=======
+    return recepieList;
+>>>>>>> c09583a (commi)
   }
 
   Future<List<Ingredient>> getIngredients(int id) async {
