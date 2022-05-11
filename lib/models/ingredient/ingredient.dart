@@ -69,6 +69,10 @@ class Ingredient with ChangeNotifier {
     );
   }
 
+  void setAmount(int amountToAdd) {
+    this.amount = amountToAdd;
+  }
+
   String toJson() => json.encode(toMap());
 
   factory Ingredient.fromJson(String source) =>

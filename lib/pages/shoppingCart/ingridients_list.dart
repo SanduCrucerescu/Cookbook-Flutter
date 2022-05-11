@@ -90,7 +90,7 @@ class IngridientTile extends HookConsumerWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Center(child: Text("Add ${state.currIngridient?.name}")),
+          title: Center(child: Text("Add Ingredient")),
           content: TextField(
             controller: ingridientController,
             decoration: const InputDecoration(labelText: "Enter amount"),
@@ -110,9 +110,9 @@ class IngridientTile extends HookConsumerWidget {
             TextButton(
               onPressed: () {
                 int amountToAdd = int.parse(ingridientController.text);
-                for (int i = 0; i < amountToAdd; i++) {
-                  state.addIngredient(ingridient);
-                }
+                state.addIngredient(ingridient);
+                ingridient.setAmount(amountToAdd);
+
                 Navigator.pop(context);
               },
               child: const Text("Add",
