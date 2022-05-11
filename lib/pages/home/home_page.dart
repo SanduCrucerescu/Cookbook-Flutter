@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/db/queries/get_favorites.dart';
 import 'package:cookbook/main.dart';
@@ -37,6 +38,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   );
 
   final GetFavorites getFavorites = GetFavorites();
+<<<<<<< HEAD
   Future<List<Recipe>?>? items;
 
   @override
@@ -51,6 +53,10 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   @override
+=======
+
+  @override
+>>>>>>> a9cc257 (commi)
   Widget build(BuildContext context) {
     final state = ref.watch(responsiveProvider);
     final tec = useTextEditingController();
@@ -61,11 +67,21 @@ class _HomePageState extends ConsumerState<HomePage> {
       controller: tec,
       searchBarWidth: searchBarWidth,
       child: FutureBuilder(
+<<<<<<< HEAD
         future: items,
         builder: (context, snapshot) {
           if (snapshot.hasData || state.recipes == null) {
             state.setRecipeBoxes(
               favorites: snapshot.data as List<Recipe>?,
+=======
+        future: getFavorites.getfav(
+          InheritedLoginProvider.of(context).userData?['email'],
+        ),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            state.setRecipeBoxes(
+              favorites: snapshot.data as List<Recipe>,
+>>>>>>> a9cc257 (commi)
               ctx: context,
               displayedRecipes:
                   InheritedLoginProvider.of(context).displayedRecipes,
@@ -81,6 +97,12 @@ class _HomePageState extends ConsumerState<HomePage> {
               ),
             );
           } else {
+<<<<<<< HEAD
+=======
+            getFavorites.getfav(
+              InheritedLoginProvider.of(context).userData?['email'],
+            );
+>>>>>>> a9cc257 (commi)
             return const Center(
               child: Center(
                 child: CircularProgressIndicator(),

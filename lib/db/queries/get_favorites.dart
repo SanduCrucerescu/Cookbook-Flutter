@@ -43,7 +43,11 @@ class GetFavorites {
       setRecipie(recipeClass);
     }
     dbManager.close();
+<<<<<<< HEAD
     return recepieList;
+=======
+    return _recepieList;
+>>>>>>> a9cc257 (commi)
   }
 
   Future<List<Ingredient>> getIngredients(int id) async {

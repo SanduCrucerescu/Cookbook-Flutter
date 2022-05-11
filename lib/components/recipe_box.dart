@@ -229,6 +229,13 @@ class RecipeActionsRow extends StatefulHookConsumerWidget {
     Key? key,
   }) : super(key: key);
 
+<<<<<<< HEAD
+=======
+  final stateProvider = ChangeNotifierProvider<VerificationNotifier>(
+    ((ref) => VerificationNotifier()),
+  );
+
+>>>>>>> a9cc257 (commi)
   @override
   _RecipeActionsRow createState() => _RecipeActionsRow();
 }
