@@ -28,8 +28,11 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
     final idx = widget.idx;
 
     getIngredientPrice() {
+      if (state.ingredientList == null) {
+        return 0;
+      }
       double total = 0;
-      for (Ingredient e in state.ingredientList) {
+      for (Ingredient e in state.ingredientList!) {
         total += e.pricePerUnit;
       }
       return total;
@@ -53,32 +56,35 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
               height: 500,
               width: xSize,
               child: SizedBox(
-                child: ListView.builder(
-                  controller: ScrollController(),
-                  itemCount: state.ingredientList.length, // NULL???????
-                  itemBuilder: (BuildContext context, int index) {
-                    return Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: InkWell(
-                              onTap: () {
-                                state.removeIngredientAt(idx);
-                                print("removed: " +
-                                    state.ingredientList[idx].name);
-                              },
-                              child: const Text("X")),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                              capitalize(state.ingredientList[index].name),
-                              style: TextStyle(fontSize: 20)),
-                        ),
-                      ],
-                    );
-                  },
-                ),
+                child: state.ingredientList == null
+                    ? const CircularProgressIndicator()
+                    : ListView.builder(
+                        controller: ScrollController(),
+                        itemCount: state.ingredientList!.length, // NULL???????
+                        itemBuilder: (BuildContext context, int index) {
+                          return Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: InkWell(
+                                    onTap: () {
+                                      state.removeIngredientAt(idx);
+                                      print("removed: " +
+                                          state.ingredientList![idx].name);
+                                    },
+                                    child: const Text("X")),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                    capitalize(
+                                        state.ingredientList![index].name),
+                                    style: TextStyle(fontSize: 20)),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
               ),
             ),
             Container(
