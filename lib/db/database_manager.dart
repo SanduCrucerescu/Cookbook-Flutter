@@ -106,6 +106,7 @@ class DatabaseManager extends AbstractDatabaseManager {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 2d12c16 (commit)
     await close();
@@ -118,6 +119,9 @@ class DatabaseManager extends AbstractDatabaseManager {
 >>>>>>> 859b58c (smol changes)
 =======
 >>>>>>> 2d12c16 (commit)
+=======
+    cnx!.close();
+>>>>>>> a6596f3 (merge)
     return result;
   }
 

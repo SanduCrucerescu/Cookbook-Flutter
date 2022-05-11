@@ -11,7 +11,7 @@ class RecipeBox extends ConsumerWidget {
 
   RecipeBox({
     required this.recipe,
-    this.isLiked = false,
+    required this.isLiked,
     this.image,
     this.profilePicture,
     Key? key,
@@ -253,12 +253,16 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
     super.initState();
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 7ef59b4 (merge)
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
       ref.read(stateProvider).isLiked = widget.isLiked;
       final membersState = ref.read(membersProvider);
       membersState.members = await getMembers(context);
       membersState.advancedSetDisplayedMembers(membersState.members, context);
 =======
+<<<<<<< HEAD
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       ref.read(widget.stateProvider).isLiked = widget.isLiked;
       final membersState = ref.read(membersProvider);
@@ -273,6 +277,12 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
       membersState.members = await getMembers(context);
       membersState.advancedSetDisplayedMembers(membersState.members, context);
 >>>>>>> 85ac6f9 (commi)
+=======
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      ref.read(widget.stateProvider).isLiked = widget.isLiked!;
+      setState(() {});
+>>>>>>> 8e6b174 (merge)
+>>>>>>> 7ef59b4 (merge)
     });
   }
 

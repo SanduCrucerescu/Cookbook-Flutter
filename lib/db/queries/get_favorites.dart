@@ -45,6 +45,7 @@ class GetFavorites {
     dbManager.close();
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     return recepieList;
 =======
     return _recepieList;
@@ -52,6 +53,14 @@ class GetFavorites {
 =======
     return recepieList;
 >>>>>>> 85ac6f9 (commi)
+=======
+    return recepieList;
+=======
+    print(_recepieList);
+    return _recepieList;
+    // print(recepieList);
+>>>>>>> 8e6b174 (merge)
+>>>>>>> 7ef59b4 (merge)
   }
 
   Future<List<Ingredient>> getIngredients(int id) async {

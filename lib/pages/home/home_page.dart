@@ -36,6 +36,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     (ref) => ResponsiveNotifier(),
   );
 
+<<<<<<< HEAD
   final GetFavorites getFavorites = GetFavorites();
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -62,9 +63,20 @@ class _HomePageState extends ConsumerState<HomePage> {
         InheritedLoginProvider.of(context).userData?['email'],
       );
     });
+=======
+  GetFavorites getFavorites = GetFavorites();
+  // Future<List<Recipe>?>? items;
 
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+  //     items = getFavorites
+  //         .getfav(InheritedLoginProvider.of(context).userData?['email']);
+  //   });
+>>>>>>> 8e6b174 (merge)
+
+  //   super.initState();
+  // }
 
   @override
 =======
@@ -111,6 +123,10 @@ class _HomePageState extends ConsumerState<HomePage> {
             );
             return SizedBox(
               child: ListView.builder(
+<<<<<<< HEAD
+=======
+                physics: const AlwaysScrollableScrollPhysics(),
+>>>>>>> 8e6b174 (merge)
                 cacheExtent: 50,
                 itemCount: state.recipes!.length,
                 itemBuilder: (ctx, i) => Container(
