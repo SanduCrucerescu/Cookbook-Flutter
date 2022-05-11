@@ -1,6 +1,6 @@
 part of components;
 
-class SideBar extends ConsumerWidget {
+class SideBar extends HookConsumerWidget {
   final List<Map<String, dynamic>> items;
   final EdgeInsets? margin, padding;
   final double? height, width;
@@ -20,18 +20,20 @@ class SideBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Size size = MediaQuery.of(context).size;
     final state = ref.watch(sideBarCangeNotifier);
 
     return Container(
       padding: padding ?? const EdgeInsets.all(10),
       margin: margin ?? const EdgeInsets.only(top: 100),
-      height: height ?? size.height - 100,
+      height: height,
       width: width ?? state.width,
       decoration: const BoxDecoration(
         border: Border(
-          right:
-              BorderSide(width: .5, color: kcMedGrey, style: BorderStyle.solid),
+          right: BorderSide(
+            width: .5,
+            color: kcMedGrey,
+            style: BorderStyle.solid,
+          ),
         ),
         color: kcMedBeige,
       ),
@@ -53,7 +55,9 @@ class SideBar extends ConsumerWidget {
                   onTap: () {
                     InheritedLoginProvider.of(context).pageId =
                         items[idx]['id'];
-                    Navigator.of(context).pushNamed(items[idx]["onTap"]);
+                    Navigator.of(context).pushNamed(
+                      items[idx]["onTap"],
+                    );
                   },
                   text: items[idx]["text"],
                 );
@@ -72,35 +76,41 @@ class SideBar extends ConsumerWidget {
                     ...List.generate(
                       subtopics.length,
                       (idx2) => SideBarItem(
-                          text: subtopics[idx2]["text"],
-                          onTap: () => Navigator.of(context).pushNamed(
-                                subtopics[idx2]["onTap"],
-                              ),
-                          collapsed: state.collapsed),
+                        text: subtopics[idx2]["text"],
+                        onTap: () => Navigator.of(context).pushNamed(
+                          subtopics[idx2]["onTap"],
+                        ),
+                        collapsed: state.collapsed,
+                      ),
                     ),
                   ],
                 );
               },
             ),
           ),
+          // SideBarItem(
+          //   collapsed: state.collapsed,
+          //   prefixIcon: state.collapsed
+          //       ? const Icon(Icons.chevron_right)
+          //       : const Icon(Icons.chevron_left),
+          //   text: "C o l l a p s e",
+          //   onTap: () {
+          //     state.collapsed = !state.collapsed;
+          //     if (state.width == 50) {
+          //       state.width = 200;
+          //       ref.read(pageController.notifier).state = true;
+          //     } else {
+          //       state.width = 50;
+          //       ref.read(pageController.notifier).state = false;
+          //     }
+          //   },
+          // ),
           SideBarItem(
-            collapsed: state.collapsed,
-            prefixIcon: state.collapsed
-                ? const Icon(Icons.chevron_right)
-                : const Icon(Icons.chevron_left),
-            text: "C o l l a p s e",
-            onTap: () {
-              state.collapsed = !state.collapsed;
-              if (state.width == 50) {
-                state.width = 200;
-              } else {
-                state.width = 50;
-              }
-            },
-          ),
-          SideBarItem(
-            prefixImage: Image.asset("assets/images/lock_open.png",
-                fit: BoxFit.fill, height: 20),
+            prefixImage: Image.asset(
+              "assets/images/lock_open.png",
+              fit: BoxFit.fill,
+              height: 20,
+            ),
             collapsed: state.collapsed,
             text: "L o g o u t",
             onTap: () {

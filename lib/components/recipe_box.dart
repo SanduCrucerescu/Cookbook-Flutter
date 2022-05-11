@@ -125,7 +125,10 @@ class RecipeBox extends ConsumerWidget {
         Positioned(
           top: 534,
           left: actionRowIndent,
-          child: RecipeActionsRow(recipe: recipe, isLiked: isLiked),
+          child: RecipeActionsRow(
+            recipe: recipe,
+            isLiked: isLiked,
+          ),
         ),
         const Positioned(left: horiLineIndent, top: 570, child: HoriLine()),
         Positioned(
@@ -220,36 +223,36 @@ class RecipeBoxTopRow extends StatelessWidget {
 class RecipeActionsRow extends StatefulHookConsumerWidget {
   final Recipe recipe;
   final bool isLiked;
-  RecipeActionsRow({
+  const RecipeActionsRow({
     required this.recipe,
     this.isLiked = false,
     Key? key,
   }) : super(key: key);
-
-  final stateProvider = ChangeNotifierProvider<VerificationNotifier>(
-      ((ref) => VerificationNotifier()));
 
   @override
   _RecipeActionsRow createState() => _RecipeActionsRow();
 }
 
 class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
+  final stateProvider = ChangeNotifierProvider<VerificationNotifier>(
+    ((ref) => VerificationNotifier()),
+  );
+
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
-      ref.read(widget.stateProvider).isLiked = widget.isLiked;
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
+      ref.read(stateProvider).isLiked = widget.isLiked;
       final membersState = ref.read(membersProvider);
       membersState.members = await getMembers(context);
       membersState.advancedSetDisplayedMembers(membersState.members, context);
-      setState(() {});
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final membersState = ref.watch(membersProvider);
-    final state = ref.watch(widget.stateProvider);
+    final state = ref.watch(stateProvider);
     final searchTec = useTextEditingController();
     final commentTec = useTextEditingController();
 
@@ -261,9 +264,10 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
               child: SelectableText(
                 state.text,
                 style: GoogleFonts.montserrat(
-                    fontSize: 9,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.red),
+                  fontSize: 9,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red,
+                ),
               ),
             )
           : const SizedBox(),
@@ -282,9 +286,10 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
                     width: 33,
                     onTap: () {
                       Favorites.delete(
-                          email: InheritedLoginProvider.of(context)
-                              .userData?['email'],
-                          recipeID: widget.recipe.id);
+                        email: InheritedLoginProvider.of(context)
+                            .userData?['email'],
+                        recipeID: widget.recipe.id,
+                      );
                       state.isLiked = false;
                     },
                   )
@@ -295,9 +300,10 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
                     width: 33,
                     onTap: () async {
                       bool val = await Favorites.adding(
-                          email: InheritedLoginProvider.of(context)
-                              .userData?['email'],
-                          recipeID: widget.recipe.id);
+                        email: InheritedLoginProvider.of(context)
+                            .userData?['email'],
+                        recipeID: widget.recipe.id,
+                      );
                       if (!val) {
                         state.exists = true;
                         state.text = "Recipe already inserted";
@@ -336,7 +342,7 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
       ),
       trailing: RecipeBoxIcon(
         onTap: () {
-          addWeekly(context);
+          // addWeekly(context);
         },
         icon: const Icon(Icons.add),
         height: 30,
@@ -359,7 +365,7 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
         return AlertDialog(
           backgroundColor: kcMedBeige,
           title: const Center(child: Text("Share Recipe")),
-          content: Container(
+          content: SizedBox(
             height: size.height - 200,
             width: (size.width - 100) / 2,
             child: Column(
@@ -426,9 +432,7 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
                 }
                 commentTec.clear();
                 state.message = '';
-                print(state.shareMembers);
                 state.shareMembers.clear();
-                print(state.shareMembers);
               },
               child: const Text('Send',
                   style: TextStyle(
@@ -493,79 +497,84 @@ Future<dynamic> addWeekly(BuildContext context) {
     ),
   ];
   return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text("Add weekly recipe"),
-          actions: [
-            Container(
-              padding: EdgeInsets.all(20),
-              child: Column(
-                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      const SelectableText(
-                        "Week",
-                        style: TextStyle(fontSize: 20),
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text("Add weekly recipe"),
+        actions: [
+          Container(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    const SelectableText(
+                      "Week",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    NumericStepButton(
+                      counter: weekNumber(DateTime.now()),
+                      onChanged: (val) {},
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    const SelectableText(
+                      "Day of week:",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    SizedBox(
+                      width: 150,
+                      child: CustDropDown(
+                        items: weekDays,
+                        onChanged: (val) {},
                       ),
-                      NumericStepButton(
-                        counter: weekNumber(DateTime.now()),
-                        onChanged: (val) {
-                          print("Aaa");
-                        },
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  children: [
+                    const SelectableText(
+                      "Meal Type:",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    SizedBox(
+                      width: 150,
+                      child: CustDropDown(
+                        items: mealType,
+                        onChanged: (val) {},
                       ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const SelectableText(
-                        "Day of week:",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Container(
-                          width: 150,
-                          child: CustDropDown(
-                              items: weekDays, onChanged: (val) {}))
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: [
-                      const SelectableText(
-                        "Meal Type:",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Container(
-                          width: 150,
-                          child: CustDropDown(
-                              items: mealType, onChanged: (val) {}))
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  CustomButton(
-                    duration: const Duration(milliseconds: 200),
-                    onTap: () {},
-                    child: const Text("Add Recipe"),
-                    width: 150,
-                    height: 50,
-                  ),
-                ],
-              ),
-            )
-          ],
-        );
-      });
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                CustomButton(
+                  duration: const Duration(milliseconds: 200),
+                  onTap: () {},
+                  child: const Text("Add Recipe"),
+                  width: 150,
+                  height: 50,
+                ),
+              ],
+            ),
+          )
+        ],
+      );
+    },
+  );
 }
 
 class RecipeInformationRow extends StatelessWidget {

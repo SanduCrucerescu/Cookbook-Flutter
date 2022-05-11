@@ -7,23 +7,21 @@ import 'package:flutter/material.dart';
 import 'package:mysql1/mysql1.dart';
 
 class GetFavorites {
-  List<Recipe>? _recepieList;
+  List<Recipe>? recepieList;
   late Recipe recipeClass;
   late Ingredient ingredientClass;
   late Tag tagClass;
 
-  List<Recipe>? get recepieList => _recepieList;
-
   void setRecipie(Recipe rec) {
-    if (_recepieList != null) {
-      _recepieList!.add(rec);
+    if (recepieList != null) {
+      recepieList!.add(rec);
     }
   }
 
   Future<List<Recipe>?> getfav(
     String? email,
   ) async {
-    _recepieList = [];
+    recepieList = [];
     final DatabaseManager dbManager = await DatabaseManager.init();
 
     Results? fav = await dbManager.query(
@@ -45,8 +43,7 @@ class GetFavorites {
       setRecipie(recipeClass);
     }
     dbManager.close();
-    return _recepieList;
-    // print(recepieList);
+    return recepieList;
   }
 
   Future<List<Ingredient>> getIngredients(int id) async {

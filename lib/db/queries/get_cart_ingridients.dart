@@ -6,7 +6,11 @@ import 'package:cookbook/models/member/member.dart';
 import 'package:flutter/material.dart';
 import 'package:mysql1/mysql1.dart';
 
-Future<List<Ingredient>> getCartIngridients(BuildContext context) async {
+Future<List<Ingredient>?> getCartIngridients(BuildContext context) async {
+  if (InheritedLoginProvider.of(context).userData == null) {
+    return null;
+  }
+
   var a = InheritedLoginProvider.of(context).userData!['email'];
   a = a.toString(); //here
   final dbManager = await DatabaseManager.init();
