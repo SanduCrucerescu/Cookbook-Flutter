@@ -103,7 +103,29 @@ class DatabaseManager extends AbstractDatabaseManager {
     await connect();
     print(query);
     result = await cnx!.query(query);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 2d12c16 (commit)
     await close();
+=======
+    cnx!.close();
+>>>>>>> 6f3a264 (Finished the alert dialog to insert recipes into weeklys)
+<<<<<<< HEAD
+=======
+    cnx!.close();
+>>>>>>> 859b58c (smol changes)
+=======
+>>>>>>> 2d12c16 (commit)
+=======
+    cnx!.close();
+>>>>>>> a6596f3 (merge)
+=======
+    await close();
+>>>>>>> 9fb7efb (Added cartId to the InheritedProvider)
     return result;
   }
 
@@ -167,6 +189,7 @@ class DatabaseManager extends AbstractDatabaseManager {
       query += i < data.length ? "," : "";
     }
     query += ");";
+    print(query);
     result = await cnx!.query(query);
 
     await cnx!.close();
@@ -199,7 +222,7 @@ class DatabaseManager extends AbstractDatabaseManager {
       {required String table,
       required Map<String, dynamic> where,
       required Map<String, dynamic> set}) async {
-    await connect();
+    if (cnx == null) await connect();
 
     String query = '''UPDATE  $table SET ''';
     int i = 0;
@@ -209,10 +232,12 @@ class DatabaseManager extends AbstractDatabaseManager {
       query += i < set.length ? " , " : "";
     }
     for (MapEntry entry in where.entries) {
-      query += " WHERE " + entry.key + " = " + entry.value;
+      query += " WHERE " + entry.key + " = '" + entry.value + "'";
     }
 
     query += ";";
+
+    print(query);
 
     result = await cnx!.query(query);
     await cnx!.close();

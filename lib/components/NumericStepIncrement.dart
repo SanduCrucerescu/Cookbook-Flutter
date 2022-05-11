@@ -33,11 +33,12 @@ class _NumericStepButtonState extends State<NumericStepButton> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Container(
-              padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 18.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 4.0, horizontal: 18.0),
               height: 50,
               width: 100,
               child: InkWell(
-                child: Icon(
+                child: const Icon(
                   Icons.remove,
                   color: kcDarkBeige,
                 ),
@@ -53,7 +54,7 @@ class _NumericStepButtonState extends State<NumericStepButton> {
           Text(
             '${widget.counter}',
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.black87,
               fontSize: 18.0,
               fontWeight: FontWeight.w500,
@@ -62,9 +63,10 @@ class _NumericStepButtonState extends State<NumericStepButton> {
           Container(
             height: 50,
             width: 100,
-            padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 18.0),
+            padding:
+                const EdgeInsets.symmetric(vertical: 4.0, horizontal: 18.0),
             child: InkWell(
-              child: Icon(
+              child: const Icon(
                 Icons.add,
                 color: kcDarkBeige,
               ),

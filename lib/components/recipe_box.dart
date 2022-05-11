@@ -229,6 +229,16 @@ class RecipeActionsRow extends StatefulHookConsumerWidget {
     Key? key,
   }) : super(key: key);
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  final stateProvider = ChangeNotifierProvider<VerificationNotifier>(
+    ((ref) => VerificationNotifier()),
+  );
+
+>>>>>>> a9cc257 (commi)
+=======
+>>>>>>> 85ac6f9 (commi)
   @override
   _RecipeActionsRow createState() => _RecipeActionsRow();
 }
@@ -241,18 +251,59 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
   @override
   void initState() {
     super.initState();
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 7ef59b4 (merge)
+=======
+>>>>>>> c09583a (commi)
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
       ref.read(stateProvider).isLiked = widget.isLiked;
       final membersState = ref.read(membersProvider);
       membersState.members = await getMembers(context);
       membersState.advancedSetDisplayedMembers(membersState.members, context);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+      ref.read(widget.stateProvider).isLiked = widget.isLiked;
+      final membersState = ref.read(membersProvider);
+      membersState.members = await getMembers(context);
+      membersState.advancedSetDisplayedMembers(membersState.members, context);
+      setState(() {});
+>>>>>>> 0cb3fb2 (continue share function)
+=======
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
+      ref.read(stateProvider).isLiked = widget.isLiked;
+      final membersState = ref.read(membersProvider);
+      membersState.members = await getMembers(context);
+      membersState.advancedSetDisplayedMembers(membersState.members, context);
+>>>>>>> 85ac6f9 (commi)
+=======
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      ref.read(widget.stateProvider).isLiked = widget.isLiked!;
+      setState(() {});
+>>>>>>> 8e6b174 (merge)
+>>>>>>> 7ef59b4 (merge)
+=======
+>>>>>>> c09583a (commi)
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final membersState = ref.watch(membersProvider);
+<<<<<<< HEAD
+<<<<<<< HEAD
     final state = ref.watch(stateProvider);
+=======
+    final state = ref.watch(widget.stateProvider);
+>>>>>>> 0cb3fb2 (continue share function)
+=======
+    final state = ref.watch(stateProvider);
+>>>>>>> 85ac6f9 (commi)
     final searchTec = useTextEditingController();
     final commentTec = useTextEditingController();
 
@@ -342,7 +393,39 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
       ),
       trailing: RecipeBoxIcon(
         onTap: () {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           // addWeekly(context);
+=======
+          addWeekly(context, state, widget.recipe);
+>>>>>>> ce0b8c1 (Finished the alert dialog to insert recipes into weeklys)
+=======
+=======
+>>>>>>> 1c80980 (commi)
+=======
+>>>>>>> c09583a (commi)
+          addWeekly(context, state, widget.recipe);
+=======
+          // addWeekly(context);
+>>>>>>> 249ea74 (Semi fixed bug with unintended refreshes)
+<<<<<<< HEAD
+>>>>>>> 85ac6f9 (commi)
+=======
+=======
+          // addWeekly(context);
+=======
+          addWeekly(context, state, widget.recipe);
+>>>>>>> ce0b8c1 (Finished the alert dialog to insert recipes into weeklys)
+>>>>>>> 2d12c16 (commit)
+<<<<<<< HEAD
+>>>>>>> 1c80980 (commi)
+=======
+=======
+          addWeekly(context, state, widget.recipe);
+>>>>>>> 9fb7efb (Added cartId to the InheritedProvider)
+>>>>>>> c09583a (commi)
         },
         icon: const Icon(Icons.add),
         height: 30,
@@ -365,7 +448,15 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
         return AlertDialog(
           backgroundColor: kcMedBeige,
           title: const Center(child: Text("Share Recipe")),
+<<<<<<< HEAD
+<<<<<<< HEAD
           content: SizedBox(
+=======
+          content: Container(
+>>>>>>> 0cb3fb2 (continue share function)
+=======
+          content: SizedBox(
+>>>>>>> 85ac6f9 (commi)
             height: size.height - 200,
             width: (size.width - 100) / 2,
             child: Column(
@@ -432,7 +523,17 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
                 }
                 commentTec.clear();
                 state.message = '';
+<<<<<<< HEAD
+<<<<<<< HEAD
                 state.shareMembers.clear();
+=======
+                print(state.shareMembers);
+                state.shareMembers.clear();
+                print(state.shareMembers);
+>>>>>>> 0cb3fb2 (continue share function)
+=======
+                state.shareMembers.clear();
+>>>>>>> 85ac6f9 (commi)
               },
               child: const Text('Send',
                   style: TextStyle(
@@ -450,7 +551,8 @@ int weekNumber(DateTime date) {
   return ((dayOfYear - date.weekday + 10) / 7).floor();
 }
 
-Future<dynamic> addWeekly(BuildContext context) {
+Future<dynamic> addWeekly(
+    BuildContext context, VerificationNotifier state, Recipe recipe) {
   final List<CustDropdownMenuItem<String>> mealType = [
     const CustDropdownMenuItem(
       child: Text("Breakfast"),
@@ -497,6 +599,10 @@ Future<dynamic> addWeekly(BuildContext context) {
     ),
   ];
   return showDialog(
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     context: context,
     builder: (context) {
       return AlertDialog(
@@ -575,6 +681,361 @@ Future<dynamic> addWeekly(BuildContext context) {
       );
     },
   );
+=======
+=======
+>>>>>>> 85ac6f9 (commi)
+=======
+>>>>>>> 1c80980 (commi)
+=======
+>>>>>>> c09583a (commi)
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Add weekly recipe"),
+          actions: [
+            Container(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  state.notInserted
+                      ? Center(
+                          child: SelectableText(
+                            state.weeklyText,
+                            style: GoogleFonts.montserrat(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red),
+                          ),
+                        )
+                      : const SizedBox(),
+                  Row(
+                    children: [
+                      const SelectableText(
+                        "Recipe name: ",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      SelectableText(
+                        recipe.title,
+                        style: TextStyle(fontSize: 20),
+                      )
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      const SelectableText(
+                        "Week",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      NumericStepButton(
+                        counter: weekNumber(DateTime.now()),
+                        onChanged: (val) {
+                          state.week = val;
+                        },
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      const SelectableText(
+                        "Day of week:",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                          width: 150,
+                          child: CustDropDown(
+                            items: weekDays,
+                            onChanged: (val) {
+                              state.weekDay = val;
+                            },
+                          ))
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    children: [
+                      const SelectableText(
+                        "Meal Type:",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                          width: 150,
+                          child: CustDropDown(
+                            items: mealType,
+                            onChanged: (val) {
+                              state.mealType = val;
+                            },
+                          ))
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  CustomButton(
+                    duration: const Duration(milliseconds: 200),
+                    onTap: () async {
+                      state.week = weekNumber(DateTime.now());
+                      if (state.weekDay == null || state.mealType == null) {
+                        state.notInserted = true;
+                        state.weeklyText = "Please fill all the fields;";
+                      } else {
+                        AddWeaklys.addWeaklys(data: {
+                          "email": InheritedLoginProvider.of(context)
+                              .userData?['email'],
+                          "week": state.week,
+                          "day": state.weekDay,
+                          "meal_type": state.mealType,
+                          "recipe_id": recipe.id,
+                        });
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: const Text("Add Recipe"),
+                    width: 150,
+                    height: 50,
+                  ),
+                ],
+              ),
+            )
+          ],
+        );
+      });
+<<<<<<< HEAD
+>>>>>>> ce0b8c1 (Finished the alert dialog to insert recipes into weeklys)
+=======
+=======
+=======
+>>>>>>> 2d12c16 (commit)
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text("Add weekly recipe"),
+        actions: [
+          Container(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    const SelectableText(
+                      "Week",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    NumericStepButton(
+                      counter: weekNumber(DateTime.now()),
+                      onChanged: (val) {},
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    const SelectableText(
+                      "Day of week:",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    SizedBox(
+                      width: 150,
+                      child: CustDropDown(
+                        items: weekDays,
+                        onChanged: (val) {},
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  children: [
+                    const SelectableText(
+                      "Meal Type:",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    SizedBox(
+                      width: 150,
+                      child: CustDropDown(
+                        items: mealType,
+                        onChanged: (val) {},
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                CustomButton(
+                  duration: const Duration(milliseconds: 200),
+                  onTap: () {},
+                  child: const Text("Add Recipe"),
+                  width: 150,
+                  height: 50,
+                ),
+              ],
+            ),
+          )
+        ],
+      );
+    },
+  );
+<<<<<<< HEAD
+>>>>>>> 249ea74 (Semi fixed bug with unintended refreshes)
+<<<<<<< HEAD
+>>>>>>> 85ac6f9 (commi)
+=======
+=======
+=======
+=======
+>>>>>>> 9fb7efb (Added cartId to the InheritedProvider)
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Add weekly recipe"),
+          actions: [
+            Container(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  state.notInserted
+                      ? Center(
+                          child: SelectableText(
+                            state.weeklyText,
+                            style: GoogleFonts.montserrat(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red),
+                          ),
+                        )
+                      : const SizedBox(),
+                  Row(
+                    children: [
+                      const SelectableText(
+                        "Recipe name: ",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      SelectableText(
+                        recipe.title,
+                        style: TextStyle(fontSize: 20),
+                      )
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      const SelectableText(
+                        "Week",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      NumericStepButton(
+                        counter: weekNumber(DateTime.now()),
+                        onChanged: (val) {
+                          state.week = val;
+                        },
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      const SelectableText(
+                        "Day of week:",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                          width: 150,
+                          child: CustDropDown(
+                            items: weekDays,
+                            onChanged: (val) {
+                              state.weekDay = val;
+                            },
+                          ))
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    children: [
+                      const SelectableText(
+                        "Meal Type:",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                          width: 150,
+                          child: CustDropDown(
+                            items: mealType,
+                            onChanged: (val) {
+                              state.mealType = val;
+                            },
+                          ))
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  CustomButton(
+                    duration: const Duration(milliseconds: 200),
+                    onTap: () async {
+                      state.week = weekNumber(DateTime.now());
+                      if (state.weekDay == null || state.mealType == null) {
+                        state.notInserted = true;
+                        state.weeklyText = "Please fill all the fields;";
+                      } else {
+                        AddWeaklys.addWeaklys(data: {
+                          "email": InheritedLoginProvider.of(context)
+                              .userData?['email'],
+                          "week": state.week,
+                          "day": state.weekDay,
+                          "meal_type": state.mealType,
+                          "recipe_id": recipe.id,
+                        });
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: const Text("Add Recipe"),
+                    width: 150,
+                    height: 50,
+                  ),
+                ],
+              ),
+            )
+          ],
+        );
+      });
+<<<<<<< HEAD
+>>>>>>> ce0b8c1 (Finished the alert dialog to insert recipes into weeklys)
+>>>>>>> 2d12c16 (commit)
+<<<<<<< HEAD
+>>>>>>> 1c80980 (commi)
+=======
+=======
+>>>>>>> 9fb7efb (Added cartId to the InheritedProvider)
+>>>>>>> c09583a (commi)
 }
 
 class RecipeInformationRow extends StatelessWidget {
@@ -803,7 +1264,6 @@ class HoriLine extends StatelessWidget {
 
 class RecipeBoxIconHoverNotifier extends ChangeNotifier {
   bool _hovering = false;
-
   bool get hovering => _hovering;
 
   set hovering(bool val) {
@@ -813,15 +1273,30 @@ class RecipeBoxIconHoverNotifier extends ChangeNotifier {
 }
 
 class VerificationNotifier extends ChangeNotifier {
+  int _week = 1;
+  String _weekDay = "";
+  String _mealType = "";
   bool _isTapped = false;
   bool _exists = false;
   String _text = "";
+  bool _notInserted = false;
+  String _weeklyText = "";
+
+  String get weeklyText => _weeklyText;
 
   bool get isLiked => _isTapped;
 
   bool get exists => _exists;
 
   String get text => _text;
+
+  int get week => _week;
+
+  String get weekDay => _weekDay;
+
+  String get mealType => _mealType;
+
+  bool get notInserted => _notInserted;
 
   set isLiked(bool val) {
     _isTapped = val;
@@ -837,4 +1312,17 @@ class VerificationNotifier extends ChangeNotifier {
     _text = text;
     notifyListeners();
   }
+
+  set week(int val) {
+    _week = val;
+    notifyListeners();
+  }
+
+  set weekDay(String value) => _weekDay = value;
+
+  set mealType(value) => _mealType = value;
+
+  set weeklyText(String value) => _weeklyText = value;
+
+  set notInserted(value) => _notInserted = value;
 }

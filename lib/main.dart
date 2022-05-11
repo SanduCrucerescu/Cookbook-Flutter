@@ -1,6 +1,7 @@
 import 'package:cookbook/controllers/controllers.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
 import 'package:cookbook/pages/home/home_page.dart';
+import 'package:cookbook/pages/loading/loading_page.dart';
 import 'package:cookbook/pages/shoppingCart/shoppingPage.dart';
 import 'package:cookbook/pages/weeklyPage/weeklyPage.dart';
 import 'package:cookbook/theme/colors.dart';
@@ -138,7 +139,7 @@ class App extends StatelessWidget {
           fontFamily: 'Montserrat',
           primaryColor: kcMedBeige,
         ),
-        initialRoute: ShoppingPage.id,
+        initialRoute: LoadingScreen.id,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );

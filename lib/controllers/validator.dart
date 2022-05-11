@@ -26,4 +26,21 @@ class Validator {
       return false;
     }
   }
+
+  Future<int> id(String email) async {
+    final DatabaseManager databaseManager = await DatabaseManager.init();
+    Results? id = await databaseManager.select(
+      table: "carts",
+      fields: ["id"],
+      where: {"member_email": email},
+    );
+
+    int cartId = 0;
+
+    for (var rs in id!) {
+      cartId = rs[0];
+    }
+
+    return cartId;
+  }
 }

@@ -43,7 +43,28 @@ class GetFavorites {
       setRecipie(recipeClass);
     }
     dbManager.close();
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     return recepieList;
+=======
+    return _recepieList;
+>>>>>>> a9cc257 (commi)
+=======
+    return recepieList;
+>>>>>>> 85ac6f9 (commi)
+=======
+    return recepieList;
+=======
+    print(_recepieList);
+    return _recepieList;
+    // print(recepieList);
+>>>>>>> 8e6b174 (merge)
+>>>>>>> 7ef59b4 (merge)
+=======
+    return recepieList;
+>>>>>>> c09583a (commi)
   }
 
   Future<List<Ingredient>> getIngredients(int id) async {

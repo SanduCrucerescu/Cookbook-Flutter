@@ -44,7 +44,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
         fit: StackFit.expand,
         children: <Widget>[
           Image.asset(
-            "assets/images/bg4.png",
+            "assets/images/bg3.png",
             fit: BoxFit.fill,
           ),
           Positioned(
