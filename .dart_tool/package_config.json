@@ -470,11 +470,7 @@
       "languageVersion": "2.16"
     }
   ],
-<<<<<<< HEAD
-  "generated": "2022-05-11T14:29:21.982051Z",
-=======
-  "generated": "2022-05-11T14:18:19.533297Z",
->>>>>>> 1c80980 (commi)
+  "generated": "2022-05-11T14:33:08.375489Z",
   "generator": "pub",
   "generatorVersion": "2.18.0-37.0.dev"
 }
