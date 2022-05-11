@@ -8,8 +8,12 @@ import 'package:cookbook/components/NumericStepIncrement.dart';
 import 'package:cookbook/components/share_recipe_listview.dart';
 import 'package:cookbook/db/queries/add_delete_favorites.dart';
 import 'package:cookbook/controllers/loadimage.dart';
+<<<<<<< HEAD
 import 'package:cookbook/db/queries/get_members.dart';
 import 'package:cookbook/db/queries/send_message.dart';
+=======
+import 'package:cookbook/db/queries/add_weaklys.dart';
+>>>>>>> ce0b8c1 (Finished the alert dialog to insert recipes into weeklys)
 import 'package:cookbook/main.dart';
 import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/models/recipe/recipe.dart';

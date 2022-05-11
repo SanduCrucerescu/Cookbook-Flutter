@@ -103,7 +103,11 @@ class DatabaseManager extends AbstractDatabaseManager {
     await connect();
     print(query);
     result = await cnx!.query(query);
+<<<<<<< HEAD
     await close();
+=======
+    cnx!.close();
+>>>>>>> 6f3a264 (Finished the alert dialog to insert recipes into weeklys)
     return result;
   }
 
@@ -167,6 +171,7 @@ class DatabaseManager extends AbstractDatabaseManager {
       query += i < data.length ? "," : "";
     }
     query += ");";
+    print(query);
     result = await cnx!.query(query);
 
     await cnx!.close();
@@ -199,7 +204,7 @@ class DatabaseManager extends AbstractDatabaseManager {
       {required String table,
       required Map<String, dynamic> where,
       required Map<String, dynamic> set}) async {
-    await connect();
+    if (cnx == null) await connect();
 
     String query = '''UPDATE  $table SET ''';
     int i = 0;
@@ -209,10 +214,12 @@ class DatabaseManager extends AbstractDatabaseManager {
       query += i < set.length ? " , " : "";
     }
     for (MapEntry entry in where.entries) {
-      query += " WHERE " + entry.key + " = " + entry.value;
+      query += " WHERE " + entry.key + " = '" + entry.value + "'";
     }
 
     query += ";";
+
+    print(query);
 
     result = await cnx!.query(query);
     await cnx!.close();
