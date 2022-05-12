@@ -26,10 +26,10 @@ class CommentsPage extends StatefulHookConsumerWidget {
 class _CommentsPageState extends ConsumerState<CommentsPage> {
   @override
   void initState() {
-    ref.read(commentsProvider).comments = null;
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       ref.read(commentsProvider).comments =
           await getComments(id: widget.recipe.id);
+      //setState(() {});
     });
     super.initState();
   }

@@ -43,7 +43,7 @@ class LoginPage extends ConsumerWidget {
         height: size.height,
         width: size.width,
         child: Image.asset(
-          "assets/images/bg3.png",
+          "assets/images/bg1.png",
           fit: BoxFit.fill,
         ),
       ),
@@ -142,14 +142,9 @@ class LoginForm extends HookConsumerWidget {
 
                         InheritedLoginProvider.of(context).userData = {
                           "email": tec1.text,
-                          "cartID": id
+                          //"cartID": id
                         };
 
-                        print(InheritedLoginProvider.of(context)
-                            .userData!['cartID']);
-
-                        print(InheritedLoginProvider.of(context)
-                            .userData!['email']);
                         Navigator.of(context).pushNamed(HomePage.id);
                       } else {
                         state.loginUnSuccessful = true;
