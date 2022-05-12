@@ -101,3 +101,10 @@ macos/.DS_Store
 macos/Runner/.DS_Store
 windows/.DS_Store
 .flutter-plugins-dependencies
+.dart_tool/package_config.json
+.dart_tool/package_config_subset
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+pubspec.lock
+pubspec.yaml

@@ -125,10 +125,7 @@ class RecipeBox extends ConsumerWidget {
         Positioned(
           top: 534,
           left: actionRowIndent,
-          child: RecipeActionsRow(
-            recipe: recipe,
-            isLiked: isLiked,
-          ),
+          child: RecipeActionsRow(recipe: recipe, isLiked: isLiked),
         ),
         const Positioned(left: horiLineIndent, top: 570, child: HoriLine()),
         Positioned(
@@ -223,36 +220,36 @@ class RecipeBoxTopRow extends StatelessWidget {
 class RecipeActionsRow extends StatefulHookConsumerWidget {
   final Recipe recipe;
   final bool isLiked;
-  const RecipeActionsRow({
+  RecipeActionsRow({
     required this.recipe,
     this.isLiked = false,
     Key? key,
   }) : super(key: key);
+
+  final stateProvider = ChangeNotifierProvider<VerificationNotifier>(
+      ((ref) => VerificationNotifier()));
 
   @override
   _RecipeActionsRow createState() => _RecipeActionsRow();
 }
 
 class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
-  final stateProvider = ChangeNotifierProvider<VerificationNotifier>(
-    ((ref) => VerificationNotifier()),
-  );
-
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
-      ref.read(stateProvider).isLiked = widget.isLiked;
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+      ref.read(widget.stateProvider).isLiked = widget.isLiked;
       final membersState = ref.read(membersProvider);
       membersState.members = await getMembers(context);
       membersState.advancedSetDisplayedMembers(membersState.members, context);
+      setState(() {});
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final membersState = ref.watch(membersProvider);
-    final state = ref.watch(stateProvider);
+    final state = ref.watch(widget.stateProvider);
     final searchTec = useTextEditingController();
     final commentTec = useTextEditingController();
 
@@ -264,10 +261,9 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
               child: SelectableText(
                 state.text,
                 style: GoogleFonts.montserrat(
-                  fontSize: 9,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.red,
-                ),
+                    fontSize: 9,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.red),
               ),
             )
           : const SizedBox(),
@@ -286,10 +282,9 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
                     width: 33,
                     onTap: () {
                       Favorites.delete(
-                        email: InheritedLoginProvider.of(context)
-                            .userData?['email'],
-                        recipeID: widget.recipe.id,
-                      );
+                          email: InheritedLoginProvider.of(context)
+                              .userData?['email'],
+                          recipeID: widget.recipe.id);
                       state.isLiked = false;
                     },
                   )
@@ -300,10 +295,9 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
                     width: 33,
                     onTap: () async {
                       bool val = await Favorites.adding(
-                        email: InheritedLoginProvider.of(context)
-                            .userData?['email'],
-                        recipeID: widget.recipe.id,
-                      );
+                          email: InheritedLoginProvider.of(context)
+                              .userData?['email'],
+                          recipeID: widget.recipe.id);
                       if (!val) {
                         state.exists = true;
                         state.text = "Recipe already inserted";
@@ -342,7 +336,7 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
       ),
       trailing: RecipeBoxIcon(
         onTap: () {
-          // addWeekly(context);
+          addWeekly(context, state, widget.recipe);
         },
         icon: const Icon(Icons.add),
         height: 30,
@@ -365,7 +359,7 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
         return AlertDialog(
           backgroundColor: kcMedBeige,
           title: const Center(child: Text("Share Recipe")),
-          content: SizedBox(
+          content: Container(
             height: size.height - 200,
             width: (size.width - 100) / 2,
             child: Column(
@@ -427,12 +421,15 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
                         InheritedLoginProvider.of(context).userData?['email'],
                     'receiver': state.shareMembers[i].email,
                     'content': state.message,
-                    'time': DateTime.now().toString()
-                  });
+                    'time': DateTime.now().toString(),
+                    'recipeID': widget.recipe.id
+                  }, n: true);
                 }
                 commentTec.clear();
                 state.message = '';
+                print(state.shareMembers);
                 state.shareMembers.clear();
+                print(state.shareMembers);
               },
               child: const Text('Send',
                   style: TextStyle(
@@ -450,7 +447,8 @@ int weekNumber(DateTime date) {
   return ((dayOfYear - date.weekday + 10) / 7).floor();
 }
 
-Future<dynamic> addWeekly(BuildContext context) {
+Future<dynamic> addWeekly(
+    BuildContext context, VerificationNotifier state, Recipe recipe) {
   final List<CustDropdownMenuItem<String>> mealType = [
     const CustDropdownMenuItem(
       child: Text("Breakfast"),
@@ -503,10 +501,36 @@ Future<dynamic> addWeekly(BuildContext context) {
         title: const Text("Add weekly recipe"),
         actions: [
           Container(
-            padding: const EdgeInsets.all(20),
+            padding: EdgeInsets.all(20),
             child: Column(
               //mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                state.notInserted
+                    ? Center(
+                        child: SelectableText(
+                          state.weeklyText,
+                          style: GoogleFonts.montserrat(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red),
+                        ),
+                      )
+                    : const SizedBox(),
+                Row(
+                  children: [
+                    const SelectableText(
+                      "Recipe name: ",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    SelectableText(
+                      recipe.title,
+                      style: TextStyle(fontSize: 20),
+                    )
+                  ],
+                ),
                 Row(
                   children: [
                     const SelectableText(
@@ -515,7 +539,9 @@ Future<dynamic> addWeekly(BuildContext context) {
                     ),
                     NumericStepButton(
                       counter: weekNumber(DateTime.now()),
-                      onChanged: (val) {},
+                      onChanged: (val) {
+                        state.week = val;
+                      },
                     ),
                   ],
                 ),
@@ -528,13 +554,14 @@ Future<dynamic> addWeekly(BuildContext context) {
                     const SizedBox(
                       width: 10,
                     ),
-                    SizedBox(
-                      width: 150,
-                      child: CustDropDown(
-                        items: weekDays,
-                        onChanged: (val) {},
-                      ),
-                    ),
+                    Container(
+                        width: 150,
+                        child: CustDropDown(
+                          items: weekDays,
+                          onChanged: (val) {
+                            state.weekDay = val;
+                          },
+                        ))
                   ],
                 ),
                 const SizedBox(
@@ -549,13 +576,14 @@ Future<dynamic> addWeekly(BuildContext context) {
                     const SizedBox(
                       width: 10,
                     ),
-                    SizedBox(
-                      width: 150,
-                      child: CustDropDown(
-                        items: mealType,
-                        onChanged: (val) {},
-                      ),
-                    ),
+                    Container(
+                        width: 150,
+                        child: CustDropDown(
+                          items: mealType,
+                          onChanged: (val) {
+                            state.mealType = val;
+                          },
+                        ))
                   ],
                 ),
                 const SizedBox(
@@ -563,7 +591,23 @@ Future<dynamic> addWeekly(BuildContext context) {
                 ),
                 CustomButton(
                   duration: const Duration(milliseconds: 200),
-                  onTap: () {},
+                  onTap: () async {
+                    state.week = weekNumber(DateTime.now());
+                    if (state.weekDay == null || state.mealType == null) {
+                      state.notInserted = true;
+                      state.weeklyText = "Please fill all the fields;";
+                    } else {
+                      AddWeaklys.addWeaklys(data: {
+                        "email": InheritedLoginProvider.of(context)
+                            .userData?['email'],
+                        "week": state.week,
+                        "day": state.weekDay,
+                        "meal_type": state.mealType,
+                        "recipe_id": recipe.id,
+                      });
+                      Navigator.pop(context);
+                    }
+                  },
                   child: const Text("Add Recipe"),
                   width: 150,
                   height: 50,
@@ -813,15 +857,30 @@ class RecipeBoxIconHoverNotifier extends ChangeNotifier {
 }
 
 class VerificationNotifier extends ChangeNotifier {
+  int _week = 1;
+  String _weekDay = "";
+  String _mealType = "";
   bool _isTapped = false;
   bool _exists = false;
   String _text = "";
+  bool _notInserted = false;
+  String _weeklyText = "";
+
+  String get weeklyText => _weeklyText;
 
   bool get isLiked => _isTapped;
 
   bool get exists => _exists;
 
   String get text => _text;
+
+  int get week => _week;
+
+  String get weekDay => _weekDay;
+
+  String get mealType => _mealType;
+
+  bool get notInserted => _notInserted;
 
   set isLiked(bool val) {
     _isTapped = val;
@@ -837,4 +896,17 @@ class VerificationNotifier extends ChangeNotifier {
     _text = text;
     notifyListeners();
   }
+
+  set week(int val) {
+    _week = val;
+    notifyListeners();
+  }
+
+  set weekDay(String value) => _weekDay = value;
+
+  set mealType(value) => _mealType = value;
+
+  set weeklyText(String value) => _weeklyText = value;
+
+  set notInserted(value) => _notInserted = value;
 }

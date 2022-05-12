@@ -7,12 +7,12 @@ class AddCartIngridients {
 
     Future? res = databaseManager.insert(table: "cartingredients", fields: [
       "cart_id",
-      "ingredients_for_recipe_id",
-      "quantity",
+      "ingredient_id",
+      "amount",
     ], data: {
       "cart_id": cartInfo?["cart_id"],
-      "ingredients_for_recipe_id": cartInfo?["ingredients_for_recipe_id"],
-      "quantity": cartInfo?["quantity"],
+      "ingredient_id": cartInfo?["ingredient_id"],
+      "amount": cartInfo?["amount"],
     });
     return true;
   }

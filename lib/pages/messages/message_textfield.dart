@@ -51,10 +51,10 @@ class _MessageTextFieldState extends State<MessageTextField> {
                           state.displayedMembers[widget.state.idx].email,
                       'content': msg,
                       'time': DateTime.now().toString()
-                    });
+                    }, n: false);
                     widget.messageTec.clear();
                     msg = '';
-                    state.messages = await getMessages();
+                    state.messages = await getMessages(context);
                     state.members = await getMembers(context);
                     state.displayedMessages.clear();
                     for (DirectMessage message in state.messages) {

@@ -1,5 +1,7 @@
 import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/db/queries/add_cart_ingidients.dart';
+import 'package:cookbook/db/queries/get_cart_ingridients.dart';
+import 'package:cookbook/main.dart';
 import 'package:cookbook/models/ingredient/ingredient.dart';
 import 'package:cookbook/pages/shoppingCart/shoppingPage.dart';
 import 'package:cookbook/theme/colors.dart';
@@ -101,14 +103,17 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                 width: xSize,
                 child: TextButton(
                   onPressed: () {
+                    print(getCurrentCart(context));
+                    print(state.ingredientList);
                     var success = AddCartIngridients.addToCart(
                       cartInfo: {
-                        "cart_id": 27,
-                        "ingredients_for_recipe_id": 1,
-                        "quantity": 1
+                        "cart_id": getCurrentCart(context),
+                        "ingredient_id": 3,
+                        "amount": 4
                       },
                     );
-                    //Yep it works
+                    // Yep it works
+                    print(success);
                   },
                   child: const Text("Save Shopping Cart"),
                 ),
@@ -136,23 +141,23 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                       ),
                     ),
                   ),
-                  Container(
-                    height: 50,
-                    width: 150,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(),
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(5),
-                      ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "Total Cost: " + getIngredientPrice().toString() + "€",
-                        style: const TextStyle(fontSize: 15),
-                      ),
-                    ),
-                  ),
+                  // Container(
+                  //   height: 50,
+                  //   width: 150,
+                  //   decoration: BoxDecoration(
+                  //     color: Colors.white,
+                  //     border: Border.all(),
+                  //     borderRadius: const BorderRadius.all(
+                  //       Radius.circular(5),
+                  //     ),
+                  //   ),
+                  //   // child: Center(
+                  //   //   child: Text(
+                  //   //     "Total Cost: " + getIngredientPrice().toString() + "€",
+                  //   //     style: const TextStyle(fontSize: 15),
+                  //   //   ),
+                  //   // ),
+                  // ),
                 ],
               ),
             )
