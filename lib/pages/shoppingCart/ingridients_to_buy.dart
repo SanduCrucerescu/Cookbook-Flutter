@@ -34,8 +34,8 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
         return 0;
       }
       double total = 0;
-      for (Ingredient e in state.ingredientList!) {
-        total += e.pricePerUnit;
+      for (Ingredient e in state.ingredientList) {
+        total += e.pricePerUnit * e.amount!;
       }
       return total;
     }
@@ -149,23 +149,23 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                       ),
                     ),
                   ),
-                  // Container(
-                  //   height: 50,
-                  //   width: 150,
-                  //   decoration: BoxDecoration(
-                  //     color: Colors.white,
-                  //     border: Border.all(),
-                  //     borderRadius: const BorderRadius.all(
-                  //       Radius.circular(5),
-                  //     ),
-                  //   ),
-                  //   // child: Center(
-                  //   //   child: Text(
-                  //   //     "Total Cost: " + getIngredientPrice().toString() + "€",
-                  //   //     style: const TextStyle(fontSize: 15),
-                  //   //   ),
-                  //   // ),
-                  // ),
+                  Container(
+                    height: 50,
+                    width: 150,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(5),
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Total Cost: " + getIngredientPrice().toString() + "€",
+                        style: const TextStyle(fontSize: 15),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             )
