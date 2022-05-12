@@ -80,7 +80,7 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                     capitalize(
-                                            state.ingredientList![index].name) +
+                                            state.ingredientList[index].name) +
                                         " " +
                                         (state.ingredientList[index].amount)
                                             .toString(),

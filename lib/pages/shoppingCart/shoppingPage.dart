@@ -83,7 +83,7 @@ class SelectedIngridientChangeNotifier extends ChangeNotifier {
 
   void addIngredient(Ingredient ingredient) {
     if (_ingredientList != null) {
-      _ingredientList!.add(ingredient);
+      _ingredientList.add(ingredient);
       notifyListeners();
     }
   }
@@ -95,14 +95,14 @@ class SelectedIngridientChangeNotifier extends ChangeNotifier {
 
   void removeIngredient(Ingredient ingredient) {
     if (_ingredientList != null) {
-      _ingredientList!.remove(ingredient);
+      _ingredientList.remove(ingredient);
       notifyListeners();
     }
   }
 
   void removeIngredientAt(int idx) {
     if (_ingredientList != null) {
-      _ingredientList!.removeAt(idx);
+      _ingredientList.removeAt(idx);
       notifyListeners();
     }
   }
