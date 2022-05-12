@@ -1,11 +1,13 @@
 import 'package:cookbook/db/database_manager.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mysql1/mysql1.dart';
 
 class AddCartIngridients {
   static Future<bool> addToCart({Map<String, dynamic>? cartInfo}) async {
     final DatabaseManager databaseManager = await DatabaseManager.init();
 
-    Future? res = databaseManager.insert(table: "cartingredients", fields: [
+    Results? res =
+        await databaseManager.insert(table: "cartingredients", fields: [
       "cart_id",
       "ingredient_id",
       "amount",
