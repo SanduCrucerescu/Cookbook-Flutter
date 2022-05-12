@@ -62,7 +62,7 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                     ? const CircularProgressIndicator()
                     : ListView.builder(
                         controller: ScrollController(),
-                        itemCount: state.ingredientList!.length, // NULL???????
+                        itemCount: state.ingredientList.length, // NULL???????
                         itemBuilder: (BuildContext context, int index) {
                           return Row(
                             children: [
@@ -70,9 +70,9 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: InkWell(
                                     onTap: () {
-                                      state.removeIngredientAt(idx);
+                                      state.removeIngredientAt(index);
                                       print("removed: " +
-                                          state.ingredientList![idx].name);
+                                          state.ingredientList[index].name);
                                     },
                                     child: const Text("X")),
                               ),
@@ -80,7 +80,10 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                     capitalize(
-                                        state.ingredientList![index].name),
+                                            state.ingredientList![index].name) +
+                                        " " +
+                                        (state.ingredientList[index].amount)
+                                            .toString(),
                                     style: TextStyle(fontSize: 20)),
                               ),
                             ],
@@ -102,20 +105,25 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                 height: 100,
                 width: xSize,
                 child: TextButton(
-                  onPressed: () {
+                  onPressed: () async {
                     print(getCurrentCart(context));
-                    print(state.ingredientList);
-                    var success = AddCartIngridients.addToCart(
-                      cartInfo: {
-                        "cart_id": getCurrentCart(context),
-                        "ingredient_id": 3,
-                        "amount": 4
-                      },
-                    );
-                    // Yep it works
-                    print(success);
+                    await DeleteCart.Delete(
+                        table: "cartingredients",
+                        where: {"cart_id": getCurrentCart(context).toString()});
+
+                    for (Ingredient ing in state.ingredientList) {
+                      await AddCartIngridients.addToCart(cartInfo: {
+                        "cart_id": getCurrentCart(context).toString(),
+                        "ingredient_id": ing.id,
+                        "amount": ing.amount
+                      });
+                    }
                   },
+
+                  // Yep it works
+
                   child: const Text("Save Shopping Cart"),
+                  //TODO: On update
                 ),
               ),
             ),
