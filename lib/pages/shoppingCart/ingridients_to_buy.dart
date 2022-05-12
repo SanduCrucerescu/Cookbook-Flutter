@@ -74,7 +74,12 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                                       print("removed: " +
                                           state.ingredientList[index].name);
                                     },
-                                    child: const Text("X")),
+                                    child: SizedBox(
+                                      height: 15,
+                                      width: 15,
+                                      child: Image.asset(
+                                          'assets/images/remove.png'),
+                                    )),
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
@@ -122,7 +127,8 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
 
                   // Yep it works
 
-                  child: const Text("Save Shopping Cart"),
+                  child: const Text("Save Shopping Cart",
+                      style: TextStyle(fontSize: 28)),
                   //TODO: On update
                 ),
               ),
@@ -133,22 +139,22 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Container(
-                    child: const Text(
-                      "Me and Lui",
-                      style: TextStyle(
-                        color: Colors.black,
-                      ),
-                    ),
-                    width: 200.00,
-                    height: 140.00,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: ExactAssetImage('assets/images/IMG_5407.JPG'),
-                        fit: BoxFit.fitHeight,
-                      ),
-                    ),
-                  ),
+                  // Container(
+                  //   child: const Text(
+                  //     "Me and Lui",
+                  //     style: TextStyle(
+                  //       color: Colors.black,
+                  //     ),
+                  //   ),
+                  //   width: 200.00,
+                  //   height: 140.00,
+                  //   decoration: const BoxDecoration(
+                  //     image: DecorationImage(
+                  //       image: ExactAssetImage('assets/images/IMG_5407.JPG'),
+                  //       fit: BoxFit.fitHeight,
+                  //     ),
+                  //   ),
+                  // ),
                   Container(
                     height: 50,
                     width: 150,
