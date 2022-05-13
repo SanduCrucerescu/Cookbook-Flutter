@@ -36,8 +36,7 @@ WHERE members.email='${a}';''');
 }
 
 int getCurrentCart(BuildContext context) {
-  var a = InheritedLoginProvider.of(context).userData!['cartID'];
-  return a;
+  return InheritedLoginProvider.of(context).userData!['cartID'];
 }
 
 class DeleteCart {

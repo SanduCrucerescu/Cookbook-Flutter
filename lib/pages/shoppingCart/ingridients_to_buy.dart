@@ -58,7 +58,7 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
               height: 500,
               width: xSize,
               child: SizedBox(
-                child: state.ingredientList == null
+                child: state.ingredientList.isEmpty
                     ? const CircularProgressIndicator()
                     : ListView.builder(
                         controller: ScrollController(),
