@@ -137,6 +137,7 @@ class IngridientTile extends HookConsumerWidget {
                     }
                   }
                 }
+                print(state.ingredientList);
               },
               child: const Text("Add",
                   style: TextStyle(

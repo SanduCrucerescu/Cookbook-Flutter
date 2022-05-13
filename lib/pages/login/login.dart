@@ -142,7 +142,7 @@ class LoginForm extends HookConsumerWidget {
 
                         InheritedLoginProvider.of(context).userData = {
                           "email": tec1.text,
-                          //"cartID": id
+                          "cartID": id
                         };
 
                         Navigator.of(context).pushNamed(HomePage.id);
