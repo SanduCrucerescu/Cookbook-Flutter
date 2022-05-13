@@ -82,10 +82,8 @@ class SelectedIngridientChangeNotifier extends ChangeNotifier {
   }
 
   void addIngredient(Ingredient ingredient) {
-    if (_ingredientList != null) {
-      _ingredientList.add(ingredient);
-      notifyListeners();
-    }
+    _ingredientList.add(ingredient);
+    notifyListeners();
   }
 
   void addAdditionalIngredients(Ingredient a, int amountToAdd) {
@@ -94,17 +92,13 @@ class SelectedIngridientChangeNotifier extends ChangeNotifier {
   }
 
   void removeIngredient(Ingredient ingredient) {
-    if (_ingredientList != null) {
-      _ingredientList.remove(ingredient);
-      notifyListeners();
-    }
+    _ingredientList.remove(ingredient);
+    notifyListeners();
   }
 
   void removeIngredientAt(int idx) {
-    if (_ingredientList != null) {
-      _ingredientList.removeAt(idx);
-      notifyListeners();
-    }
+    _ingredientList.removeAt(idx);
+    notifyListeners();
   }
 
   set ingredientList(List<Ingredient> list) {
