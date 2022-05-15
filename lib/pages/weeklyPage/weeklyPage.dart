@@ -33,7 +33,7 @@ class WeeklyPage extends HookConsumerWidget {
     'Monday',
     'Tuesday',
     'Wednesday',
-    'Thurday',
+    'Thursday',
     'Friday',
     'Saturday',
     'Sunday'
@@ -49,6 +49,7 @@ class WeeklyPage extends HookConsumerWidget {
       child: ListView.builder(
         itemCount: 10,
         itemBuilder: (context, idx) {
+          Size size = MediaQuery.of(context).size;
           return Column(
             children: [
               Container(
@@ -68,34 +69,102 @@ class WeeklyPage extends HookConsumerWidget {
                   ),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 7,
-                  itemBuilder: (context, jdx) {
-                    return Container(
-                      margin: const EdgeInsets.all(10),
-                      width: 400,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: kcMedBeige,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 8, left: 10),
-                        child: SelectableText(
-                          days[jdx],
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
+                child: RecipeList(
+                  days: days,
+                  size: size,
                 ),
+                // child: ListView.builder(
+                //   scrollDirection: Axis.horizontal,
+                //   itemCount: 7,
+                //   itemBuilder: (context, jdx) {
+                //     Size size = MediaQuery.of(context).size;
+                //     return recipeTile(days: days, size: size);
+                //   },
+                // ),
               ),
             ],
           );
         },
+      ),
+    );
+  }
+}
+
+class RecipeList extends StatefulWidget {
+  const RecipeList({
+    Key? key,
+    required this.days,
+    required this.size,
+  }) : super(key: key);
+
+  final List<String> days;
+  final Size size;
+
+  @override
+  State<RecipeList> createState() => _RecipeListState();
+}
+
+class _RecipeListState extends State<RecipeList> {
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      scrollDirection: Axis.horizontal,
+      itemCount: 7,
+      itemBuilder: (context, jdx) {
+        Size size = MediaQuery.of(context).size;
+        return Container(
+          margin: const EdgeInsets.all(10),
+          width: 400,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: kcMedBeige,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 8.0, left: 10),
+            child: Column(
+              children: [
+                SelectableText(
+                  widget.days[jdx],
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: RecipeTile(),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class RecipeTile extends StatelessWidget {
+  const RecipeTile({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      height: 100,
+      width: size.width / 4,
+      padding: const EdgeInsets.only(top: 15),
+      margin: const EdgeInsets.all(1),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.black),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ListTile(
+          title: SelectableText("Name"),
+          subtitle: SelectableText("Tags"),
+          // onTap: ,
+        ),
       ),
     );
   }
