@@ -160,10 +160,18 @@ class RecipeTile extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: ListTile(
-          title: SelectableText("Name"),
-          subtitle: SelectableText("Tags"),
-          // onTap: ,
+        child: InkWell(
+          onTap: () {},
+          //todo Perhaps add a hover function to show recipes.
+          // onHover: () {
+
+          // },
+          //todo add a listview.builder to display 3 recipes in one day.
+          child: ListTile(
+            title: SelectableText("Name"),
+            subtitle: SelectableText("Tags"),
+            // onTap: ,
+          ),
         ),
       ),
     );
