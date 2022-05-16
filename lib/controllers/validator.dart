@@ -1,8 +1,14 @@
 part of controllers;
 
 class Validator {
-  Future<bool> validate({Map<String, dynamic>? userInfo}) async {
+  Future<String> validate({Map<String, dynamic>? userInfo}) async {
     final DatabaseManager databaseManager = await DatabaseManager.init();
+
+    Results? admin = await databaseManager.exists(table: "admin", fields: [
+      "*"
+    ], where: {
+      'email': userInfo?["email"],
+    });
 
     Results? res = await databaseManager.exists(table: "members", fields: [
       "*"
@@ -14,16 +20,21 @@ class Validator {
     //abolandr@gnu.org
     //xbsxysKe53
     int result = 0;
-    // GetRecepies getrecepies = GetRecepies();
+    int adminRes = 0;
+
+    for (var rs in admin!) {
+      adminRes = rs[0];
+    }
+
     for (var rs in res!) {
       result = rs[0];
     }
-    if (result == 1) {
-      // await getrecepies.getrecep();
-      //print(getrecepies.recepieList);
-      return true;
+    if (adminRes == 1) {
+      return "admin";
+    } else if (result == 1) {
+      return "member";
     } else {
-      return false;
+      return "does not exist";
     }
   }
 
