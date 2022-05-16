@@ -6,6 +6,7 @@ import 'package:cookbook/pages/admin/user_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysql1/mysql1.dart';
 import 'rectangle.dart';
 
 class Admin extends HookConsumerWidget {
@@ -54,6 +55,7 @@ class SelectedUserChangeNotifier extends ChangeNotifier {
   Image image = Image.asset("assets/images/ph.png"); // doesnt count
   String _filteringString = '';
   File? _xFile;
+  late Blob _photo;
 
   String get filteringString => _filteringString;
 
@@ -65,7 +67,9 @@ class SelectedUserChangeNotifier extends ChangeNotifier {
 
   Member? get currMember => _currMember;
   File? get file => _xFile;
+  Blob get photo => _photo;
 
+  set text(text) {}
   set currMember(Member? member) {
     _currMember = member;
     notifyListeners();
@@ -93,6 +97,11 @@ class SelectedUserChangeNotifier extends ChangeNotifier {
 
   set path(File? path) {
     _xFile = path;
+    notifyListeners();
+  }
+
+  set photo(Blob file) {
+    _photo = file;
     notifyListeners();
   }
 }
