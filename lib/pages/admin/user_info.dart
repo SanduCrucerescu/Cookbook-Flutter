@@ -1,7 +1,15 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:cookbook/controllers/image_picker.dart';
+import 'package:file_selector/file_selector.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysql1/mysql1.dart';
 
 import '../../components/components.dart';
 import '../../db/database_manager.dart';
@@ -85,21 +93,25 @@ class UserInfo extends HookConsumerWidget {
                               width: 550,
                               child: const Text("Change Image"),
                               duration: const Duration(days: 0),
+                              // onTap: () async {
+                              //   DatabaseManager dbManager =
+                              //       await DatabaseManager.init();
+                              //   Member member = state.currMember!;
+                              //   print(member.name);
+                              //   dbManager.update(
+                              //     table: 'members',
+                              //     set: {
+                              //       'name': member.name,
+                              //       'emai': member.email,
+                              //       'password': member.password,
+                              //       'profile_pic': img64
+                              //     },
+                              //     where: {'email': state.currMember!.email},
+                              //   );
+                              // },
+
                               onTap: () async {
-                                DatabaseManager dbManager =
-                                    await DatabaseManager.init();
-                                Member member = state.currMember!;
-                                print(member.name);
-                                dbManager.update(
-                                  table: 'members',
-                                  set: {
-                                    'name': member.name,
-                                    'emai': member.email,
-                                    'password': member.password,
-                                    'profile_pic': img64
-                                  },
-                                  where: {'email': state.currMember!.email},
-                                );
+                                _openImagePicker(state);
                               },
                             ),
                             Padding(
@@ -108,20 +120,44 @@ class UserInfo extends HookConsumerWidget {
                                 color: kcMedBeige,
                                 duration: const Duration(milliseconds: 100),
                                 onTap: () async {
+                                  if (state.file == null) {
+                                    ByteData bytes = await rootBundle
+                                        .load('assets/images/ph.png');
+                                    Uint8List photobytes = bytes.buffer
+                                        .asUint8List(bytes.offsetInBytes,
+                                            bytes.lengthInBytes);
+
+                                    img64 = base64Encode(photobytes);
+                                  } else {
+                                    final bytes = state.file?.readAsBytesSync();
+                                    img64 = base64Encode(bytes!);
+                                  }
                                   DatabaseManager dbManager =
                                       await DatabaseManager.init();
                                   Member member = state.currMember!;
                                   print(member.name);
-                                  dbManager.update(
-                                    table: 'members',
-                                    set: {
-                                      'username': member.name,
-                                      'email': member.email,
-                                      'password': member.password,
-                                      'profile_pic': img64
-                                    },
-                                    where: {'email': state.currMember!.email},
-                                  );
+                                  if (state.file != null) {
+                                    dbManager.update(
+                                      table: 'members',
+                                      set: {
+                                        'username': member.name,
+                                        'email': member.email,
+                                        'password': member.password,
+                                        'profile_pic': img64,
+                                      },
+                                      where: {'email': state.currMember!.email},
+                                    );
+                                  } else {
+                                    dbManager.update(
+                                      table: 'members',
+                                      set: {
+                                        'username': member.name,
+                                        'email': member.email,
+                                        'password': member.password,
+                                      },
+                                      where: {'email': state.currMember!.email},
+                                    );
+                                  }
                                 },
                                 child: const Text(
                                   'Apply',
@@ -205,4 +241,19 @@ class UserInfoField extends HookConsumerWidget {
       ),
     );
   }
+}
+
+void _openImagePicker(SelectedUserChangeNotifier state) async {
+  final typeGroup = XTypeGroup(
+    label: 'images',
+    extensions: const ['jpg', 'jpeg', 'png', 'heic'],
+  );
+
+  final xFile = await openFile(acceptedTypeGroups: [typeGroup]);
+  state.text = xFile?.name;
+
+  File file = File(xFile!.path);
+  state.path = file;
+  Blob blob = Blob.fromBytes(await file.readAsBytes());
+  state.photo = blob;
 }

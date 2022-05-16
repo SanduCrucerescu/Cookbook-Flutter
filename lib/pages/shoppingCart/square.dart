@@ -108,7 +108,7 @@ class _IngridientColumnState extends State<IngridientColumn> {
             return IngridientTile(
               pricePerUnit: ingredients[idx].pricePerUnit,
               id: ingredients[idx].id,
-              ingridient: ingredients[idx],
+              ingridient: displayedIngridients[idx],
               idx: idx,
               name: displayedIngridients[idx].name,
             );

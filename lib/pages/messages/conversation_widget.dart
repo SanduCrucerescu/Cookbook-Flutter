@@ -137,8 +137,14 @@ class ConversationWidget extends StatelessWidget {
                             color: Colors.grey[400],
                             borderRadius: BorderRadius.circular(10)),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('Click this message to go to recipe.\n'),
+                            const Text(
+                              'Click this message to go to recipe.\n',
+                              style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  fontWeight: FontWeight.bold),
+                            ),
                             Text(
                               state.displayedMessages[idx].content ?? '',
                               style:
@@ -189,8 +195,15 @@ class ConversationWidget extends StatelessWidget {
                             color: Colors.lightBlue[500],
                             borderRadius: BorderRadius.circular(10)),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('Click this message to go to recipe.\n'),
+                            const Text(
+                              'Click this message to go to recipe.\n',
+                              style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
                             Text(
                               state.displayedMessages[idx].content ?? '',
                               style: const TextStyle(

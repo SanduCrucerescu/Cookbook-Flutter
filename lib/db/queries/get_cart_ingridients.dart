@@ -35,7 +35,20 @@ WHERE members.email='${a}';''');
   return ingridients;
 }
 
-int? getCurrentCart(BuildContext context) {
-  int a = InheritedLoginProvider.of(context).userData!['cart_id'];
-  return a;
+int getCurrentCart(BuildContext context) {
+  return InheritedLoginProvider.of(context).userData!['cartID'];
+}
+
+class DeleteCart {
+  static Future<bool> Delete({
+    required String table,
+    required Map<String, String> where,
+  }) async {
+    final DatabaseManager dbManager = await DatabaseManager.init();
+
+    Future? res = dbManager
+        .delete(table: "cartingredients", where: {"cart_id": where["cart_id"]});
+    dbManager.close();
+    return true;
+  }
 }

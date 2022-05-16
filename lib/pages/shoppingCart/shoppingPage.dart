@@ -22,7 +22,7 @@ class _ShoppingPageState extends ConsumerState<ShoppingPage> {
   void initState() {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       ref.read(selectIngredientProvider).ingredientList =
-          await getCartIngridients(context);
+          (await getCartIngridients(context))!;
       setState(() {});
     });
     super.initState();
@@ -66,7 +66,7 @@ class SelectedIngridientChangeNotifier extends ChangeNotifier {
   Ingredient? _currIngredient;
   String _name = "";
   String _filteringString = '';
-  List<Ingredient>? _ingredientList = [];
+  List<Ingredient> _ingredientList = [];
 
   String get filteringString => _filteringString; // notify
 
@@ -74,7 +74,7 @@ class SelectedIngridientChangeNotifier extends ChangeNotifier {
 
   Ingredient? get currIngridient => _currIngredient;
 
-  List<Ingredient>? get ingredientList => _ingredientList;
+  List<Ingredient> get ingredientList => _ingredientList;
 
   set currIngridient(Ingredient? ingredient) {
     _currIngredient = ingredient;
@@ -82,10 +82,8 @@ class SelectedIngridientChangeNotifier extends ChangeNotifier {
   }
 
   void addIngredient(Ingredient ingredient) {
-    if (_ingredientList != null) {
-      _ingredientList!.add(ingredient);
-      notifyListeners();
-    }
+    _ingredientList.add(ingredient);
+    notifyListeners();
   }
 
   void addAdditionalIngredients(Ingredient a, int amountToAdd) {
@@ -94,20 +92,16 @@ class SelectedIngridientChangeNotifier extends ChangeNotifier {
   }
 
   void removeIngredient(Ingredient ingredient) {
-    if (_ingredientList != null) {
-      _ingredientList!.remove(ingredient);
-      notifyListeners();
-    }
+    _ingredientList.remove(ingredient);
+    notifyListeners();
   }
 
   void removeIngredientAt(int idx) {
-    if (_ingredientList != null) {
-      _ingredientList!.removeAt(idx);
-      notifyListeners();
-    }
+    _ingredientList.removeAt(idx);
+    notifyListeners();
   }
 
-  set ingredientList(List<Ingredient>? list) {
+  set ingredientList(List<Ingredient> list) {
     _ingredientList = list;
     notifyListeners();
   }

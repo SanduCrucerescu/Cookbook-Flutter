@@ -34,8 +34,8 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
         return 0;
       }
       double total = 0;
-      for (Ingredient e in state.ingredientList!) {
-        total += e.pricePerUnit;
+      for (Ingredient e in state.ingredientList) {
+        total += e.pricePerUnit * e.amount!;
       }
       return total;
     }
@@ -58,11 +58,11 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
               height: 500,
               width: xSize,
               child: SizedBox(
-                child: state.ingredientList == null
+                child: state.ingredientList.isEmpty
                     ? const CircularProgressIndicator()
                     : ListView.builder(
                         controller: ScrollController(),
-                        itemCount: state.ingredientList!.length, // NULL???????
+                        itemCount: state.ingredientList.length, // NULL???????
                         itemBuilder: (BuildContext context, int index) {
                           return Row(
                             children: [
@@ -70,17 +70,25 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: InkWell(
                                     onTap: () {
-                                      state.removeIngredientAt(idx);
+                                      state.removeIngredientAt(index);
                                       print("removed: " +
-                                          state.ingredientList![idx].name);
+                                          state.ingredientList[index].name);
                                     },
-                                    child: const Text("X")),
+                                    child: SizedBox(
+                                      height: 15,
+                                      width: 15,
+                                      child: Image.asset(
+                                          'assets/images/remove.png'),
+                                    )),
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                     capitalize(
-                                        state.ingredientList![index].name),
+                                            state.ingredientList[index].name) +
+                                        " " +
+                                        (state.ingredientList[index].amount)
+                                            .toString(),
                                     style: TextStyle(fontSize: 20)),
                               ),
                             ],
@@ -102,20 +110,26 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                 height: 100,
                 width: xSize,
                 child: TextButton(
-                  onPressed: () {
+                  onPressed: () async {
                     print(getCurrentCart(context));
-                    print(state.ingredientList);
-                    var success = AddCartIngridients.addToCart(
-                      cartInfo: {
-                        "cart_id": getCurrentCart(context),
-                        "ingredient_id": 3,
-                        "amount": 4
-                      },
-                    );
-                    // Yep it works
-                    print(success);
+                    await DeleteCart.Delete(
+                        table: "cartingredients",
+                        where: {"cart_id": getCurrentCart(context).toString()});
+
+                    for (Ingredient ing in state.ingredientList) {
+                      await AddCartIngridients.addToCart(cartInfo: {
+                        "cart_id": getCurrentCart(context).toString(),
+                        "ingredient_id": ing.id,
+                        "amount": ing.amount
+                      });
+                    }
                   },
-                  child: const Text("Save Shopping Cart"),
+
+                  // Yep it works
+
+                  child: const Text("Save Shopping Cart",
+                      style: TextStyle(fontSize: 28)),
+                  //TODO: On update
                 ),
               ),
             ),
@@ -125,39 +139,39 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  // Container(
+                  //   child: const Text(
+                  //     "Me and Lui",
+                  //     style: TextStyle(
+                  //       color: Colors.black,
+                  //     ),
+                  //   ),
+                  //   width: 200.00,
+                  //   height: 140.00,
+                  //   decoration: const BoxDecoration(
+                  //     image: DecorationImage(
+                  //       image: ExactAssetImage('assets/images/IMG_5407.JPG'),
+                  //       fit: BoxFit.fitHeight,
+                  //     ),
+                  //   ),
+                  // ),
                   Container(
-                    child: const Text(
-                      "Me and Lui",
-                      style: TextStyle(
-                        color: Colors.black,
+                    height: 50,
+                    width: 150,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(5),
                       ),
                     ),
-                    width: 200.00,
-                    height: 140.00,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: ExactAssetImage('assets/images/IMG_5407.JPG'),
-                        fit: BoxFit.fitHeight,
+                    child: Center(
+                      child: Text(
+                        "Total Cost: " + getIngredientPrice().toString() + "€",
+                        style: const TextStyle(fontSize: 15),
                       ),
                     ),
                   ),
-                  // Container(
-                  //   height: 50,
-                  //   width: 150,
-                  //   decoration: BoxDecoration(
-                  //     color: Colors.white,
-                  //     border: Border.all(),
-                  //     borderRadius: const BorderRadius.all(
-                  //       Radius.circular(5),
-                  //     ),
-                  //   ),
-                  //   // child: Center(
-                  //   //   child: Text(
-                  //   //     "Total Cost: " + getIngredientPrice().toString() + "€",
-                  //   //     style: const TextStyle(fontSize: 15),
-                  //   //   ),
-                  //   // ),
-                  // ),
                 ],
               ),
             )

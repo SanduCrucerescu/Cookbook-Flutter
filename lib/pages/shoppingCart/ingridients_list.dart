@@ -110,14 +110,34 @@ class IngridientTile extends HookConsumerWidget {
             TextButton(
               onPressed: () {
                 int amountToAdd = int.parse(ingridientController.text);
-                if (state.ingredientList!.contains(ingridient)) {
+                // for (Ingredient ingInList in state.ingredientList) {
+                //   if (ingridient.id == ingInList.id) {
+                //     state.addAdditionalIngredients(ingInList, amountToAdd);
+                //   } else {
+                //     state.addIngredient(ingridient);
+                //   }
+                // }
+
+                if (state.ingredientList.contains(ingridient)) {
                   state.addAdditionalIngredients(ingridient, amountToAdd);
                 } else {
                   state.addIngredient(ingridient);
                   ingridient.setAmount(amountToAdd);
                 }
-
                 Navigator.pop(context);
+                for (int i = 0; i < state.ingredientList.length; i++) {
+                  for (int j = i + 1; j < state.ingredientList.length; j++) {
+                    if (state.ingredientList[i].name ==
+                        (state.ingredientList[j].name)) {
+                      state.ingredientList[i].amount =
+                          state.ingredientList[i].amount =
+                              (state.ingredientList[i].amount! +
+                                  state.ingredientList[j].amount!);
+                      state.ingredientList.remove(state.ingredientList[j]);
+                    }
+                  }
+                }
+                print(state.ingredientList);
               },
               child: const Text("Add",
                   style: TextStyle(

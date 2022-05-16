@@ -4,6 +4,7 @@ import 'package:cookbook/components/components.dart';
 import 'package:cookbook/controllers/controllers.dart';
 import 'package:cookbook/main.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
+import 'package:cookbook/pages/admin/admin_page.dart';
 import 'package:cookbook/pages/admin/user_info.dart';
 import 'package:cookbook/pages/home/home_page.dart';
 import 'package:cookbook/pages/register/register.dart';
@@ -43,7 +44,7 @@ class LoginPage extends ConsumerWidget {
         height: size.height,
         width: size.width,
         child: Image.asset(
-          "assets/images/bg3.png",
+          "assets/images/bg1.png",
           fit: BoxFit.fill,
         ),
       ),
@@ -133,29 +134,56 @@ class LoginForm extends HookConsumerWidget {
                     color: kcMedBeige,
                     text: "L o g i n",
                     onTap: () async {
-                      bool isValid = await Validator().validate(
+                      String isValid = await Validator().validate(
                         userInfo: {"email": tec1.text, "password": tec2.text},
                       );
 
-                      if (isValid == true) {
-                        int id = await Validator().id(tec1.text);
+                      switch (isValid) {
+                        case "admin":
+                          int id = await Validator().id(tec1.text);
 
-                        InheritedLoginProvider.of(context).userData = {
-                          "email": tec1.text,
-                          "cartID": id
-                        };
+                          // ignore: use_build_context_synchronously
+                          InheritedLoginProvider.of(context).userData = {
+                            "email": tec1.text,
+                            "cartID": id
+                          };
 
-                        print(InheritedLoginProvider.of(context)
-                            .userData!['cartID']);
+                          // ignore: use_build_context_synchronously
+                          Navigator.of(context).pushNamed(Admin.id);
+                          break;
+                        case "member":
+                          int id = await Validator().id(tec1.text);
 
-                        print(InheritedLoginProvider.of(context)
-                            .userData!['email']);
-                        Navigator.of(context).pushNamed(HomePage.id);
-                      } else {
-                        state.loginUnSuccessful = true;
-                        state.text = "* login unsuccessfull";
-                        log("Login unsuccessfull");
+                          // ignore: use_build_context_synchronously
+                          InheritedLoginProvider.of(context).userData = {
+                            "email": tec1.text,
+                            "cartID": id
+                          };
+
+                          // ignore: use_build_context_synchronously
+                          Navigator.of(context).pushNamed(HomePage.id);
+                          break;
+                        case "does not exist":
+                          state.loginUnSuccessful = true;
+                          state.text = "* login unsuccessfull";
+                          log("Login unsuccessfull");
+                          break;
                       }
+
+                      // if (isValid == true) {
+                      //   int id = await Validator().id(tec1.text);
+
+                      //   InheritedLoginProvider.of(context).userData = {
+                      //     "email": tec1.text,
+                      //     "cartID": id
+                      //   };
+
+                      //   Navigator.of(context).pushNamed(HomePage.id);
+                      // } else {
+                      //   state.loginUnSuccessful = true;
+                      //   state.text = "* login unsuccessfull";
+                      //   log("Login unsuccessfull");
+                      // }
                     },
                   ),
                   const SizedBox(
