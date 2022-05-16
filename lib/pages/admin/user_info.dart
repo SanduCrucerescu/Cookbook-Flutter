@@ -136,16 +136,28 @@ class UserInfo extends HookConsumerWidget {
                                       await DatabaseManager.init();
                                   Member member = state.currMember!;
                                   print(member.name);
-                                  dbManager.update(
-                                    table: 'members',
-                                    set: {
-                                      'username': member.name,
-                                      'email': member.email,
-                                      'password': member.password,
-                                      'profile_pic': img64,
-                                    },
-                                    where: {'email': state.currMember!.email},
-                                  );
+                                  if (state.file != null) {
+                                    dbManager.update(
+                                      table: 'members',
+                                      set: {
+                                        'username': member.name,
+                                        'email': member.email,
+                                        'password': member.password,
+                                        'profile_pic': img64,
+                                      },
+                                      where: {'email': state.currMember!.email},
+                                    );
+                                  } else {
+                                    dbManager.update(
+                                      table: 'members',
+                                      set: {
+                                        'username': member.name,
+                                        'email': member.email,
+                                        'password': member.password,
+                                      },
+                                      where: {'email': state.currMember!.email},
+                                    );
+                                  }
                                 },
                                 child: const Text(
                                   'Apply',
