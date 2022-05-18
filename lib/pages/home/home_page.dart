@@ -52,7 +52,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       _items = getFavorites.getfav(
         InheritedLoginProvider.of(context).userData?['email'],
       );
