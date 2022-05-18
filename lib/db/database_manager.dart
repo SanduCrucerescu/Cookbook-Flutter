@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:mysql1/mysql1.dart';
 
 abstract class AbstractDatabaseManager {
@@ -155,20 +156,21 @@ class DatabaseManager extends AbstractDatabaseManager {
       required List<String> fields,
       required Map<String, dynamic> data}) async {
     await connect();
-    String query = '''
+    String q = '''
             INSERT INTO $table (${fields.length > 1 ? fields.join(", ") : fields[0]}) VALUES (''';
     int i = 0;
     for (MapEntry entry in data.entries) {
       i++;
       //query += i < data.length ? "'" + entry.value + "'" : entry.value;
-      query += isNumeric(entry.value.toString())
+      q += isNumeric(entry.value.toString())
           ? entry.value.toString()
           : "'" + entry.value + "'";
-      query += i < data.length ? "," : "";
+      q += i < data.length ? "," : "";
     }
-    query += ");";
-    print(query);
-    result = await cnx!.query(query);
+    q += ");";
+    print(q);
+
+    result = await cnx!.query(q);
 
     await cnx!.close();
     return result;

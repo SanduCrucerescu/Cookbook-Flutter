@@ -41,14 +41,14 @@ class CustomButton extends HookConsumerWidget {
       width: width,
       decoration: BoxDecoration(
         color: color ?? kcMedBeige,
-        borderRadius: BorderRadius.circular(borderRadius),
+        // borderRadius: BorderRadius.circular(borderRadius),
         border: state.hovering
             ? Border.all(
                 color: Colors.black,
                 width: .5,
                 style: BorderStyle.solid,
               )
-            : null,
+            : border,
         boxShadow: showShadow
             ? state.hovering
                 ? boxShadow

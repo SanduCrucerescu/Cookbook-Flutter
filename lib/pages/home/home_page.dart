@@ -51,7 +51,19 @@ class _HomePageState extends ConsumerState<HomePage> {
   // }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
+      _items = getFavorites.getfav(
+        InheritedLoginProvider.of(context).userData?['email'],
+      );
+      setState(() {});
+    });
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext contextref) {
     Size size = MediaQuery.of(context).size;
     final state = ref.watch(responsiveProvider);
     final tec = useTextEditingController();
@@ -66,12 +78,13 @@ class _HomePageState extends ConsumerState<HomePage> {
             .getfav(InheritedLoginProvider.of(context).userData?['email']),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            ref.read(responsiveProvider).setRecipeBoxes(
-                favorites: snapshot.data as List<Recipe>,
-                ctx: context,
-                displayedRecipes:
-                    InheritedLoginProvider.of(context).displayedRecipes,
-                cols: widget.cols);
+            state.setRecipeBoxes(
+              favorites: snapshot.data as List<Recipe>?,
+              ctx: context,
+              displayedRecipes:
+                  InheritedLoginProvider.of(context).displayedRecipes,
+              cols: widget.cols,
+            );
             return SizedBox(
               width: size.width - 220,
               child: ListView.builder(

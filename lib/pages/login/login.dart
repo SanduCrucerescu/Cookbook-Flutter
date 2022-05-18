@@ -172,7 +172,16 @@ class LoginForm extends HookConsumerWidget {
 
                       // if (isValid == true) {
                       //   int id = await Validator().id(tec1.text);
+                      // Query to get user data, e.g cart_id.
 
+                      if (isValid == true) {
+                        int id = await Validator().id(tec1.text);
+
+                        InheritedLoginProvider.of(context).userData = {
+                          "email": tec1.text,
+                          "cartID": id
+                        };
+                      }
                       //   InheritedLoginProvider.of(context).userData = {
                       //     "email": tec1.text,
                       //     "cartID": id
