@@ -9,6 +9,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:quiver/collection.dart';
 
+import '../../models/tag/tag.dart';
+
 class WeeklyPage extends HookConsumerWidget {
   static const String id = "/weeklypage";
   final int cols;
@@ -41,50 +43,40 @@ class WeeklyPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    Size size = MediaQuery.of(context).size;
     final tec = useTextEditingController();
+    const int idx = 0;
 
     return CustomPage(
       controller: tec,
       searchBarWidth: searchBarWidth,
-      child: ListView.builder(
-        itemCount: 10,
-        itemBuilder: (context, idx) {
-          Size size = MediaQuery.of(context).size;
-          return Column(
-            children: [
-              Container(
-                  padding: const EdgeInsets.only(top: 7),
-                  child: Text('Week ${idx + 1}',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 18))),
-              Container(
-                height: 500,
-                margin: const EdgeInsets.only(top: 10, left: 10, right: 10),
-                decoration: BoxDecoration(
-                  color: kcLightBeige,
-                  border: Border.all(
-                    width: .5,
-                    color: Colors.black,
-                    style: BorderStyle.solid,
-                  ),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: RecipeList(
-                  days: days,
-                  size: size,
-                ),
-                // child: ListView.builder(
-                //   scrollDirection: Axis.horizontal,
-                //   itemCount: 7,
-                //   itemBuilder: (context, jdx) {
-                //     Size size = MediaQuery.of(context).size;
-                //     return recipeTile(days: days, size: size);
-                //   },
-                // ),
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.only(top: 7),
+            child: Text(
+              'Week ${idx + 1}',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            ),
+          ),
+          Container(
+            height: size.height - 150,
+            margin: const EdgeInsets.only(top: 10, left: 10, right: 10),
+            decoration: BoxDecoration(
+              color: kcLightBeige,
+              border: Border.all(
+                width: .5,
+                color: Colors.black,
+                style: BorderStyle.solid,
               ),
-            ],
-          );
-        },
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: RecipeList(
+              days: days,
+              size: size,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -108,10 +100,10 @@ class _RecipeListState extends State<RecipeList> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      physics: BouncingScrollPhysics(),
       scrollDirection: Axis.horizontal,
       itemCount: 7,
-      itemBuilder: (context, jdx) {
-        Size size = MediaQuery.of(context).size;
+      itemBuilder: (BuildContext contexts, jdx) {
         return Container(
           margin: const EdgeInsets.all(10),
           width: 400,
@@ -129,7 +121,18 @@ class _RecipeListState extends State<RecipeList> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: RecipeTile(),
+                  child: SizedBox(
+                    height: 350,
+                    child: ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: 3,
+                      itemBuilder: (context, i) {
+                        return RecipeTile(
+                          idx: i,
+                        );
+                      },
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -140,14 +143,22 @@ class _RecipeListState extends State<RecipeList> {
   }
 }
 
-class RecipeTile extends StatelessWidget {
+class RecipeTile extends StatefulWidget {
+  final int idx;
   const RecipeTile({
     Key? key,
+    required this.idx,
   }) : super(key: key);
 
   @override
+  State<RecipeTile> createState() => _RecipeTileState();
+}
+
+class _RecipeTileState extends State<RecipeTile> {
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
     return Container(
       height: 100,
       width: size.width / 4,
@@ -158,24 +169,32 @@ class RecipeTile extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(5),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: InkWell(
-          onTap: () {},
-          //todo Perhaps add a hover function to show recipes.
-          // onHover: () {
+      // child: Padding(
+      //   padding: const EdgeInsets.all(8.0),
+      child: InkWell(
+        onTap: () {
+          // state.toggle = true;
+          // state.idx = idx;
+        },
+        //todo Perhaps add a hover function to show recipes.
+        // onHover: () {
 
-          // },
-          //todo add a listview.builder to display 3 recipes in one day.
-          child: ListTile(
-            title: SelectableText("Name"),
-            subtitle: SelectableText("Tags"),
-            // onTap: ,
-          ),
+        // },
+        //todo add a listview.builder to display 3 recipes in one day.
+        child: ListTile(
+          title: SelectableText("Name"),
+          subtitle: SelectableText("Tags"),
+          // onTap: ,
         ),
       ),
+      // ),
     );
   }
+}
+
+class RecipeTileController extends ChangeNotifier {
+  List<Recipe> recipes = [];
+  List<Tag> tags = [];
 }
 
 class ResponsiveNotifier extends ChangeNotifier {
