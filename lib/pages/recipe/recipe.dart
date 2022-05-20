@@ -24,15 +24,15 @@ class RecipePage extends HookConsumerWidget {
 
     List<CustDropdownMenuItem<String>> portionsPerRecipe = [
       const CustDropdownMenuItem(
-        child: Text("2"),
+        child: "2",
         value: "2",
       ),
       const CustDropdownMenuItem(
-        child: Text("4"),
+        child: "4",
         value: "4",
       ),
       const CustDropdownMenuItem(
-        child: Text("6"),
+        child: "6",
         value: "6",
       )
     ];

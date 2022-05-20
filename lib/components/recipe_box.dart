@@ -82,6 +82,15 @@ class RecipeBox extends ConsumerWidget {
                       ),
                     );
                   },
+                  image: Image.memory(
+                    getImageDataFromBlob(recipe.picture),
+                    fit: BoxFit.cover,
+                    height: 420,
+                    width: 420,
+                  ),
+                  width: 420,
+                  height: 420,
+                  isImage: true,
                   child: _state.hovering
                       ? Container(
                           padding: const EdgeInsets.all(10),
@@ -107,15 +116,6 @@ class RecipeBox extends ConsumerWidget {
                           ),
                         )
                       : null,
-                  image: Image.memory(
-                    getImageDataFromBlob(recipe.picture),
-                    fit: BoxFit.cover,
-                    height: 420,
-                    width: 420,
-                  ),
-                  width: 420,
-                  height: 420,
-                  isImage: true,
                 ),
               );
             },
@@ -447,49 +447,51 @@ Future<dynamic> addWeekly(
     BuildContext context, VerificationNotifier state, Recipe recipe) {
   final List<CustDropdownMenuItem<String>> mealType = [
     const CustDropdownMenuItem(
-      child: Text("Breakfast"),
       value: '1',
+      child: "Breakfast",
     ),
     const CustDropdownMenuItem(
-      child: Text("Lunch"),
       value: '2',
+      child: "Lunch",
     ),
     const CustDropdownMenuItem(
-      child: Text("Dinner"),
       value: '3',
+      child: "Dinner",
     ),
   ];
 
   final List<CustDropdownMenuItem<String>> weekDays = [
     const CustDropdownMenuItem(
-      child: Text("Monday"),
       value: '1',
+      child: "Monday",
     ),
     const CustDropdownMenuItem(
-      child: Text("Tuesday"),
       value: '2',
+      child: "Tuesday",
     ),
     const CustDropdownMenuItem(
-      child: Text("Wednesday"),
       value: '3',
+      child: "Wednesday",
     ),
     const CustDropdownMenuItem(
-      child: Text("Thursday"),
       value: '4',
+      child: "Thursday",
     ),
     const CustDropdownMenuItem(
-      child: Text("Friday"),
       value: '5',
+      child: "Friday",
     ),
     const CustDropdownMenuItem(
-      child: Text("Saturday"),
       value: '6',
+      child: "Saturday",
     ),
     const CustDropdownMenuItem(
-      child: Text("Sunday"),
       value: '7',
+      child: "Sunday",
     ),
   ];
+  state.week = weekNumber(DateTime.now());
+
   return showDialog(
     context: context,
     builder: (context) {
@@ -537,6 +539,7 @@ Future<dynamic> addWeekly(
                       counter: weekNumber(DateTime.now()),
                       onChanged: (val) {
                         state.week = val;
+                        print(state.week);
                       },
                     ),
                   ],
@@ -588,7 +591,6 @@ Future<dynamic> addWeekly(
                 CustomButton(
                   duration: const Duration(milliseconds: 200),
                   onTap: () async {
-                    state.week = weekNumber(DateTime.now());
                     if (state.weekDay == null || state.mealType == null) {
                       state.notInserted = true;
                       state.weeklyText = "Please fill all the fields;";
@@ -602,11 +604,13 @@ Future<dynamic> addWeekly(
                         "recipe_id": recipe.id,
                       });
                       Navigator.pop(context);
+                      state.weekDay = "";
+                      state.mealType = "";
                     }
                   },
-                  child: const Text("Add Recipe"),
                   width: 150,
                   height: 50,
+                  child: const Text("Add Recipe"),
                 ),
               ],
             ),
@@ -898,11 +902,23 @@ class VerificationNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  set weekDay(String value) => _weekDay = value;
+  set weekDay(String value) {
+    _weekDay = value;
+    notifyListeners();
+  }
 
-  set mealType(value) => _mealType = value;
+  set mealType(value) {
+    _mealType = value;
+    notifyListeners();
+  }
 
-  set weeklyText(String value) => _weeklyText = value;
+  set weeklyText(String value) {
+    _weeklyText = value;
+    notifyListeners();
+  }
 
-  set notInserted(value) => _notInserted = value;
+  set notInserted(value) {
+    _notInserted = value;
+    notifyListeners();
+  }
 }
