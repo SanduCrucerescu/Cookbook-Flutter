@@ -28,7 +28,7 @@ class _UserPageState extends ConsumerState<UserPage> {
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       final data = InheritedLoginProvider.of(context).userData;
       if (data != null) {
         member = await getMember(

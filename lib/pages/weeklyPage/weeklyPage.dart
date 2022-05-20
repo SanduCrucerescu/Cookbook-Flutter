@@ -2,14 +2,29 @@
 
 import 'dart:developer';
 import 'package:cookbook/components/components.dart';
+import 'package:cookbook/controllers/get_image_from_blob.dart';
+import 'package:cookbook/controllers/get_week.dart';
+import 'package:cookbook/db/database_manager.dart';
+import 'package:cookbook/db/queries/get_recipes.dart';
+import 'package:cookbook/main.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
+import 'package:cookbook/models/tag/tag.dart';
+import 'package:cookbook/models/weekly_recipe/weekly_recipe.dart';
+import 'package:cookbook/pages/recipe/recipe.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:quiver/collection.dart';
 
-import '../../models/tag/tag.dart';
+const List<String> days = [
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+  'Sunday'
+];
 
 class WeeklyPage extends HookConsumerWidget {
   static const String id = "/weeklypage";
@@ -31,79 +46,120 @@ class WeeklyPage extends HookConsumerWidget {
         searchBarWidth = 300,
         super(key: key);
 
-  final List<String> days = [
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-    'Sunday'
-  ];
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Size size = MediaQuery.of(context).size;
     final tec = useTextEditingController();
-    const int idx = 0;
+
+    final PageController pgc =
+        usePageController(initialPage: weekNumber(DateTime.now()) - 1);
 
     return CustomPage(
       controller: tec,
       searchBarWidth: searchBarWidth,
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.only(top: 7),
-            child: Text(
-              'Week ${idx + 1}',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-            ),
-          ),
-          Container(
-            height: size.height - 150,
-            margin: const EdgeInsets.only(top: 10, left: 10, right: 10),
-            decoration: BoxDecoration(
-              color: kcLightBeige,
-              border: Border.all(
-                width: .5,
-                color: Colors.black,
-                style: BorderStyle.solid,
+      child: PageView.builder(
+        controller: pgc,
+        scrollDirection: Axis.vertical,
+        itemCount: 52,
+        itemBuilder: (context, idx) {
+          return Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.only(top: 7),
+                child: Text(
+                  'Week ${idx + 1}',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                ),
               ),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: RecipeList(
-              days: days,
-              size: size,
-            ),
-          ),
-        ],
+              Container(
+                height: size.height - 150,
+                margin: const EdgeInsets.only(top: 10, left: 10, right: 10),
+                decoration: BoxDecoration(
+                  color: kcLightBeige,
+                  border: Border.all(
+                    width: .5,
+                    color: Colors.black,
+                    style: BorderStyle.solid,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: RecipeList(
+                  email: InheritedLoginProvider.of(context)
+                      .userData!['email']
+                      .toString(),
+                  week: idx + 1,
+                  size: size,
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
 }
 
-class RecipeList extends StatefulWidget {
+final weeklyRecipesProvider = StateProvider(
+  (ref) => [],
+);
+
+class RecipeList extends StatefulHookConsumerWidget {
   const RecipeList({
     Key? key,
-    required this.days,
     required this.size,
+    required this.week,
+    required this.email,
   }) : super(key: key);
 
-  final List<String> days;
+  final int week;
   final Size size;
+  final String email;
 
   @override
-  State<RecipeList> createState() => _RecipeListState();
+  ConsumerState<RecipeList> createState() => _RecipeListState();
 }
 
-class _RecipeListState extends State<RecipeList> {
+class _RecipeListState extends ConsumerState<RecipeList> {
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      final dbManager = await DatabaseManager.init();
+
+      final _weekleRecipes = await dbManager
+          .select(
+            table: 'weekly_recipe',
+            fields: ['*'],
+            where: {
+              'email': widget.email,
+              'week': widget.week,
+            },
+            and: true,
+          )
+          .then(
+            (val) => val!.map(
+              (e) => WeeklyRecipe(
+                day: e.fields['day'],
+                week: e.fields['week'],
+                daytime: e.fields['meal_type'],
+                recipeId: e.fields['recipe_id'],
+                email: e.fields['email'].toString(),
+              ),
+            ),
+          );
+
+      ref.read(weeklyRecipesProvider.notifier).state = _weekleRecipes.toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       physics: BouncingScrollPhysics(),
       scrollDirection: Axis.horizontal,
       itemCount: 7,
-      itemBuilder: (BuildContext contexts, jdx) {
+      itemBuilder: (BuildContext contexts, day) {
         return Container(
           margin: const EdgeInsets.all(10),
           width: 400,
@@ -116,7 +172,7 @@ class _RecipeListState extends State<RecipeList> {
             child: Column(
               children: [
                 SelectableText(
-                  widget.days[jdx],
+                  days[day],
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 Padding(
@@ -126,9 +182,12 @@ class _RecipeListState extends State<RecipeList> {
                     child: ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: 3,
-                      itemBuilder: (context, i) {
+                      itemBuilder: (context, daytime) {
                         return RecipeTile(
-                          idx: i,
+                          recipes: InheritedLoginProvider.of(context).recipes,
+                          week: widget.week,
+                          day: day,
+                          daytime: daytime,
                         );
                       },
                     ),
@@ -143,52 +202,110 @@ class _RecipeListState extends State<RecipeList> {
   }
 }
 
-class RecipeTile extends StatefulWidget {
-  final int idx;
+class RecipeTile extends StatefulHookConsumerWidget {
+  final int week, day, daytime;
+  final List<Recipe> recipes;
   const RecipeTile({
+    required this.week,
+    required this.day,
+    required this.daytime,
+    required this.recipes,
     Key? key,
-    required this.idx,
   }) : super(key: key);
 
   @override
-  State<RecipeTile> createState() => _RecipeTileState();
+  ConsumerState<RecipeTile> createState() => _RecipeTileState();
 }
 
-class _RecipeTileState extends State<RecipeTile> {
+class _RecipeTileState extends ConsumerState<RecipeTile> {
+  Recipe? recipe;
+
+  @override
+  void initState() {
+    final weeklyRecipes =
+        ref.read(weeklyRecipesProvider.notifier).state.map((wr) {
+      if (wr.day == widget.day + 1 &&
+          wr.week == widget.week &&
+          wr.daytime == widget.daytime + 1) return wr;
+    }).toList();
+    final WeeklyRecipe? weeklyRecipe =
+        weeklyRecipes.isNotEmpty ? weeklyRecipes[0] : null;
+
+    for (Recipe r in widget.recipes) {
+      if (weeklyRecipe != null && weeklyRecipe.recipeId == r.id) {
+        recipe = r;
+        break;
+      }
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return Container(
-      height: 100,
-      width: size.width / 4,
-      padding: const EdgeInsets.only(top: 15),
-      margin: const EdgeInsets.all(1),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.black),
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(5),
-      ),
-      // child: Padding(
-      //   padding: const EdgeInsets.all(8.0),
-      child: InkWell(
-        onTap: () {
-          // state.toggle = true;
-          // state.idx = idx;
-        },
-        //todo Perhaps add a hover function to show recipes.
-        // onHover: () {
+    String mealTime = 'breakfast';
 
-        // },
-        //todo add a listview.builder to display 3 recipes in one day.
-        child: ListTile(
-          title: SelectableText("Name"),
-          subtitle: SelectableText("Tags"),
-          // onTap: ,
-        ),
-      ),
-      // ),
-    );
+    if (widget.daytime == 2) {
+      mealTime = 'lunch';
+    } else if (widget.daytime == 3) {
+      mealTime = 'dinner';
+    }
+
+    return recipe == null
+        ? const SizedBox()
+        : Container(
+            height: 100,
+            width: size.width / 4,
+            margin: const EdgeInsets.all(1),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.black),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RecipePage(
+                      recipe: recipe!,
+                    ),
+                  ),
+                );
+              },
+              onHover: (val) {},
+              child: Center(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.only(left: 15, right: 5),
+                      height: 70,
+                      child: ClipOval(
+                        child: Image.memory(
+                          getImageDataFromBlob(recipe!.picture),
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(recipe!.title),
+                          Text(recipe!.ownerEmail),
+                          Text(mealTime),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                // onTap: ,
+              ),
+            ),
+          );
   }
 }
 

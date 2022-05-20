@@ -1,6 +1,7 @@
 import 'package:binary_tree/binary_tree.dart';
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/db/queries/get_recipes.dart';
+import 'package:cookbook/db/queries/send_message.dart';
 import 'package:cookbook/main.dart';
 import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/models/post/directMessage/direct_message.dart';
@@ -29,13 +30,9 @@ class MessagePage extends StatefulHookConsumerWidget {
 }
 
 class MessagePageState extends ConsumerState<MessagePage> {
-  final membersProvider = ChangeNotifierProvider<MessagePageController>(
-    (ref) => MessagePageController(),
-  );
-
   @override
   void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       final state = ref.read(membersProvider);
       state.members = await getMembers(context);
       state.messages = await getMessages(context);
@@ -55,7 +52,6 @@ class MessagePageState extends ConsumerState<MessagePage> {
     final state = ref.watch(membersProvider);
     Size size = MediaQuery.of(context).size;
     final tec = useTextEditingController();
-    final messageTec = useTextEditingController();
 
     return CustomPage(
       child: Row(
@@ -123,8 +119,32 @@ class MessagePageState extends ConsumerState<MessagePage> {
                 ),
               ),
               MessageTextField(
-                state: state,
-                messageTec: messageTec,
+                controller: tec,
+                onSubmitted: () async {
+                  if (tec.text != '') {
+                    await SendMessage.sendMessage(data: {
+                      'sender':
+                          InheritedLoginProvider.of(context).userData?['email'],
+                      'receiver': state.displayedMembers[state.idx].email,
+                      'content': tec.text,
+                      'time': DateTime.now().toString()
+                    }, isLink: false);
+                    tec.clear();
+                    state.messages = await getMessages(context);
+                    state.members = await getMembers(context);
+                    state.displayedMessages.clear();
+                    for (DirectMessage message in state.messages) {
+                      if (message.sender ==
+                              state.displayedMembers[state.idx].email ||
+                          message.receiver ==
+                              state.displayedMembers[state.idx].email) {
+                        state.addDisplayedMessage(message);
+                      }
+                    }
+                    state.advancedSetDisplayedMembers(state.members, context);
+                    setState(() {});
+                  }
+                },
               ),
             ]),
           ),

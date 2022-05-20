@@ -19,11 +19,11 @@ class _LoadingScreenState extends State<LoadingScreen> {
     super.initState();
 
     Timer(
-      const Duration(seconds: 3),
+      const Duration(seconds: 5),
       () => Navigator.of(context).pushNamed(LoginPage.id),
     );
 
-    WidgetsBinding.instance?.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       await fetchRecipes();
       InheritedLoginProvider.of(context).setDisplayedRecipes('');
     });
@@ -44,7 +44,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
         fit: StackFit.expand,
         children: <Widget>[
           Image.asset(
-            "assets/images/bg1.png",
+            "assets/images/bg4.png",
             fit: BoxFit.fill,
           ),
           Positioned(
