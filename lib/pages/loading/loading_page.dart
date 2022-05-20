@@ -19,7 +19,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     super.initState();
 
     Timer(
-      const Duration(seconds: 3),
+      const Duration(seconds: 5),
       () => Navigator.of(context).pushNamed(LoginPage.id),
     );
 

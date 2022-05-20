@@ -2,6 +2,7 @@
 
 import 'dart:developer';
 import 'package:cookbook/components/components.dart';
+import 'package:cookbook/controllers/get_image_from_blob.dart';
 import 'package:cookbook/controllers/get_week.dart';
 import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/db/queries/get_recipes.dart';
@@ -9,6 +10,7 @@ import 'package:cookbook/main.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
 import 'package:cookbook/models/tag/tag.dart';
 import 'package:cookbook/models/weekly_recipe/weekly_recipe.dart';
+import 'package:cookbook/pages/recipe/recipe.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -222,9 +224,9 @@ class _RecipeTileState extends ConsumerState<RecipeTile> {
   void initState() {
     final weeklyRecipes =
         ref.read(weeklyRecipesProvider.notifier).state.map((wr) {
-      if (wr.day == widget.day &&
+      if (wr.day == widget.day + 1 &&
           wr.week == widget.week &&
-          wr.daytime == widget.daytime) return wr;
+          wr.daytime == widget.daytime + 1) return wr;
     }).toList();
     final WeeklyRecipe? weeklyRecipe =
         weeklyRecipes.isNotEmpty ? weeklyRecipes[0] : null;
@@ -241,40 +243,68 @@ class _RecipeTileState extends ConsumerState<RecipeTile> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    final state = ref.watch(weeklyRecipesProvider);
+
+    String mealTime = 'breakfast';
+
+    if (widget.daytime == 2) {
+      mealTime = 'lunch';
+    } else if (widget.daytime == 3) {
+      mealTime = 'dinner';
+    }
 
     return recipe == null
         ? const SizedBox()
         : Container(
             height: 100,
             width: size.width / 4,
-            padding: const EdgeInsets.only(top: 15),
             margin: const EdgeInsets.all(1),
             decoration: BoxDecoration(
               border: Border.all(color: Colors.black),
               color: Colors.white,
               borderRadius: BorderRadius.circular(5),
             ),
-            // child: Padding(
-            //   padding: const EdgeInsets.all(8.0),
             child: InkWell(
               onTap: () {
-                // state.toggle = true;
-                // state.idx = idx;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RecipePage(
+                      recipe: recipe!,
+                    ),
+                  ),
+                );
               },
-              //todo Perhaps add a hover function to show recipes.
-              // onHover: () {
-
-              // },
-              //todo add a listview.builder to display 3 recipes in one day.
-              child: ListTile(
-                title: SelectableText(recipe != null ? recipe!.title : ''),
-                subtitle:
-                    SelectableText(recipe != null ? recipe!.ownerEmail : ''),
+              onHover: (val) {},
+              child: Center(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.only(left: 15, right: 5),
+                      height: 70,
+                      child: ClipOval(
+                        child: Image.memory(
+                          getImageDataFromBlob(recipe!.picture),
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(recipe!.title),
+                          Text(recipe!.ownerEmail),
+                          Text(mealTime),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
                 // onTap: ,
               ),
             ),
-            // ),
           );
   }
 }

@@ -7,7 +7,7 @@ import 'package:cookbook/components/NumericStepIncrement.dart';
 import 'package:cookbook/components/share_recipe_listview.dart';
 import 'package:cookbook/components/sidebar_items.dart';
 import 'package:cookbook/controllers/get_week.dart';
-import 'package:cookbook/controllers/loadimage.dart';
+import 'package:cookbook/controllers/get_image_from_blob.dart';
 import 'package:cookbook/db/queries/add_delete_favorites.dart';
 import 'package:cookbook/main.dart';
 import 'package:cookbook/models/recipe/recipe.dart';

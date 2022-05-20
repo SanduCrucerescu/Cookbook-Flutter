@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:cookbook/components/components.dart';
-import 'package:cookbook/controllers/loadimage.dart';
+import 'package:cookbook/controllers/get_image_from_blob.dart';
 import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/db/queries/get_comments.dart';
 import 'package:cookbook/db/queries/get_members.dart';
