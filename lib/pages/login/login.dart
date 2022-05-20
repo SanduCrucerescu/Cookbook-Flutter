@@ -169,30 +169,6 @@ class LoginForm extends HookConsumerWidget {
                           log("Login unsuccessfull");
                           break;
                       }
-
-                      // if (isValid == true) {
-                      //   int id = await Validator().id(tec1.text);
-                      // Query to get user data, e.g cart_id.
-
-                      if (isValid == true) {
-                        int id = await Validator().id(tec1.text);
-
-                        InheritedLoginProvider.of(context).userData = {
-                          "email": tec1.text,
-                          "cartID": id
-                        };
-                      }
-                      //   InheritedLoginProvider.of(context).userData = {
-                      //     "email": tec1.text,
-                      //     "cartID": id
-                      //   };
-
-                      //   Navigator.of(context).pushNamed(HomePage.id);
-                      // } else {
-                      //   state.loginUnSuccessful = true;
-                      //   state.text = "* login unsuccessfull";
-                      //   log("Login unsuccessfull");
-                      // }
                     },
                   ),
                   const SizedBox(

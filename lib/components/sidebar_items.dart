@@ -8,7 +8,7 @@ import '../pages/favorites/favorites.dart';
 import '../pages/home/home_page.dart';
 import '../pages/loading/loading_page.dart';
 import '../pages/messages/message_screen.dart';
-import '../pages/recipeadd/ui_components.dart';
+import '../pages/recipeadd/AddRecipePage.dart';
 import '../pages/shoppingCart/shoppingPage.dart';
 import '../pages/userPage/user_page.dart';
 import '../pages/weeklyPage/weeklyPage.dart';
@@ -56,13 +56,13 @@ List<Map<String, dynamic>> kSideBarItems = [
     "icon": const Icon(Icons.add),
     "children": [],
   },
-  {
-    "text": "A d m i n",
-    "id": 4,
-    "onTap": Admin.id,
-    "icon": const Icon(Icons.admin_panel_settings),
-    "children": [],
-  },
+  // {
+  //   "text": "A d m i n",
+  //   "id": 4,
+  //   "onTap": Admin.id,
+  //   "icon": const Icon(Icons.admin_panel_settings),
+  //   "children": [],
+  // },
   {
     "text": "F A Q",
     "id": 5,

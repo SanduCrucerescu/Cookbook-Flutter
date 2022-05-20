@@ -135,13 +135,13 @@ class _CustDropDownState extends State<CustDropDown>
                                     .map((item) => GestureDetector(
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
-                                            child: item.child,
+                                            child: Text(item.child),
                                           ),
                                           onTap: () {
                                             if (mounted) {
                                               setState(() {
                                                 _isAnyItemSelected = true;
-                                                _itemSelected = item.value;
+                                                _itemSelected = item.child;
                                                 _removeOverlay();
                                                 if (widget.onChanged != null)
                                                   widget.onChanged(item.value);
@@ -260,12 +260,12 @@ class _CustDropDownState extends State<CustDropDown>
 
 class CustDropdownMenuItem<T> extends StatelessWidget {
   final String value;
-  final Widget child;
+  final String child;
 
   const CustDropdownMenuItem({required this.value, required this.child});
 
   @override
   Widget build(BuildContext context) {
-    return child;
+    return Text(child);
   }
 }

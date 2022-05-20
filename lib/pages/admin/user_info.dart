@@ -252,7 +252,7 @@ void _openImagePicker(SelectedUserChangeNotifier state) async {
   final xFile = await openFile(acceptedTypeGroups: [typeGroup]);
   state.text = xFile?.name;
 
-  File file = File(xFile!.path);
+  File file = File(xFile!.path); //TODO add null check
   state.path = file;
   Blob blob = Blob.fromBytes(await file.readAsBytes());
   state.photo = blob;

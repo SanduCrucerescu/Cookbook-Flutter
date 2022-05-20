@@ -37,7 +37,7 @@ class AddRecipePage extends HookConsumerWidget {
 
   late List<CustDropdownMenuItem<String>> menuItems = [
     const CustDropdownMenuItem(
-      child: Text(''),
+      child: '',
       value: '',
     )
   ];
@@ -253,7 +253,7 @@ class AddRecipePage extends HookConsumerWidget {
 
     for (int i = 0; i < ingredients.length; i++) {
       menuItems.add(CustDropdownMenuItem(
-        child: Text(ingredients[i].name),
+        child: ingredients[i].name,
         value: "${ingredients[i].name}",
       ));
     }
