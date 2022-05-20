@@ -2,9 +2,9 @@ import '../database_manager.dart';
 
 class SendMessage {
   static Future<bool> sendMessage(
-      {required Map<String, dynamic> data, required bool n}) async {
+      {required Map<String, dynamic> data, required bool isLink}) async {
     final DatabaseManager dbManager = await DatabaseManager.init();
-    if (n == true) {
+    if (isLink == true) {
       Future? res = dbManager.insert(
           table: 'messages',
           fields: ['sender', 'receiver', 'content', 'time', 'recipeID'],

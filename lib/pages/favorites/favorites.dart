@@ -42,7 +42,7 @@ class _FavoritesPageState extends ConsumerState<FavoritesPage> {
 
   @override
   void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await getFavorites
           .getfav(InheritedLoginProvider.of(context).userData?['email']);
       setState(() {});

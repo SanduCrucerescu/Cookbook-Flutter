@@ -20,7 +20,7 @@ class ShoppingPage extends StatefulHookConsumerWidget {
 class _ShoppingPageState extends ConsumerState<ShoppingPage> {
   @override
   void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       ref.read(selectIngredientProvider).ingredientList =
           (await getCartIngridients(context))!;
       setState(() {});

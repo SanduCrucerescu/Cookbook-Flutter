@@ -109,36 +109,37 @@ class DatabaseManager extends AbstractDatabaseManager {
   }
 
   @override
-  Future<Results?> select(
-      {required String table,
-      required List<String> fields,
-      Map<String, dynamic>? where,
-      bool? and,
-      bool? or,
-      String? group,
-      String? having,
-      List<int>? limit}) async {
+  Future<Results?> select({
+    required String table,
+    required List<String> fields,
+    Map<String, dynamic>? where,
+    bool? and,
+    bool? or,
+    String? group,
+    String? having,
+    List<int>? limit,
+  }) async {
     // connect();
     await connect();
-    String query =
+    String q =
         '''SELECT ${fields.length > 1 ? fields.join(", ") : fields[0]} FROM $table ''';
 
     if (where != null) {
-      query += 'WHERE ';
+      q += 'WHERE ';
       int i = 0;
       for (MapEntry entry in where.entries) {
         i++;
-        query += entry.key + " = '" + entry.value + "'";
+        q += entry.key + " = '" + entry.value.toString() + "'";
         if (and == true) {
-          query += i < where.length ? " AND " : "";
+          q += i < where.length ? " AND " : "";
         } else if (or == true) {
-          query += i < where.length ? " OR " : "";
+          q += i < where.length ? " OR " : "";
         }
       }
     }
-    query += ";";
+    q += ";";
 
-    result = await cnx!.query(query);
+    result = await cnx!.query(q);
     await cnx!.close();
     return result;
   }

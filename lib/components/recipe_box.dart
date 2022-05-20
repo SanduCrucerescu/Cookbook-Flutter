@@ -237,7 +237,7 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       ref.read(widget.stateProvider).isLiked = widget.isLiked;
       final membersState = ref.read(membersProvider);
       membersState.members = await getMembers(context);
@@ -312,6 +312,7 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
               width: 25,
               color: Colors.black,
               onTap: () {
+                ref.read(isPostCommentProvider.notifier).state = true;
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -423,7 +424,7 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
                     'content': state.message,
                     'time': DateTime.now().toString(),
                     'recipeID': widget.recipe.id
-                  }, n: true);
+                  }, isLink: true);
                 }
                 commentTec.clear();
                 state.message = '';
@@ -442,56 +443,51 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
   }
 }
 
-int weekNumber(DateTime date) {
-  int dayOfYear = int.parse(DateFormat("D").format(date));
-  return ((dayOfYear - date.weekday + 10) / 7).floor();
-}
-
 Future<dynamic> addWeekly(
     BuildContext context, VerificationNotifier state, Recipe recipe) {
   final List<CustDropdownMenuItem<String>> mealType = [
     const CustDropdownMenuItem(
       child: Text("Breakfast"),
-      value: 'Breakfast',
+      value: '1',
     ),
     const CustDropdownMenuItem(
       child: Text("Lunch"),
-      value: 'Lunch',
+      value: '2',
     ),
     const CustDropdownMenuItem(
       child: Text("Dinner"),
-      value: 'Dinner',
+      value: '3',
     ),
   ];
 
   final List<CustDropdownMenuItem<String>> weekDays = [
     const CustDropdownMenuItem(
       child: Text("Monday"),
-      value: 'Monday',
+      value: '1',
     ),
     const CustDropdownMenuItem(
       child: Text("Tuesday"),
-      value: 'Tuesday',
+      value: '2',
     ),
     const CustDropdownMenuItem(
       child: Text("Wednesday"),
-      value: 'Wednesday',
+      value: '3',
     ),
     const CustDropdownMenuItem(
       child: Text("Thursday"),
-      value: 'Thursday',
+      value: '4',
     ),
     const CustDropdownMenuItem(
       child: Text("Friday"),
-      value: 'Friday',
+      value: '5',
     ),
     const CustDropdownMenuItem(
       child: Text("Saturday"),
-      value: 'Saturday',
+      value: '6',
     ),
     const CustDropdownMenuItem(
       child: Text("Sunday"),
-      value: 'Sunday',
+      value: '7',
     ),
   ];
   return showDialog(

@@ -74,7 +74,7 @@ class _UsersColumnState extends State<UsersColumn> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       members = await getMembers(context);
       displayedmembers = members;
       widget.state.currMember = displayedmembers[0];
