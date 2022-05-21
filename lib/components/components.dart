@@ -15,6 +15,7 @@ import 'package:cookbook/models/tag/tag.dart';
 import 'package:cookbook/pages/comments/comments.dart';
 import 'package:cookbook/pages/login/login.dart';
 import 'package:cookbook/pages/messages/inbox_widget.dart';
+import 'package:cookbook/pages/recipeadd/dropdown_checkbox.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:cookbook/theme/text_styles.dart';
 import 'package:flutter/material.dart';

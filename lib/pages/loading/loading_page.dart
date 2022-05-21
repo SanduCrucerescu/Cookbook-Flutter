@@ -2,42 +2,13 @@ import 'dart:async';
 import 'package:cookbook/db/queries/get_recipes.dart';
 import 'package:cookbook/main.dart';
 import 'package:cookbook/pages/login/login.dart';
+import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class LoadingScreenWrapper extends StatefulHookConsumerWidget {
-  static const String id = "/loading";
-  const LoadingScreenWrapper({Key? key}) : super(key: key);
-
-  @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _LoadingScreenWrapperState();
-}
-
-class _LoadingScreenWrapperState extends ConsumerState<LoadingScreenWrapper> {
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await fetchRecipes();
-      InheritedLoginProvider.of(context).setDisplayedRecipes('');
-    });
-    super.initState();
-  }
-
-  Future<void> fetchRecipes() async {
-    GetRecepies getrecepies = GetRecepies();
-    await getrecepies.getrecep();
-    InheritedLoginProvider.of(context).recipes = getrecepies.recepieList;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return const LoadingScreen();
-  }
-}
-
 class LoadingScreen extends StatefulWidget {
+  static const String id = "/loading";
   const LoadingScreen({Key? key}) : super(key: key);
   @override
   _LoadingScreenState createState() => _LoadingScreenState();
@@ -46,12 +17,21 @@ class LoadingScreen extends StatefulWidget {
 class _LoadingScreenState extends State<LoadingScreen> {
   @override
   void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await fetchRecipes();
+      InheritedLoginProvider.of(context).setDisplayedRecipes(
+        filteringString: '',
+        filterOption: 'title',
+      );
+      Navigator.of(context).pushNamed(LoginPage.id);
+    });
     super.initState();
+  }
 
-    Timer(
-      const Duration(seconds: 3),
-      () => Navigator.of(context).pushNamed(LoginPage.id),
-    );
+  Future<void> fetchRecipes() async {
+    GetRecepies getrecepies = GetRecepies();
+    await getrecepies.getrecep();
+    InheritedLoginProvider.of(context).recipes = getrecepies.recepieList;
   }
 
   @override
@@ -66,23 +46,13 @@ class _LoadingScreenState extends State<LoadingScreen> {
             "assets/images/bg4.png",
             fit: BoxFit.fill,
           ),
-          Positioned(
-            bottom: size.height / 8,
+          const Center(
             child: SizedBox(
-              width: size.width,
-              child: Center(
-                child: AnimatedTextKit(
-                  animatedTexts: [
-                    TypewriterAnimatedText(
-                      'Welcome to our shit cookbook app',
-                      speed: const Duration(milliseconds: 100),
-                      textStyle: const TextStyle(
-                        fontFamily: "Elianto",
-                        fontSize: 40,
-                      ),
-                    ),
-                  ],
-                ),
+              height: 100,
+              width: 100,
+              child: RefreshProgressIndicator(
+                color: Colors.black,
+                backgroundColor: Colors.white,
               ),
             ),
           ),
@@ -108,26 +78,25 @@ class _LoadingScreenState extends State<LoadingScreen> {
                 flex: 1,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  children: const <Widget>[
-                    RefreshProgressIndicator(
-                      color: Colors.black,
-                      backgroundColor: Colors.white,
+                  children: <Widget>[
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 50),
+                      width: size.width,
+                      child: Center(
+                        child: AnimatedTextKit(
+                          animatedTexts: [
+                            TypewriterAnimatedText(
+                              'Welcome to our shit cookbook app',
+                              speed: const Duration(milliseconds: 100),
+                              textStyle: const TextStyle(
+                                fontFamily: "Elianto",
+                                fontSize: 40,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                    // Some space so it is not crowded
-                    Padding(
-                      padding: EdgeInsets.only(top: 20.0),
-                    ),
-                    // Placeholder
-                    Text(
-                      "Aloah",
-                      softWrap: true,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          letterSpacing: 3,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18.0,
-                          color: Colors.black),
-                    )
                   ],
                 ),
               )

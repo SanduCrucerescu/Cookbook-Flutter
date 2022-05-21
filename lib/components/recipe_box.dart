@@ -11,7 +11,7 @@ class RecipeBox extends ConsumerWidget {
 
   RecipeBox({
     required this.recipe,
-    this.isLiked = false,
+    this.isLiked = true,
     this.image,
     this.profilePicture,
     Key? key,
@@ -28,7 +28,7 @@ class RecipeBox extends ConsumerWidget {
       width: 450,
       height: 650,
       decoration: BoxDecoration(
-        color: Colors.white,
+        // color: Colors.white,
         borderRadius: BorderRadius.circular(5),
         border: Border.all(
           color: kcMedGrey,
@@ -60,8 +60,8 @@ class RecipeBox extends ConsumerWidget {
                   boxShadow: !_state.hovering
                       ? [
                           const BoxShadow(
-                            spreadRadius: .5,
-                            blurRadius: 15,
+                            spreadRadius: .3,
+                            blurRadius: 25,
                             color: Color(0xFFAAAAAA),
                             offset: Offset(10, 12),
                           )

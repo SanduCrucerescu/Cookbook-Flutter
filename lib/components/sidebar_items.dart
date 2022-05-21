@@ -44,7 +44,7 @@ List<Map<String, dynamic>> kSideBarItems = [
   {
     "text": "L o a d i n g",
     "id": 2,
-    "onTap": LoadingScreenWrapper.id,
+    "onTap": LoadingScreen.id,
     "icon": const Icon(Icons.refresh),
     "children": [],
   },
