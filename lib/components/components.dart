@@ -2,8 +2,8 @@ library components;
 
 import 'dart:developer';
 
-import 'package:cookbook/components/DropDown.dart';
-import 'package:cookbook/components/NumericStepIncrement.dart';
+import 'package:cookbook/components/drop_down.dart';
+import 'package:cookbook/components/numeric_step_increment.dart';
 import 'package:cookbook/components/share_recipe_listview.dart';
 import 'package:cookbook/components/sidebar_items.dart';
 import 'package:cookbook/controllers/get_week.dart';

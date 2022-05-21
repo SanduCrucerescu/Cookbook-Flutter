@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:cookbook/components/DropDown.dart';
+import 'package:cookbook/components/drop_down.dart';
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/controllers/get_image_from_blob.dart';
 import 'package:cookbook/models/ingredient/ingredient.dart';
