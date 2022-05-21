@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:cookbook/components/components.dart';
+import 'package:cookbook/components/refresh_progress_indicator.dart';
 import 'package:cookbook/controllers/get_image_from_blob.dart';
 import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/db/queries/get_comments.dart';
@@ -94,7 +95,7 @@ class _CommentsPageState extends ConsumerState<CommentsPage> {
             ],
           ),
           state.comments == null
-              ? const CircularProgressIndicator()
+              ? progressIndicator
               : Expanded(
                   child: SizedBox(
                     height: size.height - 200,

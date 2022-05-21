@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cookbook/components/refresh_progress_indicator.dart';
 import 'package:cookbook/db/queries/get_recipes.dart';
 import 'package:cookbook/main.dart';
 import 'package:cookbook/pages/login/login.dart';
@@ -50,10 +51,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
             child: SizedBox(
               height: 100,
               width: 100,
-              child: RefreshProgressIndicator(
-                color: Colors.black,
-                backgroundColor: Colors.white,
-              ),
+              child: progressIndicator,
             ),
           ),
           Column(

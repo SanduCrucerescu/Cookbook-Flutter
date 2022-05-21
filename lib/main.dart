@@ -1,5 +1,6 @@
 import 'package:cookbook/controllers/controllers.dart';
 import 'package:cookbook/models/ingredient/ingredient.dart';
+import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
 import 'package:cookbook/models/tag/tag.dart';
 import 'package:cookbook/pages/home/home_page.dart';
@@ -35,20 +36,26 @@ class InheritedLoginProviderWrapper extends StatefulWidget {
 class _InheritedLoginProviderWrapperState
     extends State<InheritedLoginProviderWrapper> {
   Map<String?, dynamic>? userData;
+  Member? member;
   List<Recipe> _recipes = [];
   List<Recipe> _displayedRecipes = [];
   List<Recipe> _favorites = [];
-
   List<Recipe> get recipes => _recipes;
   List<Recipe> get favorites => _favorites;
   List<Recipe> get displayedRecipes => _displayedRecipes;
 
-  void setDisplayedRecipes(
-      {required String filteringString, required String filterOption}) {
+  void setDisplayedRecipes({
+    required String filteringString,
+    required String filterOption,
+  }) {
     _displayedRecipes = [];
 
     switch (filterOption.toUpperCase()) {
       case 'TITLE':
+        if (filteringString == '') {
+          _displayedRecipes = recipes;
+          break;
+        }
         for (Recipe r in recipes) {
           if (r.title.toUpperCase().startsWith(filteringString.toUpperCase())) {
             _displayedRecipes.add(r);
@@ -56,6 +63,10 @@ class _InheritedLoginProviderWrapperState
         }
         break;
       case 'INGREDIENTS':
+        if (filteringString == '') {
+          _displayedRecipes = recipes;
+          break;
+        }
         for (Recipe r in recipes) {
           for (Ingredient ingr in r.ingredients) {
             if (ingr.name
@@ -67,6 +78,10 @@ class _InheritedLoginProviderWrapperState
         }
         break;
       case 'TAGS':
+        if (filteringString == '') {
+          _displayedRecipes = recipes;
+          break;
+        }
         for (Recipe r in recipes) {
           for (Tag tag in r.tags) {
             if (tag.name
@@ -104,6 +119,7 @@ class _InheritedLoginProviderWrapperState
   Widget build(BuildContext context) {
     return InheritedLoginProvider(
       data: this,
+      member: member,
       child: widget.child,
       userData: userData,
       favorites: favorites,
@@ -115,11 +131,13 @@ class _InheritedLoginProviderWrapperState
 
 class InheritedLoginProvider extends InheritedWidget {
   final Widget child;
+  final Member? member;
   final _InheritedLoginProviderWrapperState data;
   final Map<String?, dynamic>? userData;
   final List<Recipe> recipes, displayedRecipes, favorites;
 
   const InheritedLoginProvider({
+    required this.member,
     required this.userData,
     required this.recipes,
     required this.displayedRecipes,

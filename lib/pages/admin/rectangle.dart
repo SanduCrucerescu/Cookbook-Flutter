@@ -1,3 +1,4 @@
+import 'package:cookbook/components/refresh_progress_indicator.dart';
 import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/db/queries/get_members.dart';
 import 'package:cookbook/models/member/member.dart';
@@ -80,7 +81,7 @@ class _UsersColumnState extends State<UsersColumn> {
     if (members.isEmpty) {
       return Container(
         margin: const EdgeInsets.only(top: 20),
-        child: const CircularProgressIndicator(),
+        child: progressIndicator,
       );
     } else {
       return Container(
