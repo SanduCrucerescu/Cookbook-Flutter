@@ -1,3 +1,4 @@
+import 'package:cookbook/components/refresh_progress_indicator.dart';
 import 'package:cookbook/db/queries/get_ingridients.dart';
 import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/models/ingredient/ingredient.dart';
@@ -78,9 +79,7 @@ class _IngridientColumnState extends State<IngridientColumn> {
 
     if (ingredients.isEmpty) {
       return Container(
-        margin: const EdgeInsets.only(top: 20),
-        child: const CircularProgressIndicator(),
-      );
+          margin: const EdgeInsets.only(top: 20), child: progressIndicator);
     } else {
       return Container(
         height: size.height - 200,

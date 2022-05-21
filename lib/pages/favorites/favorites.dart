@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:cookbook/components/components.dart';
+import 'package:cookbook/components/refresh_progress_indicator.dart';
 import 'package:cookbook/db/queries/get_favorites.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +66,7 @@ class FavoritesPage extends HookConsumerWidget {
                 child: SizedBox(
                   height: 50,
                   width: 50,
-                  child: CircularProgressIndicator(),
+                  child: progressIndicator,
                 ),
               ),
       ),

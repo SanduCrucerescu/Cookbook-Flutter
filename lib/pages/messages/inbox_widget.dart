@@ -98,12 +98,12 @@ class InboxWidget extends StatelessWidget {
 }
 
 class ProfilePic extends StatelessWidget {
-  final Member member;
+  final Member? member;
   final double? height, width, scale;
   final EdgeInsets? padding;
 
   const ProfilePic({
-    required this.member,
+    this.member,
     this.padding,
     this.height,
     this.width,
@@ -123,7 +123,7 @@ class ProfilePic extends StatelessWidget {
         shape: BoxShape.circle,
       ),
       child: ClipOval(
-        child: member.profilePicture == null
+        child: member == null || member!.profilePicture == null
             ? Image.asset(
                 "assets/images/ph.png",
                 height: height,
@@ -131,7 +131,7 @@ class ProfilePic extends StatelessWidget {
                 fit: BoxFit.cover,
               )
             : Image.memory(
-                getImageDataFromBlob(member.profilePicture!),
+                getImageDataFromBlob(member!.profilePicture!),
                 width: width,
                 height: height,
                 scale: scale ?? 1.0,

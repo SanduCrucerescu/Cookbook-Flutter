@@ -1,7 +1,7 @@
 part of components;
 
 class ExpandedNotifier extends ChangeNotifier {
-  String _filterOption = 'NAME';
+  String _filterOption = 'TITLE';
   String get filterOption => _filterOption;
   set filterOption(String val) {
     _filterOption = val;
@@ -104,7 +104,8 @@ class NavBar extends HookConsumerWidget {
                         isShadow: false,
                         hintText: 'email',
                         prefixWidget: InkWell(
-                          onTap: () => expandedState.toggle(),
+                          onHover: (val) => expandedState.expanded = true,
+                          onTap: () {},
                           child: const Icon(
                             Icons.expand_more,
                             color: Colors.black,

@@ -14,6 +14,11 @@ class HoveringNotifier extends ChangeNotifier {
     _hovering = val;
     notifyListeners();
   }
+
+  void toggle() {
+    _hovering = !_hovering;
+    notifyListeners();
+  }
 }
 
 class IngridientTile extends HookConsumerWidget {

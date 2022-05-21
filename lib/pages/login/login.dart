@@ -1,9 +1,11 @@
 import 'dart:developer';
 import 'dart:math' as math;
 import 'package:cookbook/components/components.dart';
+import 'package:cookbook/components/refresh_progress_indicator.dart';
 import 'package:cookbook/controllers/controllers.dart';
 import 'package:cookbook/db/queries/get_favorites.dart';
 import 'package:cookbook/main.dart';
+import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
 import 'package:cookbook/pages/admin/admin_page.dart';
 import 'package:cookbook/pages/admin/user_info.dart';
@@ -141,12 +143,10 @@ class LoginForm extends HookConsumerWidget {
 
                       showDialog(
                         context: context,
-                        builder: (context) => Container(
+                        builder: (context) => const SizedBox(
                           height: 50,
                           width: 50,
-                          child: Center(
-                            child: const CircularProgressIndicator(),
-                          ),
+                          child: progressIndicator,
                         ),
                       );
 
@@ -173,11 +173,17 @@ class LoginForm extends HookConsumerWidget {
                             "username": userData['username'],
                             "profilePic": userData['profilePic'],
                           };
+                          InheritedLoginProvider.of(context).member = Member(
+                            email: tec1.text,
+                            password: tec2.text,
+                            cartId: userData['cartID'],
+                            name: userData['username'],
+                            profilePicture: userData['profilePic'],
+                          );
                           GetFavorites getFavorites = GetFavorites();
                           InheritedLoginProvider.of(context).favorites =
                               await getFavorites.getfav(tec1.text) ?? [];
                           Navigator.of(context).pushNamed(HomePage.id);
-                          print('navigated');
 
                           break;
                         case "does not exist":

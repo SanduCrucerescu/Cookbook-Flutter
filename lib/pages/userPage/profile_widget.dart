@@ -99,7 +99,8 @@ class CircleWidget extends ConsumerWidget {
     return ClipOval(
       child: InkWell(
         onTap: () async {
-          ref.read(userPageProvider).data!['imgData'] = await openImagePicker();
+          ref.watch(userPageProvider).data!['imgData'] =
+              await openImagePicker();
         },
         child: Container(
           padding: EdgeInsets.all(padding),
