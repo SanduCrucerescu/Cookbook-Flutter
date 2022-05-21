@@ -14,8 +14,8 @@ class CustomButton extends HookConsumerWidget {
   final EdgeInsets? margin, padding;
 
   CustomButton({
-    required this.duration,
     required this.onTap,
+    this.duration = const Duration(milliseconds: 200),
     this.margin,
     this.padding,
     this.child,
@@ -50,7 +50,7 @@ class CustomButton extends HookConsumerWidget {
         border: state.hovering
             ? Border.all(
                 color: Colors.black,
-                width: .5,
+                width: 1.5,
                 style: BorderStyle.solid,
               )
             : border,

@@ -14,12 +14,7 @@ class SearchAdd extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final tec = useTextEditingController();
 
-    return Container(
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(
-          Radius.circular(5),
-        ),
-      ),
+    return SizedBox(
       height: 50,
       // width: 400,
       child: Row(

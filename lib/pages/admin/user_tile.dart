@@ -47,34 +47,37 @@ class UserTile extends StatelessWidget {
           state.currMember = member;
         },
         onHover: (val) {},
-        child: Center(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                height: 70,
-                child: ClipOval(
-                  child: ProfilePic(
-                    padding: const EdgeInsets.all(0),
-                    member: member,
-                    scale: .5,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Center(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  height: 70,
+                  child: ClipOval(
+                    child: ProfilePic(
+                      padding: const EdgeInsets.all(0),
+                      member: member,
+                      scale: .5,
+                    ),
                   ),
                 ),
-              ),
-              Center(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(member.email),
-                    Text(member.name),
-                  ],
+                Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(member.email),
+                      Text(member.name),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

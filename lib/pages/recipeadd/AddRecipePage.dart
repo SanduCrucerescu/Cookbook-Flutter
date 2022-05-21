@@ -6,7 +6,7 @@ import 'package:cookbook/components/components.dart';
 import 'package:cookbook/db/queries/add_recipe.dart';
 import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/main.dart';
-import 'package:cookbook/components/DropDown.dart';
+import 'package:cookbook/components/drop_down.dart';
 import 'package:cookbook/models/ingredient/ingredient.dart';
 import 'package:cookbook/pages/recipeadd/dropdown_checkbox.dart';
 import 'package:cookbook/theme/colors.dart';
