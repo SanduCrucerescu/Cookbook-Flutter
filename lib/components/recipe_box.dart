@@ -137,14 +137,14 @@ class RecipeBox extends ConsumerWidget {
             ),
           ]),
         ),
-        Positioned(
-          left: descriptonRowIndent,
-          top: 615,
-          child: RecipeInformationRow(
-            text: 'id, we dont have stars currently',
-            children: [Text(recipe.id.toString())],
-          ),
-        ),
+        // Positioned(
+        //   left: descriptonRowIndent,
+        //   top: 615,
+        //   child: RecipeInformationRow(
+        //     text: 'id, we dont have stars currently',
+        //     children: [Text(recipe..toString())],
+        //   ),
+        // ),
       ]),
     );
   }

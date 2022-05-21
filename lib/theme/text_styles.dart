@@ -14,6 +14,13 @@ const ksFormButtonStyle = TextStyle(
   color: Colors.black,
 );
 
+const ksTitleButtonStyle = TextStyle(
+  fontFamily: 'Montserrat',
+  fontWeight: FontWeight.w500,
+  fontSize: 15,
+  color: Colors.black,
+);
+
 const ksFormHeadlineStyle = TextStyle(
   fontFamily: 'Montserrat',
   fontWeight: FontWeight.bold,

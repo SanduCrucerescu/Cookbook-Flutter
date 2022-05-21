@@ -100,31 +100,44 @@ class InboxWidget extends StatelessWidget {
 class ProfilePic extends StatelessWidget {
   final Member member;
   final double? height, width, scale;
+  final EdgeInsets? padding;
 
   const ProfilePic({
-    Key? key,
     required this.member,
+    this.padding,
     this.height,
     this.width,
     this.scale,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ClipOval(
-      child: member.profilePicture == null
-          ? Image.asset(
-              "assets/images/ph.png",
-              height: height,
-              width: width,
-            )
-          : Image.memory(
-              getImageDataFromBlob(member.profilePicture!),
-              width: width,
-              height: height,
-              scale: scale ?? 1.0,
-              fit: BoxFit.cover,
-            ),
+    return Container(
+      padding: padding ?? const EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        border: Border.all(
+          width: .5,
+          color: Colors.black,
+        ),
+        shape: BoxShape.circle,
+      ),
+      child: ClipOval(
+        child: member.profilePicture == null
+            ? Image.asset(
+                "assets/images/ph.png",
+                height: height,
+                width: width,
+                fit: BoxFit.cover,
+              )
+            : Image.memory(
+                getImageDataFromBlob(member.profilePicture!),
+                width: width,
+                height: height,
+                scale: scale ?? 1.0,
+                fit: BoxFit.cover,
+              ),
+      ),
     );
   }
 }

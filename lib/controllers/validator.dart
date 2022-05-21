@@ -1,16 +1,16 @@
 part of controllers;
 
 class Validator {
-  Future<String> validate({Map<String, dynamic>? userInfo}) async {
-    final DatabaseManager databaseManager = await DatabaseManager.init();
+  static Future<String> validate({Map<String, dynamic>? userInfo}) async {
+    final DatabaseManager dbManager = await DatabaseManager.init();
 
-    Results? admin = await databaseManager.exists(table: "admin", fields: [
+    Results? admin = await dbManager.exists(table: "admin", fields: [
       "*"
     ], where: {
       'email': userInfo?["email"],
     });
 
-    Results? res = await databaseManager.exists(table: "members", fields: [
+    Results? res = await dbManager.exists(table: "members", fields: [
       "*"
     ], where: {
       'email': userInfo?["email"],
@@ -38,20 +38,31 @@ class Validator {
     }
   }
 
-  Future<int> id(String email) async {
-    final DatabaseManager databaseManager = await DatabaseManager.init();
-    Results? id = await databaseManager.select(
+  static Future<Map<String, dynamic>> userData(String email) async {
+    final dbManager = await DatabaseManager.init();
+    Results? userData = await dbManager.select(
+      table: 'members',
+      fields: ['username', 'cart_id', 'profile_pic'],
+      where: {'email': email},
+    );
+
+    final fields = userData!.first.fields;
+
+    return {
+      'username': fields['username'],
+      'cartID': fields['cart_id'],
+      'profilePic': fields['profile_pic'],
+    };
+  }
+
+  static Future<int> id(String email) async {
+    final DatabaseManager dbManager = await DatabaseManager.init();
+    Results? id = await dbManager.select(
       table: "carts",
       fields: ["id"],
       where: {"member_email": email},
     );
 
-    int cartId = 0;
-
-    for (var rs in id!) {
-      cartId = rs[0];
-    }
-
-    return cartId;
+    return id!.first.fields['id'];
   }
 }

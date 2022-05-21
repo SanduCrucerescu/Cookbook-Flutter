@@ -230,7 +230,7 @@ Future<void> sendComment({
     'post_comment': isPostComment,
   });
 
-  // dbManager.query(query: q);
+  dbManager.close();
 }
 
 class CommentTile extends StatefulHookConsumerWidget {

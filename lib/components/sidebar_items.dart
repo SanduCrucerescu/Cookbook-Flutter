@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../pages/admin/admin_page.dart';
 import '../pages/comments/comments.dart';
 import '../pages/faq/faq.dart';
@@ -45,7 +44,7 @@ List<Map<String, dynamic>> kSideBarItems = [
   {
     "text": "L o a d i n g",
     "id": 2,
-    "onTap": LoadingScreen.id,
+    "onTap": LoadingScreenWrapper.id,
     "icon": const Icon(Icons.refresh),
     "children": [],
   },
@@ -56,13 +55,13 @@ List<Map<String, dynamic>> kSideBarItems = [
     "icon": const Icon(Icons.add),
     "children": [],
   },
-  // {
-  //   "text": "A d m i n",
-  //   "id": 4,
-  //   "onTap": Admin.id,
-  //   "icon": const Icon(Icons.admin_panel_settings),
-  //   "children": [],
-  // },
+  {
+    "text": "A d m i n",
+    "id": 4,
+    "onTap": Admin.id,
+    "icon": const Icon(Icons.admin_panel_settings),
+    "children": [],
+  },
   {
     "text": "F A Q",
     "id": 5,
@@ -77,11 +76,4 @@ List<Map<String, dynamic>> kSideBarItems = [
     "icon": const Icon(Icons.shopping_cart),
     "children": [],
   },
-  {
-    "text": "Comments",
-    "id": 7,
-    "onTap": CommentsPage.id,
-    "icon": const Icon(Icons.mode_comment_outlined),
-    "children": [],
-  }
 ];

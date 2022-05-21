@@ -53,8 +53,7 @@ class SideBar extends HookConsumerWidget {
                     fit: BoxFit.fill,
                   ),
                   onTap: () {
-                    InheritedLoginProvider.of(context).pageId =
-                        items[idx]['id'];
+                    ref.read(pageIdProvider.notifier).state = items[idx]['id'];
                     Navigator.of(context).pushNamed(
                       items[idx]["onTap"],
                     );
@@ -64,7 +63,7 @@ class SideBar extends HookConsumerWidget {
 
                 if (items[idx]["children"].length == 0 ||
                     items[idx]['id'] !=
-                        InheritedLoginProvider.of(context).pageId) {
+                        ref.read(pageIdProvider.notifier).state) {
                   return mainTopic;
                 }
 
