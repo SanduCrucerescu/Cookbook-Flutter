@@ -38,29 +38,6 @@ class _HomePageState extends ConsumerState<HomePage> {
   );
 
   GetFavorites getFavorites = GetFavorites();
-  Future<List<Recipe>?>? _items;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
-  //     _items = getFavorites
-  //         .getfav(InheritedLoginProvider.of(context).userData?['email']);
-  //     setState(() {});
-  //   });
-  // }
-
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      _items = getFavorites.getfav(
-        InheritedLoginProvider.of(context).userData?['email'],
-      );
-      setState(() {});
-    });
-
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext contextref) {

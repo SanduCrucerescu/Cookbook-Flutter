@@ -16,6 +16,8 @@ void main() {
   );
 }
 
+final pageIdProvider = StateProvider<int>((ref) => 0);
+
 class InheritedLoginProviderWrapper extends StatefulWidget {
   final Widget child;
   const InheritedLoginProviderWrapper({
@@ -31,31 +33,19 @@ class InheritedLoginProviderWrapper extends StatefulWidget {
 class _InheritedLoginProviderWrapperState
     extends State<InheritedLoginProviderWrapper> {
   Map<String?, dynamic>? userData;
-  bool isLoggedIn = false;
-  int _pageId = 0;
   List<Recipe> _recipes = [];
   List<Recipe> _displayedRecipes = [];
 
-  int get pageId => _pageId;
   List<Recipe> get recipes => _recipes;
 
   List<Recipe> get displayedRecipes {
-    // log('getting displayed recipes');
     return _displayedRecipes;
   }
 
-  set pageId(int val) {
-    setState(() {
-      _pageId = val;
-    });
-  }
-
   void setDisplayedRecipes(String filterinString) {
-    // log('setting displayed recipes with: "$filterinString"');
     _displayedRecipes = [];
     for (Recipe r in recipes) {
       if (r.title.toUpperCase().startsWith(filterinString.toUpperCase())) {
-        // log(r.title);
         _displayedRecipes.add(r);
       }
     }
@@ -74,19 +64,12 @@ class _InheritedLoginProviderWrapperState
     });
   }
 
-  void setIsLoggedIn(bool val, Map<String?, dynamic> newUserData) {
-    setState(() {
-      isLoggedIn = val;
-      userData = newUserData;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return InheritedLoginProvider(
-      child: widget.child,
       data: this,
-      isLoggedIn: isLoggedIn,
+      child: widget.child,
+      userData: userData,
       recipes: recipes,
       displayedRecipes: displayedRecipes,
     );
@@ -94,16 +77,16 @@ class _InheritedLoginProviderWrapperState
 }
 
 class InheritedLoginProvider extends InheritedWidget {
-  final bool isLoggedIn;
   final Widget child;
   final _InheritedLoginProviderWrapperState data;
+  final Map<String?, dynamic>? userData;
   final List<Recipe> recipes, displayedRecipes;
 
   const InheritedLoginProvider({
+    required this.userData,
     required this.recipes,
     required this.displayedRecipes,
     required this.data,
-    required this.isLoggedIn,
     required this.child,
     Key? key,
   }) : super(key: key, child: child);
@@ -116,8 +99,9 @@ class InheritedLoginProvider extends InheritedWidget {
 
   @override
   bool updateShouldNotify(covariant InheritedLoginProvider oldWidget) {
-    return isLoggedIn != oldWidget.isLoggedIn ||
-        displayedRecipes != oldWidget.displayedRecipes;
+    return displayedRecipes != oldWidget.displayedRecipes ||
+        userData != oldWidget.userData ||
+        recipes != oldWidget.recipes;
   }
 }
 
@@ -139,7 +123,7 @@ class App extends StatelessWidget {
           fontFamily: 'Montserrat',
           primaryColor: kcMedBeige,
         ),
-        initialRoute: LoadingScreen.id,
+        initialRoute: LoadingScreenWrapper.id,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );

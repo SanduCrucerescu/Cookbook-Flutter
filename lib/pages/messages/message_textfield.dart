@@ -13,12 +13,15 @@ class MessageTextField extends StatefulHookConsumerWidget {
   final EdgeInsets? padding, margin;
   final Function? onSubmitted;
   final TextEditingController controller;
+  final double? height, width;
 
   const MessageTextField({
     required this.controller,
     this.onSubmitted,
     this.padding,
     this.margin,
+    this.width,
+    this.height,
     Key? key,
   }) : super(key: key);
 
@@ -42,8 +45,8 @@ class _MessageTextFieldState extends ConsumerState<MessageTextField> {
     return Row(
       children: [
         Container(
-          height: 60,
-          width: size.width - 200,
+          height: widget.height ?? 60,
+          width: widget.width ?? size.width - 200,
           // margin: widget.margin,
           padding: widget.padding,
           child: TextField(

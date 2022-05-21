@@ -1,3 +1,4 @@
+import 'package:cookbook/controllers/get_image_from_blob.dart';
 import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/pages/messages/inbox_widget.dart';
 import 'package:cookbook/theme/colors.dart';
@@ -12,7 +13,8 @@ class UserTile extends StatelessWidget {
   final SelectedUserChangeNotifier state;
   final String email;
   final String userName;
-  final Blob? profile_pic;
+  final Blob? profilePic;
+  final Color? color;
 
   const UserTile({
     required this.member,
@@ -20,39 +22,59 @@ class UserTile extends StatelessWidget {
     required this.idx,
     required this.state,
     required this.userName,
-    required this.profile_pic,
+    required this.profilePic,
+    this.color,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-      child: Container(
-        decoration: BoxDecoration(
-            color: kcLightBeige,
-            border: Border.all(
-              color: kcMedGrey,
-              width: .5,
-              style: BorderStyle.solid,
-            ),
-            borderRadius: BorderRadius.circular(5)),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
-          child: GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: () {
-              state.email = email;
-              state.userName = userName;
-              state.currMember = member;
-            },
-            child: ListTile(
-              leading: ProfilePic(member: member),
-              title: Text(
-                member.email,
+      margin: const EdgeInsets.only(bottom: 10),
+      decoration: BoxDecoration(
+        color: color ?? kcLightBeige,
+        border: Border.all(
+          color: kcMedGrey,
+          width: .5,
+          style: BorderStyle.solid,
+        ),
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: InkWell(
+        onTap: () {
+          state.email = email;
+          state.userName = userName;
+          state.currMember = member;
+        },
+        onHover: (val) {},
+        child: Center(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                height: 70,
+                child: ClipOval(
+                  child: ProfilePic(
+                    padding: const EdgeInsets.all(0),
+                    member: member,
+                    scale: .5,
+                  ),
+                ),
               ),
-              subtitle: Text(member.name),
-            ),
+              Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(member.email),
+                    Text(member.name),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),

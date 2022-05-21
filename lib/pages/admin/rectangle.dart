@@ -10,43 +10,28 @@ import 'package:flutter/material.dart';
 class Rectangle extends StatelessWidget {
   final String text;
   final SelectedUserChangeNotifier state;
-  final position;
 
   const Rectangle({
     required this.text,
     required this.state,
-    required this.position,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+
     return Container(
-      padding: const EdgeInsets.only(right: 20, bottom: 20, top: 20, left: 40),
-      child: Align(
-        alignment: position,
-        // rectangle itself
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(),
-            borderRadius: const BorderRadius.all(
-              Radius.circular(5),
-            ),
-          ),
-          // Height and width of the boxes
-          height: 850,
-          width: 600,
-          //Title of the rectangle
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              children: [
-                SearchAdd(state: state),
-                UsersColumn(state: state),
-              ],
-            ),
-          ),
+      height: size.height,
+      width: size.width / 2,
+      margin: const EdgeInsets.all(20),
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          children: [
+            SearchAdd(state: state),
+            UsersColumn(state: state),
+          ],
         ),
       ),
     );
@@ -77,7 +62,6 @@ class _UsersColumnState extends State<UsersColumn> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       members = await getMembers(context);
       displayedmembers = members;
-      widget.state.currMember = displayedmembers[0];
       setState(() {});
     });
   }
@@ -85,6 +69,7 @@ class _UsersColumnState extends State<UsersColumn> {
   @override
   Widget build(BuildContext context) {
     displayedmembers = [];
+    final Size size = MediaQuery.of(context).size;
 
     for (Member member in members) {
       if (member.email.startsWith(widget.state.filteringString)) {
@@ -93,14 +78,14 @@ class _UsersColumnState extends State<UsersColumn> {
     }
 
     if (members.isEmpty) {
-      return Padding(
-        padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
-        child: Column(children: const [CircularProgressIndicator()]),
+      return Container(
+        margin: const EdgeInsets.only(top: 20),
+        child: const CircularProgressIndicator(),
       );
     } else {
       return Container(
-        height: 698,
-        padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+        height: size.height - 210,
+        padding: const EdgeInsets.only(top: 20),
         child: ListView.builder(
           itemCount: displayedmembers.length,
           itemBuilder: (BuildContext context, int idx) {
@@ -109,7 +94,7 @@ class _UsersColumnState extends State<UsersColumn> {
               idx: idx,
               email: displayedmembers[idx].email,
               userName: displayedmembers[idx].name,
-              profile_pic: displayedmembers[idx].profilePicture,
+              profilePic: displayedmembers[idx].profilePicture,
               member: displayedmembers[idx],
             );
           },
