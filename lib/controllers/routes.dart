@@ -17,7 +17,7 @@ class RouteGenerator {
         );
       case '/loading':
         return MaterialPageRoute(
-          builder: (_) => const LoadingScreenWrapper(),
+          builder: (_) => const LoadingScreen(),
         );
       case '/register':
         return MaterialPageRoute(

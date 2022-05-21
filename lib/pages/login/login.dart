@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:math' as math;
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/controllers/controllers.dart';
+import 'package:cookbook/db/queries/get_favorites.dart';
 import 'package:cookbook/main.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
 import 'package:cookbook/pages/admin/admin_page.dart';
@@ -138,6 +139,17 @@ class LoginForm extends HookConsumerWidget {
                         userInfo: {"email": tec1.text, "password": tec2.text},
                       );
 
+                      showDialog(
+                        context: context,
+                        builder: (context) => Container(
+                          height: 50,
+                          width: 50,
+                          child: Center(
+                            child: const CircularProgressIndicator(),
+                          ),
+                        ),
+                      );
+
                       switch (isValid) {
                         case "admin":
                           int id = await Validator.id(tec1.text);
@@ -161,11 +173,12 @@ class LoginForm extends HookConsumerWidget {
                             "username": userData['username'],
                             "profilePic": userData['profilePic'],
                           };
-
-                          print(InheritedLoginProvider.of(context)
-                              .userData!['profilePic']);
-
+                          GetFavorites getFavorites = GetFavorites();
+                          InheritedLoginProvider.of(context).favorites =
+                              await getFavorites.getfav(tec1.text) ?? [];
                           Navigator.of(context).pushNamed(HomePage.id);
+                          print('navigated');
+
                           break;
                         case "does not exist":
                           state.loginUnSuccessful = true;

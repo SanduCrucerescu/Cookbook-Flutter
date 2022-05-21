@@ -1,5 +1,7 @@
 import 'package:cookbook/controllers/controllers.dart';
+import 'package:cookbook/models/ingredient/ingredient.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
+import 'package:cookbook/models/tag/tag.dart';
 import 'package:cookbook/pages/home/home_page.dart';
 import 'package:cookbook/pages/loading/loading_page.dart';
 import 'package:cookbook/pages/shoppingCart/shopping_page.dart';
@@ -35,26 +37,60 @@ class _InheritedLoginProviderWrapperState
   Map<String?, dynamic>? userData;
   List<Recipe> _recipes = [];
   List<Recipe> _displayedRecipes = [];
+  List<Recipe> _favorites = [];
 
   List<Recipe> get recipes => _recipes;
+  List<Recipe> get favorites => _favorites;
+  List<Recipe> get displayedRecipes => _displayedRecipes;
 
-  List<Recipe> get displayedRecipes {
-    return _displayedRecipes;
-  }
-
-  void setDisplayedRecipes(String filterinString) {
+  void setDisplayedRecipes(
+      {required String filteringString, required String filterOption}) {
     _displayedRecipes = [];
-    for (Recipe r in recipes) {
-      if (r.title.toUpperCase().startsWith(filterinString.toUpperCase())) {
-        _displayedRecipes.add(r);
-      }
+
+    switch (filterOption.toUpperCase()) {
+      case 'TITLE':
+        for (Recipe r in recipes) {
+          if (r.title.toUpperCase().startsWith(filteringString.toUpperCase())) {
+            _displayedRecipes.add(r);
+          }
+        }
+        break;
+      case 'INGREDIENTS':
+        for (Recipe r in recipes) {
+          for (Ingredient ingr in r.ingredients) {
+            if (ingr.name
+                .toUpperCase()
+                .startsWith(filteringString.toUpperCase())) {
+              _displayedRecipes.add(r);
+            }
+          }
+        }
+        break;
+      case 'TAGS':
+        for (Recipe r in recipes) {
+          for (Tag tag in r.tags) {
+            if (tag.name
+                .toUpperCase()
+                .startsWith(filteringString.toUpperCase())) {
+              _displayedRecipes.add(r);
+            }
+          }
+        }
+        break;
     }
+
     setState(() {});
   }
 
   set recipes(List<Recipe> newRecipes) {
     setState(() {
       _recipes = newRecipes;
+    });
+  }
+
+  set favorites(List<Recipe> newRecipes) {
+    setState(() {
+      _favorites = newRecipes;
     });
   }
 
@@ -70,6 +106,7 @@ class _InheritedLoginProviderWrapperState
       data: this,
       child: widget.child,
       userData: userData,
+      favorites: favorites,
       recipes: recipes,
       displayedRecipes: displayedRecipes,
     );
@@ -80,7 +117,7 @@ class InheritedLoginProvider extends InheritedWidget {
   final Widget child;
   final _InheritedLoginProviderWrapperState data;
   final Map<String?, dynamic>? userData;
-  final List<Recipe> recipes, displayedRecipes;
+  final List<Recipe> recipes, displayedRecipes, favorites;
 
   const InheritedLoginProvider({
     required this.userData,
@@ -88,6 +125,7 @@ class InheritedLoginProvider extends InheritedWidget {
     required this.displayedRecipes,
     required this.data,
     required this.child,
+    required this.favorites,
     Key? key,
   }) : super(key: key, child: child);
 
@@ -101,7 +139,8 @@ class InheritedLoginProvider extends InheritedWidget {
   bool updateShouldNotify(covariant InheritedLoginProvider oldWidget) {
     return displayedRecipes != oldWidget.displayedRecipes ||
         userData != oldWidget.userData ||
-        recipes != oldWidget.recipes;
+        recipes != oldWidget.recipes ||
+        favorites != oldWidget.favorites;
   }
 }
 
@@ -123,7 +162,7 @@ class App extends StatelessWidget {
           fontFamily: 'Montserrat',
           primaryColor: kcMedBeige,
         ),
-        initialRoute: LoadingScreenWrapper.id,
+        initialRoute: LoadingScreen.id,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );

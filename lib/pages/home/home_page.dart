@@ -37,56 +37,46 @@ class _HomePageState extends ConsumerState<HomePage> {
     (ref) => ResponsiveNotifier(),
   );
 
-  GetFavorites getFavorites = GetFavorites();
-
   @override
   Widget build(BuildContext contextref) {
     Size size = MediaQuery.of(context).size;
     final state = ref.watch(responsiveProvider);
     final tec = useTextEditingController();
     final searchBarWidth = widget.searchBarWidth;
+    final loginProvider = InheritedLoginProvider.of(context);
 
     return CustomPage(
       showSearchBar: true,
       controller: tec,
       searchBarWidth: searchBarWidth,
-      child: FutureBuilder(
-        future: getFavorites
-            .getfav(InheritedLoginProvider.of(context).userData?['email']),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            state.setRecipeBoxes(
-              favorites: snapshot.data as List<Recipe>?,
-              ctx: context,
-              displayedRecipes:
-                  InheritedLoginProvider.of(context).displayedRecipes,
-              cols: widget.cols,
-            );
-            return SizedBox(
-              width: size.width - 220,
-              child: ListView.builder(
-                physics: const AlwaysScrollableScrollPhysics(),
-                cacheExtent: 50,
-                itemCount: state.recipes.length,
-                shrinkWrap: true,
-                itemBuilder: (ctx, i) => Container(
-                  child: state.recipes[i],
+      child: loginProvider.displayedRecipes.isNotEmpty &&
+              loginProvider.favorites.isNotEmpty
+          ? Builder(builder: ((context) {
+              state.setRecipeBoxes(
+                favorites: InheritedLoginProvider.of(context).favorites,
+                ctx: context,
+                displayedRecipes:
+                    InheritedLoginProvider.of(context).displayedRecipes,
+                cols: widget.cols,
+              );
+              return SizedBox(
+                width: size.width - 220,
+                child: ListView.builder(
+                  cacheExtent: 20,
+                  itemCount: state.recipes.length,
+                  itemBuilder: (ctx, i) => Container(
+                    child: state.recipes[i],
+                  ),
                 ),
-              ),
-            );
-          } else {
-            getFavorites
-                .getfav(InheritedLoginProvider.of(context).userData?['email']);
-            return const Center(
+              );
+            }))
+          : const Center(
               child: SizedBox(
                 height: 50,
                 width: 50,
                 child: CircularProgressIndicator(),
               ),
-            );
-          }
-        },
-      ),
+            ),
     );
   }
 }

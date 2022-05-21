@@ -66,7 +66,7 @@ class RecipePage extends HookConsumerWidget {
                       .toList()
                       .map((e) => Chip(
                             label: Text(
-                              e.getName,
+                              e.name,
                               style: const TextStyle(),
                             ),
                             backgroundColor: kcMedBeige,
@@ -191,7 +191,7 @@ class RecipePage extends HookConsumerWidget {
                                     //padding: const EdgeInsets.only(left: 30),
                                     child: Center(
                                       child: SelectableText(
-                                        state.getName,
+                                        state.name,
                                         textAlign: TextAlign.center,
                                         style: const TextStyle(
                                           fontSize: 18,
@@ -202,7 +202,7 @@ class RecipePage extends HookConsumerWidget {
                                   ),
                                   Expanded(
                                     child: SelectableText(
-                                      state.getChangedAmout.toString(),
+                                      state.changedAmount.toString(),
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
                                         fontSize: 18,
@@ -212,7 +212,7 @@ class RecipePage extends HookConsumerWidget {
                                   ),
                                   Expanded(
                                     child: SelectableText(
-                                      state.getUnit,
+                                      state.unit,
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
                                         fontSize: 18,
@@ -222,7 +222,7 @@ class RecipePage extends HookConsumerWidget {
                                   ),
                                   Expanded(
                                     child: SelectableText(
-                                      state.getChangedPrice.toString(),
+                                      state.changedAmount.toString(),
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
                                         fontSize: 18,
