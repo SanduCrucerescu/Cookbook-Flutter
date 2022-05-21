@@ -1,20 +1,18 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
-
-import 'package:cookbook/controllers/image_picker.dart';
+import 'package:cookbook/components/components.dart';
+import 'package:cookbook/db/database_manager.dart';
+import 'package:cookbook/models/member/member.dart';
+import 'package:cookbook/pages/messages/inbox_widget.dart';
+import 'package:cookbook/theme/colors.dart';
+import 'package:cookbook/theme/text_styles.dart';
 import 'package:file_selector/file_selector.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysql1/mysql1.dart';
-
-import '../../components/components.dart';
-import '../../db/database_manager.dart';
-import '../../models/member/member.dart';
-import '../../theme/colors.dart';
 import 'admin_page.dart';
 
 class UserInfo extends HookConsumerWidget {
@@ -34,154 +32,154 @@ class UserInfo extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final nameController = useTextEditingController();
     final emailController = useTextEditingController();
+    final Size size = MediaQuery.of(context).size;
 
-    double xSize = 600;
-    return Padding(
-      padding: const EdgeInsets.only(right: 40, bottom: 20, top: 20, left: 20),
-      child: Align(
-        alignment: position,
-        // rectangle itself
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(),
-            borderRadius: const BorderRadius.all(
-              Radius.circular(5),
-            ),
+    return Container(
+      padding: const EdgeInsets.all(20),
+      child: Container(
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(5),
           ),
-          height: 278,
-          width: 600,
-          child: Column(
-            children: [
-              Container(
-                height: 40,
-                width: xSize,
-                alignment: Alignment.topCenter,
+        ),
+        child: Column(
+          children: [
+            state.currMember != null
+                ? ProfilePic(
+                    height: 100,
+                    member: state.currMember!,
+                  )
+                : const SizedBox(),
+            SizedBox(
+              height: 70,
+              child: Center(
                 child: Text(
                   state.userName,
-                  style: const TextStyle(
-                      fontSize: 25, fontWeight: FontWeight.bold),
+                  style: ksFormHeadlineStyle,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
-                child: Container(
-                  // color: Color.fromARGB(255, 245, 245, 220),
-                  alignment: Alignment.topLeft,
-                  child: state.currMember == null
-                      ? const Center(child: CircularProgressIndicator())
-                      : Column(
-                          children: [
-                            UserInfoField(
-                              title: 'Name: ',
-                              content: state.userName,
-                              controller: nameController,
-                              onTap: () {
-                                state.currMember?.name = nameController.text;
-                              },
-                            ),
-                            UserInfoField(
-                              title: 'Email: ',
-                              content: state.email,
-                              controller: emailController,
-                              onTap: () {
-                                state.currMember?.email = emailController.text;
-                              },
-                            ),
-                            CustomButton(
-                              showShadow: true,
-                              width: 550,
-                              child: const Text("Change Image"),
-                              duration: const Duration(days: 0),
-                              // onTap: () async {
-                              //   DatabaseManager dbManager =
-                              //       await DatabaseManager.init();
-                              //   Member member = state.currMember!;
-                              //   print(member.name);
-                              //   dbManager.update(
-                              //     table: 'members',
-                              //     set: {
-                              //       'name': member.name,
-                              //       'emai': member.email,
-                              //       'password': member.password,
-                              //       'profile_pic': img64
-                              //     },
-                              //     where: {'email': state.currMember!.email},
-                              //   );
-                              // },
-
-                              onTap: () async {
-                                _openImagePicker(state);
-                              },
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
-                              child: CustomButton(
-                                color: kcMedBeige,
-                                duration: const Duration(milliseconds: 100),
-                                onTap: () async {
-                                  if (state.file == null) {
-                                    ByteData bytes = await rootBundle
-                                        .load('assets/images/ph.png');
-                                    Uint8List photobytes = bytes.buffer
-                                        .asUint8List(bytes.offsetInBytes,
-                                            bytes.lengthInBytes);
-
-                                    img64 = base64Encode(photobytes);
-                                  } else {
-                                    final bytes = state.file?.readAsBytesSync();
-                                    img64 = base64Encode(bytes!);
-                                  }
-                                  DatabaseManager dbManager =
-                                      await DatabaseManager.init();
-                                  Member member = state.currMember!;
-                                  print(member.name);
-                                  if (state.file != null) {
-                                    dbManager.update(
-                                      table: 'members',
-                                      set: {
-                                        'username': member.name,
-                                        'email': member.email,
-                                        'password': member.password,
-                                        'profile_pic': img64,
-                                      },
-                                      where: {'email': state.currMember!.email},
-                                    );
-                                  } else {
-                                    dbManager.update(
-                                      table: 'members',
-                                      set: {
-                                        'username': member.name,
-                                        'email': member.email,
-                                        'password': member.password,
-                                      },
-                                      where: {'email': state.currMember!.email},
-                                    );
-                                  }
-                                },
-                                child: const Text(
-                                  'Apply',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                          ],
+            ),
+            Container(
+              child: state.currMember == null
+                  ? const Center(
+                      child: Text(
+                      'No User Selected',
+                      style: ksFormHeadlineStyle,
+                    ))
+                  : Column(
+                      children: [
+                        UserInfoField(
+                          title: 'Name',
+                          content: state.userName,
+                          controller: nameController,
+                          onTap: () {
+                            state.currMember?.name = nameController.text;
+                          },
                         ),
-                ),
-              )
-            ],
-          ),
+                        UserInfoField(
+                          title: 'Email',
+                          content: state.email,
+                          controller: emailController,
+                          onTap: () {
+                            state.currMember?.email = emailController.text;
+                          },
+                        ),
+                        CustomButton(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 5, vertical: 5),
+                          width: size.width,
+                          color: Colors.transparent,
+                          showShadow: true,
+                          border: Border.all(
+                            width: .5,
+                            color: Colors.black,
+                          ),
+                          child: const Text("Change Image"),
+                          duration: const Duration(days: 0),
+                          onTap: () async {
+                            _openImagePicker(state);
+                          },
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
+                          child: CustomButton(
+                            color: kcMedBeige,
+                            duration: const Duration(milliseconds: 100),
+                            onTap: () async {
+                              if (state.file == null) {
+                                ByteData bytes = await rootBundle
+                                    .load('assets/images/ph.png');
+                                Uint8List photobytes = bytes.buffer.asUint8List(
+                                    bytes.offsetInBytes, bytes.lengthInBytes);
+
+                                img64 = base64Encode(photobytes);
+                              } else {
+                                final bytes = state.file?.readAsBytesSync();
+                                img64 = base64Encode(bytes!);
+                              }
+                              DatabaseManager dbManager =
+                                  await DatabaseManager.init();
+                              Member member = state.currMember!;
+
+                              if (state.file != null) {
+                                dbManager.update(
+                                  table: 'members',
+                                  set: {
+                                    'username': member.name,
+                                    'email': member.email,
+                                    'password': member.password,
+                                    'profile_pic': img64,
+                                  },
+                                  where: {'email': state.currMember!.email},
+                                );
+                              } else {
+                                dbManager.update(
+                                  table: 'members',
+                                  set: {
+                                    'username': member.name,
+                                    'email': member.email,
+                                    'password': member.password,
+                                  },
+                                  where: {'email': state.currMember!.email},
+                                );
+                              }
+                            },
+                            child: const Text(
+                              'Apply',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+            )
+          ],
         ),
       ),
     );
   }
 }
 
+class EditingNotifier extends ChangeNotifier {
+  bool _isEditing = false;
+  bool get isEditing => _isEditing;
+  set isEditing(bool val) {
+    _isEditing = val;
+    notifyListeners();
+  }
+}
+
+// final isEditingProvider = StateProvider((ref) => false);
+
 class UserInfoField extends HookConsumerWidget {
   final String title, content;
   final VoidCallback onTap;
-  final DatabaseManager dbManager = DatabaseManager();
+  // final DatabaseManager dbManager = DatabaseManager();
   final TextEditingController controller;
+
+  final isEditingProvider = ChangeNotifierProvider<EditingNotifier>(
+    (ref) => EditingNotifier(),
+  );
 
   UserInfoField({
     required this.title,
@@ -193,50 +191,113 @@ class UserInfoField extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final focusNode = useFocusNode();
+
     return SizedBox(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
             child: Container(
-              height: 40,
+              height: 50,
               width: 300,
-              margin: const EdgeInsets.symmetric(vertical: 5),
-              padding: const EdgeInsets.only(left: 5),
-              color: kcMedBeige,
+              decoration: BoxDecoration(
+                // color: kcMedBeige,
+                // borderRadius: BorderRadius.circular(5),
+                border: Border.all(
+                  width: .5,
+                  color: Colors.black,
+                  style: BorderStyle.solid,
+                ),
+              ),
+              margin: const EdgeInsets.all(5),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(title),
-                  Expanded(
-                    child: CustomTextField(
-                      controller: controller,
-                      height: 15,
-                      width: 230,
-                      isShadow: false,
-                      backgroundColor: Colors.transparent,
-                      hintText: content,
-                      fontSize: 12,
+                  SizedBox(
+                    width: 100,
+                    child: Center(
+                      child: Text(title, style: ksTitleButtonStyle),
                     ),
-                  )
+                  ),
+                  Expanded(
+                    child: ref.watch(isEditingProvider).isEditing
+                        ? CustomTextField(
+                            backgroundColor: Colors.transparent,
+                            margin: const EdgeInsets.only(right: 5),
+                            isShadow: false,
+                            hintText: 'email',
+                            focusNode: focusNode,
+                            // border: Border.all(
+                            //   width: .5,
+                            //   color: Colors.black,
+                            //   style: BorderStyle.solid,
+                            // ),
+                            onChanged: (value) {
+                              // state.filteringString = value;
+                            },
+                            onClickSuffix: () {
+                              // tec.clear();
+                              // state.filteringString = ''; //  Fix (x) Button
+                            },
+                            // controller: tec,
+                            width: 300,
+                            height: 200,
+                            // borderRadius: const BorderRadius.all(Radius.circular(5)),
+                          )
+                        : SelectableText(content),
+                  ),
                 ],
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: Container(
-              color: kcMedBeige,
-              width: 100,
-              height: 40,
-              child: InkWell(
-                onTap: () => onTap(),
-                child: const Center(
-                  child: Text('Save'),
-                ),
+          Container(
+            width: 70,
+            height: 50,
+            margin: const EdgeInsets.only(right: 10),
+            decoration: BoxDecoration(
+              // color: kcMedBeige,
+              border: Border.all(
+                width: .5,
+                color: Colors.black,
               ),
             ),
-          )
+            child: ref.watch(isEditingProvider).isEditing
+                ? InkWell(
+                    onTap: () => onTap(),
+                    child: const Center(
+                      child: Text('Save'),
+                    ),
+                  )
+                : InkWell(
+                    onTap: () {
+                      focusNode.requestFocus();
+                      ref.watch(isEditingProvider).isEditing = true;
+                    },
+                    child: const Center(
+                      child: Text('Edit'),
+                    ),
+                  ),
+          ),
+          ref.watch(isEditingProvider).isEditing
+              ? Container(
+                  width: 70,
+                  height: 50,
+                  margin: const EdgeInsets.only(right: 10),
+                  decoration: BoxDecoration(
+                    // color: kcMedBeige,
+                    border: Border.all(
+                      width: .5,
+                      color: Colors.black,
+                    ),
+                  ),
+                  child: InkWell(
+                    onTap: () => ref.watch(isEditingProvider).isEditing = false,
+                    child: const Center(
+                      child: Text('Cancel'),
+                    ),
+                  ))
+              : const SizedBox(),
         ],
       ),
     );

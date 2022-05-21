@@ -134,33 +134,37 @@ class LoginForm extends HookConsumerWidget {
                     color: kcMedBeige,
                     text: "L o g i n",
                     onTap: () async {
-                      String isValid = await Validator().validate(
+                      String isValid = await Validator.validate(
                         userInfo: {"email": tec1.text, "password": tec2.text},
                       );
 
                       switch (isValid) {
                         case "admin":
-                          int id = await Validator().id(tec1.text);
+                          int id = await Validator.id(tec1.text);
 
-                          // ignore: use_build_context_synchronously
                           InheritedLoginProvider.of(context).userData = {
                             "email": tec1.text,
                             "cartID": id
                           };
 
-                          // ignore: use_build_context_synchronously
                           Navigator.of(context).pushNamed(Admin.id);
                           break;
                         case "member":
-                          int id = await Validator().id(tec1.text);
+                          // int id = await Validator.id(tec1.text);
+                          final Map<String, dynamic> userData =
+                              await Validator.userData(tec1.text);
 
-                          // ignore: use_build_context_synchronously
                           InheritedLoginProvider.of(context).userData = {
                             "email": tec1.text,
-                            "cartID": id
+                            "password": tec2.text,
+                            "cartID": userData['cartID'],
+                            "username": userData['username'],
+                            "profilePic": userData['profilePic'],
                           };
 
-                          // ignore: use_build_context_synchronously
+                          print(InheritedLoginProvider.of(context)
+                              .userData!['profilePic']);
+
                           Navigator.of(context).pushNamed(HomePage.id);
                           break;
                         case "does not exist":
@@ -169,30 +173,6 @@ class LoginForm extends HookConsumerWidget {
                           log("Login unsuccessfull");
                           break;
                       }
-
-                      // if (isValid == true) {
-                      //   int id = await Validator().id(tec1.text);
-                      // Query to get user data, e.g cart_id.
-
-                      if (isValid == true) {
-                        int id = await Validator().id(tec1.text);
-
-                        InheritedLoginProvider.of(context).userData = {
-                          "email": tec1.text,
-                          "cartID": id
-                        };
-                      }
-                      //   InheritedLoginProvider.of(context).userData = {
-                      //     "email": tec1.text,
-                      //     "cartID": id
-                      //   };
-
-                      //   Navigator.of(context).pushNamed(HomePage.id);
-                      // } else {
-                      //   state.loginUnSuccessful = true;
-                      //   state.text = "* login unsuccessfull";
-                      //   log("Login unsuccessfull");
-                      // }
                     },
                   ),
                   const SizedBox(

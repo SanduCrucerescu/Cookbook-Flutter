@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../pages/admin/admin_page.dart';
 import '../pages/comments/comments.dart';
 import '../pages/faq/faq.dart';
@@ -45,7 +44,7 @@ List<Map<String, dynamic>> kSideBarItems = [
   {
     "text": "L o a d i n g",
     "id": 2,
-    "onTap": LoadingScreen.id,
+    "onTap": LoadingScreenWrapper.id,
     "icon": const Icon(Icons.refresh),
     "children": [],
   },

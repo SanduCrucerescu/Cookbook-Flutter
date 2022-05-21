@@ -98,55 +98,59 @@ class MessagePageState extends ConsumerState<MessagePage> {
           ),
           Visibility(
             visible: state.toggle,
-            child: Column(children: [
-              Container(
-                decoration: BoxDecoration(
+            child: Column(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
                     color: Colors.white,
-                    border: Border.all(color: Colors.black)),
-                height: size.height - 200,
-                width: (size.width - 200) / 2,
-                margin: const EdgeInsets.only(bottom: 3),
-                child: ListView.builder(
-                  controller: sc2,
-                  reverse: true,
-                  itemCount: state.displayedMessages.length,
-                  itemBuilder: (BuildContext context, int idx) {
-                    return ConversationWidget(
-                      idx: idx,
-                      state: state,
-                    );
+                    border: Border.all(color: Colors.black),
+                  ),
+                  height: size.height - 200,
+                  width: (size.width - 200) / 2,
+                  margin: const EdgeInsets.only(bottom: 3),
+                  child: ListView.builder(
+                    controller: sc2,
+                    reverse: true,
+                    itemCount: state.displayedMessages.length,
+                    itemBuilder: (BuildContext context, int idx) {
+                      return ConversationWidget(
+                        idx: idx,
+                        state: state,
+                      );
+                    },
+                  ),
+                ),
+                MessageTextField(
+                  width: (size.width - 200) / 2,
+                  controller: tec,
+                  onSubmitted: () async {
+                    if (tec.text != '') {
+                      await SendMessage.sendMessage(data: {
+                        'sender': InheritedLoginProvider.of(context)
+                            .userData?['email'],
+                        'receiver': state.displayedMembers[state.idx].email,
+                        'content': tec.text,
+                        'time': DateTime.now().toString()
+                      }, isLink: false);
+                      tec.clear();
+                      state.messages = await getMessages(context);
+                      state.members = await getMembers(context);
+                      state.displayedMessages.clear();
+                      for (DirectMessage message in state.messages) {
+                        if (message.sender ==
+                                state.displayedMembers[state.idx].email ||
+                            message.receiver ==
+                                state.displayedMembers[state.idx].email) {
+                          state.addDisplayedMessage(message);
+                        }
+                      }
+                      state.advancedSetDisplayedMembers(state.members, context);
+                      setState(() {});
+                    }
                   },
                 ),
-              ),
-              MessageTextField(
-                controller: tec,
-                onSubmitted: () async {
-                  if (tec.text != '') {
-                    await SendMessage.sendMessage(data: {
-                      'sender':
-                          InheritedLoginProvider.of(context).userData?['email'],
-                      'receiver': state.displayedMembers[state.idx].email,
-                      'content': tec.text,
-                      'time': DateTime.now().toString()
-                    }, isLink: false);
-                    tec.clear();
-                    state.messages = await getMessages(context);
-                    state.members = await getMembers(context);
-                    state.displayedMessages.clear();
-                    for (DirectMessage message in state.messages) {
-                      if (message.sender ==
-                              state.displayedMembers[state.idx].email ||
-                          message.receiver ==
-                              state.displayedMembers[state.idx].email) {
-                        state.addDisplayedMessage(message);
-                      }
-                    }
-                    state.advancedSetDisplayedMembers(state.members, context);
-                    setState(() {});
-                  }
-                },
-              ),
-            ]),
+              ],
+            ),
           ),
         ],
       ),

@@ -21,8 +21,6 @@ class Admin extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(selectUserProvider);
-    final tec = useTextEditingController();
-    Size size = MediaQuery.of(context).size;
 
     return CustomPage(
       child: Row(
@@ -31,7 +29,7 @@ class Admin extends HookConsumerWidget {
             child: Rectangle(
               state: state,
               text: "User List",
-              position: Alignment.topLeft,
+              // position: Alignment.topLeft,
             ),
           ),
           Expanded(

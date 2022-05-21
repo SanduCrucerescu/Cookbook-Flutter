@@ -4,10 +4,40 @@ import 'package:cookbook/main.dart';
 import 'package:cookbook/pages/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+class LoadingScreenWrapper extends StatefulHookConsumerWidget {
+  static const String id = "/loading";
+  const LoadingScreenWrapper({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _LoadingScreenWrapperState();
+}
+
+class _LoadingScreenWrapperState extends ConsumerState<LoadingScreenWrapper> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await fetchRecipes();
+      InheritedLoginProvider.of(context).setDisplayedRecipes('');
+    });
+    super.initState();
+  }
+
+  Future<void> fetchRecipes() async {
+    GetRecepies getrecepies = GetRecepies();
+    await getrecepies.getrecep();
+    InheritedLoginProvider.of(context).recipes = getrecepies.recepieList;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const LoadingScreen();
+  }
+}
 
 class LoadingScreen extends StatefulWidget {
-  static const String id = "/loading";
-
   const LoadingScreen({Key? key}) : super(key: key);
   @override
   _LoadingScreenState createState() => _LoadingScreenState();
@@ -19,20 +49,9 @@ class _LoadingScreenState extends State<LoadingScreen> {
     super.initState();
 
     Timer(
-      const Duration(seconds: 5),
+      const Duration(seconds: 3),
       () => Navigator.of(context).pushNamed(LoginPage.id),
     );
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await fetchRecipes();
-      InheritedLoginProvider.of(context).setDisplayedRecipes('');
-    });
-  }
-
-  Future<void> fetchRecipes() async {
-    GetRecepies getrecepies = GetRecepies();
-    await getrecepies.getrecep();
-    InheritedLoginProvider.of(context).recipes = getrecepies.recepieList;
   }
 
   @override

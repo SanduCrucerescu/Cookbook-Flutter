@@ -30,6 +30,8 @@ class NavBar extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final teController = controller ?? useTextEditingController();
+    final Map<String?, dynamic>? userData =
+        InheritedLoginProvider.of(context).userData;
 
     Size size = MediaQuery.of(context).size;
     return Container(
@@ -50,7 +52,11 @@ class NavBar extends HookConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           NavBarItemBackground(
-            child: Image.asset('assets/images/temp_logo.png'),
+            width: 110,
+            paddingVertical: 10,
+            child: CircleAvatar(
+              child: Image.asset('assets/images/temp_logo.png'),
+            ),
           ),
           showSearchBar
               ? Form(
@@ -76,11 +82,18 @@ class NavBar extends HookConsumerWidget {
                 )
               : const SizedBox(),
           NavBarItemBackground(
-            width: 110,
-            paddingVertical: 10,
-            child: CircleAvatar(
-              child: Image.asset('assets/images/ph.png'),
-            ),
+            width: 80,
+            height: 70,
+            child: userData != null
+                ? ProfilePic(
+                    member: Member(
+                      name: userData['username'],
+                      email: userData['email'],
+                      password: userData['password'],
+                      profilePicture: userData['profilePic'],
+                    ),
+                  )
+                : const SizedBox(),
           ),
         ],
       ),

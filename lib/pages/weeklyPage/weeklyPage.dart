@@ -31,17 +31,17 @@ class WeeklyPage extends HookConsumerWidget {
   final int cols;
   final double searchBarWidth;
 
-  WeeklyPage.desktop({Key? key})
+  const WeeklyPage.desktop({Key? key})
       : cols = 3,
         searchBarWidth = 800,
         super(key: key);
 
-  WeeklyPage.tablet({Key? key})
+  const WeeklyPage.tablet({Key? key})
       : cols = 2,
         searchBarWidth = 800,
         super(key: key);
 
-  WeeklyPage.mobile({Key? key})
+  const WeeklyPage.mobile({Key? key})
       : cols = 1,
         searchBarWidth = 300,
         super(key: key);
