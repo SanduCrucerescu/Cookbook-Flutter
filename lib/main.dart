@@ -32,6 +32,7 @@ class InheritedLoginProviderWrapper extends StatefulWidget {
 
 class _InheritedLoginProviderWrapperState
     extends State<InheritedLoginProviderWrapper> {
+  int currOffset = 0;
   Map<String?, dynamic>? userData;
   Member? member;
   List<Recipe> _recipes = [];
@@ -105,6 +106,26 @@ class _InheritedLoginProviderWrapperState
     setState(() {});
   }
 
+  void addRecipes(List<Recipe> newRecipes) {
+    setState(() {
+      for (Recipe r in newRecipes) {
+        _recipes.add(r);
+      }
+    });
+  }
+
+  void addRecipe(Recipe newRecipe) {
+    setState(() {
+      _recipes.add(newRecipe);
+    });
+  }
+
+  void removeRecipe(Recipe newRecipe) {
+    setState(() {
+      _recipes.remove(newRecipe);
+    });
+  }
+
   set recipes(List<Recipe> newRecipes) {
     setState(() {
       _recipes = newRecipes;
@@ -126,6 +147,7 @@ class _InheritedLoginProviderWrapperState
   @override
   Widget build(BuildContext context) {
     return InheritedLoginProvider(
+      currOffset: currOffset,
       data: this,
       member: member,
       child: widget.child,
@@ -143,8 +165,10 @@ class InheritedLoginProvider extends InheritedWidget {
   final _InheritedLoginProviderWrapperState data;
   final Map<String?, dynamic>? userData;
   final List<Recipe> recipes, displayedRecipes, favorites;
+  final int currOffset;
 
   const InheritedLoginProvider({
+    required this.currOffset,
     required this.member,
     required this.userData,
     required this.recipes,

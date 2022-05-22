@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:cookbook/components/refresh_progress_indicator.dart';
 import 'package:cookbook/db/queries/get_recipes.dart';
 import 'package:cookbook/main.dart';
@@ -31,8 +32,11 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   Future<void> fetchRecipes() async {
     GetRecepies getrecepies = GetRecepies();
-    await getrecepies.getrecep();
-    InheritedLoginProvider.of(context).recipes = getrecepies.recepieList;
+    final loginProvider = InheritedLoginProvider.of(context);
+    await getrecepies.getrecep(limit: [loginProvider.currOffset, 9]);
+    loginProvider.currOffset += 9;
+    loginProvider.recipes = getrecepies.recepieList;
+    loginProvider.resetDisplayedRecipes();
   }
 
   @override

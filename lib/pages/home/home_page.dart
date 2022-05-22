@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/components/refresh_progress_indicator.dart';
+import 'package:cookbook/db/queries/get_recipes.dart';
 import 'package:cookbook/main.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
 import 'package:flutter/material.dart';
@@ -38,11 +39,24 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext contextref) {
-    Size size = MediaQuery.of(context).size;
     final state = ref.watch(responsiveProvider);
     final tec = useTextEditingController();
     final searchBarWidth = widget.searchBarWidth;
     final loginProvider = InheritedLoginProvider.of(context);
+    final homeSc = useScrollController();
+    final Size size = MediaQuery.of(context).size;
+
+    homeSc.addListener(() async {
+      if (homeSc.offset == 1) {
+        state.refreshing = true;
+        final refetchedRecipes = GetRecepies();
+        await refetchedRecipes.getrecep(limit: [loginProvider.currOffset, 9]);
+        loginProvider.currOffset += 9;
+        loginProvider.addRecipes(refetchedRecipes.recepieList);
+        loginProvider.resetDisplayedRecipes();
+        state.refreshing = false;
+      }
+    });
 
     return CustomPage(
       showSearchBar: true,
@@ -52,21 +66,33 @@ class _HomePageState extends ConsumerState<HomePage> {
               loginProvider.favorites.isNotEmpty
           ? Builder(builder: ((context) {
               state.setRecipeBoxes(
-                favorites: InheritedLoginProvider.of(context).favorites,
+                favorites: loginProvider.favorites,
                 ctx: context,
-                displayedRecipes:
-                    InheritedLoginProvider.of(context).displayedRecipes,
+                displayedRecipes: loginProvider.displayedRecipes,
                 cols: widget.cols,
               );
-              return SizedBox(
-                width: size.width - 220,
-                child: ListView.builder(
-                  controller: ScrollController(),
-                  cacheExtent: 20,
-                  itemCount: state.recipes.length,
-                  itemBuilder: (ctx, i) => Container(
-                    child: state.recipes[i],
-                  ),
+              return Container(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: state.refreshing
+                          ? size.height - 150
+                          : size.height - 110,
+                      child: ListView.builder(
+                        controller: homeSc,
+                        cacheExtent: 20,
+                        itemCount: state.recipes.length,
+                        itemBuilder: (ctx, i) => Container(
+                          child: state.recipes[i],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: state.refreshing ? 40 : 0,
+                      child: progressIndicator,
+                    )
+                  ],
                 ),
               );
             }))
@@ -85,6 +111,14 @@ class ResponsiveNotifier extends ChangeNotifier {
   String _filteringString = '';
   List<Widget> _recipes = [];
   int rows = 10;
+  bool _refreshing = false;
+
+  bool get refreshing => _refreshing;
+
+  set refreshing(bool val) {
+    _refreshing = val;
+    notifyListeners();
+  }
 
   String get filteringString => _filteringString;
 
