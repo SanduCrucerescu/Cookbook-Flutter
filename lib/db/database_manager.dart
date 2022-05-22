@@ -2,7 +2,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
-
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:mysql1/mysql1.dart';
 
@@ -137,6 +137,13 @@ class DatabaseManager extends AbstractDatabaseManager {
         }
       }
     }
+
+    q += limit != null
+        ? limit.length > 1
+            ? 'LIMIT ${limit[0]}, ${limit[1]}'
+            : 'LIMIT ${limit[0]}'
+        : '';
+
     q += ";";
 
     result = await cnx!.query(q);

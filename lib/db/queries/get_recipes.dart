@@ -16,11 +16,15 @@ class GetRecepies {
     _recepieList.add(rec);
   }
 
-  Future<void> getrecep() async {
+  Future<void> getrecep({List<int>? limit}) async {
     _recepieList = [];
     final DatabaseManager dbManager = await DatabaseManager.init();
 
-    Results? recipes = await dbManager.select(table: "recipes", fields: ["*"]);
+    Results? recipes = await dbManager.select(
+      table: "recipes",
+      fields: ["*"],
+      limit: limit,
+    );
 
     for (var rs in recipes!) {
       recipeClass = Recipe(
