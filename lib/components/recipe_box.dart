@@ -11,7 +11,7 @@ class RecipeBox extends ConsumerWidget {
 
   RecipeBox({
     required this.recipe,
-    this.isLiked = false,
+    this.isLiked = true,
     this.image,
     this.profilePicture,
     Key? key,
@@ -23,134 +23,150 @@ class RecipeBox extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-      margin: const EdgeInsets.only(top: 20),
-      width: 450,
-      height: 650,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(5),
-        border: Border.all(
-          color: kcMedGrey,
-          width: .6,
-          style: BorderStyle.solid,
-        ),
-      ),
-      child: Stack(children: <Widget>[
-        Positioned(
-          top: 20,
-          left: actionRowIndent,
-          child: RecipeBoxTopRow(
-            profilePicture: Image.asset('assets/images/ph.png'),
-            recipe: recipe,
+    return Builder(
+      builder: (context) {
+        return Container(
+          margin: const EdgeInsets.only(top: 20),
+          width: 450,
+          height: 650,
+          decoration: BoxDecoration(
+            // color: Colors.white,
+            borderRadius: BorderRadius.circular(5),
+            border: Border.all(
+              color: kcMedGrey,
+              width: .6,
+              style: BorderStyle.solid,
+            ),
           ),
-        ),
-        const Positioned(left: horiLineIndent, top: 70, child: HoriLine()),
-        Positioned(
-          top: 90,
-          left: 15,
-          child: Consumer(
-            builder: (context, ref, child) {
-              final _state = ref.watch(hoveringProvider);
-              return AnimatedContainer(
-                duration: const Duration(
-                  milliseconds: 50,
-                ),
-                decoration: BoxDecoration(
-                  boxShadow: !_state.hovering
-                      ? [
-                          const BoxShadow(
-                            spreadRadius: .5,
-                            blurRadius: 15,
-                            color: Color(0xFFAAAAAA),
-                            offset: Offset(10, 12),
-                          )
-                        ]
-                      : null,
-                ),
-                child: RecipeBoxIcon(
-                  onHover: () {
-                    _state.hovering = !_state.hovering;
-                  },
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => RecipePage(
-                          recipe: recipe,
-                        ),
-                      ),
-                    );
-                  },
-                  child: _state.hovering
-                      ? Container(
-                          padding: const EdgeInsets.all(10),
-                          width: 420,
-                          height: 420,
-                          // color: kcLightBeige,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.black,
-                              width: .5,
+          child: Stack(children: <Widget>[
+            Positioned(
+              top: 20,
+              left: actionRowIndent,
+              child: RecipeBoxTopRow(
+                profilePicture: Image.asset('assets/images/ph.png'),
+                recipe: recipe,
+              ),
+            ),
+            const Positioned(left: horiLineIndent, top: 70, child: HoriLine()),
+            Positioned(
+              top: 90,
+              left: 15,
+              child: Consumer(
+                builder: (context, ref, child) {
+                  final hoveringState = ref.watch(hoveringProvider);
+                  return AnimatedContainer(
+                    duration: const Duration(
+                      milliseconds: 50,
+                    ),
+                    decoration: BoxDecoration(
+                      boxShadow: !hoveringState.hovering
+                          ? [
+                              const BoxShadow(
+                                spreadRadius: .3,
+                                blurRadius: 25,
+                                color: Color(0xFFAAAAAA),
+                                offset: Offset(10, 12),
+                              )
+                            ]
+                          : null,
+                    ),
+                    child: RecipeBoxIcon(
+                      onHover: () {
+                        hoveringState.hovering = !hoveringState.hovering;
+                      },
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RecipePage(
+                              recipe: recipe,
                             ),
                           ),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 40),
-                            color: kcLightBeige,
-                            child: Center(
-                              child: SingleChildScrollView(
-                                child: Text(
-                                  recipe.shortDescription,
+                        );
+                      },
+                      image: Image.memory(
+                        getImageDataFromBlob(recipe.picture),
+                        fit: BoxFit.cover,
+                        height: 420,
+                        width: 420,
+                      ),
+                      width: 420,
+                      height: 420,
+                      isImage: true,
+                      child: hoveringState.hovering
+                          ? Container(
+                              padding: const EdgeInsets.all(10),
+                              width: 420,
+                              height: 420,
+                              // color: kcLightBeige,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.black,
+                                  width: .5,
                                 ),
                               ),
-                            ),
-                          ),
-                        )
-                      : null,
-                  image: Image.memory(
-                    getImageDataFromBlob(recipe.picture),
-                    fit: BoxFit.cover,
-                    height: 420,
-                    width: 420,
-                  ),
-                  width: 420,
-                  height: 420,
-                  isImage: true,
-                ),
-              );
-            },
-          ),
-        ),
-        const Positioned(left: horiLineIndent, top: 510, child: HoriLine()),
-        Positioned(
-          top: 534,
-          left: actionRowIndent,
-          child: RecipeActionsRow(recipe: recipe, isLiked: isLiked),
-        ),
-        const Positioned(left: horiLineIndent, top: 570, child: HoriLine()),
-        Positioned(
-          left: descriptonRowIndent,
-          top: 590,
-          child: RecipeInformationRow(text: 'tags', children: [
-            ...recipe.tags.map(
-              (tag) => RecipeTag(tag: tag),
+                              child: Container(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 40),
+                                color: kcLightBeige,
+                                child: Center(
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          recipe.title,
+                                          style: ksFormHeadlineStyle,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        Text(
+                                          recipe.shortDescription,
+                                          style: ksTitleButtonStyle,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          : null,
+                    ),
+                  );
+                },
+              ),
             ),
+            const Positioned(left: horiLineIndent, top: 510, child: HoriLine()),
+            Positioned(
+              top: 534,
+              left: actionRowIndent,
+              child: RecipeActionsRow(recipe: recipe, isLiked: isLiked),
+            ),
+            const Positioned(left: horiLineIndent, top: 570, child: HoriLine()),
+            Positioned(
+              left: descriptonRowIndent,
+              top: 590,
+              child: RecipeInformationRow(text: 'tags', children: [
+                ...recipe.tags.map(
+                  (tag) => RecipeTag(tag: tag),
+                ),
+              ]),
+            ),
+            // Positioned(
+            //   left: descriptonRowIndent,
+            //   top: 615,
+            //   child: RecipeInformationRow(
+            //     text: 'id, we dont have stars currently',
+            //     children: [Text(recipe..toString())],
+            //   ),
+            // ),
           ]),
-        ),
-        Positioned(
-          left: descriptonRowIndent,
-          top: 615,
-          child: RecipeInformationRow(
-            text: 'id, we dont have stars currently',
-            children: [Text(recipe.id.toString())],
-          ),
-        ),
-      ]),
+        );
+      },
     );
   }
 }
 
-class RecipeBoxTopRow extends StatelessWidget {
+class RecipeBoxTopRow extends ConsumerWidget {
   final Recipe recipe;
   final Image? profilePicture;
 
@@ -161,33 +177,31 @@ class RecipeBoxTopRow extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final membersState = ref.watch(membersProvider);
+    final member = membersState.members.isNotEmpty
+        ? membersState.members[membersState.members
+            .map((e) => e.email)
+            .toList()
+            .indexOf(recipe.ownerEmail)]
+        : null;
     return RecipeBoxRow(
       width: 400,
       leading: SizedBox(
         width: 80,
-        child: Row(
-          children: [
-            CircleAvatar(
-              radius: 20,
-              child: ClipOval(
-                child: profilePicture ??
-                    Image.asset(
-                      "assets/images/hellothere.png",
-                      fit: BoxFit.cover,
-                      height: 55,
-                      width: 55,
-                    ),
-              ),
-            ),
-          ],
+        child: Center(
+          child: ProfilePic(
+            height: 40,
+            width: 40,
+            member: member,
+          ),
         ),
       ),
       title: Column(
         children: [
           SelectableText(
             recipe.title.length > 20
-                ? recipe.title.substring(0, 20) + '...'
+                ? '${recipe.title.substring(0, 20)}...'
                 : recipe.title,
             style: const TextStyle(
               fontWeight: FontWeight.bold,
@@ -195,7 +209,7 @@ class RecipeBoxTopRow extends StatelessWidget {
             ),
           ),
           SelectableText(
-            'by ' + recipe.ownerEmail,
+            'by ${member != null ? member.name : ''}',
           ),
         ],
       ),
@@ -237,9 +251,8 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
-      ref.read(widget.stateProvider).isLiked = widget.isLiked;
-      final membersState = ref.read(membersProvider);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      final membersState = ref.watch(membersProvider);
       membersState.members = await getMembers(context);
       membersState.advancedSetDisplayedMembers(membersState.members, context);
       setState(() {});
@@ -252,101 +265,116 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
     final state = ref.watch(widget.stateProvider);
     final searchTec = useTextEditingController();
     final commentTec = useTextEditingController();
+    final loginProvider = InheritedLoginProvider.of(context);
 
-    return RecipeBoxRow(
-      height: 30,
-      width: 400,
-      title: state.exists
-          ? Center(
-              child: SelectableText(
-                state.text,
-                style: GoogleFonts.montserrat(
-                    fontSize: 9,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.red),
-              ),
-            )
-          : const SizedBox(),
-      leading: SizedBox(
-        height: 20,
-        width: 180,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            state.isLiked
-                ? RecipeBoxIcon(
-                    icon: const Icon(Icons.star_outlined),
-                    color: Colors.black,
-                    height: 33,
-                    width: 33,
-                    onTap: () {
-                      Favorites.delete(
-                          email: InheritedLoginProvider.of(context)
-                              .userData?['email'],
-                          recipeID: widget.recipe.id);
-                      state.isLiked = false;
-                    },
-                  )
-                : RecipeBoxIcon(
-                    icon: const Icon(Icons.star_outline),
-                    color: Colors.black,
-                    height: 33,
-                    width: 33,
-                    onTap: () async {
-                      bool val = await Favorites.adding(
-                          email: InheritedLoginProvider.of(context)
-                              .userData?['email'],
-                          recipeID: widget.recipe.id);
-                      if (!val) {
-                        state.exists = true;
-                        state.text = "Recipe already inserted";
-                      } else {
-                        state.isLiked = true;
-                      }
-                    },
-                  ),
-            RecipeBoxIcon(
-              icon: const Icon(Icons.mode_comment_outlined),
-              height: 25,
-              width: 25,
-              color: Colors.black,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CommentsPage(
-                      recipe: widget.recipe,
+    return Builder(
+      builder: ((context) {
+        bool isLiked = InheritedLoginProvider.of(context)
+            .favorites
+            .map((e) => e.ownerEmail)
+            .contains(widget.recipe.ownerEmail);
+
+        return RecipeBoxRow(
+          height: 30,
+          width: 400,
+          title: state.exists
+              ? Center(
+                  child: SelectableText(
+                    state.text,
+                    style: GoogleFonts.montserrat(
+                      fontSize: 9,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red,
                     ),
                   ),
-                );
-              },
+                )
+              : const SizedBox(),
+          leading: SizedBox(
+            height: 20,
+            width: 180,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                isLiked
+                    ? RecipeBoxIcon(
+                        icon: const Icon(Icons.star_outlined),
+                        color: Colors.black,
+                        height: 33,
+                        width: 33,
+                        onTap: () async {
+                          await Favorites.delete(
+                              email: InheritedLoginProvider.of(context)
+                                  .userData?['email'],
+                              recipeID: widget.recipe.id);
+                          loginProvider.favorites = await GetFavorites()
+                                  .getfav(loginProvider.userData!['email']) ??
+                              [];
+                        },
+                      )
+                    : RecipeBoxIcon(
+                        icon: const Icon(Icons.star_outline),
+                        color: Colors.black,
+                        height: 33,
+                        width: 33,
+                        onTap: () async {
+                          bool val = await Favorites.adding(
+                              email: InheritedLoginProvider.of(context)
+                                  .userData?['email'],
+                              recipeID: widget.recipe.id);
+                          if (!val) {
+                            state.exists = true;
+                            state.text = "Recipe already inserted";
+                          }
+                          loginProvider.favorites = await GetFavorites()
+                                  .getfav(loginProvider.userData!['email']) ??
+                              [];
+                        },
+                      ),
+                RecipeBoxIcon(
+                  icon: const Icon(Icons.mode_comment_outlined),
+                  height: 25,
+                  width: 25,
+                  color: Colors.black,
+                  onTap: () {
+                    ref.read(isPostCommentProvider.notifier).state = true;
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CommentsPage(
+                          recipe: widget.recipe,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                RecipeBoxIcon(
+                  icon: const Icon(Icons.share),
+                  height: 30,
+                  width: 30,
+                  color: Colors.black,
+                  onTap: () {
+                    shareRecipe(context, searchTec, commentTec, membersState);
+                  },
+                ),
+              ],
             ),
-            RecipeBoxIcon(
-              icon: const Icon(Icons.share),
-              height: 30,
-              width: 30,
-              color: Colors.black,
-              onTap: () {
-                areyousure2(context, searchTec, commentTec, membersState);
-              },
-            ),
-          ],
-        ),
-      ),
-      trailing: RecipeBoxIcon(
-        onTap: () {
-          addWeekly(context);
-        },
-        icon: const Icon(Icons.add),
-        height: 30,
-        width: 30,
-        color: Colors.black,
-      ),
+          ),
+          trailing: RecipeBoxIcon(
+            onTap: () {
+              addWeekly(context, state, widget.recipe);
+            },
+            icon: const Icon(Icons.add),
+            height: 30,
+            width: 30,
+            color: Colors.black,
+          ),
+        );
+      }),
     );
   }
 
-  Future<dynamic> areyousure2(
+  Future<dynamic> shareRecipe(
     BuildContext context,
     TextEditingController searchTec,
     TextEditingController commentTec,
@@ -421,8 +449,9 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
                         InheritedLoginProvider.of(context).userData?['email'],
                     'receiver': state.shareMembers[i].email,
                     'content': state.message,
-                    'time': DateTime.now().toString()
-                  });
+                    'time': DateTime.now().toString(),
+                    'recipeID': widget.recipe.id
+                  }, isLink: true);
                 }
                 commentTec.clear();
                 state.message = '';
@@ -441,131 +470,182 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
   }
 }
 
-int weekNumber(DateTime date) {
-  int dayOfYear = int.parse(DateFormat("D").format(date));
-  return ((dayOfYear - date.weekday + 10) / 7).floor();
-}
-
-Future<dynamic> addWeekly(BuildContext context) {
+Future<dynamic> addWeekly(
+    BuildContext context, VerificationNotifier state, Recipe recipe) {
   final List<CustDropdownMenuItem<String>> mealType = [
     const CustDropdownMenuItem(
-      child: Text("Breakfast"),
-      value: 'Breakfast',
+      value: '1',
+      child: "Breakfast",
     ),
     const CustDropdownMenuItem(
-      child: Text("Lunch"),
-      value: 'Lunch',
+      value: '2',
+      child: "Lunch",
     ),
     const CustDropdownMenuItem(
-      child: Text("Dinner"),
-      value: 'Dinner',
+      value: '3',
+      child: "Dinner",
     ),
   ];
 
   final List<CustDropdownMenuItem<String>> weekDays = [
     const CustDropdownMenuItem(
-      child: Text("Monday"),
-      value: 'Monday',
+      value: '1',
+      child: "Monday",
     ),
     const CustDropdownMenuItem(
-      child: Text("Tuesday"),
-      value: 'Tuesday',
+      value: '2',
+      child: "Tuesday",
     ),
     const CustDropdownMenuItem(
-      child: Text("Wednesday"),
-      value: 'Wednesday',
+      value: '3',
+      child: "Wednesday",
     ),
     const CustDropdownMenuItem(
-      child: Text("Thursday"),
-      value: 'Thursday',
+      value: '4',
+      child: "Thursday",
     ),
     const CustDropdownMenuItem(
-      child: Text("Friday"),
-      value: 'Friday',
+      value: '5',
+      child: "Friday",
     ),
     const CustDropdownMenuItem(
-      child: Text("Saturday"),
-      value: 'Saturday',
+      value: '6',
+      child: "Saturday",
     ),
     const CustDropdownMenuItem(
-      child: Text("Sunday"),
-      value: 'Sunday',
+      value: '7',
+      child: "Sunday",
     ),
   ];
+  state.week = weekNumber(DateTime.now());
+
   return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text("Add weekly recipe"),
-          actions: [
-            Container(
-              padding: EdgeInsets.all(20),
-              child: Column(
-                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      const SelectableText(
-                        "Week",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      NumericStepButton(
-                        counter: weekNumber(DateTime.now()),
-                        onChanged: (val) {
-                          print("Aaa");
-                        },
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const SelectableText(
-                        "Day of week:",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Container(
-                          width: 150,
-                          child: CustDropDown(
-                              items: weekDays, onChanged: (val) {}))
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: [
-                      const SelectableText(
-                        "Meal Type:",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Container(
-                          width: 150,
-                          child: CustDropDown(
-                              items: mealType, onChanged: (val) {}))
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  CustomButton(
-                    duration: const Duration(milliseconds: 200),
-                    onTap: () {},
-                    child: const Text("Add Recipe"),
-                    width: 150,
-                    height: 50,
-                  ),
-                ],
-              ),
-            )
-          ],
-        );
-      });
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text("Add weekly recipe"),
+        actions: [
+          Container(
+            padding: EdgeInsets.all(20),
+            child: Column(
+              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                state.notInserted
+                    ? Center(
+                        child: SelectableText(
+                          state.weeklyText,
+                          style: GoogleFonts.montserrat(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red),
+                        ),
+                      )
+                    : const SizedBox(),
+                Row(
+                  children: [
+                    const SelectableText(
+                      "Recipe name: ",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    SelectableText(
+                      recipe.title,
+                      style: TextStyle(fontSize: 20),
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    const SelectableText(
+                      "Week",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    NumericStepButton(
+                      counter: weekNumber(DateTime.now()),
+                      onChanged: (val) {
+                        state.week = val;
+                        print(state.week);
+                      },
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    const SelectableText(
+                      "Day of week:",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Container(
+                        width: 150,
+                        child: CustDropDown(
+                          items: weekDays,
+                          onChanged: (val) {
+                            state.weekDay = val;
+                          },
+                        ))
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  children: [
+                    const SelectableText(
+                      "Meal Type:",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Container(
+                        width: 150,
+                        child: CustDropDown(
+                          items: mealType,
+                          onChanged: (val) {
+                            state.mealType = val;
+                          },
+                        ))
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                CustomButton(
+                  duration: const Duration(milliseconds: 200),
+                  onTap: () async {
+                    if (state.weekDay == null || state.mealType == null) {
+                      state.notInserted = true;
+                      state.weeklyText = "Please fill all the fields;";
+                    } else {
+                      AddWeaklys.addWeaklys(data: {
+                        "email": InheritedLoginProvider.of(context)
+                            .userData?['email'],
+                        "week": state.week,
+                        "day": state.weekDay,
+                        "meal_type": state.mealType,
+                        "recipe_id": recipe.id,
+                      });
+                      Navigator.pop(context);
+                      state.weekDay = "";
+                      state.mealType = "";
+                    }
+                  },
+                  width: 150,
+                  height: 50,
+                  child: const Text("Add Recipe"),
+                ),
+              ],
+            ),
+          )
+        ],
+      );
+    },
+  );
 }
 
 class RecipeInformationRow extends StatelessWidget {
@@ -804,15 +884,30 @@ class RecipeBoxIconHoverNotifier extends ChangeNotifier {
 }
 
 class VerificationNotifier extends ChangeNotifier {
+  int _week = 1;
+  String _weekDay = "";
+  String _mealType = "";
   bool _isTapped = false;
   bool _exists = false;
   String _text = "";
+  bool _notInserted = false;
+  String _weeklyText = "";
+
+  String get weeklyText => _weeklyText;
 
   bool get isLiked => _isTapped;
 
   bool get exists => _exists;
 
   String get text => _text;
+
+  int get week => _week;
+
+  String get weekDay => _weekDay;
+
+  String get mealType => _mealType;
+
+  bool get notInserted => _notInserted;
 
   set isLiked(bool val) {
     _isTapped = val;
@@ -826,6 +921,31 @@ class VerificationNotifier extends ChangeNotifier {
 
   set text(String text) {
     _text = text;
+    notifyListeners();
+  }
+
+  set week(int val) {
+    _week = val;
+    notifyListeners();
+  }
+
+  set weekDay(String value) {
+    _weekDay = value;
+    notifyListeners();
+  }
+
+  set mealType(value) {
+    _mealType = value;
+    notifyListeners();
+  }
+
+  set weeklyText(String value) {
+    _weeklyText = value;
+    notifyListeners();
+  }
+
+  set notInserted(value) {
+    _notInserted = value;
     notifyListeners();
   }
 }

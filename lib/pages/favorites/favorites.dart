@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:cookbook/components/components.dart';
+import 'package:cookbook/components/refresh_progress_indicator.dart';
 import 'package:cookbook/db/queries/get_favorites.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../main.dart';
 
-class FavoritesPage extends StatefulHookConsumerWidget {
+class FavoritesPage extends HookConsumerWidget {
   static const String id = '/favorites';
   final int cols;
   final double searchBarWidth;
@@ -34,39 +35,21 @@ class FavoritesPage extends StatefulHookConsumerWidget {
   );
 
   @override
-  _FavoritesPageState createState() => _FavoritesPageState();
-}
-
-class _FavoritesPageState extends ConsumerState<FavoritesPage> {
-  GetFavorites getFavorites = GetFavorites();
-
-  @override
-  void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
-      await getFavorites
-          .getfav(InheritedLoginProvider.of(context).userData?['email']);
-      setState(() {});
-    });
-
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     Size size = MediaQuery.of(context).size;
-    final state = ref.watch(widget.responsivePorvider);
+    final state = ref.watch(responsivePorvider);
     final tec = useTextEditingController();
 
     state.setRecipeBoxes(
       ctx: context,
-      displayedRecipes: getFavorites.recepieList ?? [],
-      cols: widget.cols,
+      displayedRecipes: InheritedLoginProvider.of(context).favorites,
+      cols: cols,
     );
 
     return CustomPage(
-      showSearchBar: true,
+      showSearchBar: false,
       controller: tec,
-      searchBarWidth: widget.searchBarWidth,
+      searchBarWidth: searchBarWidth,
       child: SizedBox(
         width: size.width - 220,
         child: state.recipes.isEmpty == false
@@ -83,7 +66,7 @@ class _FavoritesPageState extends ConsumerState<FavoritesPage> {
                 child: SizedBox(
                   height: 50,
                   width: 50,
-                  child: CircularProgressIndicator(),
+                  child: progressIndicator,
                 ),
               ),
       ),

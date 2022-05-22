@@ -1,7 +1,11 @@
 import 'package:cookbook/controllers/controllers.dart';
+import 'package:cookbook/models/ingredient/ingredient.dart';
+import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
+import 'package:cookbook/models/tag/tag.dart';
 import 'package:cookbook/pages/home/home_page.dart';
-import 'package:cookbook/pages/shoppingCart/shoppingPage.dart';
+import 'package:cookbook/pages/loading/loading_page.dart';
+import 'package:cookbook/pages/shoppingCart/shopping_page.dart';
 import 'package:cookbook/pages/weeklyPage/weeklyPage.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +18,8 @@ void main() {
     ),
   );
 }
+
+final pageIdProvider = StateProvider<int>((ref) => 0);
 
 class InheritedLoginProviderWrapper extends StatefulWidget {
   final Widget child;
@@ -30,34 +36,64 @@ class InheritedLoginProviderWrapper extends StatefulWidget {
 class _InheritedLoginProviderWrapperState
     extends State<InheritedLoginProviderWrapper> {
   Map<String?, dynamic>? userData;
-  bool isLoggedIn = false;
-  int _pageId = 0;
+  Member? member;
   List<Recipe> _recipes = [];
   List<Recipe> _displayedRecipes = [];
-
-  int get pageId => _pageId;
+  List<Recipe> _favorites = [];
   List<Recipe> get recipes => _recipes;
+  List<Recipe> get favorites => _favorites;
+  List<Recipe> get displayedRecipes => _displayedRecipes;
 
-  List<Recipe> get displayedRecipes {
-    // log('getting displayed recipes');
-    return _displayedRecipes;
-  }
-
-  set pageId(int val) {
-    setState(() {
-      _pageId = val;
-    });
-  }
-
-  void setDisplayedRecipes(String filterinString) {
-    // log('setting displayed recipes with: "$filterinString"');
+  void setDisplayedRecipes({
+    required String filteringString,
+    required String filterOption,
+  }) {
     _displayedRecipes = [];
-    for (Recipe r in recipes) {
-      if (r.title.toUpperCase().startsWith(filterinString.toUpperCase())) {
-        // log(r.title);
-        _displayedRecipes.add(r);
-      }
+
+    switch (filterOption.toUpperCase()) {
+      case 'TITLE':
+        if (filteringString == '') {
+          _displayedRecipes = recipes;
+          break;
+        }
+        for (Recipe r in recipes) {
+          if (r.title.toUpperCase().startsWith(filteringString.toUpperCase())) {
+            _displayedRecipes.add(r);
+          }
+        }
+        break;
+      case 'INGREDIENTS':
+        if (filteringString == '') {
+          _displayedRecipes = recipes;
+          break;
+        }
+        for (Recipe r in recipes) {
+          for (Ingredient ingr in r.ingredients) {
+            if (ingr.name
+                .toUpperCase()
+                .startsWith(filteringString.toUpperCase())) {
+              _displayedRecipes.add(r);
+            }
+          }
+        }
+        break;
+      case 'TAGS':
+        if (filteringString == '') {
+          _displayedRecipes = recipes;
+          break;
+        }
+        for (Recipe r in recipes) {
+          for (Tag tag in r.tags) {
+            if (tag.name
+                .toUpperCase()
+                .startsWith(filteringString.toUpperCase())) {
+              _displayedRecipes.add(r);
+            }
+          }
+        }
+        break;
     }
+
     setState(() {});
   }
 
@@ -67,25 +103,26 @@ class _InheritedLoginProviderWrapperState
     });
   }
 
+  set favorites(List<Recipe> newRecipes) {
+    setState(() {
+      _favorites = newRecipes;
+    });
+  }
+
   set displayedRecipes(List<Recipe> newRecipes) {
     setState(() {
       _displayedRecipes = newRecipes;
     });
   }
 
-  void setIsLoggedIn(bool val, Map<String?, dynamic> newUserData) {
-    setState(() {
-      isLoggedIn = val;
-      userData = newUserData;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return InheritedLoginProvider(
-      child: widget.child,
       data: this,
-      isLoggedIn: isLoggedIn,
+      member: member,
+      child: widget.child,
+      userData: userData,
+      favorites: favorites,
       recipes: recipes,
       displayedRecipes: displayedRecipes,
     );
@@ -93,17 +130,20 @@ class _InheritedLoginProviderWrapperState
 }
 
 class InheritedLoginProvider extends InheritedWidget {
-  final bool isLoggedIn;
   final Widget child;
+  final Member? member;
   final _InheritedLoginProviderWrapperState data;
-  final List<Recipe> recipes, displayedRecipes;
+  final Map<String?, dynamic>? userData;
+  final List<Recipe> recipes, displayedRecipes, favorites;
 
   const InheritedLoginProvider({
+    required this.member,
+    required this.userData,
     required this.recipes,
     required this.displayedRecipes,
     required this.data,
-    required this.isLoggedIn,
     required this.child,
+    required this.favorites,
     Key? key,
   }) : super(key: key, child: child);
 
@@ -115,8 +155,10 @@ class InheritedLoginProvider extends InheritedWidget {
 
   @override
   bool updateShouldNotify(covariant InheritedLoginProvider oldWidget) {
-    return isLoggedIn != oldWidget.isLoggedIn ||
-        displayedRecipes != oldWidget.displayedRecipes;
+    return displayedRecipes != oldWidget.displayedRecipes ||
+        userData != oldWidget.userData ||
+        recipes != oldWidget.recipes ||
+        favorites != oldWidget.favorites;
   }
 }
 
@@ -138,7 +180,11 @@ class App extends StatelessWidget {
           fontFamily: 'Montserrat',
           primaryColor: kcMedBeige,
         ),
+<<<<<<< HEAD
         initialRoute: WeeklyPage.id,
+=======
+        initialRoute: LoadingScreen.id,
+>>>>>>> 551f2ed9777323b7cc25c2fc9335d6248a1165a9
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );

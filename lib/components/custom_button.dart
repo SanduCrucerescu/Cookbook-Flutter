@@ -11,10 +11,13 @@ class CustomButton extends HookConsumerWidget {
   final Widget? child;
   final bool showShadow;
   final Color? color;
+  final EdgeInsets? margin, padding;
 
   CustomButton({
-    required this.duration,
     required this.onTap,
+    this.duration = const Duration(milliseconds: 200),
+    this.margin,
+    this.padding,
     this.child,
     this.width = 100,
     this.height = 30,
@@ -39,16 +42,18 @@ class CustomButton extends HookConsumerWidget {
       duration: duration,
       height: height,
       width: width,
+      padding: padding,
+      margin: margin,
       decoration: BoxDecoration(
         color: color ?? kcMedBeige,
-        borderRadius: BorderRadius.circular(borderRadius),
+        // borderRadius: BorderRadius.circular(borderRadius),
         border: state.hovering
             ? Border.all(
                 color: Colors.black,
-                width: .5,
+                width: 1.5,
                 style: BorderStyle.solid,
               )
-            : null,
+            : border,
         boxShadow: showShadow
             ? state.hovering
                 ? boxShadow

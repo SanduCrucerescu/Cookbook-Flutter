@@ -1,17 +1,19 @@
+import 'package:cookbook/components/components.dart';
 import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/db/queries/add_cart_ingidients.dart';
+import 'package:cookbook/db/queries/get_cart_ingridients.dart';
+import 'package:cookbook/main.dart';
 import 'package:cookbook/models/ingredient/ingredient.dart';
-import 'package:cookbook/pages/shoppingCart/shoppingPage.dart';
+import 'package:cookbook/pages/shoppingCart/shopping_page.dart';
 import 'package:cookbook/theme/colors.dart';
+import 'package:cookbook/theme/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class IngridientsToBuy extends StatefulHookConsumerWidget {
-  final Alignment position;
   final int idx;
 
   const IngridientsToBuy({
-    required this.position,
     required this.idx,
     Key? key,
   }) : super(key: key);
@@ -23,138 +25,202 @@ class IngridientsToBuy extends StatefulHookConsumerWidget {
 class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
   @override
   Widget build(BuildContext context) {
-    final position = widget.position;
     final state = ref.watch(selectIngredientProvider);
-    final idx = widget.idx;
 
-    getIngredientPrice() {
+    double getIngredientPrice() {
       double total = 0;
-      for (Ingredient e in state.ingredientList) {
-        total += e.pricePerUnit;
+      if (state.ingredientList.isNotEmpty) {
+        for (Ingredient e in state.ingredientList) {
+          total += e.pricePerUnit * e.amount!;
+        }
       }
       return total;
     }
 
-    double xSize = 600;
     return Container(
-      padding: const EdgeInsets.only(right: 40, bottom: 20, top: 20, left: 20),
-      child: Align(
-        alignment: position,
-        child: Column(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(),
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(5),
-                ),
-              ),
-              height: 500,
-              width: xSize,
-              child: SizedBox(
-                child: ListView.builder(
-                  controller: ScrollController(),
-                  itemCount: state.ingredientList.length, // NULL???????
-                  itemBuilder: (BuildContext context, int index) {
-                    return Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: InkWell(
-                              onTap: () {
-                                state.removeIngredientAt(idx);
-                                print("removed: " +
-                                    state.ingredientList[idx].name);
-                              },
-                              child: const Text("X")),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                              capitalize(state.ingredientList[index].name),
-                              style: TextStyle(fontSize: 20)),
-                        ),
-                      ],
-                    );
-                  },
-                ),
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              // color: Colors.white,
+              border: Border.all(width: .5, color: Colors.black),
+              borderRadius: const BorderRadius.all(
+                Radius.circular(5),
               ),
             ),
-            Container(
-              padding: const EdgeInsets.only(top: 10.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(),
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(5),
-                  ),
-                ),
-                height: 100,
-                width: xSize,
-                child: TextButton(
-                  onPressed: () {
-                    var success = AddCartIngridients.addToCart(
-                      cartInfo: {
-                        "cart_id": 27,
-                        "ingredients_for_recipe_id": 1,
-                        "quantity": 1
-                      },
-                    );
-                    //Yep it works
-                  },
-                  child: const Text("Save Shopping Cart"),
-                ),
-              ),
+            height: 500,
+            child: SizedBox(
+              child: state.ingredientList.isEmpty
+                  ? Container(
+                      height: 500,
+                      width: 500,
+                      margin: const EdgeInsets.only(top: 20),
+                      child: const Center(
+                        child: Text('Nothing Selected'),
+                      ),
+                    )
+                  : const CartBox(),
             ),
-            Container(
-              padding: const EdgeInsets.only(top: 10),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    child: const Text(
-                      "Me and Lui",
+          ),
+          SizedBox(
+            // height: 50, width: 150,
+            child: Center(
+              child: RichText(
+                text: TextSpan(
+                  children: [
+                    const TextSpan(
+                      text: 'TOTAL   ',
                       style: TextStyle(
                         color: Colors.black,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400,
+                        fontFamily: 'Montserrat',
                       ),
                     ),
-                    width: 200.00,
-                    height: 140.00,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: ExactAssetImage('assets/images/IMG_5407.JPG'),
-                        fit: BoxFit.fitHeight,
-                      ),
+                    TextSpan(
+                      text: "${getIngredientPrice()}€",
+                      style: ksLabelTextStyle,
                     ),
-                  ),
-                  Container(
-                    height: 50,
-                    width: 150,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(),
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(5),
-                      ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "Total Cost: " + getIngredientPrice().toString() + "€",
-                        style: const TextStyle(fontSize: 15),
-                      ),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            )
-          ],
-        ),
+            ),
+          ),
+          Center(
+            child: Container(
+              decoration: BoxDecoration(
+                  border: Border.all(width: .3, color: Colors.black)),
+              child: CustomButton(
+                height: 50,
+                width: 200,
+                color: kcLightBeige,
+                // border: Border.all(width: 2, color: Colors.black),
+                onTap: () async {
+                  print(getCurrentCart(context));
+                  await DeleteCart.Delete(
+                      table: "cartingredients",
+                      where: {"cart_id": getCurrentCart(context).toString()});
+
+                  for (Ingredient ing in state.ingredientList) {
+                    await AddCartIngridients.addToCart(cartInfo: {
+                      "cart_id": getCurrentCart(context).toString(),
+                      "ingredient_id": ing.id,
+                      "amount": ing.amount
+                    });
+                  }
+                },
+
+                // Yep it works
+
+                child: Text(
+                  "Save",
+                  style: ksFormButtonStyle.copyWith(fontSize: 20),
+                ),
+                //TODO: On update
+              ),
+            ),
+          ),
+          // Container(
+          //   padding: const EdgeInsets.only(top: 10),
+          //   child: Row(
+          //     crossAxisAlignment: CrossAxisAlignment.end,
+          //     mainAxisAlignment: MainAxisAlignment.end,
+          //     children: [
+          // Container(
+          //   child: const Text(
+          //     // "Me and Lui",
+          //     "",
+          //     style: TextStyle(
+          //       color: Colors.black,
+          //     ),
+          //   ),
+          //   width: 200.00,
+          //   height: 140.00,
+          //   decoration: const BoxDecoration(
+          //     image: DecorationImage(
+          //       image: ExactAssetImage('assets/images/IMG_5407.JPG'),
+          //       fit: BoxFit.fitHeight,
+          //     ),
+          //   ),
+          // ),
+          //       ],
+          //     ),
+          //   )
+        ],
       ),
     );
   }
 }
 
 String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
+
+class CartBox extends ConsumerWidget {
+  const CartBox({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(selectIngredientProvider);
+    return Column(
+      children: [
+        SizedBox(
+            height: 50,
+            child: Row(
+              children: const [
+                SizedBox(
+                  width: 60,
+                ),
+                Expanded(flex: 5, child: Text('Ingredient')),
+                Expanded(flex: 1, child: Text('Amount')),
+                Expanded(flex: 1, child: Text('Price')),
+              ],
+            )),
+        SizedBox(
+          height: 449,
+          child: ListView.builder(
+            controller: ScrollController(),
+            itemCount: state.ingredientList.length,
+            itemBuilder: (BuildContext context, int idx) {
+              return Row(
+                children: [
+                  Container(
+                    width: 60,
+                    padding: const EdgeInsets.all(10),
+                    child: InkWell(
+                      onTap: () {
+                        state.removeIngredientAt(idx);
+                      },
+                      child: const Icon(
+                        Icons.remove_outlined,
+                        // size: 30,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 5,
+                    child: Text(state.ingredientList[idx].name),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Text(
+                      state.ingredientList[idx].amount.toString(),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Text(
+                      (state.ingredientList[idx].amount! *
+                              state.ingredientList[idx].pricePerUnit)
+                          .toString(),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}

@@ -1,49 +1,35 @@
+import 'package:cookbook/components/refresh_progress_indicator.dart';
 import 'package:cookbook/db/queries/get_ingridients.dart';
 import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/models/ingredient/ingredient.dart';
-import 'package:cookbook/pages/shoppingCart/shoppingPage.dart';
+import 'package:cookbook/pages/shoppingCart/shopping_page.dart';
 import 'package:cookbook/pages/shoppingCart/search.dart';
 import 'package:cookbook/pages/shoppingCart/ingridients_list.dart';
 import 'package:flutter/material.dart';
 
 class Sqaure extends StatelessWidget {
   final SelectedIngridientChangeNotifier state;
-  final position;
 
   const Sqaure({
     required this.state,
-    required this.position,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(right: 20, bottom: 20, top: 20, left: 40),
-      child: Align(
-        alignment: position,
-        // rectangle itself
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(),
-            borderRadius: const BorderRadius.all(
-              Radius.circular(5),
-            ),
+      padding: const EdgeInsets.all(20),
+      child: Container(
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(5),
           ),
-          // Height and width of the boxes
-          height: 850,
-          width: 600,
-          //Title of the rectangle
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              children: [
-                SearchIngridient(state: state),
-                IngridientColumn(state: state),
-              ],
-            ),
-          ),
+        ),
+        child: Column(
+          children: [
+            SearchIngridient(state: state),
+            IngridientColumn(state: state),
+          ],
         ),
       ),
     );
@@ -71,7 +57,7 @@ class _IngridientColumnState extends State<IngridientColumn> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       // TODO this.
       ingredients = await getIngridients();
       displayedIngridients = ingredients;
@@ -83,24 +69,21 @@ class _IngridientColumnState extends State<IngridientColumn> {
   @override
   Widget build(BuildContext context) {
     displayedIngridients = [];
+    final Size size = MediaQuery.of(context).size;
 
     for (Ingredient ingridient in ingredients) {
       if (ingridient.name.startsWith(widget.state.filteringString)) {
         displayedIngridients.add(ingridient);
       }
     }
-    // print(displayedIngridients);
 
     if (ingredients.isEmpty) {
-      return Padding(
-        padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
-        child: Column(children: const [CircularProgressIndicator()]),
-      );
+      return Container(
+          margin: const EdgeInsets.only(top: 20), child: progressIndicator);
     } else {
       return Container(
-        height: 698,
-        width: 1000,
-        padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+        height: size.height - 200,
+        padding: const EdgeInsets.only(top: 20),
         child: ListView.builder(
           controller: ScrollController(),
           itemCount: displayedIngridients.length,
@@ -108,7 +91,7 @@ class _IngridientColumnState extends State<IngridientColumn> {
             return IngridientTile(
               pricePerUnit: ingredients[idx].pricePerUnit,
               id: ingredients[idx].id,
-              ingridient: ingredients[idx],
+              ingredient: displayedIngridients[idx],
               idx: idx,
               name: displayedIngridients[idx].name,
             );

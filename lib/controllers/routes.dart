@@ -59,25 +59,6 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (_) => ResponsiveFavoritesPage(),
         );
-      case '/comments':
-        return MaterialPageRoute(
-          builder: (_) => CommentsPage(
-            recipe: Recipe(
-                id: 2,
-                ownerEmail: 'mchildrens3@blogtalkradio.com',
-                title: 'Quick & easy tiramisu',
-                longDescription:
-                    'Condensed milk is the secret to this super snappy Italian dessert. Coffee and chocolate are a classic combo, simply layer them up and enjoy',
-                shortDescription:
-                    'Condensed milk is the secret to this super snappy Italian dessert. Coffee and chocolate are a classic combo, simply layer them up and enjoy',
-                instructions:
-                    'STEP 1: Mix the coffee granules with 2 tbsp boiling water in a large jug and stir to combine. Add the coffee liqueur and 75ml cold water. Pour into a shallow dish and set aside. STEP 2: Make the cream layer by beating the mascarpone, condensed milk and vanilla extract with an electric whisk until thick and smooth. STEP 3: Break the sponge fingers into two or three pieces and soak in the coffee mixture for a few secs. Put a few bits of the sponge in the bottom of two wine or sundae glasses and top with the cream. Sift over the cocoa and chill for at least 1 hr before serving.',
-                quantity: 1,
-                ingredients: [],
-                picture: Blob.fromBytes([]),
-                tags: []),
-          ),
-        );
       default:
         // If there is no such named route in the switch statement, e.g. /third
         return _errorRoute();

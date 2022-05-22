@@ -1,9 +1,8 @@
 import 'dart:developer';
 import 'package:cookbook/components/components.dart';
-import 'package:cookbook/db/queries/get_favorites.dart';
+import 'package:cookbook/components/refresh_progress_indicator.dart';
 import 'package:cookbook/main.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
-import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -37,66 +36,46 @@ class _HomePageState extends ConsumerState<HomePage> {
     (ref) => ResponsiveNotifier(),
   );
 
-  GetFavorites getFavorites = GetFavorites();
-  Future<List<Recipe>?>? items;
-
-  @override
-  void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
-      items = getFavorites
-          .getfav(InheritedLoginProvider.of(context).userData?['email']);
-    });
-
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext contextref) {
     Size size = MediaQuery.of(context).size;
     final state = ref.watch(responsiveProvider);
     final tec = useTextEditingController();
     final searchBarWidth = widget.searchBarWidth;
+    final loginProvider = InheritedLoginProvider.of(context);
 
     return CustomPage(
       showSearchBar: true,
       controller: tec,
       searchBarWidth: searchBarWidth,
-      child: FutureBuilder(
-        future: getFavorites
-            .getfav(InheritedLoginProvider.of(context).userData?['email']),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            ref.read(responsiveProvider).setRecipeBoxes(
-                favorites: snapshot.data as List<Recipe>,
+      child: loginProvider.displayedRecipes.isNotEmpty &&
+              loginProvider.favorites.isNotEmpty
+          ? Builder(builder: ((context) {
+              state.setRecipeBoxes(
+                favorites: InheritedLoginProvider.of(context).favorites,
                 ctx: context,
                 displayedRecipes:
                     InheritedLoginProvider.of(context).displayedRecipes,
-                cols: widget.cols);
-            return SizedBox(
-              width: size.width - 220,
-              child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                cacheExtent: 50,
-                itemCount: state.recipes.length,
-                shrinkWrap: true,
-                itemBuilder: (ctx, i) => Container(
-                  child: state.recipes[i],
+                cols: widget.cols,
+              );
+              return SizedBox(
+                width: size.width - 220,
+                child: ListView.builder(
+                  cacheExtent: 20,
+                  itemCount: state.recipes.length,
+                  itemBuilder: (ctx, i) => Container(
+                    child: state.recipes[i],
+                  ),
                 ),
-              ),
-            );
-          } else {
-            getFavorites
-                .getfav(InheritedLoginProvider.of(context).userData?['email']);
-            return const Center(
+              );
+            }))
+          : const Center(
               child: SizedBox(
                 height: 50,
                 width: 50,
-                child: CircularProgressIndicator(),
+                child: progressIndicator,
               ),
-            );
-          }
-        },
-      ),
+            ),
     );
   }
 }

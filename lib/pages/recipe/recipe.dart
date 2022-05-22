@@ -1,8 +1,8 @@
 import 'dart:ui';
 
-import 'package:cookbook/components/DropDown.dart';
+import 'package:cookbook/components/drop_down.dart';
 import 'package:cookbook/components/components.dart';
-import 'package:cookbook/controllers/loadimage.dart';
+import 'package:cookbook/controllers/get_image_from_blob.dart';
 import 'package:cookbook/models/ingredient/ingredient.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
 import 'package:cookbook/pages/recipeadd/dropdown_checkbox.dart';
@@ -24,15 +24,15 @@ class RecipePage extends HookConsumerWidget {
 
     List<CustDropdownMenuItem<String>> portionsPerRecipe = [
       const CustDropdownMenuItem(
-        child: Text("2"),
+        child: "2",
         value: "2",
       ),
       const CustDropdownMenuItem(
-        child: Text("4"),
+        child: "4",
         value: "4",
       ),
       const CustDropdownMenuItem(
-        child: Text("6"),
+        child: "6",
         value: "6",
       )
     ];
@@ -66,7 +66,7 @@ class RecipePage extends HookConsumerWidget {
                       .toList()
                       .map((e) => Chip(
                             label: Text(
-                              e.getName,
+                              e.name,
                               style: const TextStyle(),
                             ),
                             backgroundColor: kcMedBeige,
@@ -191,7 +191,7 @@ class RecipePage extends HookConsumerWidget {
                                     //padding: const EdgeInsets.only(left: 30),
                                     child: Center(
                                       child: SelectableText(
-                                        state.getName,
+                                        state.name,
                                         textAlign: TextAlign.center,
                                         style: const TextStyle(
                                           fontSize: 18,
@@ -202,7 +202,7 @@ class RecipePage extends HookConsumerWidget {
                                   ),
                                   Expanded(
                                     child: SelectableText(
-                                      state.getChangedAmout.toString(),
+                                      state.changedAmount.toString(),
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
                                         fontSize: 18,
@@ -212,7 +212,7 @@ class RecipePage extends HookConsumerWidget {
                                   ),
                                   Expanded(
                                     child: SelectableText(
-                                      state.getUnit,
+                                      state.unit,
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
                                         fontSize: 18,
@@ -222,7 +222,7 @@ class RecipePage extends HookConsumerWidget {
                                   ),
                                   Expanded(
                                     child: SelectableText(
-                                      state.getChangedPrice.toString(),
+                                      state.changedAmount.toString(),
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
                                         fontSize: 18,

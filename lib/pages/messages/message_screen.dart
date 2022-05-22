@@ -1,8 +1,11 @@
 import 'package:binary_tree/binary_tree.dart';
 import 'package:cookbook/components/components.dart';
+import 'package:cookbook/db/queries/get_recipes.dart';
+import 'package:cookbook/db/queries/send_message.dart';
 import 'package:cookbook/main.dart';
 import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/models/post/directMessage/direct_message.dart';
+import 'package:cookbook/models/recipe/recipe.dart';
 import 'package:cookbook/pages/messages/message_textfield.dart';
 import 'package:cookbook/pages/messages/search_bar.dart';
 import 'package:cookbook/theme/colors.dart';
@@ -27,17 +30,16 @@ class MessagePage extends StatefulHookConsumerWidget {
 }
 
 class MessagePageState extends ConsumerState<MessagePage> {
-  final membersProvider = ChangeNotifierProvider<MessagePageController>(
-    (ref) => MessagePageController(),
-  );
-
   @override
   void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       final state = ref.read(membersProvider);
       state.members = await getMembers(context);
-      state.messages = await getMessages();
+      state.messages = await getMessages(context);
       state.advancedSetDisplayedMembers(state.members, context);
+      GetRecepies getRecepies = GetRecepies();
+      getRecepies.getrecep();
+      state._recipes = getRecepies.recepieList;
     });
 
     super.initState();
@@ -50,7 +52,6 @@ class MessagePageState extends ConsumerState<MessagePage> {
     final state = ref.watch(membersProvider);
     Size size = MediaQuery.of(context).size;
     final tec = useTextEditingController();
-    final messageTec = useTextEditingController();
 
     return CustomPage(
       child: Row(
@@ -97,31 +98,59 @@ class MessagePageState extends ConsumerState<MessagePage> {
           ),
           Visibility(
             visible: state.toggle,
-            child: Column(children: [
-              Container(
-                decoration: BoxDecoration(
+            child: Column(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
                     color: Colors.white,
-                    border: Border.all(color: Colors.black)),
-                height: size.height - 200,
-                width: (size.width - 200) / 2,
-                margin: const EdgeInsets.only(bottom: 3),
-                child: ListView.builder(
-                  controller: sc2,
-                  reverse: true,
-                  itemCount: state.displayedMessages.length,
-                  itemBuilder: (BuildContext context, int idx) {
-                    return ConversationWidget(
-                      idx: idx,
-                      state: state,
-                    );
+                    border: Border.all(color: Colors.black),
+                  ),
+                  height: size.height - 200,
+                  width: (size.width - 200) / 2,
+                  margin: const EdgeInsets.only(bottom: 3),
+                  child: ListView.builder(
+                    controller: sc2,
+                    reverse: true,
+                    itemCount: state.displayedMessages.length,
+                    itemBuilder: (BuildContext context, int idx) {
+                      return ConversationWidget(
+                        idx: idx,
+                        state: state,
+                      );
+                    },
+                  ),
+                ),
+                MessageTextField(
+                  width: (size.width - 200) / 2,
+                  controller: tec,
+                  onSubmitted: () async {
+                    if (tec.text != '') {
+                      await SendMessage.sendMessage(data: {
+                        'sender': InheritedLoginProvider.of(context)
+                            .userData?['email'],
+                        'receiver': state.displayedMembers[state.idx].email,
+                        'content': tec.text,
+                        'time': DateTime.now().toString()
+                      }, isLink: false);
+                      tec.clear();
+                      state.messages = await getMessages(context);
+                      state.members = await getMembers(context);
+                      state.displayedMessages.clear();
+                      for (DirectMessage message in state.messages) {
+                        if (message.sender ==
+                                state.displayedMembers[state.idx].email ||
+                            message.receiver ==
+                                state.displayedMembers[state.idx].email) {
+                          state.addDisplayedMessage(message);
+                        }
+                      }
+                      state.advancedSetDisplayedMembers(state.members, context);
+                      setState(() {});
+                    }
                   },
                 ),
-              ),
-              MessageTextField(
-                state: state,
-                messageTec: messageTec,
-              ),
-            ]),
+              ],
+            ),
           ),
         ],
       ),
@@ -139,6 +168,7 @@ class MessagePageController extends ChangeNotifier {
   List<Member> _shareMembers = [];
   List<DirectMessage> _messages = [];
   List<DirectMessage> _displayedMessages = [];
+  List<Recipe> _recipes = [];
 
   String _filteringString = '';
   String _message = '';
@@ -159,6 +189,8 @@ class MessagePageController extends ChangeNotifier {
   List<Member> get shareMembers => _shareMembers;
 
   List<DirectMessage> get messages => _messages;
+
+  List<Recipe> get recipes => _recipes;
 
   bool get toggle => _toggle;
 
@@ -191,6 +223,11 @@ class MessagePageController extends ChangeNotifier {
 
   set shareMembers(List<Member> newMembers) {
     _shareMembers = newMembers;
+    notifyListeners();
+  }
+
+  set recipes(List<Recipe> newRecipes) {
+    _recipes = newRecipes;
     notifyListeners();
   }
 
@@ -315,5 +352,14 @@ class MessagePageController extends ChangeNotifier {
   void removeDisplayedMessage(DirectMessage _message) {
     _displayedMessages.remove(_message);
     notifyListeners();
+  }
+
+  Recipe? getRecipe(int id) {
+    for (Recipe r in recipes) {
+      if (r.id == id) {
+        return r;
+      }
+    }
+    return null;
   }
 }

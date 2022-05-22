@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:mysql1/mysql1.dart';
 
 abstract class AbstractDatabaseManager {
@@ -108,36 +109,37 @@ class DatabaseManager extends AbstractDatabaseManager {
   }
 
   @override
-  Future<Results?> select(
-      {required String table,
-      required List<String> fields,
-      Map<String, dynamic>? where,
-      bool? and,
-      bool? or,
-      String? group,
-      String? having,
-      List<int>? limit}) async {
+  Future<Results?> select({
+    required String table,
+    required List<String> fields,
+    Map<String, dynamic>? where,
+    bool? and,
+    bool? or,
+    String? group,
+    String? having,
+    List<int>? limit,
+  }) async {
     // connect();
     await connect();
-    String query =
+    String q =
         '''SELECT ${fields.length > 1 ? fields.join(", ") : fields[0]} FROM $table ''';
 
     if (where != null) {
-      query += 'WHERE ';
+      q += 'WHERE ';
       int i = 0;
       for (MapEntry entry in where.entries) {
         i++;
-        query += entry.key + " = '" + entry.value + "'";
+        q += entry.key + " = '" + entry.value.toString() + "'";
         if (and == true) {
-          query += i < where.length ? " AND " : "";
+          q += i < where.length ? " AND " : "";
         } else if (or == true) {
-          query += i < where.length ? " OR " : "";
+          q += i < where.length ? " OR " : "";
         }
       }
     }
-    query += ";";
+    q += ";";
 
-    result = await cnx!.query(query);
+    result = await cnx!.query(q);
     await cnx!.close();
     return result;
   }
@@ -155,19 +157,21 @@ class DatabaseManager extends AbstractDatabaseManager {
       required List<String> fields,
       required Map<String, dynamic> data}) async {
     await connect();
-    String query = '''
+    String q = '''
             INSERT INTO $table (${fields.length > 1 ? fields.join(", ") : fields[0]}) VALUES (''';
     int i = 0;
     for (MapEntry entry in data.entries) {
       i++;
       //query += i < data.length ? "'" + entry.value + "'" : entry.value;
-      query += isNumeric(entry.value.toString())
+      q += isNumeric(entry.value.toString())
           ? entry.value.toString()
           : "'" + entry.value + "'";
-      query += i < data.length ? "," : "";
+      q += i < data.length ? "," : "";
     }
-    query += ");";
-    result = await cnx!.query(query);
+    q += ");";
+    print(q);
+
+    result = await cnx!.query(q);
 
     await cnx!.close();
     return result;
@@ -199,7 +203,7 @@ class DatabaseManager extends AbstractDatabaseManager {
       {required String table,
       required Map<String, dynamic> where,
       required Map<String, dynamic> set}) async {
-    await connect();
+    if (cnx == null) await connect();
 
     String query = '''UPDATE  $table SET ''';
     int i = 0;
@@ -209,10 +213,12 @@ class DatabaseManager extends AbstractDatabaseManager {
       query += i < set.length ? " , " : "";
     }
     for (MapEntry entry in where.entries) {
-      query += " WHERE " + entry.key + " = " + entry.value;
+      query += " WHERE " + entry.key + " = '" + entry.value + "'";
     }
 
     query += ";";
+
+    print(query);
 
     result = await cnx!.query(query);
     await cnx!.close();

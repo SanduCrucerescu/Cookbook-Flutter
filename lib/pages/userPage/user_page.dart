@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:cookbook/components/components.dart';
+import 'package:cookbook/components/refresh_progress_indicator.dart';
 import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/db/queries/get_members.dart';
 import 'package:cookbook/main.dart';
@@ -28,7 +29,7 @@ class _UserPageState extends ConsumerState<UserPage> {
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       final data = InheritedLoginProvider.of(context).userData;
       if (data != null) {
         member = await getMember(
@@ -85,7 +86,7 @@ class UserPageForm extends HookConsumerWidget {
             child: SizedBox(
               height: 50,
               width: 50,
-              child: CircularProgressIndicator(),
+              child: progressIndicator,
             ),
           )
         : Column(

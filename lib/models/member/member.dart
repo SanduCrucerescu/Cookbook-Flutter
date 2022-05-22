@@ -11,6 +11,7 @@ class Member {
   List<Recipe>? favorites;
   List<Recipe>? recipes;
   Blob? profilePicture;
+  int? cartId;
 
   Member({
     required this.name,
@@ -19,6 +20,7 @@ class Member {
     this.favorites,
     this.profilePicture,
     this.recipes,
+    this.cartId,
   });
 
   void addFavorite(Recipe recipe) {
@@ -65,6 +67,7 @@ class Member {
       'favorites': favorites?.map((x) => x.toMap()).toList(),
       'recipes': recipes?.map((x) => x.toMap()).toList(),
       'profilePicture': profilePicture?.toBytes(),
+      'cartId': cartId,
     };
   }
 
@@ -82,6 +85,7 @@ class Member {
       profilePicture: map['profilePicture'] != null
           ? Blob.fromBytes(map['profilePicture'])
           : null,
+      cartId: map['cartId'],
     );
   }
 

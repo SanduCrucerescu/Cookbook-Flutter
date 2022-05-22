@@ -4,8 +4,6 @@ class Tag {
   final int id;
   final String name;
 
-  get getName => this.name;
-
   Tag({required this.id, required this.name});
 
   Map<String, dynamic> toMap() {
@@ -24,7 +22,7 @@ class Tag {
 
   @override
   String toString() {
-    return 'id: ' + id.toString() + 'name: ' + name;
+    return 'id: ${id}name: $name';
   }
 
   String toJson() => json.encode(toMap());

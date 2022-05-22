@@ -22,29 +22,9 @@ class Ingredient with ChangeNotifier {
     //this.amountFactor
   });
 
-  get getId => id;
-
-  get getName => name;
-
-  get getUnit => unit;
-
-  get getPricePerUnit => pricePerUnit;
-
-  get getAmount => amount;
-
-  get getChangedPrice => changedPrice;
-
-  get getChangedAmout => changedAmount;
-
   @override
   String toString() {
-    return name +
-        ":" +
-        amount.toString() +
-        ":" +
-        unit +
-        ":" +
-        pricePerUnit.toString();
+    return "$name:$amount:$unit:$pricePerUnit";
     // ":" +
     // getAmountFactor.toString();
   }
@@ -67,6 +47,11 @@ class Ingredient with ChangeNotifier {
       unit: map['unit'] ?? '',
       pricePerUnit: map['pricePerUnit']?.toDouble() ?? 0.0,
     );
+  }
+
+  void setAmount(int amountToAdd) {
+    amount = amountToAdd;
+    notifyListeners();
   }
 
   String toJson() => json.encode(toMap());

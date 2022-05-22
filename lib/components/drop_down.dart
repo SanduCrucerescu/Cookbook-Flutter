@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:cookbook/pages/recipeadd/ui_components.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -14,17 +13,17 @@ class CustDropDown<T> extends StatefulWidget {
   final int defaultSelectedIndex;
   final bool enabled;
 
-  const CustDropDown(
-      {required this.items,
-      required this.onChanged,
-      this.hintText = "",
-      this.borderRadius = 0,
-      this.borderWidth = 1,
-      this.maxListHeight = 500,
-      this.defaultSelectedIndex = -1,
-      Key? key,
-      this.enabled = true})
-      : super(key: key);
+  const CustDropDown({
+    required this.items,
+    required this.onChanged,
+    this.hintText = "",
+    this.borderRadius = 0,
+    this.borderWidth = 1,
+    this.maxListHeight = 500,
+    this.defaultSelectedIndex = -1,
+    Key? key,
+    this.enabled = true,
+  }) : super(key: key);
 
   @override
   _CustDropDownState createState() => _CustDropDownState();
@@ -41,7 +40,7 @@ class _CustDropDownState extends State<CustDropDown>
 
   @override
   void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         setState(() {
           dropDownOffset = getOffset();
@@ -59,7 +58,7 @@ class _CustDropDownState extends State<CustDropDown>
         }
       }
     });
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
 
@@ -85,7 +84,7 @@ class _CustDropDownState extends State<CustDropDown>
 
   @override
   dispose() {
-    WidgetsBinding.instance!.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -136,13 +135,13 @@ class _CustDropDownState extends State<CustDropDown>
                                     .map((item) => GestureDetector(
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
-                                            child: item.child,
+                                            child: Text(item.child),
                                           ),
                                           onTap: () {
                                             if (mounted) {
                                               setState(() {
                                                 _isAnyItemSelected = true;
-                                                _itemSelected = item.value;
+                                                _itemSelected = item.child;
                                                 _removeOverlay();
                                                 if (widget.onChanged != null)
                                                   widget.onChanged(item.value);
@@ -261,12 +260,12 @@ class _CustDropDownState extends State<CustDropDown>
 
 class CustDropdownMenuItem<T> extends StatelessWidget {
   final String value;
-  final Widget child;
+  final String child;
 
   const CustDropdownMenuItem({required this.value, required this.child});
 
   @override
   Widget build(BuildContext context) {
-    return child;
+    return Text(child);
   }
 }

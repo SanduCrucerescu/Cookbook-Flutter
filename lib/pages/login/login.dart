@@ -1,9 +1,13 @@
 import 'dart:developer';
 import 'dart:math' as math;
 import 'package:cookbook/components/components.dart';
+import 'package:cookbook/components/refresh_progress_indicator.dart';
 import 'package:cookbook/controllers/controllers.dart';
+import 'package:cookbook/db/queries/get_favorites.dart';
 import 'package:cookbook/main.dart';
+import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
+import 'package:cookbook/pages/admin/admin_page.dart';
 import 'package:cookbook/pages/admin/user_info.dart';
 import 'package:cookbook/pages/home/home_page.dart';
 import 'package:cookbook/pages/register/register.dart';
@@ -43,7 +47,7 @@ class LoginPage extends ConsumerWidget {
         height: size.height,
         width: size.width,
         child: Image.asset(
-          "assets/images/bg1.png",
+          "assets/images/bg4.png",
           fit: BoxFit.fill,
         ),
       ),
@@ -133,20 +137,60 @@ class LoginForm extends HookConsumerWidget {
                     color: kcMedBeige,
                     text: "L o g i n",
                     onTap: () async {
-                      bool isValid = await Validator().validate(
+                      String isValid = await Validator.validate(
                         userInfo: {"email": tec1.text, "password": tec2.text},
                       );
 
-                      if (isValid == true) {
-                        InheritedLoginProvider.of(context).userData = {
-                          "email": tec1.text
-                        };
+                      showDialog(
+                        context: context,
+                        builder: (context) => const SizedBox(
+                          height: 50,
+                          width: 50,
+                          child: progressIndicator,
+                        ),
+                      );
 
-                        Navigator.of(context).pushNamed(HomePage.id);
-                      } else {
-                        state.loginUnSuccessful = true;
-                        state.text = "* login unsuccessfull";
-                        log("Login unsuccessfull");
+                      switch (isValid) {
+                        case "admin":
+                          int id = await Validator.id(tec1.text);
+
+                          InheritedLoginProvider.of(context).userData = {
+                            "email": tec1.text,
+                            "cartID": id
+                          };
+
+                          Navigator.of(context).pushNamed(Admin.id);
+                          break;
+                        case "member":
+                          // int id = await Validator.id(tec1.text);
+                          final Map<String, dynamic> userData =
+                              await Validator.userData(tec1.text);
+
+                          InheritedLoginProvider.of(context).userData = {
+                            "email": tec1.text,
+                            "password": tec2.text,
+                            "cartID": userData['cartID'],
+                            "username": userData['username'],
+                            "profilePic": userData['profilePic'],
+                          };
+                          InheritedLoginProvider.of(context).member = Member(
+                            email: tec1.text,
+                            password: tec2.text,
+                            cartId: userData['cartID'],
+                            name: userData['username'],
+                            profilePicture: userData['profilePic'],
+                          );
+                          GetFavorites getFavorites = GetFavorites();
+                          InheritedLoginProvider.of(context).favorites =
+                              await getFavorites.getfav(tec1.text) ?? [];
+                          Navigator.of(context).pushNamed(HomePage.id);
+
+                          break;
+                        case "does not exist":
+                          state.loginUnSuccessful = true;
+                          state.text = "* login unsuccessfull";
+                          log("Login unsuccessfull");
+                          break;
                       }
                     },
                   ),

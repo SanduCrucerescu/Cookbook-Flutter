@@ -10,13 +10,12 @@ environment:
 
 dependencies:
   animated_text_kit: ^4.2.1
-  binary_tree: ^1.0.5
   cupertino_icons: ^1.0.2
   desktop_window: ^0.4.0
   dropdown_button2: ^1.4.0
   email_validator: ^2.0.1
   file_selector: ^0.8.0
-  file_selector_macos: ^0.0.4
+  file_selector_macos: ^0.8.2+1
   flutter:
     sdk: flutter
   flutter_hooks: ^0.18.2+1
@@ -27,9 +26,11 @@ dependencies:
   quiver: ^3.1.0
   riverpod: ^1.0.3
   intl: ^0.17.0
+  pull_to_refresh: ^2.0.0
+  binary_tree: ^1.0.5
 
 dev_dependencies:
-  flutter_lints: ^1.0.0
+  flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
 
