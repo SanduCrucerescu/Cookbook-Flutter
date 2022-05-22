@@ -1,6 +1,7 @@
 import 'package:cookbook/components/refresh_progress_indicator.dart';
 import 'package:cookbook/db/database_manager.dart';
 import 'package:cookbook/db/queries/get_members.dart';
+import 'package:cookbook/main.dart';
 import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/pages/admin/admin_page.dart';
 import 'package:cookbook/pages/admin/search_add.dart';
@@ -61,7 +62,8 @@ class _UsersColumnState extends State<UsersColumn> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      members = await getMembers(context);
+      members = await getMembers(
+          context, InheritedLoginProvider.of(context).member!.email);
       displayedmembers = members;
       setState(() {});
     });

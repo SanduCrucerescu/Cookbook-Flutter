@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mysql1/mysql1.dart';
-
 import 'package:cookbook/models/ingredient/ingredient.dart';
 import 'package:cookbook/models/tag/tag.dart';
 
@@ -34,15 +33,7 @@ class Recipe {
   @override
   String toString() {
     String ing = "";
-    String recipe = "$id " +
-        title +
-        " " +
-        instructions +
-        " " +
-        longDescription +
-        " " +
-        ownerEmail +
-        " ";
+    String recipe = "$id $title $instructions $longDescription $ownerEmail ";
     for (Ingredient ingredient in ingredients) {
       ing += ingredient.toString() + " ";
     }

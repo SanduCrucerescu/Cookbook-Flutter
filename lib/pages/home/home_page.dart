@@ -61,6 +61,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               return SizedBox(
                 width: size.width - 220,
                 child: ListView.builder(
+                  controller: ScrollController(),
                   cacheExtent: 20,
                   itemCount: state.recipes.length,
                   itemBuilder: (ctx, i) => Container(
