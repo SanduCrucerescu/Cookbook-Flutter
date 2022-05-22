@@ -44,7 +44,6 @@ class WeeklyPage extends HookConsumerWidget {
         searchBarWidth = 300,
         super(key: key);
 
-<<<<<<< HEAD
   final List<String> days = [
     'Monday',
     'Tuesday',
@@ -55,8 +54,6 @@ class WeeklyPage extends HookConsumerWidget {
     'Sunday'
   ];
 
-=======
->>>>>>> 551f2ed9777323b7cc25c2fc9335d6248a1165a9
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Size size = MediaQuery.of(context).size;
