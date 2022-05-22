@@ -1,4 +1,3 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, unused_import
 import 'dart:developer';
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
@@ -32,7 +31,7 @@ class WeeklyPage extends HookConsumerWidget {
     'Monday',
     'Tuesday',
     'Wednesday',
-    'Thurday',
+    'Thursday',
     'Friday',
     'Saturday',
     'Sunday'
