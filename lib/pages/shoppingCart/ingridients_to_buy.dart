@@ -4,6 +4,7 @@ import 'package:cookbook/db/queries/add_cart_ingidients.dart';
 import 'package:cookbook/db/queries/get_cart_ingridients.dart';
 import 'package:cookbook/main.dart';
 import 'package:cookbook/models/ingredient/ingredient.dart';
+import 'package:cookbook/pages/shoppingCart/ingridients_list.dart';
 import 'package:cookbook/pages/shoppingCart/shopping_page.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:cookbook/theme/text_styles.dart';
@@ -61,7 +62,7 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                         child: Text('Nothing Selected'),
                       ),
                     )
-                  : const CartBox(),
+                  : CartBox(),
             ),
           ),
           SizedBox(
@@ -89,9 +90,12 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
             ),
           ),
           Center(
-            child: Container(
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 250),
               decoration: BoxDecoration(
-                  border: Border.all(width: .3, color: Colors.black)),
+                border: Border.all(width: .4, color: Colors.black),
+                borderRadius: BorderRadius.circular(5),
+              ),
               child: CustomButton(
                 height: 50,
                 width: 200,
@@ -157,7 +161,7 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
 String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
 
 class CartBox extends ConsumerWidget {
-  const CartBox({Key? key}) : super(key: key);
+  CartBox({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -184,19 +188,7 @@ class CartBox extends ConsumerWidget {
             itemBuilder: (BuildContext context, int idx) {
               return Row(
                 children: [
-                  Container(
-                    width: 60,
-                    padding: const EdgeInsets.all(10),
-                    child: InkWell(
-                      onTap: () {
-                        state.removeIngredientAt(idx);
-                      },
-                      child: const Icon(
-                        Icons.remove_outlined,
-                        // size: 30,
-                      ),
-                    ),
-                  ),
+                  CartItem(idx: idx, state: state),
                   Expanded(
                     flex: 5,
                     child: Text(state.ingredientList[idx].name),
@@ -221,6 +213,51 @@ class CartBox extends ConsumerWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class CartItem extends ConsumerWidget {
+  final SelectedIngridientChangeNotifier state;
+  final int idx;
+
+  CartItem({
+    Key? key,
+    required this.state,
+    required this.idx,
+  }) : super(key: key);
+
+  final hoveringProvider = ChangeNotifierProvider<HoveringNotifier>(
+    (ref) => HoveringNotifier(),
+  );
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final hoveringState = ref.watch(hoveringProvider);
+    return Container(
+      padding: const EdgeInsets.all(10),
+      child: AnimatedContainer(
+        width: 40,
+        height: 30,
+        duration: const Duration(milliseconds: 250),
+        decoration: hoveringState.hovering
+            ? BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(width: .5, color: kcMedGrey))
+            : BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+              ),
+        child: InkWell(
+          onHover: (val) => hoveringState.hovering = val,
+          onTap: () {
+            state.removeIngredientAt(idx);
+          },
+          child: const Icon(
+            Icons.remove_outlined,
+            // size: 30,
+          ),
+        ),
+      ),
     );
   }
 }

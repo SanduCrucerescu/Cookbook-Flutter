@@ -21,7 +21,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await fetchRecipes();
       InheritedLoginProvider.of(context).setDisplayedRecipes(
-        filteringString: '',
+        filteringStrings: [''],
         filterOption: 'title',
       );
       Navigator.of(context).pushNamed(LoginPage.id);

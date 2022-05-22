@@ -33,8 +33,9 @@ class MessagePageState extends ConsumerState<MessagePage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      final state = ref.read(membersProvider);
-      state.members = await getMembers(context);
+      final state = ref.watch(membersProvider);
+      state.members = await getMembers(
+          context, InheritedLoginProvider.of(context).member!.email);
       state.messages = await getMessages(context);
       state.advancedSetDisplayedMembers(state.members, context);
       GetRecepies getRecepies = GetRecepies();
@@ -134,7 +135,8 @@ class MessagePageState extends ConsumerState<MessagePage> {
                       }, isLink: false);
                       tec.clear();
                       state.messages = await getMessages(context);
-                      state.members = await getMembers(context);
+                      state.members = await getMembers(context,
+                          InheritedLoginProvider.of(context).member!.email);
                       state.displayedMessages.clear();
                       for (DirectMessage message in state.messages) {
                         if (message.sender ==

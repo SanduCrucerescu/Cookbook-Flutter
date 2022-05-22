@@ -15,7 +15,7 @@ class CustomTextField extends ConsumerWidget {
   final TextInputType inputType;
   final EdgeInsets? margin, padding;
   final Duration duration;
-  final VoidCallback? onClickSuffix;
+  final VoidCallback? onClickSuffix, onSubmitted;
   final TextBaseline? textBaseline;
   final TextStyle? textStyle;
   final InputDecoration? inputDecoration;
@@ -75,6 +75,7 @@ class CustomTextField extends ConsumerWidget {
     this.textAlign = TextAlign.start,
     this.cursorHeight,
     this.cursorWidth,
+    this.onSubmitted,
     Key? key,
   }) : super(key: key);
 

@@ -1,6 +1,6 @@
 part of components;
 
-const List<String> filterOptions = ['Name', 'Tags', 'Ingredients'];
+const List<String> filterOptions = ['Title', 'Tags', 'Ingredients'];
 
 class CustomPage extends HookConsumerWidget {
   final Widget child;
@@ -8,7 +8,7 @@ class CustomPage extends HookConsumerWidget {
   final TextEditingController? controller;
   final double searchBarWidth;
 
-  const CustomPage({
+  CustomPage({
     required this.child,
     this.showSearchBar = false,
     this.controller,
@@ -20,6 +20,24 @@ class CustomPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     Size size = MediaQuery.of(context).size;
     final expandedState = ref.watch(expandedProvider);
+    final loginProvider = InheritedLoginProvider.of(context);
+    final tec = controller ?? useTextEditingController();
+    final focusNode = useFocusNode();
+
+    focusNode.addListener(
+      () async {
+        // print(focusNode.hasFocus);
+        if (!focusNode.hasFocus) {
+          // print(expandedState.filterStrings[0] == '');
+
+          loginProvider.setDisplayedRecipes(
+            filteringStrings: expandedState.filterStrings,
+            filterOption: expandedState.filterOption,
+          );
+        }
+      },
+    );
+
     return SafeArea(
       child: Scaffold(
         body: Stack(
@@ -38,15 +56,56 @@ class CustomPage extends HookConsumerWidget {
             Align(
               alignment: Alignment.topCenter,
               child: NavBar(
+                focusNode: focusNode,
                 searchBarWidth: searchBarWidth,
-                controller: controller,
+                controller: tec,
                 showSearchBar: showSearchBar,
               ),
             ),
+            expandedState.filterStrings.length > 1
+                ? Container(
+                    height: 20,
+                    color: Colors.blue,
+                  )
+                : const SizedBox(),
+            // focusNode.hasFocus
+            //     ? Center(
+            //         child: Column(
+            //           children: [
+            //             Container(
+            //               margin: const EdgeInsets.only(top: 100),
+            //               width: searchBarWidth,
+            //               height: 20.0 * loginProvider.displayedRecipes.length,
+            //               child: ListView.builder(
+            //                 itemCount: loginProvider.displayedRecipes.length,
+            //                 itemBuilder: (context, idx) => Container(
+            //                   // width: searchBarWidth,
+            //                   height: 20,
+            //                   decoration: BoxDecoration(
+            //                     color: kcLightBeige,
+            //                     border:
+            //                         Border.all(width: .5, color: Colors.black),
+            //                   ),
+            //                   child: Text(
+            //                     loginProvider.displayedRecipes[idx].title,
+            //                   ),
+            //                 ),
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            //       )
+            //     : const SizedBox(),
             if (expandedState.expanded && showSearchBar == true)
               Positioned(
                 top: 80,
-                left: size.width / 2 - searchBarWidth / 2 + 13,
+                left: size.width / 2 -
+                    searchBarWidth / 2 +
+                    12.5 +
+                    (['INGREDIENTS', 'TAGS']
+                            .contains(expandedState.filterOption.toUpperCase())
+                        ? -75
+                        : 0),
                 child: MouseRegion(
                   onEnter: (event) => expandedState.expanded = true,
                   onExit: (event) => expandedState.expanded = false,
@@ -67,6 +126,7 @@ class CustomPage extends HookConsumerWidget {
                       controller: ScrollController(),
                       itemCount: filterOptions.length,
                       itemBuilder: (context, idx) => FilterOptionDropDownItem(
+                        focusNode: focusNode,
                         expandedState: expandedState,
                         idx: idx,
                       ),
@@ -88,9 +148,11 @@ class FilterOptionDropDownItem extends ConsumerWidget {
     Key? key,
     required this.expandedState,
     required this.idx,
+    required this.focusNode,
   }) : super(key: key);
 
   final ExpandedNotifier expandedState;
+  final FocusNode focusNode;
   final int idx;
 
   final hoveringProvider = ChangeNotifierProvider(
@@ -106,8 +168,12 @@ class FilterOptionDropDownItem extends ConsumerWidget {
         onTap: () {
           expandedState.toggle();
           expandedState.filterOption = filterOptions[idx];
+          focusNode.requestFocus();
         },
-        onHover: (val) => hoveringState.toggle(),
+        onHover: (val) {
+          hoveringState.toggle();
+          focusNode.unfocus();
+        },
         child: Container(
           height: 30,
           width: 100,
