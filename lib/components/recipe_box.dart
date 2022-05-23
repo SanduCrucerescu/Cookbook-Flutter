@@ -147,18 +147,20 @@ class RecipeBox extends ConsumerWidget {
               top: 590,
               child: RecipeInformationRow(text: 'tags', children: [
                 ...recipe.tags.map(
-                  (tag) => RecipeTag(tag: tag),
+                  (tag) => RecipeBoxInformationOval(tag: tag),
                 ),
               ]),
             ),
-            // Positioned(
-            //   left: descriptonRowIndent,
-            //   top: 615,
-            //   child: RecipeInformationRow(
-            //     text: 'id, we dont have stars currently',
-            //     children: [Text(recipe..toString())],
-            //   ),
-            // ),
+            Positioned(
+              left: descriptonRowIndent,
+              top: 615,
+              child: RecipeInformationRow(text: 'ingredients', children: [
+                ...recipe.ingredients.map(
+                  (ingredient) =>
+                      RecipeBoxInformationOval(ingredient: ingredient),
+                ),
+              ]),
+            ),
           ]),
         );
       },
@@ -248,16 +250,9 @@ class RecipeActionsRow extends StatefulHookConsumerWidget {
 }
 
 class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      final membersState = ref.watch(membersProvider);
-      membersState.members = await getMembers(context);
-      membersState.advancedSetDisplayedMembers(membersState.members, context);
-      setState(() {});
-    });
-  }
+  final _membersProvider = ChangeNotifierProvider<MessagePageController>(
+    (ref) => MessagePageController(),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -319,8 +314,7 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
                         width: 33,
                         onTap: () async {
                           bool val = await Favorites.adding(
-                              email: InheritedLoginProvider.of(context)
-                                  .userData?['email'],
+                              email: loginProvider.userData?['email'],
                               recipeID: widget.recipe.id);
                           if (!val) {
                             state.exists = true;
@@ -337,7 +331,6 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
                   width: 25,
                   color: Colors.black,
                   onTap: () {
-                    ref.read(isPostCommentProvider.notifier).state = true;
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -353,8 +346,21 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
                   height: 30,
                   width: 30,
                   color: Colors.black,
-                  onTap: () {
-                    shareRecipe(context, searchTec, commentTec, membersState);
+                  onTap: () async {
+                    membersState.members = await getMembers(
+                      context,
+                      loginProvider.member!.email,
+                    );
+                    membersState.advancedSetDisplayedMembers(
+                      membersState.members,
+                      context,
+                    );
+                    shareRecipe(
+                      context,
+                      searchTec,
+                      commentTec,
+                      membersState,
+                    );
                   },
                 ),
               ],
@@ -683,16 +689,18 @@ class RecipeInformationRow extends StatelessWidget {
   }
 }
 
-class RecipeTag extends StatelessWidget {
+class RecipeBoxInformationOval extends StatelessWidget {
   final EdgeInsets? margin, padding;
   final BorderRadius? borderRadius;
   final Color? bgColor, textColor;
   final Border? border;
-  final Tag tag;
+  final Tag? tag;
+  final Ingredient? ingredient;
   final TextStyle? textStyle;
 
-  const RecipeTag({
-    required this.tag,
+  const RecipeBoxInformationOval({
+    this.tag,
+    this.ingredient,
     this.margin,
     this.padding,
     this.borderRadius,
@@ -719,7 +727,11 @@ class RecipeTag extends StatelessWidget {
             ),
       ),
       child: SelectableText(
-        tag.name,
+        tag != null
+            ? tag!.name
+            : ingredient != null
+                ? ingredient!.name
+                : '',
         style: textStyle ??
             const TextStyle(
               fontWeight: FontWeight.bold,

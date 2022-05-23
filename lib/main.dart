@@ -3,10 +3,7 @@ import 'package:cookbook/models/ingredient/ingredient.dart';
 import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
 import 'package:cookbook/models/tag/tag.dart';
-import 'package:cookbook/pages/home/home_page.dart';
 import 'package:cookbook/pages/loading/loading_page.dart';
-import 'package:cookbook/pages/shoppingCart/shopping_page.dart';
-import 'package:cookbook/pages/weeklyPage/weeklyPage.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -35,6 +32,7 @@ class InheritedLoginProviderWrapper extends StatefulWidget {
 
 class _InheritedLoginProviderWrapperState
     extends State<InheritedLoginProviderWrapper> {
+  int currOffset = 0;
   Map<String?, dynamic>? userData;
   Member? member;
   List<Recipe> _recipes = [];
@@ -44,57 +42,88 @@ class _InheritedLoginProviderWrapperState
   List<Recipe> get favorites => _favorites;
   List<Recipe> get displayedRecipes => _displayedRecipes;
 
+  void resetDisplayedRecipes() {
+    setState(() {
+      _displayedRecipes = _recipes;
+    });
+  }
+
   void setDisplayedRecipes({
-    required String filteringString,
+    required List<String> filteringStrings,
     required String filterOption,
   }) {
     _displayedRecipes = [];
 
     switch (filterOption.toUpperCase()) {
       case 'TITLE':
-        if (filteringString == '') {
-          _displayedRecipes = recipes;
+        if (filteringStrings.isEmpty || filteringStrings[0] == '') {
+          for (Recipe r in recipes) {
+            _displayedRecipes.add(r);
+          }
           break;
         }
         for (Recipe r in recipes) {
-          if (r.title.toUpperCase().startsWith(filteringString.toUpperCase())) {
+          if (r.title
+              .toUpperCase()
+              .startsWith(filteringStrings[0].toUpperCase())) {
             _displayedRecipes.add(r);
           }
         }
         break;
       case 'INGREDIENTS':
-        if (filteringString == '') {
-          _displayedRecipes = recipes;
+        if (filteringStrings.isEmpty || filteringStrings[0] == '') {
+          for (Recipe r in recipes) {
+            _displayedRecipes.add(r);
+          }
           break;
         }
         for (Recipe r in recipes) {
-          for (Ingredient ingr in r.ingredients) {
-            if (ingr.name
-                .toUpperCase()
-                .startsWith(filteringString.toUpperCase())) {
-              _displayedRecipes.add(r);
-            }
+          if (filteringStrings.sublist(1).every((e) => r.ingredients
+              .map((ingr) => ingr.name.toUpperCase())
+              .contains(e.toUpperCase()))) {
+            _displayedRecipes.add(r);
           }
         }
         break;
       case 'TAGS':
-        if (filteringString == '') {
-          _displayedRecipes = recipes;
+        if (filteringStrings.isEmpty ||
+            (filteringStrings.length == 1 && filteringStrings[0] == '')) {
+          for (Recipe r in recipes) {
+            _displayedRecipes.add(r);
+          }
           break;
         }
         for (Recipe r in recipes) {
-          for (Tag tag in r.tags) {
-            if (tag.name
-                .toUpperCase()
-                .startsWith(filteringString.toUpperCase())) {
-              _displayedRecipes.add(r);
-            }
+          if (filteringStrings.sublist(1).every((e) => r.tags
+              .map((tag) => tag.name.toUpperCase())
+              .contains(e.toUpperCase()))) {
+            _displayedRecipes.add(r);
           }
         }
         break;
     }
 
     setState(() {});
+  }
+
+  void addRecipes(List<Recipe> newRecipes) {
+    setState(() {
+      for (Recipe r in newRecipes) {
+        _recipes.add(r);
+      }
+    });
+  }
+
+  void addRecipe(Recipe newRecipe) {
+    setState(() {
+      _recipes.add(newRecipe);
+    });
+  }
+
+  void removeRecipe(Recipe newRecipe) {
+    setState(() {
+      _recipes.remove(newRecipe);
+    });
   }
 
   set recipes(List<Recipe> newRecipes) {
@@ -118,6 +147,7 @@ class _InheritedLoginProviderWrapperState
   @override
   Widget build(BuildContext context) {
     return InheritedLoginProvider(
+      currOffset: currOffset,
       data: this,
       member: member,
       child: widget.child,
@@ -135,8 +165,10 @@ class InheritedLoginProvider extends InheritedWidget {
   final _InheritedLoginProviderWrapperState data;
   final Map<String?, dynamic>? userData;
   final List<Recipe> recipes, displayedRecipes, favorites;
+  final int currOffset;
 
   const InheritedLoginProvider({
+    required this.currOffset,
     required this.member,
     required this.userData,
     required this.recipes,

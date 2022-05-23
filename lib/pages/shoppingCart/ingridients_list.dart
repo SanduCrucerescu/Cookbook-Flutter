@@ -117,7 +117,7 @@ class IngridientTile extends HookConsumerWidget {
                   ],
                 ),
                 AnimatedContainer(
-                  duration: const Duration(milliseconds: 2000),
+                  duration: const Duration(milliseconds: 250),
                   margin: const EdgeInsets.only(right: 10),
                   height: 30,
                   width: 30,
@@ -125,7 +125,10 @@ class IngridientTile extends HookConsumerWidget {
                       ? BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
                           border: Border.all(width: .5, color: kcMedGrey))
-                      : null,
+                      : BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          // border: Border.all(color: kcLightBeige),
+                        ),
                   child: InkWell(
                     onHover: (val) => hoveringState.hovering = val,
                     onTap: () async {

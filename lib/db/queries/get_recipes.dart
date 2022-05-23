@@ -16,11 +16,15 @@ class GetRecepies {
     _recepieList.add(rec);
   }
 
-  Future<void> getrecep() async {
+  Future<void> getrecep({List<int>? limit}) async {
     _recepieList = [];
     final DatabaseManager dbManager = await DatabaseManager.init();
 
-    Results? recipes = await dbManager.select(table: "recipes", fields: ["*"]);
+    Results? recipes = await dbManager.select(
+      table: "recipes",
+      fields: ["*"],
+      limit: limit,
+    );
 
     for (var rs in recipes!) {
       recipeClass = Recipe(
@@ -64,9 +68,14 @@ class GetRecepies {
     final DatabaseManager dbManager = await DatabaseManager.init();
     List<Tag> tagsList = [];
 
-    Results? tags = await dbManager.query(
-        query:
-            "select * from ingredients_for_recipe INNER JOIN ingredients on ingredients_for_recipe.ingredient_id = ingredients.id where recipe_id = $id;");
+    Results? tags = await dbManager.query(query: """
+SELECT tags.id, tags.name
+FROM recipes_has_tags as recipe_tags
+INNER JOIN recipes 
+ON recipe_tags.recipes_id = recipes.id 
+INNER JOIN tags
+ON recipe_tags.tags_id = tags.id
+WHERE recipe_tags.recipes_id = $id;""");
 
     for (var tag in tags!) {
       tagClass = Tag(id: tag.fields['id'], name: tag.fields['name']);
@@ -78,6 +87,6 @@ class GetRecepies {
 
   @override
   String toString() {
-    return " " + recipeClass.instructions;
+    return " ${recipeClass.instructions}";
   }
 }
