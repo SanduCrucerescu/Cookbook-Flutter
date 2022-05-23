@@ -111,6 +111,18 @@ class NavBar extends HookConsumerWidget {
                               filterOption: expandedState.filterOption,
                             );
                             break;
+                          case 'INGREDIENTS':
+                            if (expandedState.filterStrings.length > 1) {
+                              expandedState.filterStrings[0] =
+                                  teController.text;
+                            } else if (expandedState.filterStrings.isEmpty) {
+                              expandedState.filterStrings = [''];
+                            }
+                            loginProvider.setDisplayedRecipes(
+                              filteringStrings: expandedState.filterStrings,
+                              filterOption: expandedState.filterOption,
+                            );
+                            break;
                           case 'TAGS':
                             if (expandedState.filterStrings.length > 1) {
                               expandedState.filterStrings[0] =
@@ -135,7 +147,7 @@ class NavBar extends HookConsumerWidget {
                             backgroundColor: Colors.transparent,
                             margin: const EdgeInsets.only(right: 5),
                             isShadow: false,
-                            hintText: 'email',
+                            hintText: 'Search by ${expandedState.filterOption}',
                             prefixWidget: InkWell(
                               onHover: (val) => expandedState.expanded = true,
                               onTap: () {},
@@ -179,6 +191,7 @@ class NavBar extends HookConsumerWidget {
                                         switch (expandedState.filterOption
                                             .toUpperCase()) {
                                           case 'TAGS':
+                                            expandedState.filterStrings[0] = '';
                                             if (expandedState.filterStrings
                                                 .contains(teController.text)) {
                                               showAlreadyInsertedPopUp(
@@ -196,6 +209,7 @@ class NavBar extends HookConsumerWidget {
                                             );
                                             break;
                                           case 'INGREDIENTS':
+                                            expandedState.filterStrings[0] = '';
                                             if (expandedState.filterStrings
                                                 .contains(teController.text)) {
                                               showAlreadyInsertedPopUp(

@@ -37,6 +37,9 @@ class CustomPage extends HookConsumerWidget {
         }
       },
     );
+    final bool showFilterStrings = expandedState.filterStrings.isNotEmpty &&
+        ['TAGS', 'INGREDIENTS']
+            .contains(expandedState.filterOption.toUpperCase());
 
     return SafeArea(
       child: Scaffold(
@@ -47,8 +50,11 @@ class CustomPage extends HookConsumerWidget {
             Align(
               alignment: Alignment.bottomRight,
               child: Container(
+                // padding: const EdgeInsets.only(top: 100),
+                padding:
+                    showFilterStrings ? const EdgeInsets.only(top: 150) : null,
                 width: size.width - 200,
-                height: size.height - 100,
+                height: size.height - (showFilterStrings ? 0 : 100),
                 color: kcLightBeige,
                 child: child,
               ),
@@ -62,10 +68,38 @@ class CustomPage extends HookConsumerWidget {
                 showSearchBar: showSearchBar,
               ),
             ),
-            expandedState.filterStrings.length > 1
+            showFilterStrings
                 ? Container(
-                    height: 20,
-                    color: Colors.blue,
+                    margin: const EdgeInsets.only(top: 100, left: 200),
+                    padding: const EdgeInsets.only(top: 15),
+                    height: 50,
+                    color: kcLightBeige,
+                    child: Row(
+                      children: [
+                        ...expandedState.filterStrings
+                            .map((e) => e != ''
+                                ? Container(
+                                    // color: Colors.green,
+                                    margin: const EdgeInsets.only(left: 50),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 5),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          width: .5, color: Colors.black),
+                                    ),
+                                    height: 30,
+                                    child: Center(
+                                      child: Text(
+                                        e,
+                                        style: ksTitleButtonStyle,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  )
+                                : const SizedBox())
+                            .toList()
+                      ],
+                    ),
                   )
                 : const SizedBox(),
             // focusNode.hasFocus

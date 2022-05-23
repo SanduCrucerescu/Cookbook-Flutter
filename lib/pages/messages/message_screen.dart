@@ -50,16 +50,17 @@ class MessagePageState extends ConsumerState<MessagePage> {
   Widget build(BuildContext context) {
     ScrollController sc1 = useScrollController();
     ScrollController sc2 = useScrollController();
-    final state = ref.watch(membersProvider);
     Size size = MediaQuery.of(context).size;
-    final tec = useTextEditingController();
+    final searchBarController = useTextEditingController();
+    final messageController = useTextEditingController();
+    final state = ref.watch(membersProvider);
 
     return CustomPage(
       child: Row(
         children: [
           Column(
             children: [
-              SearchBar(state: state, tec: tec),
+              SearchBar(state: state, tec: searchBarController),
               Container(
                 height: size.height - 200,
                 width: (size.width - 200) / 2,
@@ -123,33 +124,8 @@ class MessagePageState extends ConsumerState<MessagePage> {
                 ),
                 MessageTextField(
                   width: (size.width - 200) / 2,
-                  controller: tec,
-                  onSubmitted: () async {
-                    if (tec.text != '') {
-                      await SendMessage.sendMessage(data: {
-                        'sender': InheritedLoginProvider.of(context)
-                            .userData?['email'],
-                        'receiver': state.displayedMembers[state.idx].email,
-                        'content': tec.text,
-                        'time': DateTime.now().toString()
-                      }, isLink: false);
-                      tec.clear();
-                      state.messages = await getMessages(context);
-                      state.members = await getMembers(context,
-                          InheritedLoginProvider.of(context).member!.email);
-                      state.displayedMessages.clear();
-                      for (DirectMessage message in state.messages) {
-                        if (message.sender ==
-                                state.displayedMembers[state.idx].email ||
-                            message.receiver ==
-                                state.displayedMembers[state.idx].email) {
-                          state.addDisplayedMessage(message);
-                        }
-                      }
-                      state.advancedSetDisplayedMembers(state.members, context);
-                      setState(() {});
-                    }
-                  },
+                  controller: messageController,
+                  regularMessage: true,
                 ),
               ],
             ),
