@@ -42,7 +42,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       final membersState = ref.watch(membersProvider);
       final loginProvider = InheritedLoginProvider.of(context);
       if (loginProvider.member != null) {

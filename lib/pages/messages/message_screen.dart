@@ -32,7 +32,7 @@ class MessagePage extends StatefulHookConsumerWidget {
 class MessagePageState extends ConsumerState<MessagePage> {
   @override
   void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       final state = ref.watch(membersProvider);
       state.members = await getMembers(
           context, InheritedLoginProvider.of(context).member!.email);

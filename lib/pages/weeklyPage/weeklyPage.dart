@@ -132,7 +132,7 @@ class _RecipeListState extends ConsumerState<RecipeList> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       final dbManager = await DatabaseManager.init();
 
       final _weekleRecipes = await dbManager

@@ -57,7 +57,7 @@ class _IngridientColumnState extends State<IngridientColumn> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       // TODO this.
       ingredients = await getIngridients();
       displayedIngridients = ingredients;

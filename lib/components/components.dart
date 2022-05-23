@@ -1,27 +1,20 @@
 library components;
 
 import 'dart:developer';
-<<<<<<< HEAD
 import 'dart:typed_data';
-import 'package:cookbook/components/DropDown.dart';
-import 'package:cookbook/components/NumericStepIncrement.dart';
-=======
-import 'dart:math';
-
 import 'package:cookbook/components/drop_down.dart';
 import 'package:cookbook/components/numeric_step_increment.dart';
->>>>>>> eb9081d60f27b76b0dd97a1bbcbfc0f288be3d74
 import 'package:cookbook/components/share_recipe_listview.dart';
+import 'package:cookbook/components/sidebar_items.dart';
+import 'package:cookbook/controllers/get_image_from_blob.dart';
+import 'package:cookbook/controllers/get_week.dart';
 import 'package:cookbook/db/queries/add_delete_favorites.dart';
-import 'package:cookbook/controllers/loadimage.dart';
+import 'package:cookbook/db/queries/get_favorites.dart';
 import 'package:cookbook/db/queries/get_members.dart';
 import 'package:cookbook/db/queries/send_message.dart';
 import 'package:cookbook/main.dart';
-<<<<<<< HEAD
-import 'package:cookbook/models/member/member.dart';
-=======
 import 'package:cookbook/models/ingredient/ingredient.dart';
->>>>>>> eb9081d60f27b76b0dd97a1bbcbfc0f288be3d74
+import 'package:cookbook/models/member/member.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
 import 'package:cookbook/models/tag/tag.dart';
 import 'package:cookbook/pages/comments/comments.dart';
