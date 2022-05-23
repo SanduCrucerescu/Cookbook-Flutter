@@ -314,8 +314,7 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
                         width: 33,
                         onTap: () async {
                           bool val = await Favorites.adding(
-                              email: InheritedLoginProvider.of(context)
-                                  .userData?['email'],
+                              email: loginProvider.userData?['email'],
                               recipeID: widget.recipe.id);
                           if (!val) {
                             state.exists = true;
@@ -332,7 +331,6 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
                   width: 25,
                   color: Colors.black,
                   onTap: () {
-                    ref.read(isPostCommentProvider.notifier).state = true;
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -349,11 +347,20 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
                   width: 30,
                   color: Colors.black,
                   onTap: () async {
-                    membersState.members = await getMembers(context,
-                        InheritedLoginProvider.of(context).member!.email);
+                    membersState.members = await getMembers(
+                      context,
+                      loginProvider.member!.email,
+                    );
                     membersState.advancedSetDisplayedMembers(
-                        membersState.members, context);
-                    shareRecipe(context, searchTec, commentTec, membersState);
+                      membersState.members,
+                      context,
+                    );
+                    shareRecipe(
+                      context,
+                      searchTec,
+                      commentTec,
+                      membersState,
+                    );
                   },
                 ),
               ],

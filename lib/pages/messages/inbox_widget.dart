@@ -51,8 +51,9 @@ class InboxWidget extends StatelessWidget {
         child: ListTile(
           leading: ProfilePic(
             member: member,
-            height: 50,
-            width: 50,
+            padding: const EdgeInsets.all(1),
+            // height: 100,
+            // width: 35,
           ),
           title: Text(
             member.name,
@@ -128,7 +129,7 @@ class ProfilePic extends StatelessWidget {
                 "assets/images/ph.png",
                 height: height,
                 width: width,
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
               )
             : Image.memory(
                 getImageDataFromBlob(member!.profilePicture!),

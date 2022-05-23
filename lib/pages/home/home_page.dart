@@ -1,9 +1,12 @@
 import 'dart:developer';
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/components/refresh_progress_indicator.dart';
+import 'package:cookbook/db/queries/get_members.dart';
 import 'package:cookbook/db/queries/get_recipes.dart';
 import 'package:cookbook/main.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
+import 'package:cookbook/pages/messages/message_screen.dart';
+import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -38,16 +41,31 @@ class _HomePageState extends ConsumerState<HomePage> {
   );
 
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      final membersState = ref.watch(membersProvider);
+      final loginProvider = InheritedLoginProvider.of(context);
+      if (loginProvider.member != null) {
+        membersState.members = await getMembers(
+          context,
+          InheritedLoginProvider.of(context).member!.email,
+        );
+      }
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext contextref) {
     final state = ref.watch(responsiveProvider);
     final tec = useTextEditingController();
     final searchBarWidth = widget.searchBarWidth;
-    final loginProvider = InheritedLoginProvider.of(context);
     final homeSc = useScrollController();
     final Size size = MediaQuery.of(context).size;
+    final loginProvider = InheritedLoginProvider.of(context);
 
     homeSc.addListener(() async {
-      if (homeSc.offset == 1) {
+      if (homeSc.position.atEdge && !state.refreshing) {
         state.refreshing = true;
         final refetchedRecipes = GetRecepies();
         await refetchedRecipes.getrecep(limit: [loginProvider.currOffset, 9]);
@@ -73,12 +91,13 @@ class _HomePageState extends ConsumerState<HomePage> {
               );
               return Container(
                 padding: const EdgeInsets.only(bottom: 10),
-                child: Column(
+                child: Stack(
                   children: [
                     SizedBox(
-                      height: state.refreshing
-                          ? size.height - 150
-                          : size.height - 110,
+                      // height: state.refreshing
+                      // ? size.height - 150
+                      // : size.height - 110,
+                      height: size.height - 110,
                       child: ListView.builder(
                         controller: homeSc,
                         cacheExtent: 20,
@@ -88,9 +107,19 @@ class _HomePageState extends ConsumerState<HomePage> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: state.refreshing ? 40 : 0,
-                      child: progressIndicator,
+                    Positioned(
+                      bottom: 0,
+                      left: -100,
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 0),
+                        height: state.refreshing ? 40 : 0,
+                        width: size.width,
+                        child: const SizedBox(
+                          height: 150,
+                          width: 200,
+                          child: progressIndicator,
+                        ),
+                      ),
                     )
                   ],
                 ),

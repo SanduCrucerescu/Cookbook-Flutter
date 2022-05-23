@@ -18,8 +18,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final postIdProvider = StateProvider<int>((ref) => 0);
-final isPostCommentProvider = StateProvider<bool>((ref) => true);
+class CommentsPageController extends ChangeNotifier {
+  int _id = 0;
+  int get id => _id;
+  set id(int val) {
+    _id = val;
+    notifyListeners();
+  }
+
+  bool _isPostComment = true;
+  bool get isPostComment => _isPostComment;
+  set isPostComment(bool val) {
+    _isPostComment = val;
+    notifyListeners();
+  }
+}
 
 class CommentsPage extends StatefulHookConsumerWidget {
   static const String id = '/comments';
@@ -36,14 +49,17 @@ class CommentsPage extends StatefulHookConsumerWidget {
 }
 
 class _CommentsPageState extends ConsumerState<CommentsPage> {
+  final commentsPageController = ChangeNotifierProvider<CommentsPageController>(
+    (ref) => CommentsPageController(),
+  );
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      ref.read(commentsProvider).comments =
+      ref.watch(commentsProvider).comments =
           await getComments(id: widget.recipe.id);
       setState(() {});
     });
-    ref.read(postIdProvider.notifier).state = widget.recipe.id;
     super.initState();
   }
 
@@ -51,17 +67,17 @@ class _CommentsPageState extends ConsumerState<CommentsPage> {
   Widget build(BuildContext context) {
     final state = ref.watch(commentsProvider);
     final Size size = MediaQuery.of(context).size;
-    final isPostComment = ref.read(isPostCommentProvider.notifier).state;
+    final commentsPageState = ref.watch(commentsPageController);
     final TextEditingController tec = useTextEditingController();
     String? reply;
 
-    if (isPostComment) {
-      reply = 'Commenting on ' + widget.recipe.title;
+    if (commentsPageState.isPostComment) {
+      reply = 'Commenting on ${widget.recipe.title}';
     } else {
       if (state.comments != null) {
         for (Comment c in state.comments!) {
-          if (c.id == ref.read(postIdProvider.notifier).state) {
-            reply = 'Replying to ' + c.creator.email;
+          if (c.id == commentsPageState.id) {
+            reply = 'Replying to ${c.creator.email}';
           }
         }
       }
@@ -102,7 +118,10 @@ class _CommentsPageState extends ConsumerState<CommentsPage> {
                     child: ListView.builder(
                       itemCount: state.comments!.length,
                       itemBuilder: (context, idx) {
-                        return CommentTile(comment: state.comments![idx]);
+                        return CommentTile(
+                          commentsPageState: commentsPageState,
+                          comment: state.comments![idx],
+                        );
                       },
                     ),
                   ),
@@ -126,13 +145,19 @@ class _CommentsPageState extends ConsumerState<CommentsPage> {
                       borderRadius: BorderRadius.circular(2),
                     ),
                     child: InkWell(
+                      onTap: !commentsPageState.isPostComment
+                          ? () {
+                              commentsPageState.isPostComment = true;
+                              commentsPageState.id = widget.recipe.id;
+                            }
+                          : () {},
                       child: RichText(
                         text: TextSpan(
                           children: [
                             TextSpan(
-                              text: isPostComment
+                              text: commentsPageState.isPostComment
                                   ? 'Commenting on '
-                                  : 'Replying to ',
+                                  : 'Stop Replying to ',
                               style: const TextStyle(color: Colors.black),
                             ),
                             TextSpan(
@@ -152,59 +177,9 @@ class _CommentsPageState extends ConsumerState<CommentsPage> {
                   controller: tec,
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   margin: const EdgeInsets.symmetric(horizontal: 5),
-                  onSubmitted: () async {
-                    print(tec.text);
-                    final Member member = await getMember(
-                      InheritedLoginProvider.of(context).userData!['email'],
-                    );
-                    await sendComment(
-                      postId: ref.read(postIdProvider.notifier).state,
-                      member: member,
-                      content: tec.text,
-                      isPostComment:
-                          ref.read(isPostCommentProvider.notifier).state,
-                    );
-                    tec.clear();
-                    setState(() {});
-                  },
+                  regularMessage: false,
+                  commentsPageState: commentsPageState,
                 ),
-                // Row(
-                //   children: [
-                //     CustomTextField(
-                //       isShadow: false,
-                //       letterSpacing: 1,
-                //       width: size.width - 420,
-                //       height: 50,
-                //       maxLines: 5,
-                //       controller: tec,
-                //     ),
-                //     CustomButton(
-                //       border: const Border(
-                //           left: BorderSide(
-                //               color: kcMedGrey,
-                //               width: .5,
-                //               style: BorderStyle.solid)),
-                //       duration: const Duration(milliseconds: 50),
-                //       color: Colors.white,
-                //       height: 50,
-                //       width: 200,
-                //       onTap: () async {
-                //         final Member member = await getMember(
-                //           InheritedLoginProvider.of(context).userData!['email'],
-                //         );
-                //         await sendComment(
-                //           postId: ref.read(postIdProvider.notifier).state,
-                //           member: member,
-                //           content: tec.text,
-                //           isPostComment:
-                //               ref.read(isPostCommentProvider.notifier).state,
-                //         );
-                //         setState(() {});
-                //       },
-                //       child: const Text('S e n d', style: ksFormButtonStyle),
-                //     ),
-                //   ],
-                // ),
               ],
             ),
           ),
@@ -218,9 +193,10 @@ Future<void> sendComment({
   required Member member,
   required int postId,
   required String content,
-  required bool isPostComment,
+  required int isPostComment,
 }) async {
   DatabaseManager dbManager = await DatabaseManager.init();
+
   dbManager.insert(table: 'comments', fields: [
     'member_email, content, post_id, time, post_comment'
   ], data: {
@@ -236,9 +212,11 @@ Future<void> sendComment({
 
 class CommentTile extends StatefulHookConsumerWidget {
   final Comment comment;
+  final CommentsPageController commentsPageState;
 
   const CommentTile({
     required this.comment,
+    required this.commentsPageState,
     Key? key,
   }) : super(key: key);
 
@@ -344,10 +322,8 @@ class _CommentTileState extends ConsumerState<CommentTile> {
                             decoration: const BoxDecoration(),
                             child: InkWell(
                               onTap: () {
-                                ref.read(isPostCommentProvider.notifier).state =
-                                    false;
-                                ref.read(postIdProvider.notifier).state =
-                                    comment.id;
+                                widget.commentsPageState.isPostComment = false;
+                                widget.commentsPageState.id = comment.id;
                               },
                               child: const Icon(Icons.reply),
                             ),
@@ -375,6 +351,7 @@ class _CommentTileState extends ConsumerState<CommentTile> {
               children: List.generate(
                 comment.comments.length,
                 (idx) => CommentTile(
+                  commentsPageState: widget.commentsPageState,
                   comment: comment.comments[idx],
                 ),
               ),
