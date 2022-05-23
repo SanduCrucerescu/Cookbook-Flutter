@@ -19,7 +19,7 @@ class LoadingScreen extends StatefulWidget {
 class _LoadingScreenState extends State<LoadingScreen> {
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+    WidgetsBinding.instance?.addPostFrameCallback((_) async {
       await fetchRecipes();
       InheritedLoginProvider.of(context).setDisplayedRecipes(
         filteringStrings: [''],

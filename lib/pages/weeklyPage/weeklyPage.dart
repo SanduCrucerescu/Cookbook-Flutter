@@ -29,17 +29,17 @@ class WeeklyPage extends HookConsumerWidget {
   final int cols;
   final double searchBarWidth;
 
-  const WeeklyPage.desktop({Key? key})
+  WeeklyPage.desktop({Key? key})
       : cols = 3,
         searchBarWidth = 800,
         super(key: key);
 
-  const WeeklyPage.tablet({Key? key})
+  WeeklyPage.tablet({Key? key})
       : cols = 2,
         searchBarWidth = 800,
         super(key: key);
 
-  const WeeklyPage.mobile({Key? key})
+  WeeklyPage.mobile({Key? key})
       : cols = 1,
         searchBarWidth = 300,
         super(key: key);
@@ -132,7 +132,7 @@ class _RecipeListState extends ConsumerState<RecipeList> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       final dbManager = await DatabaseManager.init();
 
       final _weekleRecipes = await dbManager

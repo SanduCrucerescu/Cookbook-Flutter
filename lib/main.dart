@@ -212,7 +212,7 @@ class App extends StatelessWidget {
           fontFamily: 'Montserrat',
           primaryColor: kcMedBeige,
         ),
-        initialRoute: WeeklyPage.id,
+        initialRoute: LoadingScreen.id,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );

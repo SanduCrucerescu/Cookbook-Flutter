@@ -21,7 +21,7 @@ class FAQPage extends StatefulHookConsumerWidget {
 class _FAQPageState extends ConsumerState<FAQPage> {
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       ref.read(widget.faqProvider).displayedItems = kFaqItems;
     });
     super.initState();
