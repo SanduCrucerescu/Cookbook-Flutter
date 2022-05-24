@@ -148,7 +148,7 @@ class _RecipeListState extends ConsumerState<RecipeList> {
               ),
             ),
           );
-
+      print(_weekleRecipes);
       ref.read(weeklyRecipesProvider.notifier).state = _weekleRecipes.toList();
     });
   }
