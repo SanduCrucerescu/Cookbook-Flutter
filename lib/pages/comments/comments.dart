@@ -4,6 +4,7 @@ import 'package:cookbook/components/components.dart';
 import 'package:cookbook/components/refresh_progress_indicator.dart';
 import 'package:cookbook/controllers/get_image_from_blob.dart';
 import 'package:cookbook/db/database_manager.dart';
+import 'package:cookbook/db/queries/delete_message.dart';
 import 'package:cookbook/db/queries/get_comments.dart';
 import 'package:cookbook/db/queries/get_members.dart';
 import 'package:cookbook/main.dart';
@@ -334,7 +335,15 @@ class _CommentTileState extends ConsumerState<CommentTile> {
                             margin: const EdgeInsets.all(5),
                             decoration: const BoxDecoration(),
                             child: InkWell(
-                              onTap: () {},
+                              onTap: () async {
+                                await DeleteMessage.deteteMessage(
+                                    data: {"id": comment.id});
+
+                                ref.watch(commentsProvider).comments =
+                                    await getComments(
+                                        id: widget.commentsPageState!.id);
+                                setState(() {});
+                              },
                               child: const Icon(Icons.settings),
                             ),
                           ),
