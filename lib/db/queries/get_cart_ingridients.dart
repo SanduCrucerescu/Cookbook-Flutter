@@ -27,7 +27,7 @@ WHERE members.email='${a}';''');
       id: r['id'],
       name: r['name'],
       unit: r['unit'],
-      amount: r['amount'],
+      amount: double.parse(r['amount'].toString()),
       pricePerUnit: r['pricePerUnit'],
     );
     ingridients.add(curr);

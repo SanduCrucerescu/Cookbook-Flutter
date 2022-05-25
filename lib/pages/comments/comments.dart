@@ -20,8 +20,15 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class CommentsPageController extends ChangeNotifier {
-  int _id = 2;
+  int _id = 0;
+  int _status = 0;
   int get id => _id;
+  int get status => _status;
+  set status(int val) {
+    _status = val;
+    notifyListeners();
+  }
+
   set id(int val) {
     _id = val;
     notifyListeners();
@@ -226,8 +233,12 @@ class CommentTile extends StatefulHookConsumerWidget {
 }
 
 class _CommentTileState extends ConsumerState<CommentTile> {
+  final commentsPageController = ChangeNotifierProvider<CommentsPageController>(
+    (ref) => CommentsPageController(),
+  );
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(commentsPageController);
     Size size = MediaQuery.of(context).size;
     final comment = widget.comment;
     final TextEditingController newComment = useTextEditingController();
@@ -356,12 +367,13 @@ class _CommentTileState extends ConsumerState<CommentTile> {
                             child: InkWell(
                               onTap: () async {
                                 await editComment(
-                                    context, comment.id, newComment);
-
-                                ref.watch(commentsProvider).comments =
-                                    await getComments(
-                                        id: widget.commentsPageState.id);
-                                setState(() {});
+                                    context, comment.id, newComment, state);
+                                if (state.status == 1) {
+                                  ref.watch(commentsProvider).comments =
+                                      await getComments(
+                                          id: widget.commentsPageState.id);
+                                  setState(() {});
+                                }
                               },
                               child: const Icon(Icons.settings),
                             ),
@@ -391,7 +403,7 @@ class _CommentTileState extends ConsumerState<CommentTile> {
   }
 
   Future<dynamic> editComment(
-      BuildContext context, int id, TextEditingController tec) {
+      BuildContext context, int id, TextEditingController tec, state) {
     return showDialog(
       context: context,
       builder: (context) {
@@ -433,6 +445,7 @@ class _CommentTileState extends ConsumerState<CommentTile> {
                                 table: "comments",
                                 where: {"id": id.toString()},
                                 set: {"content": tec.text.toString()});
+                            state.status = 1;
                             Navigator.pop(context);
                           },
                           child: const Text("Edit"),

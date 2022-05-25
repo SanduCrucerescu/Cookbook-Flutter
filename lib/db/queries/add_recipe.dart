@@ -1,14 +1,15 @@
 import 'package:cookbook/db/database_manager.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mysql1/mysql1.dart';
 
 class AddRecipe {
   static Future<bool> adding(
       {Map<String, dynamic>? recipeInfo,
-      Map<String, int>? ingredients,
+      Map<String, double>? ingredients,
       List<String>? tags}) async {
     final DatabaseManager dbManager = await DatabaseManager.init();
     List<int> ingredientID = [];
-    List<int> amount = [];
+    List<double> amount = [];
 
     ingredients!.keys.forEach((key) {
       ingredientID.add(int.parse(key));
@@ -18,7 +19,7 @@ class AddRecipe {
       amount.add(value);
     });
 
-    Future? res = dbManager.insert(table: "recipes", fields: [
+    Results? res = await dbManager.insert(table: "recipes", fields: [
       "title",
       "description",
       "instructions",
@@ -32,16 +33,15 @@ class AddRecipe {
       "picture": recipeInfo?["picture"]
     });
 
-    Future? id = dbManager.query(query: "SELECT MAX(id) FROM recipes;");
+    Results? id = await dbManager.query(query: "SELECT MAX(id) FROM recipes;");
 
     int idVal = 0;
 
-    for (var rs in await id) {
+    for (var rs in id!) {
       idVal = rs[0];
     }
-
     for (int i = 0; i < ingredients.length; i++) {
-      Future? ingredients = dbManager.insert(
+      Results? ingredients = await dbManager.insert(
           table: "ingredients_for_recipe",
           fields: [
             "recipe_id",
@@ -56,7 +56,7 @@ class AddRecipe {
     }
 
     for (int i = 0; i < tags!.length; i++) {
-      Future? id = dbManager.select(table: "tags", fields: [
+      Results? id = await dbManager.select(table: "tags", fields: [
         "id"
       ], where: {
         "name": tags[i],
@@ -64,7 +64,7 @@ class AddRecipe {
 
       int idTag = 0;
 
-      for (var rs in await id) {
+      for (var rs in id!) {
         idTag = rs[0];
       }
 

@@ -37,7 +37,7 @@ class AddRecipePage extends HookConsumerWidget {
 
   late List<CustDropdownMenuItem<String>> menuItems = [
     const CustDropdownMenuItem(
-      child: '',
+      child: Text(''),
       value: '',
     )
   ];
@@ -226,6 +226,7 @@ class AddRecipePage extends HookConsumerWidget {
                               tags: state.selectedItems);
                         }
                       }
+                      successfull(context);
                     },
                     text: "Submit",
                     color: kcDarkBeige,
@@ -253,8 +254,8 @@ class AddRecipePage extends HookConsumerWidget {
 
     for (int i = 0; i < ingredients.length; i++) {
       menuItems.add(CustDropdownMenuItem(
-        child: ingredients[i].name,
-        value: "${ingredients[i].name}",
+        child: Text(ingredients[i].name),
+        value: "${ingredients[i].id}",
       ));
     }
   }
@@ -320,7 +321,7 @@ class AddRecipePage extends HookConsumerWidget {
                         state: state, controller: TextEditingController()));
                     state.popped = state.rows.length;
                     state.addMap(state.ingredints[state.rows.length - 2],
-                        int.parse(controller.text));
+                        double.parse(controller.text));
                   }
                 }
               }
@@ -339,6 +340,41 @@ class AddRecipePage extends HookConsumerWidget {
       ],
     );
   }
+}
+
+Future<dynamic> successfull(BuildContext context) {
+  return showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text(
+          "Recipe added succesfull",
+          textAlign: TextAlign.center,
+        ),
+        actions: [
+          Container(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  Text(
+                    "The recipe was added successfull",
+                    style: TextStyle(fontSize: 25),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  CustomButton(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(AddRecipePage.id);
+                    },
+                    child: const Text("Continue"),
+                  ),
+                ],
+              ))
+        ],
+      );
+    },
+  );
 }
 
 void _openImagePicker(VerificationChangeNotifier state) async {
@@ -459,7 +495,7 @@ class VerificationChangeNotifier extends ChangeNotifier {
   List<TableRow> _rows = [];
   List<String> _selectedItems = [];
   List<String> _ingredints = [];
-  Map<String, int> _ingredientsMap = {};
+  Map<String, double> _ingredientsMap = {};
   List<String> _items = [];
 
   String _t = "";
@@ -492,7 +528,7 @@ class VerificationChangeNotifier extends ChangeNotifier {
 
   List<String> get ingredints => _ingredints;
 
-  Map<String, int> get ingredientsMap => _ingredientsMap;
+  Map<String, double> get ingredientsMap => _ingredientsMap;
 
   bool get noTags => _noTags;
 
@@ -580,7 +616,7 @@ class VerificationChangeNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addMap(String key, int value) {
+  void addMap(String key, double value) {
     _ingredientsMap.addAll({key: value});
     notifyListeners();
   }
