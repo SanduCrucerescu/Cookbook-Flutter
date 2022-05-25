@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -13,17 +11,17 @@ class CustDropDown<T> extends StatefulWidget {
   final int defaultSelectedIndex;
   final bool enabled;
 
-  const CustDropDown({
-    required this.items,
-    required this.onChanged,
-    this.hintText = "",
-    this.borderRadius = 0,
-    this.borderWidth = 1,
-    this.maxListHeight = 500,
-    this.defaultSelectedIndex = -1,
-    Key? key,
-    this.enabled = true,
-  }) : super(key: key);
+  const CustDropDown(
+      {required this.items,
+      required this.onChanged,
+      this.hintText = "",
+      this.borderRadius = 0,
+      this.borderWidth = 1,
+      this.maxListHeight = 500,
+      this.defaultSelectedIndex = -1,
+      Key? key,
+      this.enabled = true})
+      : super(key: key);
 
   @override
   _CustDropDownState createState() => _CustDropDownState();
@@ -34,13 +32,13 @@ class _CustDropDownState extends State<CustDropDown>
   bool _isOpen = false, _isAnyItemSelected = false, _isReverse = false;
   late OverlayEntry _overlayEntry;
   late RenderBox? _renderBox;
-  String? _itemSelected;
+  Widget? _itemSelected;
   late Offset dropDownOffset;
   final LayerLink _layerLink = LayerLink();
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (mounted) {
         setState(() {
           dropDownOffset = getOffset();
@@ -51,14 +49,14 @@ class _CustDropDownState extends State<CustDropDown>
           if (mounted) {
             setState(() {
               _isAnyItemSelected = true;
-              _itemSelected = widget.items[widget.defaultSelectedIndex].value;
+              _itemSelected = widget.items[widget.defaultSelectedIndex];
               widget.onChanged(widget.items[widget.defaultSelectedIndex].value);
             });
           }
         }
       }
     });
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance!.addObserver(this);
     super.initState();
   }
 
@@ -84,7 +82,7 @@ class _CustDropDownState extends State<CustDropDown>
 
   @override
   dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance!.removeObserver(this);
     super.dispose();
   }
 
@@ -135,7 +133,7 @@ class _CustDropDownState extends State<CustDropDown>
                                     .map((item) => GestureDetector(
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
-                                            child: Text(item.child),
+                                            child: item.child,
                                           ),
                                           onTap: () {
                                             if (mounted) {
@@ -208,10 +206,7 @@ class _CustDropDownState extends State<CustDropDown>
                 child: _isAnyItemSelected
                     ? Padding(
                         padding: const EdgeInsets.only(left: 4.0),
-                        child: Text(
-                          _itemSelected!.toString(),
-                          style: TextStyle(fontSize: 16),
-                        ),
+                        child: _itemSelected!,
                       )
                     : Padding(
                         padding:
@@ -259,13 +254,13 @@ class _CustDropDownState extends State<CustDropDown>
 }
 
 class CustDropdownMenuItem<T> extends StatelessWidget {
-  final String value;
-  final String child;
+  final T value;
+  final Widget child;
 
   const CustDropdownMenuItem({required this.value, required this.child});
 
   @override
   Widget build(BuildContext context) {
-    return Text(child);
+    return child;
   }
 }

@@ -8,9 +8,9 @@ class Ingredient with ChangeNotifier {
   String name;
   double pricePerUnit;
   String unit;
-  int? amount;
+  double? amount;
   double? changedPrice;
-  int? changedAmount;
+  double? changedAmount;
   //final double amountFactor;
 
   Ingredient({
@@ -49,7 +49,7 @@ class Ingredient with ChangeNotifier {
     );
   }
 
-  void setAmount(int amountToAdd) {
+  void setAmount(double amountToAdd) {
     amount = amountToAdd;
     notifyListeners();
   }

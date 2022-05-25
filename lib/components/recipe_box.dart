@@ -481,46 +481,46 @@ Future<dynamic> addWeekly(
   final List<CustDropdownMenuItem<String>> mealType = [
     const CustDropdownMenuItem(
       value: '1',
-      child: "Breakfast",
+      child: Text("Breakfast"),
     ),
     const CustDropdownMenuItem(
       value: '2',
-      child: "Lunch",
+      child: Text("Lunch"),
     ),
     const CustDropdownMenuItem(
       value: '3',
-      child: "Dinner",
+      child: Text("Dinner"),
     ),
   ];
 
   final List<CustDropdownMenuItem<String>> weekDays = [
     const CustDropdownMenuItem(
       value: '1',
-      child: "Monday",
+      child: Text("Monday"),
     ),
     const CustDropdownMenuItem(
       value: '2',
-      child: "Tuesday",
+      child: Text("Tuesday"),
     ),
     const CustDropdownMenuItem(
       value: '3',
-      child: "Wednesday",
+      child: Text("Wednesday"),
     ),
     const CustDropdownMenuItem(
       value: '4',
-      child: "Thursday",
+      child: Text("Thursday"),
     ),
     const CustDropdownMenuItem(
       value: '5',
-      child: "Friday",
+      child: Text("Friday"),
     ),
     const CustDropdownMenuItem(
       value: '6',
-      child: "Saturday",
+      child: Text("Saturday"),
     ),
     const CustDropdownMenuItem(
       value: '7',
-      child: "Sunday",
+      child: Text("Sunday"),
     ),
   ];
   state.week = weekNumber(DateTime.now());
