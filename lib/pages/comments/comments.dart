@@ -342,7 +342,7 @@ class _CommentTileState extends ConsumerState<CommentTile> {
 
                                 ref.watch(commentsProvider).comments =
                                     await getComments(
-                                        id: widget.commentsPageState!.id);
+                                        id: widget.commentsPageState.id);
                                 setState(() {});
                               },
                               child: const Icon(Icons.remove),
@@ -360,7 +360,7 @@ class _CommentTileState extends ConsumerState<CommentTile> {
 
                                 ref.watch(commentsProvider).comments =
                                     await getComments(
-                                        id: widget.commentsPageState!.id);
+                                        id: widget.commentsPageState.id);
                                 setState(() {});
                               },
                               child: const Icon(Icons.settings),
