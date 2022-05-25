@@ -287,17 +287,17 @@ class AddRecipePage extends HookConsumerWidget {
             fontSize: 12,
           ),
         ),
-        TableItem(
-          child: Center(
-            child: SelectableText(
-              state.unit, //TODO rebuildong the widget
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
-            ),
-          ),
-        ),
+        // TableItem(
+        //   child: Center(
+        //     child: SelectableText(
+        //       state.unit, //TODO rebuildong the widget
+        //       style: const TextStyle(
+        //         fontWeight: FontWeight.bold,
+        //         fontSize: 20,
+        //       ),
+        //     ),
+        //   ),
+        // ),
         TableItem(
           child: FormButton(
             height: 45,

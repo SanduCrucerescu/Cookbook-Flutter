@@ -48,7 +48,7 @@ INNER JOIN posts ON comments.post_id = posts.id
         await getComments(id: fields['post_id'], nested: true, added: added);
 
     Comment curr = Comment(
-      id: fields['postId'],
+      id: fields['commentId'],
       creator: member,
       content: fields['content'].toString(),
       likes: fields['likes'],

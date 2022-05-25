@@ -4,6 +4,7 @@ import 'package:cookbook/components/components.dart';
 import 'package:cookbook/components/refresh_progress_indicator.dart';
 import 'package:cookbook/controllers/get_image_from_blob.dart';
 import 'package:cookbook/db/database_manager.dart';
+import 'package:cookbook/db/queries/delete_message.dart';
 import 'package:cookbook/db/queries/get_comments.dart';
 import 'package:cookbook/db/queries/get_members.dart';
 import 'package:cookbook/main.dart';
@@ -19,7 +20,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class CommentsPageController extends ChangeNotifier {
-  int _id = 0;
+  int _id = 2;
   int get id => _id;
   set id(int val) {
     _id = val;
@@ -229,6 +230,7 @@ class _CommentTileState extends ConsumerState<CommentTile> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final comment = widget.comment;
+    final TextEditingController newComment = useTextEditingController();
 
     return Container(
       margin: const EdgeInsets.only(
@@ -334,7 +336,33 @@ class _CommentTileState extends ConsumerState<CommentTile> {
                             margin: const EdgeInsets.all(5),
                             decoration: const BoxDecoration(),
                             child: InkWell(
-                              onTap: () {},
+                              onTap: () async {
+                                await DeleteMessage.deteteMessage(
+                                    data: {"id": comment.id});
+
+                                ref.watch(commentsProvider).comments =
+                                    await getComments(
+                                        id: widget.commentsPageState!.id);
+                                setState(() {});
+                              },
+                              child: const Icon(Icons.remove),
+                            ),
+                          ),
+                          Container(
+                            height: 40,
+                            width: 40,
+                            margin: const EdgeInsets.all(5),
+                            decoration: const BoxDecoration(),
+                            child: InkWell(
+                              onTap: () async {
+                                await editComment(
+                                    context, comment.id, newComment);
+
+                                ref.watch(commentsProvider).comments =
+                                    await getComments(
+                                        id: widget.commentsPageState!.id);
+                                setState(() {});
+                              },
                               child: const Icon(Icons.settings),
                             ),
                           ),
@@ -359,6 +387,63 @@ class _CommentTileState extends ConsumerState<CommentTile> {
           ),
         ],
       ),
+    );
+  }
+
+  Future<dynamic> editComment(
+      BuildContext context, int id, TextEditingController tec) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text(
+            "Edit comnent",
+            textAlign: TextAlign.center,
+          ),
+          actions: [
+            Container(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    CustomTextField(
+                      hintText: "New message",
+                      controller: tec,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CustomButton(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text("Cancel"),
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        CustomButton(
+                          onTap: () async {
+                            DatabaseManager databaseManager =
+                                await DatabaseManager.init();
+
+                            databaseManager.update(
+                                table: "comments",
+                                where: {"id": id.toString()},
+                                set: {"content": tec.text.toString()});
+                            Navigator.pop(context);
+                          },
+                          child: const Text("Edit"),
+                        )
+                      ],
+                    )
+                  ],
+                ))
+          ],
+        );
+      },
     );
   }
 }
