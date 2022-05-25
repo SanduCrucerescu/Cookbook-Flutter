@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers
-
 import 'dart:developer';
 import 'package:cookbook/components/components.dart';
 import 'package:cookbook/controllers/get_image_from_blob.dart';
@@ -31,20 +29,30 @@ class WeeklyPage extends HookConsumerWidget {
   final int cols;
   final double searchBarWidth;
 
-  const WeeklyPage.desktop({Key? key})
+  WeeklyPage.desktop({Key? key})
       : cols = 3,
         searchBarWidth = 800,
         super(key: key);
 
-  const WeeklyPage.tablet({Key? key})
+  WeeklyPage.tablet({Key? key})
       : cols = 2,
         searchBarWidth = 800,
         super(key: key);
 
-  const WeeklyPage.mobile({Key? key})
+  WeeklyPage.mobile({Key? key})
       : cols = 1,
         searchBarWidth = 300,
         super(key: key);
+
+  final List<String> days = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday'
+  ];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
