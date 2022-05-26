@@ -66,6 +66,8 @@ class SelectedIngridientChangeNotifier extends ChangeNotifier {
 
   Ingredient? get currIngridient => _currIngredient;
 
+  void refresh() => notifyListeners();
+
   List<Ingredient> get ingredientList => _ingredientList;
 
   set currIngridient(Ingredient? ingredient) {
@@ -79,7 +81,7 @@ class SelectedIngridientChangeNotifier extends ChangeNotifier {
   }
 
   void addAdditionalIngredients(Ingredient a, double amountToAdd) {
-    a.amount = a.amount! + amountToAdd;
+    a.amount = a.amount + amountToAdd;
     notifyListeners();
   }
 
@@ -112,7 +114,7 @@ class SelectedIngridientChangeNotifier extends ChangeNotifier {
     for (int i = 0; i < list.length; i++) {
       for (int j = i + 1; j < list.length; j++) {
         if (list[i].name == (list[j].name)) {
-          list[i].amount = (list[i].amount! + amountToAdd);
+          list[i].amount = (list[i].amount + amountToAdd);
 
           list.remove(list[j]);
         }

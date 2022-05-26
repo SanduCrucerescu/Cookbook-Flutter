@@ -14,7 +14,7 @@ Future<List<Ingredient>> getIngredients() async {
       id: r['id'],
       name: r['name'],
       unit: r['unit'],
-      amount: r['amount'],
+      amount: r['amount'] ?? 1,
       pricePerUnit: r['pricePerUnit'],
     );
     ingridients.add(curr);

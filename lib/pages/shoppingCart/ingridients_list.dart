@@ -133,7 +133,7 @@ class IngridientTile extends HookConsumerWidget {
                     onHover: (val) => hoveringState.hovering = val,
                     onTap: () async {
                       await ingridientAmountBox(context: context, state: state);
-                      state.addIngredient(ingredient);
+                      // state.addIngredient(ingredient);
                     },
                     child: const Icon(
                       Icons.add_outlined,
@@ -178,22 +178,24 @@ class IngridientTile extends HookConsumerWidget {
             TextButton(
               onPressed: () {
                 double amountToAdd = double.parse(ingridientController.text);
-                // for (Ingredient ingInList in state.ingredientList) {
-                //   if (ingridient.id == ingInList.id) {
-                //     state.addAdditionalIngredients(ingInList, amountToAdd);
-                //   } else {
-                //     state.addIngredient(ingridient);
-                //   }
-                // }
 
-                if (state.ingredientList.contains(ingredient)) {
-                  state.recheck(state.ingredientList);
+                final List<String> ingrNameList = state.ingredientList
+                    .map(
+                      (ingr) => ingr.name,
+                    )
+                    .toList();
+                if (ingrNameList.contains(ingredient.name)) {
+                  print('Already in here');
+                  state.ingredientList[ingrNameList.indexOf(ingredient.name)]
+                      .amount += amountToAdd;
+                  state.refresh();
                 } else {
                   state.addIngredient(ingredient);
                   ingredient.setAmount(amountToAdd);
                   state.currentList(state.ingredientList, amountToAdd);
                 }
                 Navigator.pop(context);
+                // state.recheck(state.ingredientList);
                 print(state.ingredientList);
               },
               child: const Text(
