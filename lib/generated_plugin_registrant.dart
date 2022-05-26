@@ -12,7 +12,7 @@ import 'package:fluttertoast/fluttertoast_web.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 // ignore: public_member_api_docs
-void registerPlugins(final Registrar registrar) {
+void registerPlugins(Registrar registrar) {
   FileSelectorWeb.registerWith(registrar);
   FluttertoastWebPlugin.registerWith(registrar);
   registrar.registerMessageHandler();

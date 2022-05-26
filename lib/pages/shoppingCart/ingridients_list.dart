@@ -188,25 +188,13 @@ class IngridientTile extends HookConsumerWidget {
 
                 if (state.ingredientList.contains(ingredient)) {
                   state.addAdditionalIngredients(ingredient, amountToAdd);
+                  state.currentList(state.ingredientList);
                 } else {
                   state.addIngredient(ingredient);
                   ingredient.setAmount(amountToAdd);
+                  state.currentList(state.ingredientList);
                 }
                 Navigator.pop(context);
-                for (int i = 0; i < state.ingredientList.length; i++) {
-                  for (int j = i + 1; j < state.ingredientList.length; j++) {
-                    if (state.ingredientList[i].name ==
-                        (state.ingredientList[j].name)) {
-                      state.ingredientList[i].amount =
-                          state.ingredientList[i].amount =
-                              (state.ingredientList[i].amount! +
-                                  state.ingredientList[j].amount!);
-                      state.ingredientList.remove(
-                        state.ingredientList[j],
-                      );
-                    }
-                  }
-                }
                 print(state.ingredientList);
               },
               child: const Text(

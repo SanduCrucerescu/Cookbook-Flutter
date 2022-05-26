@@ -107,4 +107,18 @@ class SelectedIngridientChangeNotifier extends ChangeNotifier {
     _idx = val;
     notifyListeners();
   }
+
+  void currentList(List<Ingredient> list) {
+    for (int i = 0; i < list.length; i++) {
+      for (int j = i + 1; j < list.length; j++) {
+        if (list[i].name == (list[j].name)) {
+          list[i].amount = (list[i].amount! + list[j].amount!);
+
+          list.remove(list[j]);
+        }
+      }
+      notifyListeners();
+    }
+    notifyListeners();
+  }
 }

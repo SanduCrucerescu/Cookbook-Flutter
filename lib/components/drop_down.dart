@@ -38,7 +38,7 @@ class _CustDropDownState extends State<CustDropDown>
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         setState(() {
           dropDownOffset = getOffset();
@@ -56,7 +56,7 @@ class _CustDropDownState extends State<CustDropDown>
         }
       }
     });
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
 
@@ -82,7 +82,7 @@ class _CustDropDownState extends State<CustDropDown>
 
   @override
   dispose() {
-    WidgetsBinding.instance!.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
