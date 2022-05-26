@@ -250,7 +250,7 @@ class AddRecipePage extends HookConsumerWidget {
 
   void _getIngredients() async {
     final DatabaseManager databaseManager = await DatabaseManager.init();
-    ingredients = await getIngridients();
+    ingredients = await getIngredients();
 
     for (int i = 0; i < ingredients.length; i++) {
       menuItems.add(CustDropdownMenuItem(

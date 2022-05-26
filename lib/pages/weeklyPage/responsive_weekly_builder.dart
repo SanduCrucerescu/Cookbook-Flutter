@@ -1,5 +1,5 @@
 import 'package:cookbook/pages/home/home_page.dart';
-import 'package:cookbook/pages/weeklyPage/weeklyPage.dart';
+import 'package:cookbook/pages/weeklyPage/weekly_page.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 

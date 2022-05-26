@@ -3,7 +3,7 @@ import 'package:cookbook/models/ingredient/ingredient.dart';
 import 'package:cookbook/models/member/member.dart';
 import 'package:mysql1/mysql1.dart';
 
-Future<List<Ingredient>> getIngridients() async {
+Future<List<Ingredient>> getIngredients() async {
   final dbManager = await DatabaseManager.init();
   List<Ingredient> ingridients = [];
 

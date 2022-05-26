@@ -65,7 +65,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     final loginProvider = InheritedLoginProvider.of(context);
 
     homeSc.addListener(() async {
-      if (homeSc.position.atEdge && !state.refreshing) {
+      if (homeSc.position.atEdge && !state.refreshing && homeSc.offset != 0) {
         state.refreshing = true;
         final refetchedRecipes = GetRecepies();
         await refetchedRecipes.getrecep(limit: [loginProvider.currOffset, 9]);

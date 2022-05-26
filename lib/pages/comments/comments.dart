@@ -81,11 +81,13 @@ class _CommentsPageState extends ConsumerState<CommentsPage> {
 
     if (commentsPageState.isPostComment) {
       reply = 'Commenting on ${widget.recipe.title}';
+      commentsPageState.id = widget.recipe.id;
     } else {
       if (state.comments != null) {
         for (Comment c in state.comments!) {
           if (c.id == commentsPageState.id) {
             reply = 'Replying to ${c.creator.email}';
+            commentsPageState.id = c.id;
           }
         }
       }

@@ -36,14 +36,14 @@ class GetRecepies {
           instructions: rs.fields['instructions'].toString(),
           quantity: 1,
           picture: rs.fields['picture'],
-          ingredients: await getIngredients(rs.fields['id']) ?? [],
+          ingredients: await getIngredientsFromId(rs.fields['id']) ?? [],
           tags: await getTags(rs.fields['id']));
       setRecipie(recipeClass);
     }
     dbManager.close();
   }
 
-  Future<List<Ingredient>?> getIngredients(int id) async {
+  Future<List<Ingredient>?> getIngredientsFromId(int id) async {
     final DatabaseManager dbManager = await DatabaseManager.init();
     List<Ingredient> ingredient = [];
 
@@ -60,6 +60,7 @@ class GetRecepies {
       );
       ingredient.add(ingredientClass);
     }
+
     dbManager.close();
     return ingredient;
   }
