@@ -7,6 +7,22 @@ final userPageProvider = ChangeNotifierProvider<UserPageController>(
 
 class UserPageController extends ChangeNotifier {
   Map<String, dynamic>? _data = {};
+  bool _saved = false;
+  String _text = "";
+
+  String get text => this._text;
+
+  set text(String value) {
+    _text = value;
+    notifyListeners();
+  }
+
+  bool get saved => _saved;
+
+  set saved(bool value) {
+    _saved = value;
+    notifyListeners();
+  }
 
   Map<String, dynamic>? get data => _data;
 

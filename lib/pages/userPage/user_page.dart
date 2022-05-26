@@ -14,7 +14,11 @@ import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysql1/mysql1.dart';
+
+import '../../controllers/get_image_from_blob.dart';
 
 class UserPage extends StatefulHookConsumerWidget {
   static const String id = '/user';
@@ -34,6 +38,8 @@ class _UserPageState extends ConsumerState<UserPage> {
       if (data != null) {
         member = await getMember(
             InheritedLoginProvider.of(context).userData!['email']);
+        Blob? img = member!.profilePicture;
+        ref.watch(userPageProvider).data!['imgData'] = {"file": img};
         setState(() {});
       }
     });
@@ -76,11 +82,10 @@ class UserPageForm extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Size size = MediaQuery.of(context).size;
-
+    final state = ref.watch(userPageProvider);
     final TextEditingController nameController = useTextEditingController();
     final TextEditingController emailController = useTextEditingController();
     final TextEditingController passwordController = useTextEditingController();
-
     return user == null
         ? const Center(
             child: SizedBox(
@@ -113,13 +118,31 @@ class UserPageForm extends HookConsumerWidget {
                 label: "Password",
                 controller: passwordController,
               ),
+              state.saved
+                  ? Center(
+                      child: Container(
+                        margin: EdgeInsets.only(bottom: 20),
+                        child: SelectableText(
+                          state.text,
+                          style: GoogleFonts.montserrat(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red),
+                        ),
+                      ),
+                    )
+                  : const SizedBox(),
               Center(
                 child: SaveButton(
                   text: 'Save Changes',
                   onClicked: () async {
+                    state.saved = true;
+                    state.text = "Data saved successfuly";
+                    print(state.saved);
                     await onSave(
                       name: nameController.text,
                       email: emailController.text,
+                      member: user,
                       password: passwordController.text,
                       ref: ref,
                       context: context,
@@ -205,24 +228,20 @@ class UserPageTextField extends StatelessWidget {
 Future<void> onSave({
   required String name,
   required String email,
+  required Member? member,
   required String password,
   required WidgetRef ref,
   required BuildContext context,
 }) async {
   final data = ref.read(userPageProvider).data;
-
+  final userData = InheritedLoginProvider.of(context).userData;
   DatabaseManager dbManager = await DatabaseManager.init();
-
   String img64;
 
-  final file = data!['imgData']['file'];
+  final file = data!['imgData']['file']!;
 
-  if (file == null) {
-    ByteData bytes = await rootBundle.load('assets/images/ph.png');
-    Uint8List photobytes =
-        bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes);
-
-    img64 = base64Encode(photobytes);
+  if (file.toString().startsWith("/")) {
+    img64 = file.toString();
   } else {
     final bytes = file.readAsBytesSync();
     img64 = base64Encode(bytes!);
@@ -232,14 +251,17 @@ Future<void> onSave({
 
   if (name != '') {
     toUpdate['username'] = name;
+    userData!['username'] = name;
   }
 
   if (email != '') {
     toUpdate['email'] = email;
+    userData!['email'] = email;
   }
 
   if (password != '') {
     toUpdate['password'] = password;
+    userData!['password'] = password;
   }
 
   if (file != null) {
@@ -253,9 +275,4 @@ Future<void> onSave({
       'email': InheritedLoginProvider.of(context).userData!['email'],
     },
   );
-
-  final userData = InheritedLoginProvider.of(context).userData;
-  userData!['email'] = email;
-  userData['name'] = name;
-  userData['password'] = password;
 }
