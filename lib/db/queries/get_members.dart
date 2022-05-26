@@ -4,7 +4,10 @@ import 'package:cookbook/models/member/member.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mysql1/mysql1.dart';
 
-Future<List<Member>> getMembers(BuildContext context, String email) async {
+Future<List<Member>> getMembers(
+  BuildContext context,
+  // String email,
+) async {
   final dbManager = await DatabaseManager.init();
   List<Member> members = [];
   Results? res = await dbManager.select(table: 'members', fields: ['*']);
@@ -16,9 +19,9 @@ Future<List<Member>> getMembers(BuildContext context, String email) async {
       password: r['password'],
       profilePicture: r['profile_pic'],
     );
-    if (!(email == curr.email)) {
-      members.add(curr);
-    }
+    // if (!(email == curr.email)) {
+    members.add(curr);
+    // }
   }
   return members;
 }

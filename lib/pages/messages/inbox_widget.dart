@@ -1,4 +1,5 @@
 import 'package:cookbook/controllers/get_image_from_blob.dart';
+import 'package:cookbook/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -23,64 +24,70 @@ class InboxWidget extends StatelessWidget {
     Member member = state.displayedMembers[idx];
     final _last = last();
 
-    return Container(
-      height: 100,
-      width: size.width / 4,
-      padding: const EdgeInsets.only(top: 15),
-      margin: const EdgeInsets.all(1),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.black),
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: InkWell(
-        onDoubleTap: () {
-          state.toggle = false;
-        },
-        onTap: () {
-          state.toggle = true;
-          state.idx = idx;
-          state.displayedMessages.clear();
-          for (DirectMessage message in state.messages) {
-            if (message.sender == state.displayedMembers[state.idx].email ||
-                message.receiver == state.displayedMembers[state.idx].email) {
-              state.addDisplayedMessage(message);
-            }
-          }
-        },
-        child: ListTile(
-          leading: ProfilePic(
-            member: member,
-            padding: const EdgeInsets.all(1),
-            // height: 100,
-            // width: 35,
-          ),
-          title: Text(
-            member.name,
-            style: const TextStyle(fontSize: 14),
-          ),
-          subtitle: _last == null
-              ? const Text('No messages')
-              : Text(_last.content.toString(), overflow: TextOverflow.ellipsis),
-          trailing:
-              Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            _last == null
-                ? const Text('')
-                : Text(DateFormat.MMMEd().format(DateTime.parse(
-                    _last.date.toString().substring(0, 10),
-                  ))),
-            const SizedBox(
-              height: 5,
+    return member.email == InheritedLoginProvider.of(context).member!.email
+        ? const SizedBox()
+        : Container(
+            height: 100,
+            width: size.width / 4,
+            padding: const EdgeInsets.only(top: 15),
+            margin: const EdgeInsets.all(1),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.black),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5),
             ),
-            _last == null
-                ? const Text('')
-                : Text(
-                    _last.time.toString(),
-                  ),
-          ]),
-        ),
-      ),
-    );
+            child: InkWell(
+              onDoubleTap: () {
+                state.toggle = false;
+              },
+              onTap: () {
+                state.toggle = true;
+                state.idx = idx;
+                state.displayedMessages.clear();
+                for (DirectMessage message in state.messages) {
+                  if (message.sender ==
+                          state.displayedMembers[state.idx].email ||
+                      message.receiver ==
+                          state.displayedMembers[state.idx].email) {
+                    state.addDisplayedMessage(message);
+                  }
+                }
+              },
+              child: ListTile(
+                leading: ProfilePic(
+                  member: member,
+                  padding: const EdgeInsets.all(1),
+                  // height: 100,
+                  // width: 35,
+                ),
+                title: Text(
+                  member.name,
+                  style: const TextStyle(fontSize: 14),
+                ),
+                subtitle: _last == null
+                    ? const Text('No messages')
+                    : Text(_last.content.toString(),
+                        overflow: TextOverflow.ellipsis),
+                trailing: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _last == null
+                          ? const Text('')
+                          : Text(DateFormat.MMMEd().format(DateTime.parse(
+                              _last.date.toString().substring(0, 10),
+                            ))),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      _last == null
+                          ? const Text('')
+                          : Text(
+                              _last.time.toString(),
+                            ),
+                    ]),
+              ),
+            ),
+          );
   }
 
   DirectMessage? last() {

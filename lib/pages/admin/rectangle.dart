@@ -63,7 +63,9 @@ class _UsersColumnState extends State<UsersColumn> {
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       members = await getMembers(
-          context, InheritedLoginProvider.of(context).member!.email);
+        context,
+        // InheritedLoginProvider.of(context).member!.email,
+      );
       displayedmembers = members;
       setState(() {});
     });

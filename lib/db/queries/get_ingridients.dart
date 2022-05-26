@@ -5,10 +5,10 @@ import 'package:mysql1/mysql1.dart';
 
 Future<List<Ingredient>> getIngredients() async {
   final dbManager = await DatabaseManager.init();
-  List<Ingredient> ingridients = [];
+  List<Ingredient> ingredients = [];
 
   Results? res = await dbManager.select(table: 'ingredients', fields: ['*']);
-//TODO this
+
   for (var r in res!) {
     final curr = Ingredient(
       id: r['id'],
@@ -17,8 +17,9 @@ Future<List<Ingredient>> getIngredients() async {
       amount: r['amount'] ?? 1,
       pricePerUnit: r['pricePerUnit'],
     );
-    ingridients.add(curr);
+    ingredients.add(curr);
   }
+  ingredients.sort(((a, b) => a.name.compareTo(b.name)));
   dbManager.close();
-  return ingridients;
+  return ingredients;
 }

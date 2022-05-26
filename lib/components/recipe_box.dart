@@ -349,7 +349,7 @@ class _RecipeActionsRow extends ConsumerState<RecipeActionsRow> {
                   onTap: () async {
                     membersState.members = await getMembers(
                       context,
-                      loginProvider.member!.email,
+                      // loginProvider.member!.email,
                     );
                     membersState.advancedSetDisplayedMembers(
                       membersState.members,

@@ -59,7 +59,7 @@ class _MessageTextFieldState extends ConsumerState<MessageTextField> {
         state.messages = await getMessages(context);
         state.members = await getMembers(
           context,
-          email,
+          // email,
         );
         state.displayedMessages.clear();
         for (DirectMessage message in state.messages) {
