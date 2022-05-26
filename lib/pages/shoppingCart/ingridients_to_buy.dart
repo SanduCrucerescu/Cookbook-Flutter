@@ -166,7 +166,13 @@ class CartBox extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(selectIngredientProvider);
-    state.currentList(state.ingredientList);
+
+    /**
+     * This function is very important 
+     * if you remove it app will break
+     */
+    state.recheck(state.ingredientList);
+
     return Column(
       children: [
         SizedBox(

@@ -187,12 +187,11 @@ class IngridientTile extends HookConsumerWidget {
                 // }
 
                 if (state.ingredientList.contains(ingredient)) {
-                  state.addAdditionalIngredients(ingredient, amountToAdd);
-                  state.currentList(state.ingredientList);
+                  state.recheck(state.ingredientList);
                 } else {
                   state.addIngredient(ingredient);
                   ingredient.setAmount(amountToAdd);
-                  state.currentList(state.ingredientList);
+                  state.currentList(state.ingredientList, amountToAdd);
                 }
                 Navigator.pop(context);
                 print(state.ingredientList);
