@@ -166,6 +166,7 @@ class CartBox extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(selectIngredientProvider);
+    state.currentList(state.ingredientList);
     return Column(
       children: [
         SizedBox(
@@ -185,7 +186,10 @@ class CartBox extends ConsumerWidget {
           child: ListView.builder(
             controller: ScrollController(),
             itemCount: state.ingredientList.length,
-            itemBuilder: (BuildContext context, int idx) {
+            itemBuilder: (
+              BuildContext context,
+              int idx,
+            ) {
               return Row(
                 children: [
                   CartItem(idx: idx, state: state),
