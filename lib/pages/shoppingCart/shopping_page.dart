@@ -78,7 +78,7 @@ class SelectedIngridientChangeNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addAdditionalIngredients(Ingredient a, int amountToAdd) {
+  void addAdditionalIngredients(Ingredient a, double amountToAdd) {
     a.amount = a.amount! + amountToAdd;
     notifyListeners();
   }
