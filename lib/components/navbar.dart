@@ -111,31 +111,31 @@ class NavBar extends HookConsumerWidget {
                               filterOption: expandedState.filterOption,
                             );
                             break;
-                          case 'INGREDIENTS':
-                            if (expandedState.filterStrings.length > 1) {
-                              expandedState.filterStrings[0] =
-                                  teController.text;
-                            } else if (expandedState.filterStrings.isEmpty) {
-                              expandedState.filterStrings = [''];
-                            }
-                            loginProvider.setDisplayedRecipes(
-                              filteringStrings: expandedState.filterStrings,
-                              filterOption: expandedState.filterOption,
-                            );
-                            break;
-                          case 'TAGS':
-                            if (expandedState.filterStrings.length > 1) {
-                              expandedState.filterStrings[0] =
-                                  teController.text;
-                            } else if (expandedState.filterStrings.isEmpty) {
-                              expandedState.filterStrings = [''];
-                            }
-                            print(expandedState.filterStrings);
-                            loginProvider.setDisplayedRecipes(
-                              filteringStrings: expandedState.filterStrings,
-                              filterOption: expandedState.filterOption,
-                            );
-                            break;
+                          // case 'INGREDIENTS':
+                          //   if (expandedState.filterStrings.length > 1) {
+                          //     expandedState.filterStrings[0] =
+                          //         teController.text;
+                          //   } else if (expandedState.filterStrings.isEmpty) {
+                          //     expandedState.filterStrings = [''];
+                          //   }
+                          //   loginProvider.setDisplayedRecipes(
+                          //     filteringStrings: expandedState.filterStrings,
+                          //     filterOption: expandedState.filterOption,
+                          //   );
+                          //   break;
+                          // case 'TAGS':
+                          //   if (expandedState.filterStrings.length > 1) {
+                          //     expandedState.filterStrings[0] =
+                          //         teController.text;
+                          //   } else if (expandedState.filterStrings.isEmpty) {
+                          //     expandedState.filterStrings = [''];
+                          //   }
+                          //   print(expandedState.filterStrings);
+                          //   loginProvider.setDisplayedRecipes(
+                          //     filteringStrings: expandedState.filterStrings,
+                          //     filterOption: expandedState.filterOption,
+                          //   );
+                          //   break;
                         }
                       },
                       child: Row(
@@ -188,10 +188,23 @@ class NavBar extends HookConsumerWidget {
                                     child: CustomButton(
                                       color: Colors.transparent,
                                       onTap: () {
+                                        print(expandedState.filterOption);
+                                        print(teController.text);
+                                        print(expandedState.filterStrings);
                                         switch (expandedState.filterOption
                                             .toUpperCase()) {
                                           case 'TAGS':
-                                            expandedState.filterStrings[0] = '';
+                                            if (expandedState
+                                                    .filterStrings.length >
+                                                1) {
+                                              expandedState.filterStrings[0] =
+                                                  '';
+                                            } else if (expandedState
+                                                .filterStrings.isEmpty) {
+                                              expandedState.filterStrings = [
+                                                ''
+                                              ];
+                                            }
                                             if (expandedState.filterStrings
                                                 .contains(teController.text)) {
                                               showAlreadyInsertedPopUp(
@@ -209,24 +222,37 @@ class NavBar extends HookConsumerWidget {
                                             );
                                             break;
                                           case 'INGREDIENTS':
-                                            expandedState.filterStrings[0] = '';
+                                            if (expandedState
+                                                    .filterStrings.length >
+                                                1) {
+                                              expandedState.filterStrings[0] =
+                                                  '';
+                                            } else if (expandedState
+                                                .filterStrings.isEmpty) {
+                                              expandedState.filterStrings = [
+                                                ''
+                                              ];
+                                            }
                                             if (expandedState.filterStrings
                                                 .contains(teController.text)) {
                                               showAlreadyInsertedPopUp(
                                                   context, teController);
                                               return;
                                             }
+
                                             expandedState.addFilterString(
                                                 teController.text);
-                                            teController.clear();
                                             loginProvider.setDisplayedRecipes(
                                               filteringStrings:
                                                   expandedState.filterStrings,
                                               filterOption:
                                                   expandedState.filterOption,
                                             );
+                                            teController.clear();
                                             break;
                                         }
+                                        print(teController.text);
+                                        print(expandedState.filterStrings);
                                       },
                                       child: const Text('Add'),
                                     ),

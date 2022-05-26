@@ -71,12 +71,16 @@ class _InheritedLoginProviderWrapperState
         }
         break;
       case 'INGREDIENTS':
-        if (filteringStrings.isEmpty || filteringStrings[0] == '') {
+        print('setting ingredients');
+        print(filteringStrings);
+        if (filteringStrings.isEmpty ||
+            (filteringStrings.length == 1 && filteringStrings[0] == '')) {
           for (Recipe r in recipes) {
             _displayedRecipes.add(r);
           }
           break;
         }
+        print(displayedRecipes);
         for (Recipe r in recipes) {
           if (filteringStrings.sublist(1).every((e) => r.ingredients
               .map((ingr) => ingr.name.toUpperCase())
@@ -84,6 +88,7 @@ class _InheritedLoginProviderWrapperState
             _displayedRecipes.add(r);
           }
         }
+        print(_displayedRecipes);
         break;
       case 'TAGS':
         if (filteringStrings.isEmpty ||

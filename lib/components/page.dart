@@ -201,7 +201,7 @@ class FilterOptionDropDownItem extends ConsumerWidget {
       child: InkWell(
         onTap: () {
           expandedState.toggle();
-          expandedState.filterOption = filterOptions[idx];
+          expandedState.filterOption = filterOptions[idx].toUpperCase();
           focusNode.requestFocus();
         },
         onHover: (val) {
