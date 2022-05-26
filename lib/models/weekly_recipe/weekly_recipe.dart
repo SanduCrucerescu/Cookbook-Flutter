@@ -12,9 +12,6 @@ class WeeklyRecipe {
     required this.email,
   });
 
-  @override
-  String toString() => 'WeeklyRecipe(recipeId: $recipeId, email: $email)';
-
   Map<String, dynamic> toMap() {
     return {
       'day': day,
@@ -39,4 +36,8 @@ class WeeklyRecipe {
 
   factory WeeklyRecipe.fromJson(String source) =>
       WeeklyRecipe.fromMap(json.decode(source));
+
+  @override
+  String toString() =>
+      'WeeklyRecipe(recipeId: $recipeId, email: $email, day: $day, week: $week, daytime: $daytime)';
 }
