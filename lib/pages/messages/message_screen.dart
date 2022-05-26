@@ -34,8 +34,7 @@ class MessagePageState extends ConsumerState<MessagePage> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       final state = ref.watch(membersProvider);
-      state.members = await getMembers(
-          context, InheritedLoginProvider.of(context).member!.email);
+      state.members = await getMembers(context);
       state.messages = await getMessages(context);
       state.advancedSetDisplayedMembers(state.members, context);
       GetRecepies getRecepies = GetRecepies();

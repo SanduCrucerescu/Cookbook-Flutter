@@ -48,7 +48,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       if (loginProvider.member != null) {
         membersState.members = await getMembers(
           context,
-          InheritedLoginProvider.of(context).member!.email,
+          // InheritedLoginProvider.of(context).member!.email,
         );
       }
     });
