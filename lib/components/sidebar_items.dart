@@ -10,7 +10,7 @@ import '../pages/messages/message_screen.dart';
 import '../pages/recipeadd/AddRecipePage.dart';
 import '../pages/shoppingCart/shopping_page.dart';
 import '../pages/userPage/user_page.dart';
-import '../pages/weeklyPage/weeklyPage.dart';
+import '../pages/weeklyPage/weekly_page.dart';
 
 List<Map<String, dynamic>> kSideBarItems = [
   {

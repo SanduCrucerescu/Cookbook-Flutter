@@ -13,6 +13,7 @@ import 'package:cookbook/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mysql1/mysql1.dart';
 
 const List<String> days = [
   'Monday',
@@ -58,9 +59,11 @@ class WeeklyPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     Size size = MediaQuery.of(context).size;
     final tec = useTextEditingController();
+    final email = InheritedLoginProvider.of(context).member!.email;
 
-    final PageController pgc =
-        usePageController(initialPage: weekNumber(DateTime.now()) - 1);
+    final PageController pgc = usePageController(
+      initialPage: weekNumber(DateTime.now()) - 1,
+    );
 
     return CustomPage(
       controller: tec,
@@ -92,9 +95,6 @@ class WeeklyPage extends HookConsumerWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: RecipeList(
-                  email: InheritedLoginProvider.of(context)
-                      .userData!['email']
-                      .toString(),
                   week: idx + 1,
                   size: size,
                 ),
@@ -107,8 +107,29 @@ class WeeklyPage extends HookConsumerWidget {
   }
 }
 
-final weeklyRecipesProvider = StateProvider(
-  (ref) => [],
+class WeeklyPageController extends ChangeNotifier {
+  List<WeeklyRecipe> _weeklyRecipes = [];
+
+  List<WeeklyRecipe> get weeklyRecipes => _weeklyRecipes;
+
+  set weeklyRecipes(List<WeeklyRecipe> newRecipes) {
+    _weeklyRecipes = newRecipes;
+    notifyListeners();
+  }
+
+  void addRecipe(WeeklyRecipe recipe) {
+    _weeklyRecipes.add(recipe);
+    notifyListeners();
+  }
+
+  void removeRecipe(WeeklyRecipe recipe) {
+    _weeklyRecipes.remove(recipe);
+    notifyListeners();
+  }
+}
+
+final weeklyPageController = ChangeNotifierProvider(
+  (ref) => WeeklyPageController(),
 );
 
 class RecipeList extends StatefulHookConsumerWidget {
@@ -116,12 +137,10 @@ class RecipeList extends StatefulHookConsumerWidget {
     Key? key,
     required this.size,
     required this.week,
-    required this.email,
   }) : super(key: key);
 
   final int week;
   final Size size;
-  final String email;
 
   @override
   ConsumerState<RecipeList> createState() => _RecipeListState();
@@ -129,18 +148,19 @@ class RecipeList extends StatefulHookConsumerWidget {
 
 class _RecipeListState extends ConsumerState<RecipeList> {
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final email = InheritedLoginProvider.of(context).member!.email;
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       final dbManager = await DatabaseManager.init();
 
-      final _weekleRecipes = await dbManager
+      final _weeklyRecipes = await dbManager
           .select(
             table: 'weekly_recipe',
             fields: ['*'],
             where: {
-              'email': widget.email,
+              'email': email,
               'week': widget.week,
             },
             and: true,
@@ -156,8 +176,9 @@ class _RecipeListState extends ConsumerState<RecipeList> {
               ),
             ),
           );
-      print(_weekleRecipes);
-      ref.read(weeklyRecipesProvider.notifier).state = _weekleRecipes.toList();
+      // print(_weeklyRecipes);
+
+      ref.watch(weeklyPageController).weeklyRecipes = _weeklyRecipes.toList();
     });
   }
 
@@ -188,15 +209,20 @@ class _RecipeListState extends ConsumerState<RecipeList> {
                   child: SizedBox(
                     height: 350,
                     child: ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: 3,
                       itemBuilder: (context, daytime) {
-                        return RecipeTile(
-                          recipes: InheritedLoginProvider.of(context).recipes,
-                          week: widget.week,
-                          day: day,
-                          daytime: daytime,
+                        return Container(
+                          height: 50,
+                          width: 200,
+                          margin: const EdgeInsets.all(5),
+                          color: Colors.blue,
                         );
+                        // return RecipeTile(
+                        //   // recipes: InheritedLoginProvider.of(context).recipes,
+                        //   week: widget.week,
+                        //   day: day,
+                        //   daytime: daytime,
+                        // );
                       },
                     ),
                   ),
@@ -212,12 +238,12 @@ class _RecipeListState extends ConsumerState<RecipeList> {
 
 class RecipeTile extends StatefulHookConsumerWidget {
   final int week, day, daytime;
-  final List<Recipe> recipes;
+  // final List<Recipe> recipes;
   const RecipeTile({
     required this.week,
     required this.day,
     required this.daytime,
-    required this.recipes,
+    // required this.recipes,
     Key? key,
   }) : super(key: key);
 
@@ -230,8 +256,8 @@ class _RecipeTileState extends ConsumerState<RecipeTile> {
 
   @override
   void initState() {
-    final weeklyRecipes =
-        ref.read(weeklyRecipesProvider.notifier).state.map((wr) {
+    final List<WeeklyRecipe?> weeklyRecipes =
+        ref.watch(weeklyPageController).weeklyRecipes.map((wr) {
       if (wr.day == widget.day + 1 &&
           wr.week == widget.week &&
           wr.daytime == widget.daytime + 1) return wr;
@@ -239,12 +265,23 @@ class _RecipeTileState extends ConsumerState<RecipeTile> {
     final WeeklyRecipe? weeklyRecipe =
         weeklyRecipes.isNotEmpty ? weeklyRecipes[0] : null;
 
-    for (Recipe r in widget.recipes) {
-      if (weeklyRecipe != null && weeklyRecipe.recipeId == r.id) {
-        recipe = r;
-        break;
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      final dbManager = await DatabaseManager.init();
+      if (weeklyRecipe != null) {
+        Results? rs = await dbManager.select(
+            table: 'recipes',
+            fields: ['*'],
+            where: {'id': weeklyRecipe.recipeId});
       }
-    }
+      // recipe=Recipe(id: rs.fi)
+    });
+
+    // for (Recipe r in widget.recipes) {
+    //   if (weeklyRecipe != null && weeklyRecipe.recipeId == r.id) {
+    //     recipe = r;
+    //     break;
+    //   }
+    // }
     super.initState();
   }
 
