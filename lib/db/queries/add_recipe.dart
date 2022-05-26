@@ -62,7 +62,7 @@ class AddRecipe {
         "name": tags[i],
       });
 
-      int idTag = 0;
+      late int idTag;
 
       for (var rs in id!) {
         idTag = rs[0];
