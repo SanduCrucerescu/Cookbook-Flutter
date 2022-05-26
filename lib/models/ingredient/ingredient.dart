@@ -8,7 +8,7 @@ class Ingredient with ChangeNotifier {
   String name;
   double pricePerUnit;
   String unit;
-  double? amount;
+  double amount;
   double? changedPrice;
   double? changedAmount;
   //final double amountFactor;
@@ -18,7 +18,7 @@ class Ingredient with ChangeNotifier {
     required this.name,
     required this.unit,
     required this.pricePerUnit,
-    this.amount,
+    this.amount = 1,
     //this.amountFactor
   });
 
@@ -66,11 +66,11 @@ class Ingredient with ChangeNotifier {
         changedPrice = pricePerUnit;
         break;
       case 4:
-        changedAmount = amount! * 2;
+        changedAmount = amount * 2;
         changedPrice = pricePerUnit * 2;
         break;
       case 6:
-        changedAmount = amount! * 4;
+        changedAmount = amount * 4;
         changedPrice = pricePerUnit * 4;
         break;
     }

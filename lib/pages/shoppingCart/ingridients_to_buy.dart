@@ -32,7 +32,7 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
       double total = 0;
       if (state.ingredientList.isNotEmpty) {
         for (Ingredient e in state.ingredientList) {
-          total += e.pricePerUnit * e.amount!;
+          total += e.pricePerUnit * e.amount;
         }
       }
       return total;
@@ -94,13 +94,11 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
               duration: const Duration(milliseconds: 250),
               decoration: BoxDecoration(
                 border: Border.all(width: .4, color: Colors.black),
-                borderRadius: BorderRadius.circular(5),
               ),
               child: CustomButton(
                 height: 50,
                 width: 200,
                 color: kcLightBeige,
-                // border: Border.all(width: 2, color: Colors.black),
                 onTap: () async {
                   print(getCurrentCart(context));
                   await DeleteCart.Delete(
@@ -115,43 +113,13 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                     });
                   }
                 },
-
-                // Yep it works
-
                 child: Text(
                   "Save",
                   style: ksFormButtonStyle.copyWith(fontSize: 20),
                 ),
-                //TODO: On update
               ),
             ),
           ),
-          // Container(
-          //   padding: const EdgeInsets.only(top: 10),
-          //   child: Row(
-          //     crossAxisAlignment: CrossAxisAlignment.end,
-          //     mainAxisAlignment: MainAxisAlignment.end,
-          //     children: [
-          // Container(
-          //   child: const Text(
-          //     // "Me and Lui",
-          //     "",
-          //     style: TextStyle(
-          //       color: Colors.black,
-          //     ),
-          //   ),
-          //   width: 200.00,
-          //   height: 140.00,
-          //   decoration: const BoxDecoration(
-          //     image: DecorationImage(
-          //       image: ExactAssetImage('assets/images/IMG_5407.JPG'),
-          //       fit: BoxFit.fitHeight,
-          //     ),
-          //   ),
-          // ),
-          //       ],
-          //     ),
-          //   )
         ],
       ),
     );
@@ -171,7 +139,7 @@ class CartBox extends ConsumerWidget {
      * This function is very important 
      * if you remove it app will break
      */
-    state.recheck(state.ingredientList);
+    // state.recheck(state.ingredientList);
 
     return Column(
       children: [
@@ -212,7 +180,7 @@ class CartBox extends ConsumerWidget {
                   Expanded(
                     flex: 1,
                     child: Text(
-                      (state.ingredientList[idx].amount! *
+                      (state.ingredientList[idx].amount *
                               state.ingredientList[idx].pricePerUnit)
                           .toString(),
                     ),
