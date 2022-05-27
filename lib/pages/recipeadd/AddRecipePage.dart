@@ -100,17 +100,20 @@ class AddRecipePage extends HookConsumerWidget {
                   : const SizedBox(),
               Container(
                 margin: const EdgeInsets.only(top: 10),
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 850,
-                      child: Table(
-                        children: [
-                          ...state.rows,
-                        ],
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 850,
+                        child: Table(
+                          children: [
+                            ...state.rows,
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               MultilineTextField(
