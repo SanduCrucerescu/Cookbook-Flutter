@@ -141,6 +141,7 @@ class NavBar extends HookConsumerWidget {
                       child: Row(
                         children: [
                           CustomTextField(
+                            duration: const Duration(milliseconds: 0),
                             focusNode: focusNode,
                             height: searchBarHeight ?? 60,
                             width: searchBarWidth,
