@@ -81,7 +81,7 @@ class _IngridientsToBuyState extends ConsumerState<IngridientsToBuy> {
                       ),
                     ),
                     TextSpan(
-                      text: "${getIngredientPrice()}€",
+                      text: "${getIngredientPrice().toStringAsFixed(2)}€",
                       style: ksLabelTextStyle,
                     ),
                   ],
@@ -135,12 +135,6 @@ class CartBox extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(selectIngredientProvider);
 
-    /**
-     * This function is very important 
-     * if you remove it app will break
-     */
-    // state.recheck(state.ingredientList);
-
     return Column(
       children: [
         SizedBox(
@@ -182,7 +176,7 @@ class CartBox extends ConsumerWidget {
                     child: Text(
                       (state.ingredientList[idx].amount *
                               state.ingredientList[idx].pricePerUnit)
-                          .toString(),
+                          .toStringAsFixed(2),
                     ),
                   ),
                 ],

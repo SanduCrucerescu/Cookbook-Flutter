@@ -73,6 +73,8 @@ class NavBar extends HookConsumerWidget {
     final loginProvider = InheritedLoginProvider.of(context);
     final expandedState = ref.watch(expandedProvider);
 
+    print('Rebuilding');
+
     Size size = MediaQuery.of(context).size;
     return Container(
       width: width ?? size.width,
@@ -106,10 +108,12 @@ class NavBar extends HookConsumerWidget {
                         switch (expandedState.filterOption.toUpperCase()) {
                           case 'TITLE':
                             expandedState.filterStrings = [teController.text];
-                            loginProvider.setDisplayedRecipes(
-                              filteringStrings: expandedState.filterStrings,
-                              filterOption: expandedState.filterOption,
-                            );
+
+                            // loginProvider.setDisplayedRecipes(
+                            //   filteringStrings: expandedState.filterStrings,
+                            //   filterOption: expandedState.filterOption,
+                            // );
+
                             break;
                           // case 'INGREDIENTS':
                           //   if (expandedState.filterStrings.length > 1) {
@@ -166,9 +170,34 @@ class NavBar extends HookConsumerWidget {
                             onClickSuffix: () {
                               teController.clear();
                             },
-                            onChanged: (val) => focusNode != null
-                                ? focusNode!.requestFocus()
-                                : {},
+                            onChanged: (val) {
+                              if (expandedState.filterOption.toUpperCase() ==
+                                  'TITLEdaskd') {
+                                loginProvider.setDisplayedRecipes(
+                                  filteringStrings: [teController.text],
+                                  filterOption: 'TITLE',
+                                );
+                              }
+
+                              focusNode != null
+                                  ? focusNode!.requestFocus()
+                                  : {};
+                            },
+                            onSubmitted: () {
+                              if (expandedState.filterOption.toUpperCase() ==
+                                  'TITLE') {
+                                expandedState.filterStrings = [
+                                  teController.text.toUpperCase()
+                                ];
+                                loginProvider.setDisplayedRecipes(
+                                  filteringStrings: expandedState.filterStrings,
+                                  filterOption: expandedState.filterOption,
+                                );
+                              }
+                              focusNode != null
+                                  ? focusNode!.requestFocus()
+                                  : {};
+                            },
                             controller: teController,
                           ),
                           [
@@ -189,9 +218,6 @@ class NavBar extends HookConsumerWidget {
                                     child: CustomButton(
                                       color: Colors.transparent,
                                       onTap: () {
-                                        print(expandedState.filterOption);
-                                        print(teController.text);
-                                        print(expandedState.filterStrings);
                                         switch (expandedState.filterOption
                                             .toUpperCase()) {
                                           case 'TAGS':
@@ -252,8 +278,6 @@ class NavBar extends HookConsumerWidget {
                                             teController.clear();
                                             break;
                                         }
-                                        print(teController.text);
-                                        print(expandedState.filterStrings);
                                       },
                                       child: const Text('Add'),
                                     ),

@@ -26,7 +26,6 @@ class CustomPage extends HookConsumerWidget {
 
     focusNode.addListener(
       () async {
-        // print(focusNode.hasFocus);
         if (!focusNode.hasFocus) {
           // print(expandedState.filterStrings[0] == '');
 
@@ -79,7 +78,6 @@ class CustomPage extends HookConsumerWidget {
                         ...expandedState.filterStrings
                             .map((e) => e != ''
                                 ? Container(
-                                    // color: Colors.green,
                                     margin: const EdgeInsets.only(left: 50),
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 5),
@@ -102,34 +100,6 @@ class CustomPage extends HookConsumerWidget {
                     ),
                   )
                 : const SizedBox(),
-            // focusNode.hasFocus
-            //     ? Center(
-            //         child: Column(
-            //           children: [
-            //             Container(
-            //               margin: const EdgeInsets.only(top: 100),
-            //               width: searchBarWidth,
-            //               height: 20.0 * loginProvider.displayedRecipes.length,
-            //               child: ListView.builder(
-            //                 itemCount: loginProvider.displayedRecipes.length,
-            //                 itemBuilder: (context, idx) => Container(
-            //                   // width: searchBarWidth,
-            //                   height: 20,
-            //                   decoration: BoxDecoration(
-            //                     color: kcLightBeige,
-            //                     border:
-            //                         Border.all(width: .5, color: Colors.black),
-            //                   ),
-            //                   child: Text(
-            //                     loginProvider.displayedRecipes[idx].title,
-            //                   ),
-            //                 ),
-            //               ),
-            //             ),
-            //           ],
-            //         ),
-            //       )
-            //     : const SizedBox(),
             if (expandedState.expanded && showSearchBar == true)
               Positioned(
                 top: 80,
@@ -219,9 +189,7 @@ class FilterOptionDropDownItem extends ConsumerWidget {
                     ? const Border(
                         top: BorderSide(width: .5, color: Colors.black))
                     : null,
-            // : Border.all(width: .5, color: Colors.black),
           ),
-          // margin: const EdgeInsets.only(left: 20, bottom: 1),
           child: Center(child: Text(filterOptions[idx])),
         ),
       ),

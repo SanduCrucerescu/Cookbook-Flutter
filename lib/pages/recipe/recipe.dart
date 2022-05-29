@@ -7,6 +7,7 @@ import 'package:cookbook/models/ingredient/ingredient.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
 import 'package:cookbook/pages/recipeadd/dropdown_checkbox.dart';
 import 'package:cookbook/theme/colors.dart';
+import 'package:cookbook/theme/text_styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -40,8 +41,8 @@ class RecipePage extends HookConsumerWidget {
     return CustomPage(
       child: Container(
         decoration: const BoxDecoration(
-          color: Colors.white,
-        ),
+            // color: Colors.white,
+            ),
         margin: const EdgeInsets.all(25),
         padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 80),
         child: Center(
@@ -65,6 +66,7 @@ class RecipePage extends HookConsumerWidget {
                   children: recipe.tags
                       .toList()
                       .map((e) => Chip(
+                            side: BorderSide(color: Colors.black, width: .3),
                             label: Text(
                               e.name,
                               style: const TextStyle(),
@@ -78,23 +80,39 @@ class RecipePage extends HookConsumerWidget {
                 height: 15,
               ),
               Center(
-                child: Image.memory(
-                  getImageDataFromBlob(recipe.picture),
-                  fit: BoxFit.cover,
-                  height: 600,
-                  width: 700,
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black, width: .5),
+                  ),
+                  child: Image.memory(
+                    getImageDataFromBlob(recipe.picture),
+                    fit: BoxFit.cover,
+                    height: 600,
+                    width: 700,
+                  ),
                 ),
               ),
               const SizedBox(
                 height: 15,
               ),
               Center(
-                child: SelectableText(
-                  recipe.longDescription,
-                  style: const TextStyle(
-                      fontSize: 25,
-                      fontStyle: FontStyle.italic,
-                      fontWeight: FontWeight.w200),
+                child: Column(
+                  children: [
+                    SelectableText(
+                      'Description',
+                      style: ksLabelTextStyle,
+                    ),
+                    SelectableText(
+                      recipe.longDescription,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 23,
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(
@@ -120,7 +138,7 @@ class RecipePage extends HookConsumerWidget {
                 ]),
               ),
               Row(
-                //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Expanded(
                     child: Container(
@@ -128,7 +146,7 @@ class RecipePage extends HookConsumerWidget {
                         children: [
                           const Text(
                             "Ingredients",
-                            style: TextStyle(fontSize: 20),
+                            style: ksFormHeadlineStyle,
                           ),
                           const SizedBox(
                             height: 15,
@@ -245,16 +263,17 @@ class RecipePage extends HookConsumerWidget {
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: kcMedBeige,
+                        // color: kcMedBeige,
                       ),
                       child: Column(
                         children: [
                           const Text(
                             "Instructions",
-                            style: TextStyle(fontSize: 20),
+                            style: ksFormHeadlineStyle,
                           ),
                           ListView.builder(
                             shrinkWrap: true,
+                            controller: ScrollController(),
                             physics: ClampingScrollPhysics(),
                             itemCount: splitedInstructions.length,
                             itemBuilder: ((context, index) {
