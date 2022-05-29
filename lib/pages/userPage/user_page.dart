@@ -35,9 +35,9 @@ class _UserPageState extends ConsumerState<UserPage> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       final data = InheritedLoginProvider.of(context).userData;
+      print(data!['email']);
       if (data != null) {
-        member = await getMember(
-            InheritedLoginProvider.of(context).userData!['email']);
+        member = await getMember(data['email']);
         Blob? img = member!.profilePicture;
         ref.watch(userPageProvider).data!['imgData'] = {"file": img};
         setState(() {});
@@ -238,6 +238,7 @@ Future<void> onSave({
   final userData = InheritedLoginProvider.of(context).userData;
   DatabaseManager dbManager = await DatabaseManager.init();
   String img64;
+  String emailToUpdate = userData!['email'];
 
   final file = data!['imgData']['file']!;
 
@@ -252,29 +253,29 @@ Future<void> onSave({
 
   if (name != '') {
     toUpdate['username'] = name;
-    userData!['username'] = name;
+    userData['username'] = name;
   }
 
   if (email != '') {
     toUpdate['email'] = email;
-    userData!['email'] = email;
+    userData['email'] = email;
   }
 
   if (password != '') {
     toUpdate['password'] = password;
-    userData!['password'] = password;
+    userData['password'] = password;
   }
 
   if (file != null) {
     toUpdate['profile_pic'] = img64;
-    userData!['profilePic'] = Blob.fromString(img64);
+    userData['profilePic'] = Blob.fromString(img64);
   }
 
   dbManager.update(
     table: 'members',
     set: toUpdate,
     where: {
-      'email': userData!['email'],
+      'email': emailToUpdate,
     },
   );
 }

@@ -48,18 +48,6 @@ class _InheritedLoginProviderWrapperState
     });
   }
 
-  void setSomething(List<String> filterStrings) {
-    print(filterStrings);
-    _displayedRecipes = [];
-    for (Recipe r in recipes) {
-      if (r.title.toUpperCase().startsWith(filterStrings[0].toUpperCase())) {
-        print('Fits');
-        _displayedRecipes.add(r);
-      }
-    }
-    setState(() {});
-  }
-
   void setDisplayedRecipes({
     required List<String> filteringStrings,
     required String filterOption,
