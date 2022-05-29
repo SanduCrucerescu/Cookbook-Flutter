@@ -127,24 +127,27 @@ class AddRecipePage extends HookConsumerWidget {
                 maxLines: 7,
               ),
               Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    DropDw(
-                      tagProvider: rowProvider,
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    FormButton(
-                      onTap: () {
-                        _openImagePicker(state);
-                      },
-                      text: "Select Photo",
-                      showShadow: false,
-                      color: kcDarkBeige,
-                    ),
-                  ],
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      DropDw(
+                        tagProvider: rowProvider,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      FormButton(
+                        onTap: () {
+                          _openImagePicker(state);
+                        },
+                        text: "Select Photo",
+                        showShadow: false,
+                        color: kcDarkBeige,
+                      ),
+                    ],
+                  ),
                 ),
               ),
               state.tagsAdded

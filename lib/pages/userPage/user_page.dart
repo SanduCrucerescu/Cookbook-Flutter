@@ -114,7 +114,7 @@ class UserPageForm extends HookConsumerWidget {
               UserPageTextField(
                 size: size,
                 user: user!,
-                hintText: '********',
+                hintText: user!.password,
                 label: "Password",
                 controller: passwordController,
               ),

@@ -141,14 +141,16 @@ class LoginForm extends HookConsumerWidget {
                         userInfo: {"email": tec1.text, "password": tec2.text},
                       );
 
-                      showDialog(
-                        context: context,
-                        builder: (context) => const SizedBox(
-                          height: 50,
-                          width: 50,
-                          child: progressIndicator,
-                        ),
-                      );
+                      isValid != 'does not exist'
+                          ? showDialog(
+                              context: context,
+                              builder: (context) => const SizedBox(
+                                height: 50,
+                                width: 50,
+                                child: progressIndicator,
+                              ),
+                            )
+                          : {};
 
                       switch (isValid) {
                         case "admin":
