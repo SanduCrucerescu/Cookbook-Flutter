@@ -79,7 +79,10 @@ class UserInfo extends HookConsumerWidget {
                           content: state.email,
                           controller: emailController,
                           onTap: () {
+                            print(state.currMember?.email);
                             state.currMember?.email = emailController.text;
+                            print(emailController.text);
+                            print(state.currMember?.email);
                           },
                         ),
                         CustomButton(
@@ -226,22 +229,11 @@ class UserInfoField extends HookConsumerWidget {
                             isShadow: false,
                             hintText: 'email',
                             focusNode: focusNode,
-                            // border: Border.all(
-                            //   width: .5,
-                            //   color: Colors.black,
-                            //   style: BorderStyle.solid,
-                            // ),
-                            onChanged: (value) {
-                              // state.filteringString = value;
-                            },
-                            onClickSuffix: () {
-                              // tec.clear();
-                              // state.filteringString = ''; //  Fix (x) Button
-                            },
-                            // controller: tec,
+                            controller: controller,
+                            onChanged: (value) {},
+                            onClickSuffix: () {},
                             width: 300,
                             height: 200,
-                            // borderRadius: const BorderRadius.all(Radius.circular(5)),
                           )
                         : SelectableText(content),
                   ),

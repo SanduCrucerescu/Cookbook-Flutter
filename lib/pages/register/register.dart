@@ -7,6 +7,7 @@ import 'package:cookbook/components/components.dart';
 import 'package:cookbook/db/queries/add_user.dart';
 import 'package:cookbook/controllers/image_picker.dart';
 import 'package:cookbook/pages/home/home_page.dart';
+import 'package:cookbook/pages/login/login.dart';
 import 'package:cookbook/theme/colors.dart';
 import 'package:cookbook/theme/text_styles.dart';
 import 'package:flutter/material.dart';
@@ -177,7 +178,7 @@ class RegisterForm extends HookConsumerWidget {
                       },
                     );
                     if (register) {
-                      Navigator.of(context).pushNamed(HomePage.id);
+                      Navigator.of(context).pushNamed(LoginPage.id);
                     } else {
                       print("registring unsucessful");
                     }

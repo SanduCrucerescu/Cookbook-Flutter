@@ -70,9 +70,12 @@ class LoginForm extends HookConsumerWidget {
     final state = ref.watch(verificationProvider);
 
     final TextEditingController tec1 = useTextEditingController();
-    tec1.text = "abolandr@gnu.org";
     final TextEditingController tec2 = useTextEditingController();
-    tec2.text = "xbsxysKe53";
+    final FocusNode focusNode = FocusNode();
+    focusNode.requestFocus();
+
+    // tec1.text = "abolandr@gnu.org";
+    // tec2.text = "xbsxysKe53";
     return Center(
       child: Container(
         height: 500,
@@ -102,6 +105,8 @@ class LoginForm extends HookConsumerWidget {
             SizedBox(
               width: 350,
               child: CustomTextField(
+                focusNode: focusNode,
+                hintText: 'email',
                 margin: const EdgeInsets.only(bottom: 10),
                 controller: tec1,
               ),
@@ -110,6 +115,7 @@ class LoginForm extends HookConsumerWidget {
               width: 350,
               height: 70,
               child: CustomTextField(
+                hintText: 'password',
                 margin: const EdgeInsets.only(top: 10),
                 controller: tec2,
                 obscureText: true,
@@ -156,11 +162,23 @@ class LoginForm extends HookConsumerWidget {
                         case "admin":
                           int id = await Validator.id(tec1.text);
 
+                          final Map<String, dynamic> userData =
+                              await Validator.userData(tec1.text);
+
                           InheritedLoginProvider.of(context).userData = {
                             "email": tec1.text,
-                            "cartID": id
+                            "password": tec2.text,
+                            "cartID": id,
+                            "username": userData['username'],
+                            "profilePic": userData['profilePic'],
                           };
-
+                          InheritedLoginProvider.of(context).member = Member(
+                            email: tec1.text,
+                            password: tec2.text,
+                            cartId: userData['cartID'],
+                            name: userData['username'],
+                            profilePicture: userData['profilePic'],
+                          );
                           Navigator.of(context).pushNamed(Admin.id);
                           break;
                         case "member":
