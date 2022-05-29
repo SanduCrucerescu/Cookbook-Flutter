@@ -7,6 +7,7 @@ import 'package:cookbook/main.dart';
 import 'package:cookbook/models/recipe/recipe.dart';
 import 'package:cookbook/pages/messages/message_screen.dart';
 import 'package:cookbook/theme/colors.dart';
+import 'package:cookbook/theme/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -93,9 +94,6 @@ class _HomePageState extends ConsumerState<HomePage> {
                 child: Stack(
                   children: [
                     SizedBox(
-                      // height: state.refreshing
-                      // ? size.height - 150
-                      // : size.height - 110,
                       height: size.height - 110,
                       child: ListView.builder(
                         controller: homeSc,
@@ -126,9 +124,10 @@ class _HomePageState extends ConsumerState<HomePage> {
             }))
           : const Center(
               child: SizedBox(
-                height: 50,
-                width: 50,
-                child: progressIndicator,
+                child: Text(
+                  'No Recipes',
+                  style: ksLabelTextStyle,
+                ),
               ),
             ),
     );
