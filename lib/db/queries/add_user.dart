@@ -9,12 +9,12 @@ class AddUser {
       "email",
       "password",
       "username",
-      "profile_picture"
+      "profile_pic"
     ], data: {
       "email": userInfo?["email"],
       "password": userInfo?["password"],
       "username": userInfo?["username"],
-      "profile_picture": userInfo?["profile_picture"]
+      "profile_picture": userInfo?["profile_pic"]
     });
     dbManager.close();
     return true;

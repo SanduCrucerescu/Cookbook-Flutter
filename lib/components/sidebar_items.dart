@@ -41,18 +41,18 @@ List<Map<String, dynamic>> kSideBarItems = [
       },
     ],
   },
+  // {
+  //   "text": "L o a d i n g",
+  //   "id": 2,
+  //   "onTap": LoadingScreen.id,
+  //   "icon": const Icon(Icons.refresh),
+  //   "children": [],
+  // },
   {
-    "text": "L o a d i n g",
-    "id": 2,
-    "onTap": LoadingScreen.id,
-    "icon": const Icon(Icons.refresh),
-    "children": [],
-  },
-  {
-    "text": "A d d  r e c i p e",
+    "text": "C r e a t e",
     "id": 3,
     "onTap": AddRecipePage.id,
-    "icon": const Icon(Icons.add),
+    "icon": const Icon(Icons.create),
     "children": [],
   },
   {

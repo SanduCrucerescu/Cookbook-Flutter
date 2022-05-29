@@ -80,8 +80,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       showSearchBar: true,
       controller: tec,
       searchBarWidth: searchBarWidth,
-      child: loginProvider.displayedRecipes.isNotEmpty &&
-              loginProvider.favorites.isNotEmpty
+      child: loginProvider.displayedRecipes.isNotEmpty
           ? Builder(builder: ((context) {
               state.setRecipeBoxes(
                 favorites: loginProvider.favorites,
