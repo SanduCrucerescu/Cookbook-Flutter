@@ -30,6 +30,8 @@ class UserInfo extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final nameController = useTextEditingController();
     final emailController = useTextEditingController();
+    nameController.text = state.userName;
+    emailController.text = state.email;
     final Size size = MediaQuery.of(context).size;
 
     return Container(
@@ -45,6 +47,7 @@ class UserInfo extends HookConsumerWidget {
             state.currMember != null
                 ? ProfilePic(
                     height: 100,
+                    width: 100,
                     member: state.currMember!,
                   )
                 : const SizedBox(),
@@ -79,10 +82,7 @@ class UserInfo extends HookConsumerWidget {
                           content: state.email,
                           controller: emailController,
                           onTap: () {
-                            print(state.currMember?.email);
                             state.currMember?.email = emailController.text;
-                            print(emailController.text);
-                            print(state.currMember?.email);
                           },
                         ),
                         CustomButton(
@@ -126,8 +126,8 @@ class UserInfo extends HookConsumerWidget {
                                 dbManager.update(
                                   table: 'members',
                                   set: {
-                                    'username': member.name,
-                                    'email': member.email,
+                                    'username': nameController.text,
+                                    'email': emailController.text,
                                     'password': member.password,
                                     'profile_pic': img64,
                                   },
@@ -137,8 +137,8 @@ class UserInfo extends HookConsumerWidget {
                                 dbManager.update(
                                   table: 'members',
                                   set: {
-                                    'username': member.name,
-                                    'email': member.email,
+                                    'username': nameController.text,
+                                    'email': emailController.text,
                                     'password': member.password,
                                   },
                                   where: {'email': state.currMember!.email},
@@ -254,9 +254,9 @@ class UserInfoField extends HookConsumerWidget {
             ),
             child: ref.watch(isEditingProvider).isEditing
                 ? InkWell(
-                    onTap: () => onTap(),
+                    onTap: () => ref.watch(isEditingProvider).isEditing = false,
                     child: const Center(
-                      child: Text('Save'),
+                      child: Text('Cancel'),
                     ),
                   )
                 : InkWell(
@@ -269,25 +269,25 @@ class UserInfoField extends HookConsumerWidget {
                     ),
                   ),
           ),
-          ref.watch(isEditingProvider).isEditing
-              ? Container(
-                  width: 70,
-                  height: 50,
-                  margin: const EdgeInsets.only(right: 10),
-                  decoration: BoxDecoration(
-                    // color: kcMedBeige,
-                    border: Border.all(
-                      width: .5,
-                      color: Colors.black,
-                    ),
-                  ),
-                  child: InkWell(
-                    onTap: () => ref.watch(isEditingProvider).isEditing = false,
-                    child: const Center(
-                      child: Text('Cancel'),
-                    ),
-                  ))
-              : const SizedBox(),
+          // ref.watch(isEditingProvider).isEditing
+          //     ? Container(
+          //         width: 70,
+          //         height: 50,
+          //         margin: const EdgeInsets.only(right: 10),
+          //         decoration: BoxDecoration(
+          //           // color: kcMedBeige,
+          //           border: Border.all(
+          //             width: .5,
+          //             color: Colors.black,
+          //           ),
+          //         ),
+          //         child: InkWell(
+          //           onTap: () => ref.watch(isEditingProvider).isEditing = false,
+          //           child: const Center(
+          //             child: Text('Cancel'),
+          //           ),
+          //         ))
+          //     : const SizedBox(),
         ],
       ),
     );

@@ -58,6 +58,7 @@ class UserTile extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                   height: 70,
+                  width: 80,
                   child: ClipOval(
                     child: ProfilePic(
                       padding: const EdgeInsets.all(0),
