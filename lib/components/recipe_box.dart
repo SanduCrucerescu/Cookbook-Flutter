@@ -181,12 +181,15 @@ class RecipeBoxTopRow extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final membersState = ref.watch(membersProvider);
-    final member = membersState.members.isNotEmpty
-        ? membersState.members[membersState.members
-            .map((e) => e.email)
-            .toList()
-            .indexOf(recipe.ownerEmail)]
-        : null;
+    final member =
+        recipe.ownerEmail == InheritedLoginProvider.of(context).member!.email
+            ? InheritedLoginProvider.of(context).member
+            : membersState.members.isNotEmpty
+                ? membersState.members[membersState.members
+                    .map((e) => e.email)
+                    .toList()
+                    .indexOf(recipe.ownerEmail)]
+                : null;
     return RecipeBoxRow(
       width: 400,
       leading: SizedBox(

@@ -57,8 +57,8 @@ class InboxWidget extends StatelessWidget {
                 leading: ProfilePic(
                   member: member,
                   padding: const EdgeInsets.all(1),
-                  // height: 100,
-                  // width: 35,
+                  height: 100,
+                  width: 45,
                 ),
                 title: Text(
                   member.name,
@@ -143,7 +143,7 @@ class ProfilePic extends StatelessWidget {
                 width: width,
                 height: height,
                 scale: scale ?? 1.0,
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
               ),
       ),
     );
