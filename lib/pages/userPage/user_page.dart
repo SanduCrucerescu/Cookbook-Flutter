@@ -42,6 +42,7 @@ class _UserPageState extends ConsumerState<UserPage> {
         ref.watch(userPageProvider).data!['imgData'] = {"file": img};
         setState(() {});
       }
+      ref.watch(userPageProvider).saved = false;
     });
 
     super.initState();
@@ -266,13 +267,14 @@ Future<void> onSave({
 
   if (file != null) {
     toUpdate['profile_pic'] = img64;
+    userData!['profilePic'] = Blob.fromString(img64);
   }
 
   dbManager.update(
     table: 'members',
     set: toUpdate,
     where: {
-      'email': InheritedLoginProvider.of(context).userData!['email'],
+      'email': userData!['email'],
     },
   );
 }
