@@ -1,0 +1,8 @@
+App is looking really nice, all features ended up being implemented in a 
+good way. Strived away from java and did the whole thing in Dart.
+Development was farily smooth, progress was looking good in all meetings 
+and it was presented in a way that made a lot of sense. Teamwork worked well.
+
+Farily happy with their gitlab management, scrum masters did their jobs. 
+
+Grade: B
